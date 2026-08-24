@@ -10,7 +10,8 @@
 | 01 | [`01-what-i-want.md`](01-what-i-want.md) | **무엇을 원하는가** — 여섯 가지 · 문제 45개로 추적 · 승격 기록 |
 | 02 | [`02-why-past-attempts-failed.md`](02-why-past-attempts-failed.md) | **왜 다섯 번 무너졌는가** — 진단 3건 + 실측 |
 | 03 | [`03-what-research-says.md`](03-what-research-says.md) | **리서치는 무엇을 말하는가** — 현업 실무의 근거 |
-| 04 | [`04-the-plan.md`](04-the-plan.md) | **그래서 무엇을 만드는가** — 만들 것 · 원칙 · 제외 |
+| 04 | [`04-the-plan.md`](04-the-plan.md) | **그래서 무엇을 만드는가** — 만들 것 12 · 원칙 · 제외 · 판정 기준 |
+| 05 | [`05-the-output-floor.md`](05-the-output-floor.md) | **무엇이 남아야 시니어급인가** — 산출물 바닥 MUST 49 |
 
 ## 이 층의 규칙
 
