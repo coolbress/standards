@@ -12,7 +12,7 @@ method: "2026-08-08 호스트(Claude Code/Codex) 표면·플러그인 규격·Sk
 
 > 성격: 실행한 명령·읽은 1차 문서·실측만. 2차 자료는 **2차라고 표기**한다.
 > 대상: 사용자가 지목한 🔴 3종 — ① 훅 동작·플러그인 규격 ② 각 컴포넌트 빌드 방식 ③ 컴포넌트 종류·채택률
-> 기준선: `imported/claudeck/harness-concept-notes.md` (조사 시점 **2026-06-21**, 7주 전)
+> 기준선: `legacy/sources/claudeck/harness-concept-notes.md` (조사 시점 **2026-06-21**, 7주 전)
 > 실측 환경: **Claude Code v2.1.226**
 
 ---

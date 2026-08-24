@@ -19,7 +19,7 @@ good breadth, yet combines several different axes: software-engineering knowledg
 life-cycle activities, organizational practices, and one product archetype (`27 AI harness`). A mixed taxonomy
 can still be an effective retrieval index; it must not be presented as a single industry-standard decomposition.
 
-The previous rationale is preserved at `../interpretation/legacy/gingoa-taxonomy.md`. Its ISO/IEC/IEEE 12207:2017
+The previous rationale is preserved at `../legacy/judgments/gingoa-taxonomy.md`. Its ISO/IEC/IEEE 12207:2017
 anchor is stale: the ISO catalog marks that edition withdrawn and ISO/IEC/IEEE 12207:2026 as the current edition.
 SWEBOK V4.0a is the current IEEE Computer Society update and contains 18 Knowledge Areas.
 

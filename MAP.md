@@ -12,11 +12,11 @@
 
 | 등급 | 개수 | 뜻 |
 |---|---|---|
-| `active` | 51 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
-| `decision` | 10 | 프로젝트 판단 — **권위로** 찾는다 |
+| `active` | 50 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
+| `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
-| `reference` | 109 | **물어봤을 때만** — 과거 하네스·원시 census |
-| `archive` | 12 | 검색 제외 (폐기·legacy) |
+| `reference` | 96 | **물어봤을 때만** — 과거 하네스·원시 census |
+| `archive` | 32 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
 
@@ -74,7 +74,6 @@
 | unlabeled | `direction/03-what-research-says.md` | 03-what-research-says |
 | unlabeled | `direction/04-the-plan.md` | 04-the-plan |
 | navigation | `direction/README.md` | README |
-| navigation | `interpretation/README.md` | README |
 
 ## decision — 프로젝트 판단 (근거가 아니다)
 
@@ -85,11 +84,6 @@
 | reference | `corpus/methods/framework-crosswalk-2026.md` | SWEBOK V4.0a × ISO/IEC/IEEE 12207:2026 × ISO/IEC 25010:2023 × goppi 28-Aspects |
 | reference | `corpus/methods/target-user-capability-model.md` | Target User Capability and Responsibility Model |
 | reference | `corpus/methods/trustworthy-completion-evidence-model.md` | Trustworthy Completion, Assurance, and Appropriate Reliance Evidence Model |
-| decision-record | `interpretation/foundation/goppi-workflow-standard.md` | goppi-workflow-standard |
-| decision-record | `interpretation/foundation/goppi-worth-hypothesis.md` | goppi-worth-hypothesis |
-| decision-record | `interpretation/foundation/production-output-rubric.md` | production-output-rubric |
-| decision-record | `interpretation/foundation/steering-verification-design.md` | steering-verification-design |
-| decision-record | `interpretation/foundation/trustworthy-completion-evaluation-protocol.md` | trustworthy-completion-evaluation-protocol |
 
 ## meta — 진입점
 
@@ -104,23 +98,42 @@
 
 ## archive — 검색에서 제외됨 (지우지 않았다)
 
-- `imported/goppi/what-is-a-harness.md`
-- `interpretation/00-overview.md`
-- `interpretation/01-sdlc-lifecycle.md`
-- `interpretation/02-engineering-practices.md`
-- `interpretation/03-planning-and-requirements.md`
-- `interpretation/04-solo-and-ai-assisted-dev.md`
-- `interpretation/legacy/gingoa-guide.ko.md`
-- `interpretation/legacy/gingoa-lifecycle.md`
-- `interpretation/legacy/gingoa-schema.md`
-- `interpretation/legacy/gingoa-specific-sections.md`
-- `interpretation/legacy/gingoa-taxonomy.md`
-- `interpretation/legacy/three-tier-ledger.md`
+- `legacy/judgments/00-overview.md`
+- `legacy/judgments/01-sdlc-lifecycle.md`
+- `legacy/judgments/02-engineering-practices.md`
+- `legacy/judgments/03-planning-and-requirements.md`
+- `legacy/judgments/04-solo-and-ai-assisted-dev.md`
+- `legacy/judgments/05-goppi-analysis.md`
+- `legacy/judgments/foundation/goppi-workflow-standard.md`
+- `legacy/judgments/foundation/goppi-worth-hypothesis.md`
+- `legacy/judgments/foundation/production-output-rubric.md`
+- `legacy/judgments/foundation/steering-verification-design.md`
+- `legacy/judgments/foundation/trustworthy-completion-evaluation-protocol.md`
+- `legacy/judgments/gingoa-guide.ko.md`
+- `legacy/judgments/gingoa-lifecycle.md`
+- `legacy/judgments/gingoa-schema.md`
+- `legacy/judgments/gingoa-specific-sections.md`
+- `legacy/judgments/gingoa-taxonomy.md`
+- `legacy/judgments/README.md`
+- `legacy/judgments/three-tier-ledger.md`
+- `legacy/LINEAGE.md`
+- `legacy/README.md`
+- `legacy/sources/claudeck-v1/harness-notes.md`
+- `legacy/sources/claudeck-v1/researcher.md`
+- `legacy/sources/claudeck/harness-concept-notes.md`
+- `legacy/sources/goppi-trial-web/PROVENANCE.md`
+- `legacy/sources/goppi-trial-web/README.md`
+- `legacy/sources/goppi-trial-web/TRIAL.md`
+- `legacy/sources/goppi/design.md`
+- `legacy/sources/goppi/harness-eval-results/2026-07-26-review-precision.md`
+- `legacy/sources/goppi/references/model-roster.md`
+- `legacy/sources/goppi/standards.md`
+- `legacy/sources/goppi/what-is-a-harness.md`
+- `legacy/sources/README.md`
 
-## reference — 109개, 물어봤을 때만
+## reference — 96개, 물어봤을 때만
 
 전문은 `ROUTES.jsonl` 에서 `tier="reference"` 로 조회한다. 종류별 개수:
 
 - research-log: 51
 - census: 45
-- prior-art: 13

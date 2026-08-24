@@ -29,7 +29,7 @@ ISO/IEC/IEEE 12207:2017(현재 폐기된 역사적 판본)·25010·29148·OWASP�
 
 - [x] 변경 전 203-file manifest + SHA-256 생성
 - [x] 빈 `.err` 14개와 `.pyc` 7개를 recoverable archive로 이동
-- [x] gingoa-specific H2 33개와 `gingoa_applied` metadata를 `interpretation/legacy/`로 분리
+- [x] gingoa-specific H2 33개와 `gingoa_applied` metadata를 `legacy/judgments/`로 분리
 - [x] inherited `status: verified` 50개를 `review-needed`로 하향
 - [x] gingoa-specific guide/lifecycle/tier-ledger/schema/taxonomy를 active evidence surface에서 분리
 - [x] claim/evidence/freshness 중심 schema와 source registry 도입

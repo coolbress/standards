@@ -111,7 +111,7 @@
 
 ## G. 요약본 대조 검증 (2026-08-06, 같은 날 추가)
 
-**대상**: `interpretation/foundation/goppi-blueprint.html` (비개발자용 요약판)
+**대상**: `legacy/judgments/foundation/goppi-blueprint.html` (비개발자용 요약판)
 **방법**: fresh-context 대조 검증자 1인 — 요약본의 문장을 정본 3문서와 한 줄씩 대조.
 **판정: 부분 왜곡** — "메커니즘의 평이화는 대체로 정확하나 **상태 표기와 자물쇠의 경계**가 정본보다
 강하게 옮겨졌고, 정본이 '사용자에게 반드시 말하라'고 명시한 두 가지가 통째로 빠졌다."

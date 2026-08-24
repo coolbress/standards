@@ -1,6 +1,6 @@
 # 워크플로우 표준 독립 리뷰 — findings 레지스터 (2026-08-05)
 
-> **대상**: `interpretation/foundation/goppi-workflow-standard.md` (rev2) ·
+> **대상**: `legacy/judgments/foundation/goppi-workflow-standard.md` (rev2) ·
 > `steering-verification-design.md` (rev2) · `spec.md` · 워크플로우 시각화 아티팩트
 > **질문**: 이 워크플로우를 "현업 개발 프로세스의 기준점"이라 부르기에 부족한 점이 있는가?
 > **방법**: fresh-context 리뷰어 3인, 서로 다른 렌즈, **작성자의 결론 미제공**(Writer/Reviewer 분리).
@@ -140,7 +140,7 @@ skeleton 인수기준 6항, L3 지표 4종 어디에도 복구가 없다.** 결�
 > 형식으로 채우고 산출물에 알림별 평문 runbook + 복원 리허설 1회 실행 기록을 명시.
 
 ### WF-06 · HIGH · 단독 · **원문 확인됨** — 독립 리뷰가 prior-art 계승/기각 표를 우회했다
-출처: A3 · 오케스트레이터가 `imported/goppi/harness-eval-results/2026-07-26-review-precision.md` 원문 대조
+출처: A3 · 오케스트레이터가 `legacy/sources/goppi/harness-eval-results/2026-07-26-review-precision.md` 원문 대조
 
 그 통제시험의 사전 등록 기준과 결과가 원문에 그대로 있다:
 

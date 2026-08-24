@@ -88,12 +88,12 @@ pilot은 내용+상태+구조의 합산 효용이며 다른 모델/언어 일반
 | `.pyc` 7개 / 빈 cache dir 4개 | 원본 Python에서 재생성되는 실행 부산물, 근거 아님 | 파일·빈 dir 제거; 별도 archive 사본도 사용자 승인 후 삭제, snapshot에서만 복구 가능 |
 | 비어 있지 않은 exact duplicate | 발견되지 않음 | 없음 |
 | 동일한 300자 이상 H2 본문 | 변경 후 normalized-section 검사에서 0그룹 | 기계 검사를 validator에 고정 |
-| `three-tier-ledger.md` | goppi/gingoa 제품 결정 ledger이지 일반 근거가 아님 | `interpretation/legacy/`로 이동 |
+| `three-tier-ledger.md` | goppi/gingoa 제품 결정 ledger이지 일반 근거가 아님 | `legacy/judgments/`로 이동 |
 | 구 `GUIDE.ko.md` | gingoa 운영모델·완료 주장이 섞인 사용자 안내 | 원본을 legacy로 이동하고 중립 안내로 교체 |
 | 구 `lifecycle.md` | 일반 life cycle과 gingoa activation 결정이 혼합 | legacy로 이동하고 navigation crosswalk로 교체 |
 | 구 `_schema.md` | evidence/application 혼합을 허용하고 verified 의미가 약함 | legacy로 이동하고 claim 중심 schema로 교체 |
 | 구 `TAXONOMY.md` | 유용하지만 “LOCKED/definitive” 주장과 2017 ISO 앵커가 부정확 | legacy로 이동하고 provisional taxonomy로 교체 |
-| `Implications for gingoa` 등 33개 H2 | 일반 근거가 아니라 과거 제품 적용 판단 | verbatim으로 `interpretation/legacy/gingoa-specific-sections.md`에 추출 |
+| `Implications for gingoa` 등 33개 H2 | 일반 근거가 아니라 과거 제품 적용 판단 | verbatim으로 `legacy/judgments/gingoa-specific-sections.md`에 추출 |
 | `gingoa_applied` frontmatter | corpus와 과거 제품 적용을 결합 | active corpus에서 제거, extraction 기록에 보존 |
 | inherited `verified` 50개 | 현재 claim-level 정책을 통과한 기록이 없음 | `review-needed`로 하향 |
 

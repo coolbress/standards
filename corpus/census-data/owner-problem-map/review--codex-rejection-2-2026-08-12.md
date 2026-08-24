@@ -23,8 +23,8 @@
 판정 대상: 재구성된 문제 지도 및 PRD 추적성
 검수 근거:
 
-- FOUNDING-IDEA.md §1~§3.1:27 — *원본 삭제(2026-08-24). §3·§3.1은 [`problem-map.md`](problem-map.md)로 이관, 나머지는 [`imported/LINEAGE.md`](../../../imported/LINEAGE.md) 참조*
-- PRD.md §1~§4:24 — *원본 삭제(2026-08-24). [`imported/LINEAGE.md`](../../../imported/LINEAGE.md) 참조*
+- FOUNDING-IDEA.md §1~§3.1:27 — *원본 삭제(2026-08-24). §3·§3.1은 [`problem-map.md`](problem-map.md)로 이관, 나머지는 [`legacy/LINEAGE.md`](../../../legacy/LINEAGE.md) 참조*
+- PRD.md §1~§4:24 — *원본 삭제(2026-08-24). [`legacy/LINEAGE.md`](../../../legacy/LINEAGE.md) 참조*
 - 승인 초안 → [`revision--draft-v1-2026-08-12.md`](revision--draft-v1-2026-08-12.md):1
 - 이전 반려 전문 → [`review--codex-rejection-1-2026-08-12.md`](review--codex-rejection-1-2026-08-12.md):14
 

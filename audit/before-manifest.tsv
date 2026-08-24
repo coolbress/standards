@@ -1,9 +1,9 @@
 path	bytes	mtime_epoch	sha256	disposition	rationale
-.scratch/research/corpus/GUIDE.ko.md	8079	1785656828	a8e2a3f585b0b0b92851e8675389c3fe06f83a3a8200dfeb3caf87f95c15a307	merge	original preserved as interpretation/legacy/gingoa-guide.ko.md; neutral active guide replaces it
+.scratch/research/corpus/GUIDE.ko.md	8079	1785656828	a8e2a3f585b0b0b92851e8675389c3fe06f83a3a8200dfeb3caf87f95c15a307	merge	original preserved as legacy/judgments/gingoa-guide.ko.md; neutral active guide replaces it
 .scratch/research/corpus/INDEX.md	11521	1785657850	fe26d37d705e4cfe10e4cb4e294fda38c9b52549358f3964b627a3f7cebf6c67	keep	retained pending or after audit
 .scratch/research/corpus/PROVENANCE.md	3303	1785657903	99dd2a41e306d2ffb89d3eb7eaffd382d39f6b97ca22418dbb5052c2e3d25896	keep	retained pending or after audit
 .scratch/research/corpus/TAXONOMY.md	5943	1785656828	6b70156547701110dc8ebc4474ad64b6ce222d72cecf6a4382c0ef4f6e090aaf	refresh	ISO 12207:2017 anchor superseded by ISO 12207:2026
-.scratch/research/corpus/_schema.md	13178	1785656828	71df89af82d1aab9e1eb23fb04bb59f7be0bdffa2747b985b95c27e578a0e077	merge	original preserved as interpretation/legacy/gingoa-schema.md; claim-centered schema replaces it
+.scratch/research/corpus/_schema.md	13178	1785656828	71df89af82d1aab9e1eb23fb04bb59f7be0bdffa2747b985b95c27e578a0e077	merge	original preserved as legacy/judgments/gingoa-schema.md; claim-centered schema replaces it
 .scratch/research/corpus/aspects/01-requirements-planning/_aspect.md	22691	1785657833	c4bffc46ab184984f8cb250b02f86b95b1bf64c9936057f87070cf40a1d70941	refresh	inherited synthesis mixes evidence with goppi-specific inference
 .scratch/research/corpus/aspects/01-requirements-planning/brownfield-planning-adoption.md	6819	1785656828	c625a8c60261a54138ecf498075b0168c5fd7c32043a982b33f97a2b486bd5db	keep	retained pending or after audit
 .scratch/research/corpus/aspects/01-requirements-planning/constitution-authoring-standard.md	5863	1785656828	76d0d419cccee831e66a3520abb7e72bc7a1e048e9623bc70ca8a43299e16c15	keep	retained pending or after audit
@@ -200,5 +200,5 @@ path	bytes	mtime_epoch	sha256	disposition	rationale
 .scratch/research/corpus/census-data/provenance/provenance.py	5152	1785656828	3e3336e6f966e60240d7c73511b26a8fd7f22c41be6d6a1c499edd488b325317	keep	retained pending or after audit
 .scratch/research/corpus/census-data/provenance/snapshot-manifest.json	15976	1785656828	f9df9fbd2f0618e9f8543e81a63a2d936cd9ab1e945a497f87738ac05ef43754	keep	retained pending or after audit
 .scratch/research/corpus/facts-2026-08-matrix.md	13639	1785657856	b5a9fbfa6d6a21a0ef110d9513b1eb0b71cd18a3af0efcc4d3124a7fbda59d2f	keep	retained pending or after audit
-.scratch/research/corpus/lifecycle.md	5210	1785656828	70c15fe0a0266139c3193c7f4b735fd7ee34e5ece2811d8e3ba3e66b1d099a8f	merge	original preserved as interpretation/legacy/gingoa-lifecycle.md; neutral navigation crosswalk replaces it
-.scratch/research/corpus/three-tier-ledger.md	15526	1785656828	34942f00904b1979c0fcbc9e97d50841e847985b6923ec57f06b5da77e560a10	archive	project decision ledger moved to interpretation/legacy/three-tier-ledger.md; not active general evidence
+.scratch/research/corpus/lifecycle.md	5210	1785656828	70c15fe0a0266139c3193c7f4b735fd7ee34e5ece2811d8e3ba3e66b1d099a8f	merge	original preserved as legacy/judgments/gingoa-lifecycle.md; neutral navigation crosswalk replaces it
+.scratch/research/corpus/three-tier-ledger.md	15526	1785656828	34942f00904b1979c0fcbc9e97d50841e847985b6923ec57f06b5da77e560a10	archive	project decision ledger moved to legacy/judgments/three-tier-ledger.md; not active general evidence

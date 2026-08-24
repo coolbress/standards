@@ -1,6 +1,6 @@
 # 02 — 왜 네 번 실패했는가
 
-> 갱신 2026-08-24 · rev1 · 계보 서사는 [`imported/LINEAGE.md`](../imported/LINEAGE.md), 여기는 **진단**이다.
+> 갱신 2026-08-24 · rev1 · 계보 서사는 [`legacy/LINEAGE.md`](../legacy/LINEAGE.md), 여기는 **진단**이다.
 
 ## 사실부터
 

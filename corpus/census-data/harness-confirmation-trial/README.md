@@ -8,7 +8,7 @@
 | `preregistration-2026-08-19.md` | **사전등록** — 무엇을 재고 무엇이면 실패로 볼지를 시험 **전에** 고정 |
 | `vanilla-baseline-2026-08-06.md` | 하네스 **없는** 상태의 기준선 (대조군) |
 | `external-trial-2026-08-18.md` | 외부 시험 대본과 설치 검증 |
-| `trial-web-integration-2026-08-19.md` | G4 실물 확증 — 공격 4종 0/4 통과. 물증은 `imported/goppi-trial-web/` |
+| `trial-web-integration-2026-08-19.md` | G4 실물 확증 — 공격 4종 0/4 통과. 물증은 `legacy/sources/goppi-trial-web/` |
 | `false-positive-instrumentation-2026-08-19.md` | **오탐을 사후 판별할 수 있게** 만든 계측 배선 (분모는 있는데 분자를 만들 수 없던 구조를 고침) |
 | `session-2-log-2026-08-20.md` | **세션 2 원본 로그** — exec 217건. 아래 수치의 원자료 |
 
@@ -33,4 +33,4 @@
 - **오탐 판별이 불가능한 구조**를 발견하고 계측을 고친 뒤 다시 쟀다 (측정이지 수리가 아님을 명시)
 - 결과가 자기 도구에 불리했는데 **그대로 기록했다**
 
-결론이 무엇을 함의하는지는 `imported/LINEAGE.md` §6.
+결론이 무엇을 함의하는지는 `legacy/LINEAGE.md` §6.
