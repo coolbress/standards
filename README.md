@@ -16,7 +16,7 @@
 
 | 순서 | 문서 | 답하는 질문 |
 |---|---|---|
-| 01 | [`direction/01-what-i-want.md`](direction/01-what-i-want.md) | 무엇을 원하는가 |
+| 01 | [`direction/01-what-i-want.md`](direction/01-what-i-want.md) | 무엇을 원하는가 — **요구 6가지**, 문제 45개로 추적 |
 | 02 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) | 왜 네 번 실패했는가 |
 | 03 | [`direction/03-what-research-says.md`](direction/03-what-research-says.md) | 리서치는 무엇을 말하는가 |
 | 04 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | 그래서 무엇을 만드는가 |

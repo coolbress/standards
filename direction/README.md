@@ -7,7 +7,7 @@
 
 | # | 문서 | 답하는 질문 |
 |---|---|---|
-| 01 | [`01-what-i-want.md`](01-what-i-want.md) | **무엇을 원하는가** — 네 가지, 그리고 왜 순서가 있는가 |
+| 01 | [`01-what-i-want.md`](01-what-i-want.md) | **무엇을 원하는가** — 여섯 가지 · 문제 45개로 추적 · 승격 기록 |
 | 02 | [`02-why-past-attempts-failed.md`](02-why-past-attempts-failed.md) | **왜 네 번 실패했는가** — 진단 3건 + 실측 |
 | 03 | [`03-what-research-says.md`](03-what-research-says.md) | **리서치는 무엇을 말하는가** — 현업 실무의 근거 |
 | 04 | [`04-the-plan.md`](04-the-plan.md) | **그래서 무엇을 만드는가** — 만들 것 · 원칙 · 제외 |
