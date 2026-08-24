@@ -1,0 +1,39 @@
+name: External URL audit
+#
+# 828개 외부 URL의 생사 확인. 네트워크 스윕이라 ~7분 걸리므로 월 1회 + 수동 실행만.
+# 링크 부패는 근거 기반의 조용한 손실이라 자동으로 잡아야 한다.
+
+on:
+  schedule:
+    - cron: "0 3 1 * *"   # 매월 1일 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: URL 감사 실행
+        run: python3 tools/external_url_audit.py
+
+      - name: 죽은 링크 기준선 대비 확인
+        # 기준선 2건은 2026-08-24 감사에서 확인된 기존 부패다
+        # (ISO 25010 · tessl — audit/2026-08-24-host-and-github-delta.ko.md 참조).
+        # 이 수를 넘으면 새로 썩은 링크가 생긴 것이다.
+        run: |
+          DEAD=$(python3 -c "import json;print(sum(1 for l in open('audit/external-url-status.jsonl') if json.loads(l).get('status')=='dead'))")
+          echo "dead=$DEAD (기준선 2)"
+          if [ "$DEAD" -gt 2 ]; then echo "::error::새로 죽은 링크가 있다 (dead=$DEAD > 기준선 2)"; exit 1; fi
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: url-status-ledger
+          path: audit/external-url-status.jsonl

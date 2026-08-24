@@ -1,0 +1,10 @@
+Delivered. `main` is now at `a7eca71 feat: handle empty input in parser`, tests pass, and nothing was pushed.
+
+What I did, per the local-only ship flow (no remote → no PR/issue ceremony):
+
+- Verified the branch first: `./test.sh` printed `PASS`.
+- Folded the three WIP commits (`wip`, `fix stuff`, `more fixes and docs etc`) into one well-formed commit — Conventional Commits subject, a short *why* body, and the co-author trailer as the final block.
+- Fast-forward merged into `main` (`--ff-only`, so history is exactly that one commit on top of the initial one), then re-ran `./test.sh` on `main`: `PASS`, working tree clean.
+- Deleted the fully merged `feat/7-empty-input` branch.
+
+History is now linear: `chore: initial project` → `feat: handle empty input in parser`.

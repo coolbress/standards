@@ -1,0 +1,74 @@
+# RAW deterministic enumeration — doc/spec surfaces + arXiv backstop (captured 2026-06-27 via WebFetch on raw XML; see enumerate.sh)
+# These are the LIGHTER-PASS surfaces: the sub-docs already cover the doc trees page-by-page, so here we only hunt NET-NEW pages
+# relevant to the 5 components + use arXiv as the papers-axis backstop. All rendered as XML (no JS gate).
+
+## ============================================================
+## modelcontextprotocol.io/sitemap.xml  — FULLY RENDERED. Spec revisions + changelogs + SEPs.
+## The mcp sub-doc pins to rev 2025-11-25; the changelog + the SEPs below are the PROVENANCE of the rev-2025-11-25 deltas.
+## ============================================================
+# Spec revisions present: 2024-11-05, 2025-03-26, 2025-06-18, 2025-11-25 (current), draft. Each has /changelog.
+https://modelcontextprotocol.io/specification/2025-11-25                          # current spec (mcp sub-doc pins here ✓)
+https://modelcontextprotocol.io/specification/2025-11-25/changelog                # [enumerated Phase A — gap #5, FOLDED Phase B] the rev deltas provenance
+https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks    # tasks utility (new in 2025-11-25)
+https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation
+https://modelcontextprotocol.io/specification/2025-06-18/changelog https://modelcontextprotocol.io/specification/2025-03-26/changelog   # prior revs (back-compat; sub-doc correctly pins to current — not-relevant)
+# SEPs that are the PROVENANCE of cited rev-2025-11-25 rules (NET-NEW as discrete URLs, but their FACTS are already in the sub-doc via the changelog):
+https://modelcontextprotocol.io/seps/1303-input-validation-errors-as-tool-execution-errors   # backs the "input-validation→Tool-Execution-Errors" rule (mcp §1)
+https://modelcontextprotocol.io/seps/1613-establish-json-schema-2020-12-as-default-dialect-f  # backs "JSON-Schema-2020-12 default dialect" (mcp §1)
+https://modelcontextprotocol.io/seps/986-specify-format-for-tool-names                        # backs tool-name guidance
+https://modelcontextprotocol.io/seps/1686-tasks                                               # backs tasks
+https://modelcontextprotocol.io/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp        # MCP Apps (UI; peripheral to the 5)
+https://modelcontextprotocol.io/community/working-groups/skills-over-mcp                       # [WATCH] "skills-over-mcp" working group — convergence of skills+MCP (LOW; monitor, not yet a rule)
+# Doc tree (already covered by mcp sub-doc page-by-page): /docs/learn/*, /docs/develop/*, /docs/tools/*, /registry/*, /extensions/* — not net-new.
+
+## ============================================================
+## code.claude.com/docs/en/*  — FULLY RENDERED (en locale; de/es/fr/id/it/ja/ko/pt-BR/zh-CN/zh-TW are translations, skipped).
+## The sub-docs already cover this tree. NET-NEW build-relevant pages flagged below; the rest are already cited or covered.
+## ============================================================
+https://code.claude.com/docs/en/best-practices       # [enumerated Phase A — gap #2, FOLDED Phase B] CC build-practice page
+https://code.claude.com/docs/en/features-overview     # [enumerated Phase A — gap #3, FOLDED Phase B] "match features to your goal" matrix
+https://code.claude.com/docs/en/skills                # skills (skill sub-doc covers ✓)
+https://code.claude.com/docs/en/sub-agents            # subagents (hooks-commands-subagents ✓)
+https://code.claude.com/docs/en/hooks https://code.claude.com/docs/en/hooks-guide   # hooks (✓)
+https://code.claude.com/docs/en/slash-commands→commands https://code.claude.com/docs/en/commands   # slash commands (✓)
+https://code.claude.com/docs/en/plugins https://code.claude.com/docs/en/plugins-reference https://code.claude.com/docs/en/plugin-marketplaces   # plugins (✓)
+https://code.claude.com/docs/en/mcp https://code.claude.com/docs/en/mcp-quickstart   # mcp (✓)
+https://code.claude.com/docs/en/memory                # memory (plugins-marketplace-memory ✓)
+https://code.claude.com/docs/en/output-styles         # output styles (hooks-commands-subagents covers)
+# NET-NEW pages that appeared since Phase A's doc-walk (candidates — mostly host-runtime, not a portable-artifact RULE):
+https://code.claude.com/docs/en/agent-sdk/overview    # [NET-NEW] Agent SDK doc-tree (the BLOG post building-agents-with-the-claude-agent-sdk was the Phase-A gap #4, FOLDED; this is the doc twin) — LOW, covered
+https://code.claude.com/docs/en/agent-teams https://code.claude.com/docs/en/agent-view   # [NET-NEW] agent-teams / agent-view (multi-subagent UI; peripheral — host UX, not a scaffolded-component rule)
+https://code.claude.com/docs/en/routines https://code.claude.com/docs/en/scheduled-tasks   # [NET-NEW] routines / scheduled tasks (host orchestration; not one of the 5 components)
+https://code.claude.com/docs/en/goal                  # [NET-NEW] /goal evaluator (referenced via best-practices gap #2 — covered)
+https://code.claude.com/docs/en/plugin-relevance https://code.claude.com/docs/en/plugin-hints https://code.claude.com/docs/en/plugin-dependencies   # [NET-NEW] plugin relevance/hints/dependencies (plugins sub-doc — see coverage-report §8 verdict)
+https://code.claude.com/docs/en/discover-plugins https://code.claude.com/docs/en/claude-directory   # [NET-NEW] plugin discovery / directory (distribution; LOW)
+https://code.claude.com/docs/en/changelog https://code.claude.com/docs/en/whats-new   # CC changelog / what's-new weekly (2026-w13..w26) — release notes, not a build rule
+# (admin/setup/billing/IDE-integration/security-runtime pages = host-ops, not the 5 components — aggregated.)
+
+## ============================================================
+## platform.claude.com/docs/en/*  (= docs.claude.com, 301→platform) — FULLY RENDERED. API/tool-use/skills/mcp/memory doc tree.
+## Already covered by sub-docs. NET-NEW build-relevant flagged.
+## ============================================================
+https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices   # Agent Skills open-spec (skill sub-doc ✓)
+https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling   # [NET-NEW→covered] programmatic tool calling (folded via advanced-tool-use gap #9 Phase B)
+https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool             # [NET-NEW→covered] Tool Search Tool (folded via advanced-tool-use gap #9)
+https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool                   # memory tool (plugins-marketplace-memory ✓ via context-management)
+https://platform.claude.com/docs/en/build-with-claude/context-editing https://platform.claude.com/docs/en/build-with-claude/compaction   # context editing / compaction (plugins-memory ✓)
+https://platform.claude.com/docs/en/agents-and-tools/remote-mcp-servers https://platform.claude.com/docs/en/agents-and-tools/mcp-connector   # remote MCP / connector (mcp ✓)
+https://platform.claude.com/docs/en/agents-and-tools/mcp-tunnels/overview   # [NET-NEW] MCP tunnels (self-host remote MCP; LOW — distribution/ops, cross-vendor of OpenAI secure-mcp-tunnels)
+https://platform.claude.com/docs/en/build-with-claude/structured-outputs https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking https://platform.claude.com/docs/en/build-with-claude/effort   # [NET-NEW] structured-outputs / adaptive-thinking / effort (prompting deltas; prompts-evals §3 — captured from claude-prompting-best-practices ✓ per coverage-report §5)
+https://platform.claude.com/docs/en/managed-agents/overview   # [NET-NEW] Managed Agents doc tree (= /engineering/managed-agents; peripheral, host-side multi-agent — not a scaffolded-component rule)
+
+## ============================================================
+## arXiv backstop (papers axis) — NOISY: third-party academics that merely MENTION "Anthropic"/"OpenAI".
+## NONE are official Anthropic/OpenAI publications; NONE add a load-bearing build rule for the 5 components.
+## Query: all:Anthropic / all:OpenAI, 60 most-recent each, submittedDate desc, 2026-06.
+## ============================================================
+# Representative "agent-harness-shaped" hits (ALL third-party, NOT vendor publications, NOT cited, NOT relevant as a RULE source):
+#   2606.13643 Recursive Agent Harnesses · 2606.14445 tap: File-Based Protocol for Heterogeneous LLM Agent Collaboration ·
+#   2606.08529 Scaffold Effects on GAIA · 2606.16420 Transferable Self-Evolving Playbooks for Agentic Security Auditing ·
+#   2606.12797 The Containment Gap (audits LangChain/AutoGPT/OpenAI Agents SDK safety) · 2606.26959 The Shift to Agentic AI: Evidence from Codex ·
+#   2606.26979 How Much Static Structure Do Code Agents Need? · 2606.22721 Habituation at the Gate (review of agent-authored code) ·
+#   2606.18168 All Smoke No Alarm: Oracle Signals in Agent-Authored Test Code · 2606.13602 EpiBench (multi-model-harness eval).
+# VERDICT: arXiv surfaces no MISSED OFFICIAL paper. The one build-load-bearing official paper (statistical-approach-to-model-evals,
+# arXiv:2411.00640) is cited ✓. Third-party papers are external evidence/benchmarks, not component build standards → correctly excluded.

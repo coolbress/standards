@@ -1,0 +1,11 @@
+{
+  "n_repos": 250,
+  "n_repos_with_commit_data": 250,
+  "repos_using_squash_pct": 76,
+  "n_squash_commits_sampled": 4041,
+  "squash_cc_subject_pct": 48,
+  "squash_has_body_pct": 73,
+  "squash_has_closes_pct": 7,
+  "squash_has_coauthor_pct": 36,
+  "median_body_len_chars": 475
+}

@@ -1,0 +1,65 @@
+{
+  "census": "doc-conventions",
+  "mode": "B (count census — gh api search/code total_count; counts files not repos)",
+  "date": "2026-06-26",
+  "account": "coolbress",
+  "caveats": "GitHub estimates: default-branch only, auth-gated, total_count approximate/capped, indexes a subset. Directional, read relative to each other. GLOSSARY.md not collected (rate-limited).",
+  "feeds_aspects": ["01-requirements-planning", "04-build-ci-engineering"],
+  "naming_filename": {
+    "AGENTS.md": 129696,
+    "CLAUDE.md": 40200,
+    "constitution.md": 2080,
+    "PRD.md": 8644,
+    "product-requirements.md": 1104,
+    "requirements.md": 10760,
+    "spec.md": 41696,
+    "design.md": 36496,
+    "plan.md": 42552,
+    "tasks.md": 9808,
+    "vision.md": 2776,
+    "ROADMAP.md": 18440,
+    "GLOSSARY.md": null
+  },
+  "adr_location": {
+    "docs/adr (extension:md)": 2892,
+    "docs/adr filename:0001 (numbered)": 5088,
+    "doc/adr": 2616,
+    "docs/decisions": 2556
+  },
+  "planning_dir_conventions": {
+    "docs/design (extension:md)": 17840,
+    "docs/specs": 16008,
+    "docs/spec (extension:md)": 7632,
+    "docs/rfcs": 3208
+  },
+  "spec_tool_adoption_committed": {
+    "speckit_specify_memory_constitution": 2124,
+    "speckit_specify_memory_dir": 2676,
+    "speckit_specs_spec_md": 764,
+    "kiro_specs_requirements": 2092,
+    "kiro_steering": 4692,
+    "openspec_changes": 15912,
+    "openspec_specs": 7128,
+    "bmad_core": 1512
+  },
+  "spec_tool_gitignore_proxy_upper_bound": {
+    "note": "filename:.gitignore matching the marker string — an OVER-estimate (matches comments/negations/.gitignore.* variants); true excludes are rarer. commit:gitignore ratio is ~100:1 to 1000:1 in favor of committing.",
+    "speckit": 20,
+    "kiro": 27,
+    "openspec": 10,
+    "bmad": 1
+  },
+  "content_linting_tools": {
+    "_note": "added 2026-06-27 — de-facto tool adoption for content/prose linting in CI (grounds the de-jargon gate approach)",
+    "workflow_mentions": { "markdownlint": 8752, "vale": 6904 },
+    "configs": { ".markdownlint.json": 4540, ".markdownlint.yaml": 1864, ".markdownlintrc": 824, ".vale.ini": 1244, "cspell.json": 2692 },
+    "reading": "markdownlint = most-adopted (structural MD); Vale = de-facto for prose + forbidden-terms (reject.txt); cspell moderate. For a single-purpose jargon-block, a custom grep CI job is the documented minimal-viable."
+  },
+  "key_findings": [
+    "Constitution/steering layer in the wild = AGENTS.md (129696) + CLAUDE.md (40200), 60-80x constitution.md (2080).",
+    "Per-feature spec quartet dominates: spec/plan/design/tasks 36k-42k each.",
+    "PRD.md (8644) is the project-requirements filename winner, 8x product-requirements.md (1104).",
+    "ADR: numbered docs/adr (5088) strongest; docs/adr ~= doc/adr ~= docs/decisions (2.5-2.9k).",
+    "Spec-tool adopters COMMIT planning artifacts ~100:1 vs gitignore."
+  ]
+}

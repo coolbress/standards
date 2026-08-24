@@ -1,0 +1,185 @@
+{
+  "n": 429,
+  "young_count": 163,
+  "scorecard_coverage_pct": 59,
+  "ref": "2026-06-24",
+  "scorecard": {
+    "Branch-Protection": {
+      "n": 118,
+      "mean": 2.9,
+      "wmean": 3.1,
+      "pct_strong_uni": 13,
+      "pct_strong_wgt": 13
+    },
+    "Code-Review": {
+      "n": 252,
+      "mean": 5.3,
+      "wmean": 5.6,
+      "pct_strong_uni": 41,
+      "pct_strong_wgt": 41
+    },
+    "CI-Tests": {
+      "n": 31,
+      "mean": 9.8,
+      "wmean": 9.7,
+      "pct_strong_uni": 100,
+      "pct_strong_wgt": 100
+    },
+    "Pinned-Dependencies": {
+      "n": 232,
+      "mean": 3.1,
+      "wmean": 3.8,
+      "pct_strong_uni": 27,
+      "pct_strong_wgt": 37
+    },
+    "Token-Permissions": {
+      "n": 225,
+      "mean": 2.6,
+      "wmean": 2.0,
+      "pct_strong_uni": 26,
+      "pct_strong_wgt": 20
+    },
+    "Dangerous-Workflow": {
+      "n": 226,
+      "mean": 9.1,
+      "wmean": 8.9,
+      "pct_strong_uni": 91,
+      "pct_strong_wgt": 89
+    },
+    "Security-Policy": {
+      "n": 252,
+      "mean": 6.7,
+      "wmean": 6.4,
+      "pct_strong_uni": 67,
+      "pct_strong_wgt": 63
+    },
+    "SAST": {
+      "n": 247,
+      "mean": 3.4,
+      "wmean": 3.8,
+      "pct_strong_uni": 36,
+      "pct_strong_wgt": 42
+    },
+    "Dependency-Update-Tool": {
+      "n": 36,
+      "mean": 9.4,
+      "wmean": 9.9,
+      "pct_strong_uni": 94,
+      "pct_strong_wgt": 99
+    },
+    "Maintained": {
+      "n": 252,
+      "mean": 8.5,
+      "wmean": 8.5,
+      "pct_strong_uni": 84,
+      "pct_strong_wgt": 83
+    },
+    "Signed-Releases": {
+      "n": 103,
+      "mean": 1.2,
+      "wmean": 1.4,
+      "pct_strong_uni": 15,
+      "pct_strong_wgt": 17
+    },
+    "Vulnerabilities": {
+      "n": 36,
+      "mean": 4.8,
+      "wmean": 3.6,
+      "pct_strong_uni": 44,
+      "pct_strong_wgt": 34
+    },
+    "Binary-Artifacts": {
+      "n": 252,
+      "mean": 8.8,
+      "wmean": 8.3,
+      "pct_strong_uni": 88,
+      "pct_strong_wgt": 84
+    },
+    "License": {
+      "n": 252,
+      "mean": 9.7,
+      "wmean": 9.8,
+      "pct_strong_uni": 99,
+      "pct_strong_wgt": 100
+    },
+    "Fuzzing": {
+      "n": 252,
+      "mean": 2.3,
+      "wmean": 0.9,
+      "pct_strong_uni": 23,
+      "pct_strong_wgt": 9
+    }
+  },
+  "planning": {
+    "adr_dir": {
+      "uniform": 2,
+      "weighted": 4,
+      "young": 2
+    },
+    "rfc_dir": {
+      "uniform": 2,
+      "weighted": 2,
+      "young": 1
+    },
+    "design_doc": {
+      "uniform": 11,
+      "weighted": 16,
+      "young": 15
+    },
+    "any_planning_artifact": {
+      "uniform": 13,
+      "weighted": 19,
+      "young": 17
+    }
+  },
+  "by_archetype": {
+    "library": {
+      "n": 93,
+      "sc_overall_mean": 5.9,
+      "adr_pct": 0,
+      "anyplan_pct": 5
+    },
+    "monorepo": {
+      "n": 90,
+      "sc_overall_mean": 6.0,
+      "adr_pct": 6,
+      "anyplan_pct": 20
+    },
+    "cli": {
+      "n": 77,
+      "sc_overall_mean": 5.2,
+      "adr_pct": 1,
+      "anyplan_pct": 10
+    },
+    "backend-service": {
+      "n": 67,
+      "sc_overall_mean": 6.2,
+      "adr_pct": 0,
+      "anyplan_pct": 13
+    },
+    "other": {
+      "n": 35,
+      "sc_overall_mean": 5.3,
+      "adr_pct": 0,
+      "anyplan_pct": 14
+    },
+    "web-app": {
+      "n": 33,
+      "sc_overall_mean": 4.5,
+      "adr_pct": 0,
+      "anyplan_pct": 21
+    },
+    "data-ml": {
+      "n": 23,
+      "sc_overall_mean": 5.2,
+      "adr_pct": 4,
+      "anyplan_pct": 13
+    },
+    "mobile": {
+      "n": 11,
+      "sc_overall_mean": 4.5,
+      "adr_pct": 0,
+      "anyplan_pct": 0
+    }
+  }
+}

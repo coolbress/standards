@@ -1,0 +1,204 @@
+...scanned 10, software=6/8000, dropped=4, 1.3 rec/s
+...scanned 210, software=153/8000, dropped=57, 1.5 rec/s
+...scanned 410, software=312/8000, dropped=98, 1.6 rec/s
+...scanned 610, software=461/8000, dropped=149, 1.6 rec/s
+...scanned 810, software=615/8000, dropped=195, 1.6 rec/s
+...scanned 1010, software=757/8000, dropped=253, 1.6 rec/s
+...scanned 1210, software=900/8000, dropped=310, 1.6 rec/s
+...scanned 1410, software=1049/8000, dropped=361, 1.6 rec/s
+...scanned 1610, software=1203/8000, dropped=407, 1.7 rec/s
+...scanned 1810, software=1343/8000, dropped=467, 1.6 rec/s
+...scanned 2010, software=1480/8000, dropped=530, 1.6 rec/s
+...scanned 2210, software=1619/8000, dropped=591, 1.6 rec/s
+...scanned 2410, software=1764/8000, dropped=646, 1.5 rec/s
+...scanned 2610, software=1916/8000, dropped=694, 1.5 rec/s
+...scanned 2810, software=2053/8000, dropped=757, 1.5 rec/s
+...scanned 3010, software=2180/8000, dropped=830, 1.5 rec/s
+...scanned 3210, software=2299/8000, dropped=911, 1.5 rec/s
+...scanned 3410, software=2414/8000, dropped=996, 1.5 rec/s
+...scanned 3610, software=2526/8000, dropped=1084, 1.5 rec/s
+...scanned 3810, software=2640/8000, dropped=1170, 1.5 rec/s
+...scanned 4010, software=2744/8000, dropped=1266, 1.4 rec/s
+...scanned 4210, software=2830/8000, dropped=1380, 1.4 rec/s
+...scanned 4410, software=2939/8000, dropped=1471, 1.4 rec/s
+...scanned 4610, software=3036/8000, dropped=1574, 1.4 rec/s
+...scanned 4810, software=3135/8000, dropped=1675, 1.4 rec/s
+...scanned 5010, software=3232/8000, dropped=1778, 1.4 rec/s
+...scanned 5210, software=3341/8000, dropped=1869, 1.4 rec/s
+...scanned 5410, software=3442/8000, dropped=1968, 1.4 rec/s
+...scanned 5610, software=3542/8000, dropped=2068, 1.4 rec/s
+...scanned 5810, software=3653/8000, dropped=2157, 1.4 rec/s
+...scanned 6010, software=3734/8000, dropped=2276, 1.4 rec/s
+...scanned 6210, software=3820/8000, dropped=2390, 1.4 rec/s
+...scanned 6410, software=3918/8000, dropped=2492, 1.3 rec/s
+...scanned 6610, software=4000/8000, dropped=2610, 1.3 rec/s
+...scanned 6810, software=4097/8000, dropped=2713, 1.3 rec/s
+...scanned 7010, software=4203/8000, dropped=2807, 1.3 rec/s
+...scanned 7210, software=4316/8000, dropped=2894, 1.3 rec/s
+...scanned 7410, software=4427/8000, dropped=2983, 1.3 rec/s
+...scanned 7610, software=4536/8000, dropped=3074, 1.3 rec/s
+...scanned 7810, software=4662/8000, dropped=3148, 1.3 rec/s
+...scanned 8010, software=4791/8000, dropped=3219, 1.3 rec/s
+...scanned 8210, software=4898/8000, dropped=3312, 1.3 rec/s
+...scanned 8410, software=4993/8000, dropped=3417, 1.3 rec/s
+...scanned 8610, software=5084/8000, dropped=3526, 1.3 rec/s
+...scanned 8810, software=5174/8000, dropped=3636, 1.3 rec/s
+...scanned 9010, software=5272/8000, dropped=3738, 1.3 rec/s
+...scanned 9210, software=5351/8000, dropped=3859, 1.3 rec/s
+...scanned 9410, software=5425/8000, dropped=3985, 1.3 rec/s
+...scanned 9610, software=5499/8000, dropped=4111, 1.3 rec/s
+...scanned 9810, software=5593/8000, dropped=4217, 1.3 rec/s
+...scanned 10010, software=5672/8000, dropped=4338, 1.3 rec/s
+...scanned 10210, software=5762/8000, dropped=4448, 1.3 rec/s
+...scanned 10410, software=5831/8000, dropped=4579, 1.3 rec/s
+...scanned 10610, software=5907/8000, dropped=4703, 1.3 rec/s
+...scanned 10810, software=5969/8000, dropped=4841, 1.3 rec/s
+...scanned 11010, software=6051/8000, dropped=4959, 1.3 rec/s
+...scanned 11210, software=6106/8000, dropped=5104, 1.2 rec/s
+...scanned 11410, software=6171/8000, dropped=5239, 1.2 rec/s
+...scanned 11610, software=6224/8000, dropped=5386, 1.2 rec/s
+...scanned 11810, software=6253/8000, dropped=5557, 1.2 rec/s
+...scanned 12010, software=6274/8000, dropped=5736, 1.2 rec/s
+...scanned 12210, software=6299/8000, dropped=5911, 1.2 rec/s
+...scanned 12410, software=6322/8000, dropped=6088, 1.2 rec/s
+...scanned 12610, software=6349/8000, dropped=6261, 1.2 rec/s
+...scanned 12810, software=6393/8000, dropped=6417, 1.1 rec/s
+...scanned 13010, software=6441/8000, dropped=6569, 1.1 rec/s
+...scanned 13210, software=6481/8000, dropped=6729, 1.1 rec/s
+...scanned 13410, software=6516/8000, dropped=6894, 1.1 rec/s
+...scanned 13610, software=6563/8000, dropped=7047, 1.1 rec/s
+...scanned 13810, software=6573/8000, dropped=7237, 1.1 rec/s
+harvested 6582 software repos (scanned 14000, dropped 7418 non-software) -> docs/research/census-data/census-governance-floor/records.json
+
+wrote docs/research/census-data/census-governance-floor/stats.json (n=6582)
+{
+  "n": 6582,
+  "star_range": [
+    29,
+    451107
+  ],
+  "ecosystem_distribution": {
+    "java": 1247,
+    "node": 907,
+    "rust": 474,
+    "elixir": 469,
+    "php": 447,
+    "go": 445,
+    "ruby": 437,
+    "scala": 423,
+    "dart": 405,
+    "swift": 384,
+    "python": 347,
+    "cpp": 171,
+    "clojure": 135,
+    "ocaml": 69,
+    "shell": 63,
+    "zig": 33,
+    "dotnet": 28,
+    "perl": 27,
+    "lua": 23,
+    "crystal": 22,
+    "haskell": 15,
+    "nim": 8,
+    "julia": 3
+  },
+  "archetype_pct": {
+    "monorepo": 8,
+    "cli": 5,
+    "library": 13,
+    "app_service": 88
+  },
+  "overall_presence_pct": {
+    "license": 94,
+    "contributing": 48,
+    "security": 21,
+    "codeowners": 12,
+    "coc": 32,
+    "changelog": 41,
+    "support": 2,
+    "governance": 1,
+    "cla": 1,
+    "editorconfig": 21,
+    "gitattributes": 29,
+    "env_example": 4,
+    "precommit": 5,
+    "dependabot": 25,
+    "renovate": 6,
+    "dep_update_bot": 30,
+    "agents_md": 13,
+    "claude_md": 11,
+    "adr_dir": 1,
+    "has_issue_tmpl": 48,
+    "issue_forms": 20,
+    "issue_config": 22,
+    "pr_template": 29,
+    "funding": 29,
+    "discussions": 39,
+    "readme": 100,
+    "gitignore": 99,
+    "has_lockfile": 38,
+    "has_ci": 85
+  },
+  "licensing": {
+    "present_pct": 94,
+    "recognized_pct": 82,
+    "recognized_given_present_pct": 87,
+    "top_spdx": [
+      [
+        "MIT",
+        2604
+      ],
+      [
+        "Apache-2.0",
+        1690
+      ],
+      [
+        "NOASSERTION",
+        778
+      ],
+      [
+        "GPL-3.0",
+        387
+      ],
+      [
+        "AGPL-3.0",
+        204
+      ],
+      [
+        "BSD-3-Clause",
+        175
+      ],
+      [
+        "MPL-2.0",
+        61
+      ],
+      [
+        "GPL-2.0",
+        49
+      ],
+      [
+        "EPL-1.0",
+        44
+      ],
+      [
+        "BSD-2-Clause",
+        43
+      ],
+      [
+        "LGPL-3.0",
+        28
+      ],
+      [
+        "Unlicense",
+        20
+      ]
+    ]
+  },
+  "coc_covenant_share_of_all_pct": 18,
+  "merge_policy": {
+    "n_resolved": 6582,
+    "squash_allowed_pct": 97,
+    "merge_commit_allowed_pct": 74,
+    "rebase_allowed_pct": 81
+  }
+}

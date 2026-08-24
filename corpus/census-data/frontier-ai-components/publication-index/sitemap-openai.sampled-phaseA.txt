@@ -1,0 +1,105 @@
+# RAW deterministic enumeration — openai.com/sitemap.xml + developers.openai.com (captured 2026-06-27 via WebFetch on the raw XML; curl sandbox-blocked, see enumerate.sh)
+# Source: https://openai.com/sitemap.xml  (a SITEMAP-INDEX → 34 nested children; the build-relevant children fetched below)
+#         https://developers.openai.com/sitemap-index.xml → /sitemap-0.xml  (the dev-docs + cookbook surface)
+#
+# IMPORTANT FIDELITY CAVEAT (honest): openai.com's per-child sitemaps are large, and the WebFetch markdown conversion of those
+# children returned only a SAMPLED subset of <loc> URLs per child (~10-18 each), NOT the exhaustive list — unlike anthropic.com's
+# flat sitemap and developers.openai.com's /sitemap-0.xml, both of which rendered completely. So the openai.com/index/* capture below
+# is a UNION of what the research/engineering/publication/release/api children surfaced, which is sufficient to RECONCILE against
+# Phase A's targeted-search enumeration but is NOT a proven-exhaustive list of every /index/ URL. (Re-run enumerate.sh with curl+xmllint
+# for the exhaustive list.) The papers-axis completeness proof rests on the ANTHROPIC research sitemap (fully rendered) + arXiv, not this one.
+# OpenAI's relevance bar = "changes a build rule or adds a cross-vendor divergence" (Claude Code is the primary host; Codex is host 2).
+
+## ============================================================
+## openai.com sitemap-index CHILDREN (34) — for reproducibility
+## ============================================================
+# page/ ai-adoption/ api/ applied-ai/ apps-collaboration/ apps-data/ apps-design/ apps-developer-tools/ apps-file-sharing/
+# apps-finance/ apps-go-to-market/ apps-project-management/ brand-stories-api/ brand-stories-chatgpt/ brand-stories-sora/
+# chatgpt/ company/ conclusion/ engineering/ global-affairs/ global-affairs-news-listed/ learn-guides/ learn-openai-on-openai/
+# milestone/ openai-academy/ product/ publication/ release/ research/ safety/ security/ sora/ startup/ webinar/
+# (each is https://openai.com/sitemap.xml/<child>/)
+
+## ============================================================
+## BUCKET: openai.com/index/*  (news + research + publications + releases — the /index/ surface; UNION of children, see fidelity caveat)
+## Build-relevant (agent/tool/eval/prompt/codex/model-prompting): the /index/ items below tagged [REL]; rest are model-release/safety/customer-story.
+## ============================================================
+https://openai.com/index/new-tools-for-building-agents/        # [REL] Responses API + Agents SDK + built-in tools launch (Phase A enumerated)
+https://openai.com/index/computer-using-agent/                  # [REL-peripheral] CUA / Operator (computer-use; not one of the 5 components)
+https://openai.com/index/thinking-with-images/                  # model capability (not build-relevant)
+https://openai.com/index/gpt-5-1/                               # [REL-peripheral] GPT-5.1 model release (prompting deltas live in the cookbook guide, captured dev-docs side)
+https://openai.com/index/introducing-gpt-5-5/                   # model release (not build-relevant)
+https://openai.com/index/introducing-gpt-5-3-codex/             # [REL-peripheral] Codex model variant (convergence surface; Codex docs already cited)
+https://openai.com/index/introducing-gpt-5-3-codex-spark/       # Codex model variant (not build-relevant)
+https://openai.com/index/previewing-gpt-5-6-sol/               # model release (not build-relevant)
+https://openai.com/index/sharing-the-latest-model-spec/         # model spec (governance, not a component build rule)
+https://openai.com/index/our-approach-to-the-model-spec/        # model spec (not build-relevant)
+https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/   # model release (not build-relevant)
+https://openai.com/index/introducing-4o-image-generation/       # image model (not build-relevant)
+https://openai.com/index/chatgpt-memory-dreaming/               # [REL-peripheral] product memory feature (ChatGPT-side, not the API/Codex memory rule)
+https://openai.com/index/whisper/ https://openai.com/index/gym-retro/         # legacy research releases (not build-relevant)
+https://openai.com/index/deployment-simulation/ https://openai.com/index/introducing-life-sci-bench/ https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind/   # research/bench (not build-relevant)
+https://openai.com/index/evaluating-chain-of-thought-monitorability/ https://openai.com/index/how-confessions-can-keep-language-models-honest/   # alignment/interpretability research (not build-relevant)
+https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/ https://openai.com/index/accelerating-biological-research-in-the-wet-lab/ https://openai.com/index/gpt-5-safe-completions/   # science/safety research (not build-relevant)
+https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/  # alignment research (not build-relevant)
+https://openai.com/index/democratic-inputs-to-ai/ https://openai.com/index/sora-system-card/ https://openai.com/index/extracting-concepts-from-gpt-4/ https://openai.com/index/economic-impacts-research/   # research/system-card (not build-relevant)
+# --- ENGINEERING child (openai.com/index/* tagged engineering): Codex-harness eng posts ---
+https://openai.com/index/unrolling-the-codex-agent-loop/        # [REL] Codex agent-loop internals (convergence; corroborates the gather→act→verify loop)
+https://openai.com/index/unlocking-the-codex-harness/           # [REL] Codex harness design (convergence; corroborates harness rules)
+https://openai.com/index/open-source-codex-orchestration-symphony/  # [REL-peripheral] Codex orchestration (multi-agent convergence)
+https://openai.com/index/harness-engineering/                   # [REL-peripheral] OpenAI harness-engineering post (convergence)
+https://openai.com/index/building-self-improving-tax-agents-with-codex/  # [REL-peripheral] agent-improvement-loop case study (convergence)
+https://openai.com/index/inside-our-in-house-data-agent/ https://openai.com/index/speeding-up-agentic-workflows-with-websockets/ https://openai.com/index/equip-responses-api-computer-environment/ https://openai.com/index/building-chatgpt-atlas/ https://openai.com/index/delivering-low-latency-voice-ai-at-scale/   # eng case studies (not build-relevant to the 5)
+# --- customer-story / business children (api/ etc.) — NOT build-relevant (aggregated) ---
+# https://openai.com/index/{rakuten-2024,wayfair-fiona-tan,openai-support-model,openai-research-assistant,openai-inbound-sales-assistant,openai-gtm-assistant,openai-contract-data-agent,building-openai-with-openai,model-ml-chaz-englander,cred-swamy-seetharaman,speak-connor-zwick,higgsfield,john-deere-justin-rose,lseg,morgan-stanley}/
+
+## ============================================================
+## BUCKET: developers.openai.com/api/docs/*  (dev-docs + guides — /sitemap-0.xml rendered FULLY)
+## Build-relevant net-new vs Phase A tagged [NET-NEW?]; most already cited or already enumerated in openai.md.
+## ============================================================
+https://developers.openai.com/api/docs/changelog/                              # [NET-NEW candidate] API changelog (provenance for model/tool deltas)
+https://developers.openai.com/api/docs/mcp/                                     # MCP on OpenAI platform (mcp; convergence — apps-sdk already cited)
+https://developers.openai.com/api/docs/guides/tools-connectors-mcp/             # MCP connectors (mcp; convergence)
+https://developers.openai.com/api/docs/guides/secure-mcp-tunnels/               # [NET-NEW candidate] secure MCP tunnels (mcp; cross-vendor of platform.claude mcp-tunnels)
+https://developers.openai.com/api/docs/guides/realtime-mcp/                      # realtime MCP (not build-relevant to the 5)
+https://developers.openai.com/api/docs/guides/agents/                            # agents guide hub (hooks-commands-subagents; convergence)
+https://developers.openai.com/api/docs/guides/agents/define-agents/
+https://developers.openai.com/api/docs/guides/agents/guardrails-approvals/       # guardrails (corroborates hook-as-guardrail; openai.github.io guardrails already enumerated)
+https://developers.openai.com/api/docs/guides/agents/integrations-observability/
+https://developers.openai.com/api/docs/guides/agents/models/
+https://developers.openai.com/api/docs/guides/agents/orchestration/              # orchestration (corroborates orchestrator-workers)
+https://developers.openai.com/api/docs/guides/agents/quickstart/
+https://developers.openai.com/api/docs/guides/agents/results/
+https://developers.openai.com/api/docs/guides/agents/running-agents/             # running_agents already enumerated in openai.md
+https://developers.openai.com/api/docs/guides/agents/sandboxes/
+https://developers.openai.com/api/docs/guides/agent-builder/                     # [NET-NEW] visual agent-builder (no-code; peripheral — not a portable-artifact rule)
+https://developers.openai.com/api/docs/guides/agent-builder-safety/
+https://developers.openai.com/api/docs/guides/agent-builder/migrate-from-agent-builder/
+https://developers.openai.com/api/docs/guides/agent-evals/                       # agent-evals (prompts-evals; ALREADY CITED ✓)
+https://developers.openai.com/api/docs/guides/voice-agents/                      # voice (not build-relevant)
+https://developers.openai.com/api/docs/guides/evals/                             # evals (prompts-evals; ALREADY CITED ✓)
+https://developers.openai.com/api/docs/guides/evaluation-best-practices/         # [NET-NEW candidate] eval best-practices (prompts-evals §6/§7 corroboration)
+https://developers.openai.com/api/docs/guides/evaluation-getting-started/        # [NET-NEW candidate] eval getting-started
+https://developers.openai.com/api/docs/guides/graders/                           # graders (prompts-evals; ALREADY CITED ✓)
+https://developers.openai.com/api/docs/guides/trace-grading/                     # trace-grading (prompts-evals; agent-evals already cited covers this)
+https://developers.openai.com/api/docs/guides/prompt-engineering/                # ALREADY CITED ✓
+https://developers.openai.com/api/docs/guides/prompt-caching/                    # already enumerated in openai.md (✗ corroborating)
+https://developers.openai.com/api/docs/guides/prompt-generation/                 # [NET-NEW candidate] prompt-generation (authoring tooling; twin of Anthropic generator)
+https://developers.openai.com/api/docs/guides/prompt-guidance/                   # ALREADY CITED ✓
+https://developers.openai.com/api/docs/guides/prompt-optimizer/                  # prompt-optimizer (= cookbook Optimize Prompts; already enumerated openai.md ✗)
+https://developers.openai.com/api/docs/guides/prompting/                          # prompting hub (ALREADY CITED ✓ via prompt-guidance)
+https://developers.openai.com/api/docs/guides/prompting/migrate-from-prompt-object/   # ALREADY CITED ✓
+https://developers.openai.com/api/docs/guides/frontend-prompt/                   # frontend prompt (not build-relevant)
+https://developers.openai.com/api/docs/guides/latest-model/                       # model pointer (not build-relevant)
+https://developers.openai.com/api/docs/guides/upgrading-to-gpt-5p4/              # model upgrade (not build-relevant)
+https://developers.openai.com/api/docs/guides/upgrading-to-gpt-5p5/              # model upgrade (not build-relevant)
+https://developers.openai.com/api/docs/models/ https://developers.openai.com/api/docs/models/all/ https://developers.openai.com/api/docs/models/compare/   # model refs (not build-relevant)
+
+## ============================================================
+## BUCKET: openai.com/index/business-guides + cdn PDFs  (already in openai.md)
+## ============================================================
+https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf   # already enumerated openai.md (folded as #8)
+
+## ============================================================
+## BUCKET: pricing / forms / policies / business / stories  (NON-RESEARCH — aggregated, not build-relevant)
+## /business/*, /api/pricing/, /form/*, /policies/*, /signals/*, /stories/*, /codex/ (product landing) — not enumerated individually.
+## ============================================================

@@ -1,0 +1,54 @@
+{
+  "n": 2000,
+  "source": "top-2000-by-stars software repos (reused from census-issue-pr); PRESENCE vs ADEQUACY (content-parsed)",
+  "files": {
+    "contributing": {
+      "present_pct": 62,
+      "adequate_pct": 41,
+      "adequate_given_present_pct": 67,
+      "adequacy_gap_pp": 21,
+      "present_n": 1230,
+      "adequate_n": 824
+    },
+    "security": {
+      "present_pct": 34,
+      "adequate_pct": 31,
+      "adequate_given_present_pct": 92,
+      "adequacy_gap_pp": 3,
+      "present_n": 681,
+      "adequate_n": 626
+    },
+    "coc": {
+      "present_pct": 33,
+      "adequate_pct": 27,
+      "adequate_given_present_pct": 83,
+      "adequacy_gap_pp": 6,
+      "present_n": 654,
+      "adequate_n": 540
+    },
+    "codeowners": {
+      "present_pct": 18,
+      "adequate_pct": 18,
+      "adequate_given_present_pct": 98,
+      "adequacy_gap_pp": 0,
+      "present_n": 366,
+      "adequate_n": 358
+    },
+    "license": {
+      "present_pct": 91,
+      "adequate_pct": 78,
+      "adequate_given_present_pct": 86,
+      "adequacy_gap_pp": 13,
+      "present_n": 1816,
+      "adequate_n": 1562
+    }
+  },
+  "signals": {
+    "contributing_has_devflow_pct": 44,
+    "contributing_has_prflow_pct": 53,
+    "security_has_channel_pct": 33,
+    "coc_covenant_pct": 25,
+    "codeowners_median_rules": 3,
+    "license_recognized_pct": 78
+  }
+}

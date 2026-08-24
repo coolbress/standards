@@ -1,0 +1,141 @@
+{
+  "n_form_repos": 629,
+  "source": "repos with >=1 YAML issue form from records-2k.json; ISSUE_TEMPLATE dir re-harvested via GraphQL (taskform.py)",
+  "repos_shipping_ge1_task_class_form_pct": 4.1,
+  "repos_shipping_ge1_task_class_form_n": 26,
+  "repos_shipping_any_extra_beyond_bug_feature_pct": 38.3,
+  "repo_pct_by_category": {
+    "bug": 94.4,
+    "feature": 72.2,
+    "task": 4.1,
+    "docs": 14.6,
+    "question": 9.4,
+    "security": 0.5,
+    "perf": 1.7,
+    "other": 21.1
+  },
+  "repo_n_by_category": {
+    "bug": 594,
+    "feature": 454,
+    "task": 26,
+    "docs": 92,
+    "question": 59,
+    "security": 3,
+    "perf": 11,
+    "other": 133
+  },
+  "extra_forms_by_category (form-level, excl bug/feature)": {
+    "other": 225,
+    "docs": 92,
+    "question": 65,
+    "task": 26,
+    "perf": 12,
+    "security": 3
+  },
+  "form_count_distribution": {
+    "0": 3,
+    "1": 129,
+    "2": 268,
+    "3": 112,
+    "4": 59,
+    "5": 25,
+    "6": 16,
+    "7": 5,
+    "8": 6,
+    "9": 1,
+    "10": 2,
+    "13": 1,
+    "14": 1,
+    "15": 1
+  },
+  "top_task_class_form_names": [
+    [
+      "Task",
+      3
+    ],
+    [
+      "\ud83d\udcce Task",
+      2
+    ],
+    [
+      "\ud83d\ude80 Task",
+      2
+    ],
+    [
+      "Refactor (Maintainers)",
+      1
+    ],
+    [
+      "Subtask",
+      1
+    ],
+    [
+      "Chore / Maintenance",
+      1
+    ],
+    [
+      "Task and Meta",
+      1
+    ],
+    [
+      "Repository maintenance",
+      1
+    ],
+    [
+      "\ud83e\uddf9 Maintenance Task",
+      1
+    ],
+    [
+      "Experimental Option Tracking",
+      1
+    ],
+    [
+      "Agent task",
+      1
+    ],
+    [
+      "Task Issue",
+      1
+    ],
+    [
+      "Contributor-Ready Task",
+      1
+    ],
+    [
+      "Refactor",
+      1
+    ],
+    [
+      "\ud83d\udee0 Refactor",
+      1
+    ],
+    [
+      "Maintenance",
+      1
+    ],
+    [
+      "\ud83c\udfe1 Housekeeping",
+      1
+    ],
+    [
+      "Work Item",
+      1
+    ],
+    [
+      "Housekeeping",
+      1
+    ],
+    [
+      "Tracking Issue",
+      1
+    ],
+    [
+      "\ud83d\udcdd Tracking Issue",
+      1
+    ],
+    [
+      "Chore",
+      1
+    ]
+  ]
+}

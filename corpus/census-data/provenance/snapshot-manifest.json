@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "snapshot_created_at": "2026-07-11T09:10:40.405325+00:00",
+  "hash_algorithm": "sha256",
+  "root": "docs/research/census-data",
+  "scope": "normalized records, derived statistics, and executable census/analysis code",
+  "limitations": [
+    "Legacy collection timestamps and API versions were not recorded and are not inferred.",
+    "Records are normalized per-repository evidence, not full GitHub API response archives.",
+    "The research tree is intentionally gitignored; integrity is checked by this snapshot, not enforced by Git history."
+  ],
+  "artifacts": [
+    {
+      "path": "census-commit-body/census.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 3718,
+      "sha256": "ac4212fa5a5f680177601cb17f297b933fbfd394a2eda739fa50c37baae7759c",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-commit-body/records.json",
+      "role": "normalized-records",
+      "bytes": 426883,
+      "sha256": "be7a99c3686184658c9203f7926083db6934945cf91b7521f60bbef7bc80a9ff",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-commit-body/stats.json",
+      "role": "derived-statistics",
+      "bytes": 278,
+      "sha256": "35e94371a44a13ead4dbdbe08f7f8e97879e9caa03213db5bf19378971e31186",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-dev-environment/records.json",
+      "role": "normalized-records",
+      "bytes": 509969,
+      "sha256": "0b48b11406be7e11435d0939ee73ea2c5103a5ce4b5bca0110955a50d55bc4dd",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-dev-environment/render-dev-env.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 6436,
+      "sha256": "fdb78b530b24a936a8a85568fcbe219e9cace9d7f15114fe3eb59264668db904",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-dev-environment/render-weighted.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 4137,
+      "sha256": "c1255ea447abd99e1f04e5f11dd044f622ef65307ea00d6559bd9b9de30ec328",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-dev-environment/stats.json",
+      "role": "derived-statistics",
+      "bytes": 16584,
+      "sha256": "b3c7419025be4ad44127af5aa4b6c8ff7a52c50d130383707ae164b3f4e81407",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-doc-conventions/census.sh",
+      "role": "collector-or-analysis-code",
+      "bytes": 2107,
+      "sha256": "3bac05d6d660ce84759d131ab7d60392ce522d1f6fe9c3c713dc1631448d2d59",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-doc-conventions/spec-revalidation-census.sh",
+      "role": "collector-or-analysis-code",
+      "bytes": 2043,
+      "sha256": "71225cb44bb0afec89628e493e938deba25a45a86dd5ff9a01ec67ce9413a0ab",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-doc-conventions/stats.json",
+      "role": "derived-statistics",
+      "bytes": 2871,
+      "sha256": "9982d1bba0aecc428f6c7b519021b70b640c1577ba85585b87a2fa49fbb9980f",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-expanded/census-unified.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 11586,
+      "sha256": "01c4f54a73b47078b1188906f851807bc326a0da96a37fb01d3635cdd247c88f",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-expanded/records.json",
+      "role": "normalized-records",
+      "bytes": 1033743,
+      "sha256": "3534ff6582e0089394fbc5e3eda392f0165acd8b54fcd1f61af1eb0c547e02f5",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-expanded/stats.json",
+      "role": "derived-statistics",
+      "bytes": 4298,
+      "sha256": "f1625838f5f3b3a43afee7f0acbf5c9c5a40a086d116a1a7655a9f108c3d7de7",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-gov-adequacy/census-gov-adequacy.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 8903,
+      "sha256": "a4b3fdc9c67ae17a4579078af0384fc2583821c74d7acc21924a1967912e12e0",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-gov-adequacy/records.json",
+      "role": "normalized-records",
+      "bytes": 759906,
+      "sha256": "4661953612f03058fbb819cce8d51edcaac9f2feb53c5c177da675b8d82433dc",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-gov-adequacy/stats.json",
+      "role": "derived-statistics",
+      "bytes": 1344,
+      "sha256": "04ab4ac00e407b33a7b8ec29cd0ae9ae50e064f9708518842864ca1038ba829f",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-governance/census-governance.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 9144,
+      "sha256": "c006eab3def233774fe7f54ef4feb52f2076dcb88a9793760fbcba27b1b3e8c1",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-governance/records.json",
+      "role": "normalized-records",
+      "bytes": 289398,
+      "sha256": "ff5abc6c43b5a693038685efbe0e6735bbf6707744b5c72860b913de830723a4",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-governance/stats.json",
+      "role": "derived-statistics",
+      "bytes": 3516,
+      "sha256": "bbed0b3bdac0a4aaa6059c59be3589a23a4b88bbfb54fcb5cbafa2d2459e37dc",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-governance-floor/census.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 24802,
+      "sha256": "93d158931de63f161515d3d67af832cbc130a2189f51dfedebdc1a670a037255",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-governance-floor/records.json",
+      "role": "normalized-records",
+      "bytes": 6530298,
+      "sha256": "e11e31f77f418d9f17ef297991fd59bf300cd8d8b3fd3b5342ccea1cfd67c48b",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-governance-floor/stats.json",
+      "role": "derived-statistics",
+      "bytes": 12498,
+      "sha256": "0db2732c4e8dc23f37efbbe8ed1c878fd7026beb06b4893ad86face05bb985d8",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/census.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 6742,
+      "sha256": "fc1d20eba88d4e9a907edef777d3bc1f899f1dcad4e1acea6efd522e49924f39",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/census2k.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 15440,
+      "sha256": "ff63f4fce304dd85affa814b7312294fae8187e9113b3a2945053fb47bc367ad",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/conventions-6k-records.json",
+      "role": "normalized-records",
+      "bytes": 4112999,
+      "sha256": "a32df5580ee52c5e1b149665324819aa6b58d11f984c58f5f2e3aab0d44235a8",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-issue-pr/conventions-6k-stats.json",
+      "role": "derived-statistics",
+      "bytes": 1724,
+      "sha256": "902f9340d8710ded4bcf98f9125948890de5a7328f4913936971b472964e6c3c",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/conventions-records.json",
+      "role": "normalized-records",
+      "bytes": 2003694,
+      "sha256": "94ad52236b6b33bb8abb652a86382930ee17e206774e6d535c89ee2499216bca",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-issue-pr/conventions-roster-records.json",
+      "role": "normalized-records",
+      "bytes": 2333891,
+      "sha256": "53565a974a4b16d5f1a1eda925c8540faa307e958288b93aa73a2cc8f18bf977",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-issue-pr/conventions-roster.json",
+      "role": "derived-statistics",
+      "bytes": 8619,
+      "sha256": "39689a7a588345c3134742cda50b8fcd33a4e8a4abff83c596943822481b7906",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/conventions-stats.json",
+      "role": "derived-statistics",
+      "bytes": 1719,
+      "sha256": "03b9fda0c7d48307e034c56dfdeb385f362366d5d4e7ded0f583c7e88a211371",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/conventions.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 26768,
+      "sha256": "1d5b96a92f95c4cfddfeffb54a23bdd4ded76c34c3508f6f40a99d8dd38d8bff",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/records-2k.json",
+      "role": "normalized-records",
+      "bytes": 1100562,
+      "sha256": "e89d713d03662977b54d1294040e0cbb8fa5a5ea4d1b5be789158e2e0fb23abb",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-issue-pr/records.json",
+      "role": "normalized-records",
+      "bytes": 273346,
+      "sha256": "6e0019bf6b6152d92014b9e8011ffcfab9b6600b997a1c5ca1c0ce24e785af44",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-issue-pr/robustness-report.md",
+      "role": "derived-report",
+      "bytes": 2447,
+      "sha256": "d2398e54a314542aa9f7157195d496dee34828fe58e3771b0a06713d2d078c74",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/robustness.json",
+      "role": "derived-statistics",
+      "bytes": 16301,
+      "sha256": "6379ded703f5fc310cba799a6dabe052322cbab690f58b9b77d8febcc0b25532",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/robustness.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 10596,
+      "sha256": "ab3798509444a8f7aff7af95aaac254d2d02ab0bf41496674baf9f717cea1409",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/stats-2k.json",
+      "role": "derived-statistics",
+      "bytes": 4184,
+      "sha256": "54598f9760c732c3a74302ac1599519f45ce93150c0de057b9bc2d2c28d1f366",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/stats.json",
+      "role": "derived-statistics",
+      "bytes": 3128,
+      "sha256": "c875c32c2665d7268e2b63d72acbfd5549a92010262b2d0be0954a76705cdce9",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/taskform-records.json",
+      "role": "normalized-records",
+      "bytes": 235710,
+      "sha256": "288a34020f1b62249f6148c67c74b7aeee1009c0580dc528d93055e27462c534",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-issue-pr/taskform-stats.json",
+      "role": "derived-statistics",
+      "bytes": 2117,
+      "sha256": "19104d109054bf9688e13956af99cfd117b3e20a15bf5f271e51e3f26b21b574",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-issue-pr/taskform.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 8306,
+      "sha256": "8dd4bc060b26cad1b936ad1d5a132a05143d1e6462b03dfe53a217e04266bd65",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-release-ops/census-release-ops.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 10488,
+      "sha256": "17b2d2a4c62cfbb072e567529e63e2bd4f76a0359a6be718f9761afbc970a8e4",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "census-release-ops/records.json",
+      "role": "normalized-records",
+      "bytes": 222070,
+      "sha256": "dab3d21f050083b2fc3585b4e4d9d77c6b6be126101d5b9bebeaabaddb4be223",
+      "collected_at": null,
+      "collection_time_status": "unknown-legacy-not-recorded"
+    },
+    {
+      "path": "census-release-ops/stats.json",
+      "role": "derived-statistics",
+      "bytes": 3602,
+      "sha256": "c0b2485771ace58b22b206a46632e237e2e4340d493af414a015d4ff2d11a322",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "frontier-ai-components/publication-index/enumerate.sh",
+      "role": "collector-or-analysis-code",
+      "bytes": 3668,
+      "sha256": "e1b7f1e96e808363e9b728ba95bfc1b2f3aa37d20d40e500fd3784b4e9b01017",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "harness-census/aggregate.sh",
+      "role": "collector-or-analysis-code",
+      "bytes": 1136,
+      "sha256": "497554c552e4ab7b437358baf0d7a18918f458c219356512005f4f287a94c3da",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "harness-census/census.sh",
+      "role": "collector-or-analysis-code",
+      "bytes": 4622,
+      "sha256": "f3c498486d9a33a2c57976d2b94f41206396b2386e8fad168a1e400a5bb3f36f",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "harness-census/census_canon.sh",
+      "role": "collector-or-analysis-code",
+      "bytes": 4646,
+      "sha256": "01e13b0045042e97a3f05751ddacf20e0aa7d360525b42a7008b8e29df5dbc7f",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "harness-census/stats.json",
+      "role": "derived-statistics",
+      "bytes": 3418,
+      "sha256": "df7d2501d39e03fd00da9d3bc43a9eaf5abd16ab114a889e189bd165cee80710",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "planning-output-census/census.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 11161,
+      "sha256": "a5933eb585f73f8727d69ad3095aff1db25451da353266e086c79175e0767ddc",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    },
+    {
+      "path": "provenance/provenance.py",
+      "role": "collector-or-analysis-code",
+      "bytes": 5152,
+      "sha256": "3e3336e6f966e60240d7c73511b26a8fd7f22c41be6d6a1c499edd488b325317",
+      "collected_at": null,
+      "collection_time_status": "not-applicable-derived-or-code"
+    }
+  ]
+}

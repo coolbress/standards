@@ -1,0 +1,223 @@
+{
+  "n_base": 389,
+  "n_union": 938,
+  "n_new_software": 549,
+  "half_life_yr": 2.0,
+  "ref": "2026-06-24",
+  "foundation_flags": {
+    "manifest": {
+      "llm_429": 88,
+      "det_429": 100,
+      "det_union": 100,
+      "union_weighted": 100
+    },
+    "license": {
+      "llm_429": 97,
+      "det_429": 98,
+      "det_union": 96,
+      "union_weighted": 98
+    },
+    "readme": {
+      "llm_429": 97,
+      "det_429": 100,
+      "det_union": 100,
+      "union_weighted": 100
+    },
+    "gitignore": {
+      "llm_429": 97,
+      "det_429": 99,
+      "det_union": 99,
+      "union_weighted": 99
+    },
+    "gitattributes": {
+      "llm_429": 58,
+      "det_429": 61,
+      "det_union": 57,
+      "union_weighted": 56
+    },
+    "editorconfig": {
+      "llm_429": 39,
+      "det_429": 44,
+      "det_union": 43,
+      "union_weighted": 27
+    },
+    "ci": {
+      "llm_429": 92,
+      "det_429": 94,
+      "det_union": 93,
+      "union_weighted": 93
+    },
+    "dependabot": {
+      "llm_429": null,
+      "det_429": 49,
+      "det_union": 46,
+      "union_weighted": 43
+    },
+    "issue_template": {
+      "llm_429": 82,
+      "det_429": 84,
+      "det_union": 76,
+      "union_weighted": 78
+    },
+    "pr_template": {
+      "llm_429": 58,
+      "det_429": 62,
+      "det_union": 53,
+      "union_weighted": 54
+    },
+    "dockerfile": {
+      "llm_429": 46,
+      "det_429": 54,
+      "det_union": 48,
+      "union_weighted": 61
+    },
+    "env_example": {
+      "llm_429": 18,
+      "det_429": 22,
+      "det_union": 16,
+      "union_weighted": 36
+    },
+    "devcontainer": {
+      "llm_429": 21,
+      "det_429": 22,
+      "det_union": 16,
+      "union_weighted": 16
+    },
+    "changelog": {
+      "llm_429": 45,
+      "det_429": 56,
+      "det_union": 52,
+      "union_weighted": 51
+    },
+    "contributing": {
+      "llm_429": 73,
+      "det_429": 80,
+      "det_union": 75,
+      "union_weighted": 70
+    },
+    "security_md": {
+      "llm_429": 54,
+      "det_429": 65,
+      "det_union": 56,
+      "union_weighted": 60
+    },
+    "code_of_conduct": {
+      "llm_429": 43,
+      "det_429": 46,
+      "det_union": 42,
+      "union_weighted": 39
+    },
+    "codeowners": {
+      "llm_429": 32,
+      "det_429": 33,
+      "det_union": 26,
+      "union_weighted": 30
+    },
+    "lockfile": {
+      "llm_429": 57,
+      "det_429": 77,
+      "det_union": 69,
+      "union_weighted": 79
+    },
+    "runtime_pin": {
+      "llm_429": 24,
+      "det_429": 32,
+      "det_union": 24,
+      "union_weighted": 30
+    },
+    "linter": {
+      "llm_429": 69,
+      "det_429": 41,
+      "det_union": 36,
+      "union_weighted": 30
+    },
+    "formatter": {
+      "llm_429": 51,
+      "det_429": 42,
+      "det_union": 33,
+      "union_weighted": 36
+    },
+    "typechecker": {
+      "llm_429": 50,
+      "det_429": 53,
+      "det_union": 37,
+      "union_weighted": 54
+    },
+    "test_framework": {
+      "llm_429": 88,
+      "det_429": 93,
+      "det_union": 90,
+      "union_weighted": 88
+    },
+    "precommit_hooks": {
+      "llm_429": 33,
+      "det_429": 32,
+      "det_union": 20,
+      "union_weighted": 26
+    },
+    "task_runner": {
+      "llm_429": 66,
+      "det_429": 35,
+      "det_union": 32,
+      "union_weighted": 28
+    },
+    "supply_chain": {
+      "llm_429": null,
+      "det_429": 25,
+      "det_union": 19,
+      "union_weighted": 14
+    }
+  },
+  "release_flags": {
+    "has_releases": {
+      "det_429": 90,
+      "det_union": 85,
+      "union_weighted": 87
+    },
+    "has_release_notes": {
+      "det_429": 89,
+      "det_union": 85,
+      "union_weighted": 86
+    },
+    "semver_any": {
+      "det_429": 87,
+      "det_union": 83,
+      "union_weighted": 81
+    },
+    "cc_adopted": {
+      "det_429": 47,
+      "det_union": 39,
+      "union_weighted": 64
+    }
+  },
+  "scorecard_mean": {
+    "Code-Review": {
+      "base": 5.5,
+      "union": 5.1
+    },
+    "Pinned-Dependencies": {
+      "base": 3.2,
+      "union": 2.4
+    },
+    "Branch-Protection": {
+      "base": 3.1,
+      "union": 2.2
+    },
+    "Security-Policy": {
+      "base": 7.1,
+      "union": 5.5
+    },
+    "Maintained": {
+      "base": 8.5,
+      "union": 7.4
+    },
+    "Token-Permissions": {
+      "base": 2.6,
+      "union": 2.3
+    },
+    "SAST": {
+      "base": 3.4,
+      "union": 2.3
+    }
+  }
+}

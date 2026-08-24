@@ -1,0 +1,7 @@
+arm	repetition	agent_task	raw_file	raw_bytes	sha256	correctness	citation_support	unsupported_claims	context_files	context_bytes	model_version_config
+before	1	retrieval_before_1	before-1.md	10001	16d9419c4417eab54f29ac3bb5d7d842f7a77db60d1465af17609c9fe5a20e1f	5	8	5	16	207765	UNAVAILABLE
+before	2	retrieval_before_2	before-2.md	9614	9842a4660e826bcda9655d1aeaf49ba40bed251beb4f54c82227fc187549bbe7	5	8	5	17	221758	UNAVAILABLE
+before	3	retrieval_before_3	before-3.md	11482	4064dc86ce0c46ffa4cfeb542411b75024aa6f551686233057c8667e2e17c0fa	9	10	1	18	253912	UNAVAILABLE
+after	1	retrieval_after_1	after-1.md	10022	6b109cd0414631692a218a22510c58f57831fb032586b0367025721959f5cd47	10	10	0	11	96623	UNAVAILABLE
+after	2	retrieval_after_2	after-2.md	11397	2ff1cf12bfe1efee633f20e01f3b62cf3204cc9db521509367a085ca337ffb8f	10	10	0	11	96623	UNAVAILABLE
+after	3	retrieval_after_3	after-3.md	11094	8c487503b391365ec3bdb4b4a335dfce5b760eaa9178ca58b0d30b36cdeeb3c3	10	10	0	12	107113	UNAVAILABLE

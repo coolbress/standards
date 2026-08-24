@@ -1,0 +1,180 @@
+{
+  "n": 429,
+  "young_count": 163,
+  "young_pct": 38,
+  "ref": "2026-06-24",
+  "half_life_yr": 2.0,
+  "median_created_year": 2019,
+  "effective_weight_sum": 89.2,
+  "tree_truncated": 5,
+  "tree_fetch_failed": 0,
+  "flags": {
+    "has_releases": {
+      "uniform": 89,
+      "weighted": 86,
+      "young": 88,
+      "delta": -3,
+      "coverage": 100
+    },
+    "has_release_notes": {
+      "uniform": 88,
+      "weighted": 85,
+      "young": 87,
+      "delta": -3,
+      "coverage": 100
+    },
+    "semver_any": {
+      "uniform": 86,
+      "weighted": 80,
+      "young": 80,
+      "delta": -6,
+      "coverage": 100
+    },
+    "cc_adopted": {
+      "uniform": 45,
+      "weighted": 67,
+      "young": 66,
+      "delta": 22,
+      "coverage": 100
+    },
+    "changelog": {
+      "uniform": 55,
+      "weighted": 52,
+      "young": 50,
+      "delta": -3,
+      "coverage": 100
+    },
+    "container": {
+      "uniform": 53,
+      "weighted": 62,
+      "young": 66,
+      "delta": 9,
+      "coverage": 100
+    },
+    "cd_deploy": {
+      "uniform": 64,
+      "weighted": 68,
+      "young": 69,
+      "delta": 4,
+      "coverage": 100
+    },
+    "iac": {
+      "uniform": 28,
+      "weighted": 29,
+      "young": 31,
+      "delta": 1,
+      "coverage": 100
+    },
+    "observability": {
+      "uniform": 18,
+      "weighted": 17,
+      "young": 21,
+      "delta": -1,
+      "coverage": 100
+    }
+  },
+  "numeric": {
+    "semver_ratio_wmean": 0.72,
+    "cc_ratio_wmean": 0.6,
+    "cadence_days_median": 7,
+    "n_with_cadence": 378
+  },
+  "by_archetype": {
+    "library": {
+      "n": 93,
+      "has_releases": 91,
+      "has_release_notes": 90,
+      "semver_any": 92,
+      "cc_adopted": 37,
+      "changelog": 53,
+      "container": 24,
+      "cd_deploy": 63,
+      "iac": 16,
+      "observability": 10
+    },
+    "monorepo": {
+      "n": 90,
+      "has_releases": 94,
+      "has_release_notes": 92,
+      "semver_any": 91,
+      "cc_adopted": 71,
+      "changelog": 77,
+      "container": 68,
+      "cd_deploy": 83,
+      "iac": 48,
+      "observability": 36
+    },
+    "cli": {
+      "n": 77,
+      "has_releases": 95,
+      "has_release_notes": 95,
+      "semver_any": 88,
+      "cc_adopted": 38,
+      "changelog": 60,
+      "container": 53,
+      "cd_deploy": 64,
+      "iac": 14,
+      "observability": 8
+    },
+    "backend-service": {
+      "n": 67,
+      "has_releases": 87,
+      "has_release_notes": 84,
+      "semver_any": 88,
+      "cc_adopted": 54,
+      "changelog": 43,
+      "container": 79,
+      "cd_deploy": 67,
+      "iac": 42,
+      "observability": 31
+    },
+    "other": {
+      "n": 35,
+      "has_releases": 80,
+      "has_release_notes": 80,
+      "semver_any": 71,
+      "cc_adopted": 20,
+      "changelog": 43,
+      "container": 51,
+      "cd_deploy": 29,
+      "iac": 20,
+      "observability": 9
+    },
+    "web-app": {
+      "n": 33,
+      "has_releases": 88,
+      "has_release_notes": 88,
+      "semver_any": 88,
+      "cc_adopted": 48,
+      "changelog": 45,
+      "container": 52,
+      "cd_deploy": 70,
+      "iac": 27,
+      "observability": 9
+    },
+    "data-ml": {
+      "n": 23,
+      "has_releases": 65,
+      "has_release_notes": 65,
+      "semver_any": 43,
+      "cc_adopted": 17,
+      "changelog": 26,
+      "container": 57,
+      "cd_deploy": 39,
+      "iac": 30,
+      "observability": 9
+    },
+    "mobile": {
+      "n": 11,
+      "has_releases": 91,
+      "has_release_notes": 91,
+      "semver_any": 82,
+      "cc_adopted": 36,
+      "changelog": 45,
+      "container": 27,
+      "cd_deploy": 45,
+      "iac": 9,
+      "observability": 0
+    }
+  }
+}

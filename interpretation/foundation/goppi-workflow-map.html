@@ -1,0 +1,1125 @@
+<title>goppi 워크플로우 지도 — 아이디어에서 운영까지</title>
+
+<style>
+  :root {
+    --paper: #EFF2F1;
+    --surface: #FFFFFF;
+    --surface-2: #F7F9F8;
+    --ink: #0E1416;
+    --ink-2: #4A5754;
+    --ink-3: #6F7C79;
+    --line: #D2D9D7;
+    --line-strong: #A9B4B1;
+    --human: #A81E57;
+    --human-soft: #FBEAF1;
+    --gate: #076A6A;
+    --gate-soft: #E1F0EF;
+    --advisory: #77837F;
+    --tier-critical: #8A5205;
+    --shadow: 0 1px 2px rgba(14, 20, 22, .06), 0 8px 24px -16px rgba(14, 20, 22, .35);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0A0F11;
+      --surface: #121A1C;
+      --surface-2: #172023;
+      --ink: #E7EEEC;
+      --ink-2: #A2AFAB;
+      --ink-3: #7E8B88;
+      --line: #243033;
+      --line-strong: #3A4A4D;
+      --human: #FF7BA9;
+      --human-soft: #2A141F;
+      --gate: #46C9C3;
+      --gate-soft: #0E2A2A;
+      --advisory: #7E8C89;
+      --tier-critical: #E5A63F;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #EFF2F1; --surface: #FFFFFF; --surface-2: #F7F9F8;
+    --ink: #0E1416; --ink-2: #4A5754; --ink-3: #6F7C79;
+    --line: #D2D9D7; --line-strong: #A9B4B1;
+    --human: #A81E57; --human-soft: #FBEAF1;
+    --gate: #076A6A; --gate-soft: #E1F0EF;
+    --advisory: #77837F; --tier-critical: #8A5205;
+    --shadow: 0 1px 2px rgba(14, 20, 22, .06), 0 8px 24px -16px rgba(14, 20, 22, .35);
+  }
+  :root[data-theme="dark"] {
+    --paper: #0A0F11; --surface: #121A1C; --surface-2: #172023;
+    --ink: #E7EEEC; --ink-2: #A2AFAB; --ink-3: #7E8B88;
+    --line: #243033; --line-strong: #3A4A4D;
+    --human: #FF7BA9; --human-soft: #2A141F;
+    --gate: #46C9C3; --gate-soft: #0E2A2A;
+    --advisory: #7E8C89; --tier-critical: #E5A63F;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Pretendard,
+                 "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(28px, 5vw, 64px) clamp(18px, 4vw, 40px) 96px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 6vw, 72px);
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead { display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(30px, 5vw, 46px);
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  .lede {
+    margin: 0; max-width: 62ch; font-size: clamp(16px, 2vw, 18px); color: var(--ink-2);
+  }
+  .status-strip {
+    display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--tier-critical);
+    background: var(--surface);
+    border-radius: 3px;
+    font-size: 14px; color: var(--ink-2);
+  }
+  .status-strip strong { color: var(--ink); }
+
+  /* ---------- section frame ---------- */
+  section { display: flex; flex-direction: column; gap: 20px; }
+  h2 {
+    margin: 0;
+    font-size: clamp(20px, 3vw, 25px);
+    letter-spacing: -.01em;
+    font-weight: 700;
+    display: flex; align-items: baseline; gap: 12px;
+    text-wrap: balance;
+  }
+  h2 .num {
+    font-size: 12px; letter-spacing: .12em; color: var(--ink-3);
+    font-weight: 600; flex: none;
+  }
+  h3 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.005em; }
+  .section-note { margin: 0; max-width: 68ch; color: var(--ink-2); font-size: 15px; }
+
+  /* ---------- legend ---------- */
+  .legend {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  .legend-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  .swatch { flex: none; width: 34px; height: 20px; margin-top: 3px; position: relative; }
+  .swatch::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 9px; height: 0;
+  }
+  .swatch.solid::after { border-top: 2px solid var(--gate); }
+  .swatch.dashed::after { border-top: 2px dashed var(--advisory); }
+  .swatch.human::after { border-top: 2px solid var(--human); }
+  .swatch.platform::after { border-top: 4px double var(--ink-2); }
+  .legend-item p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+  .legend-item b { color: var(--ink); font-size: 14px; display: block; }
+
+  /* ---------- tier control ---------- */
+  .tierbar {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    padding: 6px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px; width: fit-content;
+  }
+  .tierbar button {
+    font: inherit; font-size: 14px; font-weight: 600;
+    padding: 8px 16px; border-radius: 2px; cursor: pointer;
+    border: 1px solid transparent; background: transparent; color: var(--ink-2);
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .tierbar button:hover { background: var(--surface-2); color: var(--ink); }
+  .tierbar button:focus-visible { outline: 2px solid var(--human); outline-offset: 2px; }
+  .tierbar button[aria-pressed="true"] {
+    background: var(--ink); color: var(--surface); border-color: var(--ink);
+  }
+  .tier-desc {
+    margin: 0; font-size: 14px; color: var(--ink-2); max-width: 70ch;
+    min-height: 3em;
+  }
+  .tier-desc b { color: var(--ink); }
+
+  /* ---------- swimlane ---------- */
+  .lanes-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .lanes { min-width: 860px; display: flex; flex-direction: column; gap: 0; }
+  .lane-head, .station {
+    display: grid;
+    grid-template-columns: 210px repeat(4, 1fr);
+    gap: 1px;
+  }
+  .lane-head > div {
+    padding: 10px 14px; font-size: 12px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .lane-head .h-human { color: var(--human); }
+  .lane-head .h-gate { color: var(--gate); }
+
+  .station > div { background: var(--surface); padding: 16px 14px; border-top: 1px solid var(--line); }
+  .station:last-child > div { border-bottom: 1px solid var(--line); }
+  .station > .station-id { display: flex; flex-direction: column; gap: 6px; background: var(--surface-2); }
+  .station-id .code { font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--ink-3); }
+  .station-id .name { font-size: 17px; font-weight: 700; line-height: 1.3; }
+  .station-id .purpose { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
+  .item { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); margin: 0 0 10px; }
+  .item:last-child { margin-bottom: 0; }
+  .item b { color: var(--ink); font-weight: 600; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .04em;
+    padding: 3px 8px; border-radius: 2px; white-space: nowrap;
+  }
+  .chip-human { background: var(--human-soft); color: var(--human); border: 1px solid var(--human); }
+  .chip-gate { background: var(--gate-soft); color: var(--gate); border: 1px solid var(--gate); }
+  .chip-advisory {
+    background: transparent; color: var(--advisory);
+    border: 1px dashed var(--line-strong);
+  }
+  .chip-slice {
+    background: transparent; color: var(--ink-3);
+    border: 1px solid var(--line); font-weight: 600;
+  }
+
+  /* tier dimming: container carries data-active, items declare data-tiers */
+  [data-active="light"] .t-scope:not([data-tiers~="light"]),
+  [data-active="standard"] .t-scope:not([data-tiers~="standard"]),
+  [data-active="critical"] .t-scope:not([data-tiers~="critical"]) {
+    opacity: .2;
+  }
+  .t-scope { transition: opacity .2s ease; }
+
+  /* ---------- figures ---------- */
+  figure { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .fig-frame {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+    padding: clamp(12px, 3vw, 26px); overflow-x: auto;
+  }
+  .fig-frame svg { display: block; max-width: 100%; height: auto; color: var(--ink); }
+  figcaption { font-size: 13.5px; color: var(--ink-2); max-width: 74ch; }
+  figcaption b { color: var(--ink); }
+
+  /* ---------- archetype split ---------- */
+  .split { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .panel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+    padding: 20px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .panel.neutral { border-top: 3px solid var(--gate); }
+  .panel.pack { border-top: 3px solid var(--human); }
+  .panel ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; }
+  .panel li { font-size: 14px; color: var(--ink-2); }
+  .panel li b { color: var(--ink); font-weight: 600; }
+  .panel .kicker { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+  .panel.neutral .kicker { color: var(--gate); }
+  .panel.pack .kicker { color: var(--human); }
+
+  /* ---------- build order ---------- */
+  .build { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .build-row {
+    display: grid; grid-template-columns: 62px 1fr 170px; gap: 14px;
+    background: var(--surface); padding: 14px 16px; align-items: baseline;
+  }
+  .build-row .n { font-size: 13px; font-weight: 700; color: var(--ink-3); }
+  .build-row .what { font-size: 14.5px; }
+  .build-row .what b { font-weight: 700; }
+  .build-row .why { font-size: 13px; color: var(--ink-2); }
+  .build-row.now { background: var(--surface-2); box-shadow: inset 3px 0 0 var(--human); }
+
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  td b { font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--line); padding-top: 22px;
+    font-size: 13px; color: var(--ink-3); display: flex; flex-direction: column; gap: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+  @media (max-width: 720px) {
+    .build-row { grid-template-columns: 44px 1fr; }
+    .build-row .why { grid-column: 2; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">goppi-final · 워크플로우 표준 rev4</div>
+    <h1>아이디어 한 줄에서 운영까지, goppi가 끄는 여섯 정거장</h1>
+    <p class="lede">
+      사용자는 <b>무엇을 원하는지와 무엇을 받아들일지</b>만 말한다. 그 사이의 엔지니어링 판단은 모델이
+      지되, 판단이 새는 지점마다 <b>사람의 결정</b>과 <b>하네스의 강제</b>가 박혀 있다. 이 지도는 그 배치를 보여준다.
+    </p>
+    <div class="status-strip">
+      <strong>지금 상태:</strong>
+      <span>설계는 <strong>rev4 — 세 차례 리뷰 반영(리뷰어 6명, 마지막은 cross-vendor 시니어 2인), 사용자 승인 확정(2026-08-06)</strong>. 승인된 것은 설계이며 <strong>구현은 0%</strong>.
+      아래 정거장마다 붙은 <span class="chip chip-slice mono">조각 N</span> 은 빌드 순서이지 완성 표시가 아니다.
+      제품 가치 판정은 확증시험 전이라 <strong>INCONCLUSIVE</strong>.</span>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num mono">한 장으로</span>세 층이 전부다</h2>
+    <p class="section-note">
+      복잡해 보이는 것들은 전부 아래 세 층 안에 들어간다. <b>사람은 원하는 것과 받아들일 것을 정하고</b>,
+      <b>goppi는 여섯 단계를 돌며 만들고</b>, <b>하네스는 위험한 행위를 실제로 막는다.</b>
+    </p>
+    <figure>
+      <div class="fig-frame">
+        <svg viewBox="0 0 900 420" role="img"
+             aria-label="세 층 구조: 위층은 사람이 정하는 네 가지, 가운데는 goppi가 도는 여섯 단계 루프, 아래층은 하네스가 실제로 막는 네 가지. 사람의 결정이 goppi로 내려가고, goppi의 모든 도구 호출은 하네스를 통과하며, 위험한 것은 다시 사람의 승인으로 올라온다.">
+          <defs>
+            <marker id="s-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="s-arrow-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--human)"></path>
+            </marker>
+            <marker id="s-arrow-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gate)"></path>
+            </marker>
+          </defs>
+
+          <!-- band 1 : human -->
+          <rect x="20" y="16" width="860" height="96" rx="3" fill="var(--human-soft)" stroke="var(--human)" stroke-width="1.5"></rect>
+          <text x="44" y="44" font-size="13" font-weight="700" fill="var(--human)">사람 — 정하는 사람</text>
+          <g font-size="14" text-anchor="middle">
+            <text x="150" y="78">무엇을 원하는가</text>
+            <text x="370" y="78">무엇이면 됐다고 할까</text>
+            <text x="590" y="78">되돌릴 수 없는 선택</text>
+            <text x="790" y="78">밖으로 나가는 행위</text>
+            <text x="150" y="98" font-size="11.5" fill="var(--ink-2)">문제 · 업무 규칙</text>
+            <text x="370" y="98" font-size="11.5" fill="var(--ink-2)">인수기준 AC-1, AC-2…</text>
+            <text x="590" y="98" font-size="11.5" fill="var(--ink-2)">플랫폼 · 비용 상한 동작</text>
+            <text x="790" y="98" font-size="11.5" fill="var(--ink-2)">배포 · 공개 · 결제</text>
+          </g>
+
+          <!-- band 2 : goppi loop -->
+          <rect x="20" y="152" width="860" height="120" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+          <text x="44" y="180" font-size="13" font-weight="700">goppi — 이끄는 쪽</text>
+          <g font-size="13.5" text-anchor="middle">
+            <text x="105" y="222" font-weight="700">묻는다</text>
+            <text x="245" y="222" font-weight="700">계획한다</text>
+            <text x="385" y="222" font-weight="700">만든다</text>
+            <text x="525" y="222" font-weight="700">검증한다</text>
+            <text x="665" y="222" font-weight="700">내보낸다</text>
+            <text x="805" y="222" font-weight="700">지킨다</text>
+            <text x="105" y="242" font-size="11" fill="var(--ink-3)">S0</text>
+            <text x="245" y="242" font-size="11" fill="var(--ink-3)">S1</text>
+            <text x="385" y="242" font-size="11" fill="var(--ink-3)">S2</text>
+            <text x="525" y="242" font-size="11" fill="var(--ink-3)">S3</text>
+            <text x="665" y="242" font-size="11" fill="var(--ink-3)">S4</text>
+            <text x="805" y="242" font-size="11" fill="var(--ink-3)">S5</text>
+          </g>
+          <g stroke="currentColor" stroke-width="1.5" marker-end="url(#s-arrow)">
+            <line x1="140" y1="217" x2="200" y2="217"></line>
+            <line x1="290" y1="217" x2="340" y2="217"></line>
+            <line x1="425" y1="217" x2="480" y2="217"></line>
+            <line x1="572" y1="217" x2="620" y2="217"></line>
+            <line x1="712" y1="217" x2="762" y2="217"></line>
+          </g>
+          <path d="M 838 232 L 862 232 L 862 262 L 62 262 L 62 210 L 76 210"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#s-arrow)"></path>
+
+          <!-- band 3 : harness -->
+          <rect x="20" y="312" width="860" height="92" rx="3" fill="var(--gate-soft)" stroke="var(--gate)" stroke-width="2"></rect>
+          <text x="44" y="340" font-size="13" font-weight="700" fill="var(--gate)">하네스 — 막는 쪽 (모델이 아니라 프로그램이 판단한다)</text>
+          <g font-size="13.5" text-anchor="middle" fill="var(--gate)">
+            <text x="150" y="372" font-weight="700">부수지 못하게</text>
+            <text x="370" y="372" font-weight="700">몰래 나가지 못하게</text>
+            <text x="590" y="372" font-weight="700">비밀이 새지 못하게</text>
+            <text x="790" y="372" font-weight="700">거짓말 못 하게</text>
+            <text x="150" y="392" font-size="11.5">G1</text>
+            <text x="370" y="392" font-size="11.5">G2 — 사람에게 물어본다</text>
+            <text x="590" y="392" font-size="11.5">G3</text>
+            <text x="790" y="392" font-size="11.5">G4 — 8회까지</text>
+          </g>
+
+          <!-- connectors -->
+          <path d="M 300 116 L 300 148" stroke="var(--human)" stroke-width="1.8" marker-end="url(#s-arrow-h)"></path>
+          <text x="312" y="138" font-size="11.5" fill="var(--human)">의도와 인수기준이 내려간다</text>
+
+          <path d="M 450 276 L 450 308" stroke="var(--gate)" stroke-width="2" marker-end="url(#s-arrow-g)"></path>
+          <text x="462" y="298" font-size="11.5" fill="var(--gate)">모든 도구 호출이 여기를 지난다</text>
+
+          <path d="M 700 308 L 700 288 Q 700 280 692 280 L 96 280 Q 88 280 88 272 L 88 120"
+                fill="none" stroke="var(--human)" stroke-width="1.8" marker-end="url(#s-arrow-h)"></path>
+          <text x="360" y="296" font-size="11.5" fill="var(--human)">위험한 것은 사람에게 되돌아온다</text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>읽는 법 하나만 기억하면 된다.</b> 가운데 층은 <b>모델이 협조해야</b> 지켜지고, 아래 층은
+        <b>모델이 협조하지 않아도</b> 지켜진다. goppi 설계의 거의 모든 논쟁은 “이 규칙을 가운데에 둘 것인가
+        아래에 둘 것인가”이며, 아래로 내릴 수 없는 규칙은 <b>계측해서 지켜지는지 세는 것</b>이 최선이다.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num mono">읽는 법</span>선 하나가 강제와 권고를 가른다</h2>
+    <p class="section-note">
+      규칙은 <b>운반체·위반 감지·준수 계측</b>이 없으면 없는 것과 같다. 그래서 이 지도에서는 “모델이 따르기로 된 것”과
+      “하네스가 실제로 막는 것”을 절대 같은 선으로 그리지 않는다.
+    </p>
+    <div class="legend">
+      <div class="legend-item">
+        <span class="swatch solid" aria-hidden="true"></span>
+        <p><b>실선 — 하네스가 강제</b>권한 규칙과 훅이 평가한다. 모델의 협조가 필요 없다.</p>
+      </div>
+      <div class="legend-item">
+        <span class="swatch dashed" aria-hidden="true"></span>
+        <p><b>점선 — 모델이 준수(advisory)</b>텍스트로 전달될 뿐이라 무시될 수 있다. 그래서 계측이 필수다.</p>
+      </div>
+      <div class="legend-item">
+        <span class="swatch platform" aria-hidden="true"></span>
+        <p><b>플랫폼이 집행 — 하네스 밖</b>브랜치 보호 · required checks · environment protection · pinned actions. 토큰 비용 0이고 하네스를 지워도 남는다. 게이트가 아니라 scaffold 기본값이다.</p>
+      </div>
+      <div class="legend-item">
+        <span class="swatch human" aria-hidden="true"></span>
+        <p><b>사람의 결정</b>목표·업무 규칙·되돌릴 수 없는 선택. 기술 선택을 고무도장으로 떠넘기지 않는다.</p>
+      </div>
+    </div>
+    <p class="section-note">
+      집행 주체는 <b>셋</b>이다 — 모델(점선) · 하네스(실선) · 플랫폼(이중선). 하네스를 떠나면 실선은
+      사라지고 이중선만 남는다. 이 사실은 인계 시점에 사용자에게 그대로 전달된다.
+    </p>
+  </section>
+
+  <section>
+    <h2><span class="num mono">01</span>루프 — 여섯 정거장은 닫혀 있다</h2>
+    <figure>
+      <div class="fig-frame">
+        <svg viewBox="0 0 960 258" role="img"
+             aria-label="S0 인테이크부터 S5 운영까지 여섯 정거장이 순서대로 이어지고, S5에서 두 갈래 신호(사건 신호와 정비 신호)가 다시 S0으로 돌아오는 닫힌 루프. G1과 G3는 구현 단계, G2는 구현 단계의 외부 전송과 릴리스·운영 양쪽, G4는 검증 단계에 물린다.">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="ah-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gate)"></path>
+            </marker>
+          </defs>
+
+          <!-- station boxes -->
+          <g font-size="13" text-anchor="middle">
+            <rect x="16"  y="92" width="132" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+            <text x="82"  y="115" font-size="11" letter-spacing="1.5" fill="var(--ink-3)">S0</text>
+            <text x="82"  y="134" font-weight="700">INTAKE</text>
+
+            <rect x="164" y="92" width="132" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+            <text x="230" y="115" font-size="11" letter-spacing="1.5" fill="var(--ink-3)">S1</text>
+            <text x="230" y="134" font-weight="700">SHAPE</text>
+
+            <rect x="312" y="92" width="132" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+            <text x="378" y="115" font-size="11" letter-spacing="1.5" fill="var(--ink-3)">S2</text>
+            <text x="378" y="134" font-weight="700">BUILD</text>
+
+            <rect x="460" y="92" width="132" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+            <text x="526" y="115" font-size="11" letter-spacing="1.5" fill="var(--ink-3)">S3</text>
+            <text x="526" y="134" font-weight="700">VERIFY</text>
+
+            <rect x="608" y="92" width="132" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+            <text x="674" y="115" font-size="11" letter-spacing="1.5" fill="var(--ink-3)">S4</text>
+            <text x="674" y="134" font-weight="700">SHIP</text>
+
+            <rect x="756" y="92" width="132" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+            <text x="822" y="115" font-size="11" letter-spacing="1.5" fill="var(--ink-3)">S5</text>
+            <text x="822" y="134" font-weight="700">OPERATE</text>
+          </g>
+
+          <!-- forward arrows -->
+          <g stroke="currentColor" stroke-width="1.5" marker-end="url(#ah)">
+            <line x1="150" y1="121" x2="160" y2="121"></line>
+            <line x1="298" y1="121" x2="308" y2="121"></line>
+            <line x1="446" y1="121" x2="456" y2="121"></line>
+            <line x1="594" y1="121" x2="604" y2="121"></line>
+            <line x1="742" y1="121" x2="752" y2="121"></line>
+          </g>
+
+          <!-- feedback arcs: two strands -->
+          <path d="M 822 152 L 822 200 Q 822 212 810 212 L 94 212 Q 82 212 82 200 L 82 154"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4"
+                marker-end="url(#ah)"></path>
+          <text x="452" y="228" font-size="12" text-anchor="middle" fill="var(--ink-2)">① 사건 신호 — 에러 · 사용</text>
+          <text x="452" y="244" font-size="12" text-anchor="middle" fill="var(--ink-2)">② 정비 신호 — 런타임 EOL · 의존성 CVE · 만료 대장 (소유자는 goppi)</text>
+
+          <!-- gates clamped on top: G1/G3 and G2 both apply from S2 onward -->
+          <g font-size="11" font-weight="700" fill="var(--gate)">
+            <line x1="378" y1="56" x2="378" y2="88" stroke="var(--gate)" stroke-width="1.5" marker-end="url(#ah-gate)"></line>
+            <text x="378" y="46" text-anchor="middle">G1 파괴 · G3 시크릿 · G2</text>
+            <text x="378" y="32" text-anchor="middle" font-weight="400" fill="var(--ink-2)">외부 전송 · 자격증명 변경도 여기서 G2</text>
+
+            <line x1="526" y1="56" x2="526" y2="88" stroke="var(--gate)" stroke-width="1.5" marker-end="url(#ah-gate)"></line>
+            <text x="526" y="46" text-anchor="middle">G4 완료 주장</text>
+
+            <line x1="748" y1="56" x2="748" y2="88" stroke="var(--gate)" stroke-width="1.5" marker-end="url(#ah-gate)"></line>
+            <text x="756" y="46" text-anchor="middle">G2 배포 · 공개 · 과금</text>
+          </g>
+
+          <!-- human entry -->
+          <g font-size="11" font-weight="700" fill="var(--human)">
+            <line x1="82" y1="86" x2="82" y2="60" stroke="var(--human)" stroke-width="1.5"></line>
+            <circle cx="82" cy="56" r="4" fill="var(--human)"></circle>
+            <text x="82" y="42" text-anchor="middle">사람이 시작한다</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        <b>정거장은 고정이지만 깊이는 고정이 아니다.</b> 한 문장짜리 변경에 6단계를 다 돌리는 것은 의식(ceremony)이지
+        품질이 아니다 — 아래에서 티어를 바꿔 보면 실제로 무엇이 꺼지는지 보인다.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num mono">02</span>누가 무엇을 하는가 — 티어를 바꿔 보라</h2>
+    <p class="section-note">
+      티어는 <b>표면(무엇을 건드리는가)</b>으로 정해진다. 규모가 아니다. 한 줄짜리 수정이라도 인증·결제·데이터 파괴를
+      건드리면 CRITICAL이다.
+    </p>
+
+    <div class="tierbar" role="group" aria-label="리스크 티어 선택">
+      <button type="button" data-tier="light" aria-pressed="false">LIGHT</button>
+      <button type="button" data-tier="standard" aria-pressed="true">STANDARD</button>
+      <button type="button" data-tier="critical" aria-pressed="false">CRITICAL</button>
+    </div>
+    <p class="tier-desc" id="tier-desc" aria-live="polite"></p>
+
+    <div class="lanes-scroll">
+      <div class="lanes" id="lanes" data-active="standard">
+        <div class="lane-head" aria-hidden="true">
+          <div>정거장</div>
+          <div class="h-human">사람이 하는 일</div>
+          <div>모델이 하는 일</div>
+          <div class="h-gate">하네스가 막는 것</div>
+          <div>남는 기록</div>
+        </div>
+
+        <div class="station t-scope" data-tiers="light standard critical">
+          <div class="station-id">
+            <span class="code mono">S0</span>
+            <span class="name">INTAKE<br>문제 심문</span>
+            <span class="purpose">해결책이 아니라 문제·성공기준·appetite를 고정한다.</span>
+            <span><span class="chip chip-slice mono">조각 3</span></span>
+          </div>
+          <div>
+            <p class="item t-scope" data-tiers="standard critical"><span class="chip chip-human">결정</span> <b>미러백 승인</b> — 모델이 되읊은 문제·인수기준이 내 뜻과 맞는지</p>
+            <p class="item t-scope" data-tiers="light standard critical">원하는 결과와 업무 규칙, 못 받아들일 것(non-goals)</p>
+            <p class="item t-scope" data-tiers="standard critical">appetite — 여기에 얼마나 쓸 것인가</p>
+          </div>
+          <div>
+            <p class="item t-scope" data-tiers="light standard critical"><b>첫 질문은 “새로 만드는가, 이미 있는 것을 인수하는가”</b> — 인수 모드면 읽기 전용 감사부터, 있는 것을 덮어쓰지 않는다</p>
+            <p class="item t-scope" data-tiers="standard critical">과거의 구체적 행동을 캐묻는다(Mom Test). 아이디어 승인 요청은 하지 않는다.</p>
+            <p class="item t-scope" data-tiers="standard critical"><b>말하지 않은 의무를 먼저 꺼낸다</b> — 개인정보를 받는가, 돈을 받는가. Mom Test는 겪어 본 것만 끌어내지 <b>겪은 적 없는 법적 의무는 못 끌어낸다</b></p>
+            <p class="item t-scope" data-tiers="light standard critical">얇은 스펙 작성: 문제 한 문단 · <b>ID 붙은 인수기준</b>(<code class="mono">AC-1, AC-2…</code>) · rabbit holes</p>
+            <p class="item t-scope" data-tiers="standard critical">능력 축 6개 기록 — <b>초기값은 전부 C0</b>. 승격은 자기보고가 아니라 <b>실제 선택 관측</b>으로만</p>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-advisory">게이트 없음</span></p>
+            <p class="item">인터뷰를 건너뛰었는지, 의무 미리보기를 지나쳤는지는 <b>계측으로만</b> 잡힌다. 정직한 표기다.</p>
+          </div>
+          <div>
+            <p class="item mono"><b>spec.md</b></p>
+            <p class="item">문제 · <b>AC-n</b> · non-goals · appetite · 능력 축</p>
+            <p class="item mono"><b>조각 목록</b> (위험 우선) — <span class="mono">progress.md</span>에 살고 매 루프 끝에 갱신된다</p>
+          </div>
+        </div>
+
+        <div class="station t-scope" data-tiers="standard critical">
+          <div class="station-id">
+            <span class="code mono">S1</span>
+            <span class="name">SHAPE<br>계획 · 설계</span>
+            <span class="purpose">이번 얇은 조각 하나의 실행 계획. 전체 설계서가 아니다.</span>
+            <span><span class="chip chip-slice mono">조각 5</span></span>
+          </div>
+          <div>
+            <p class="item t-scope" data-tiers="standard critical"><span class="chip chip-human">결정</span> <b>되돌리기 어려운 선택만</b> — 소비자 언어로 제시된다</p>
+            <p class="item t-scope" data-tiers="critical">복구 계획 승인 — 망가지면 어떻게 되돌리는지 먼저 본다</p>
+          </div>
+          <div>
+            <p class="item"><b>인수기준을 검사로 번역한다</b> — <code class="mono">AC-n → 검사 ID → 파일 위치</code> 표. 번역할 수 없는 인수기준은 <b>UNVERIFIABLE로 표시하고 알린다</b>. 조용히 통과시키지 않는다</p>
+            <p class="item">기술 선택은 모델이 진다. 승인을 구걸하지 않는다.</p>
+            <p class="item">파괴적 스키마 변경은 한 조각이 아니라 <b>확장 → 이전 → 축소 3배포</b>로 쪼갠다</p>
+            <p class="item">appetite 초과가 보이면 <b>자동 연장 없이</b> 범위 재협상으로 회부. 인수기준이 바뀌면 <b>재검증 범위를 계산해 보고</b>한다</p>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-advisory">게이트 없음</span></p>
+            <p class="item">단순 변경에 계획을 강요하지 않는다 — 고정 파이프라인은 기각됐다.</p>
+            <p class="item"><b>번역의 타당성은 사용자가 검토할 수 없는 영역</b>이라, S3의 독립 리뷰 첫 항목으로 넘어간다</p>
+          </div>
+          <div>
+            <p class="item mono"><b>ADR</b> · 계획 · <b>AC↔검사 매핑 표</b></p>
+            <p class="item">무엇을 왜 골랐고 무엇을 버렸는지</p>
+          </div>
+        </div>
+
+        <div class="station t-scope" data-tiers="light standard critical">
+          <div class="station-id">
+            <span class="code mono">S2</span>
+            <span class="name">BUILD<br>구현</span>
+            <span class="purpose">짧은 브랜치, 잦은 통합, 작은 배치. 미완성은 플래그 뒤로.</span>
+            <span><span class="chip chip-slice mono">조각 5</span></span>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-advisory">체크포인트 없음</span></p>
+            <p class="item">게이트가 울릴 때만 개입한다. 그전까지는 방해받지 않는다.</p>
+          </div>
+          <div>
+            <p class="item">첫 조각은 언제나 <b>walking skeleton</b> — 배포 파이프라인을 관통하는 가장 얇은 것</p>
+            <p class="item"><b>저장소 바닥을 같이 깐다</b> — README(clone→설치→테스트 5명령 이하) · <code class="mono">.env.example</code> · 시작 시 설정 검증 · 린터/포매터 · <b>앱 로그에 요청 ID와 배포 버전</b> · 깨끗한 환경에서 실행 확인. <span class="chip chip-slice mono">조각 1</span> 시니어 두 명이 공통으로 "인계자가 처음 여는 파일이 없다"고 지적한 자리</p>
+            <p class="item">테스트를 동반해 커밋</p>
+            <p class="item">상태를 파일로 외부화 — 컨텍스트가 날아가도 다음 세션이 이어받는다</p>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-gate">G1 파괴 방지</span> 비가역 삭제 · force push · 프로덕션 파괴를 차단하거나 승인으로 회부 <span class="chip chip-slice mono">조각 4</span></p>
+            <p class="item"><span class="chip chip-gate">G1 로그 보호</span> <b>이벤트 로그 경로에 대한 쓰기·리다이렉션 차단</b> — 게이트가 읽는 증거를 게이트 대상이 쓰지 못하게 <span class="chip chip-slice mono">조각 1</span></p>
+            <p class="item"><span class="chip chip-gate">G3 시크릿</span> 시크릿 리터럴이 도구 입력으로 새는 것을 차단(fail-closed) <span class="chip chip-slice mono">조각 4</span></p>
+            <p class="item"><span class="chip chip-gate">G2</span> 외부 전송 · 자격증명 변경은 구현 중이라도 승인으로 <span class="chip chip-slice mono">조각 1</span></p>
+          </div>
+          <div>
+            <p class="item mono"><b>progress.md</b></p>
+            <p class="item">지금 / 된 것 / 다음 / 막힌 것</p>
+          </div>
+        </div>
+
+        <div class="station t-scope" data-tiers="light standard critical">
+          <div class="station-id">
+            <span class="code mono">S3</span>
+            <span class="name">VERIFY<br>검증</span>
+            <span class="purpose">“존재 ≠ 검증”의 기계화. 여기가 goppi의 심장이다.</span>
+            <span><span class="chip chip-slice mono">조각 2</span></span>
+          </div>
+          <div>
+            <p class="item t-scope" data-tiers="light standard critical"><span class="chip chip-human">확인</span> <b>검증 보고</b> — 인수기준 <b>한 줄씩</b> 통과 / 실패 / <b>미확인</b> + 복구 경로</p>
+            <p class="item t-scope" data-tiers="critical">독립 리뷰 결과 확인 — <b>CRITICAL에서만</b>(과거 통제시험에서 오탐이 늘었기에 범위를 좁혔다). 보고에 고정 문구가 붙는다 — <b>“같은 모델 계열의 검토이며 책임지는 전문가의 검토와 동등하지 않습니다.”</b></p>
+          </div>
+          <div>
+            <p class="item"><b>인수기준 커버리지 판정</b> — “검사가 돌았는가”가 아니라 “각 <code class="mono">AC-n</code>을 <b>참조하는</b> 검사가 있고 결과가 무엇인가”. 하나라도 매핑이 없으면 전체가 <b>UNVERIFIED</b></p>
+            <p class="item t-scope" data-tiers="standard critical">웹 앱 게이트(판정 rubric의 웹 행과 일치): 인증/세션 · 행 수준 접근 제어 · <b>개인정보</b> · <b>처리방침 고지</b> · 접근성 · 기기 호환 · 비밀 관리</p>
+            <p class="item t-scope" data-tiers="critical">fresh context 리뷰어의 <b>첫 항목은 구현 품질이 아니라</b> “검사가 요구를 실제로 커버하는가”</p>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-gate">G4 완료 주장 검증</span> 완료를 주장하려면 <code class="mono">claim.json</code>(각 <code class="mono">AC-n</code>의 상태와 근거 검사 ID)을 훅으로 기록해야 하고, <b>그 PASS는 하네스가 기록한 실제 실행 이벤트에 맞물려야 한다</b> — 안 맞으면 <b>UNVERIFIED</b>. 자연어를 매칭하지 않는다 <span class="chip chip-slice mono">조각 2</span></p>
+            <p class="item"><b>한계 1:</b> 연속 8회까지만 막을 수 있다. 그 뒤 확실한 것은 <b>L3에 강제 해제를 기록하는 것뿐</b> — 보고서를 하네스가 고쳐 쓸 수 있는지는 <b>아직 확인되지 않았다</b>(B21).</p>
+            <p class="item"><b>한계 2:</b> G4 블록 상태에서 <b>검사 자체를 고치는 것</b>이 코드 수정보다 싼 통과 경로다. 그 변경은 별도 이벤트로 기록되지만 <span class="chip chip-advisory">아직 게이트 아님</span></p>
+          </div>
+          <div>
+            <p class="item mono"><b>이벤트 로그</b></p>
+            <p class="item">작업 트리 <b>밖</b> 훅 전용 경로. 그 경로 쓰기는 G1이 막는다 <span class="chip chip-slice mono">조각 1</span> — 이게 성립하기 전까지는 “에이전트가 못 쓰는 증거”라고 말하지 않는다</p>
+          </div>
+        </div>
+
+        <div class="station t-scope" data-tiers="standard critical">
+          <div class="station-id">
+            <span class="code mono">S4</span>
+            <span class="name">SHIP<br>릴리스</span>
+            <span class="purpose">코드 반영과 사용자 노출을 분리한다.</span>
+            <span><span class="chip chip-slice mono">조각 5</span></span>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-human">승인</span> <b>배포 승인</b> — 영향 범위와 되돌리는 방법, 그리고 <b>직전 복원 실행 결과</b>가 함께 붙어 온다</p>
+            <p class="item">도메인 · 결제 온보딩 · 개인정보 고지처럼 <b>신원과 법적 책임이 걸린 단계는 대신할 수 없다</b> — 순서·선행조건·실패 시 되돌림이 적힌 <b>공개 전 체크리스트</b>로 온다</p>
+          </div>
+          <div>
+            <p class="item">스테이징 확인 → 프로덕션. 토글/카나리아로 노출을 조절</p>
+            <p class="item">되돌릴 지점을 먼저 만들어 둔다 — <b>“백업이 있다”가 아니라 복원을 한 번 실행한 기록</b></p>
+            <p class="item"><b>라이선스 확인</b> — 내보내는 LICENSE와 들여온 의존성 스캔. 웹 서비스에서 특정 카피레프트 의존성은 <b>소스 공개 의무</b>를 걸고, 사후 교정이 불가능하다</p>
+            <p class="item"><b>사람이 대시보드에서 한 일은 진술로 통과시키지 않는다</b> — 배포된 주소의 고지 페이지를 실제로 열어 보는 식의 <b>관측 가능한 부작용</b>으로만. 확인 수단이 없으면 UNVERIFIED로 남긴다</p>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-gate">G2 외부 행위 승인</span> 배포 · 공개 · 과금 · 외부 전송 · 자격증명 변경은 사람이 누른다 <span class="chip chip-slice mono">조각 1</span></p>
+            <p class="item">자연어 지시는 게이트가 아니다. “건드리지 마”는 통제 수단이 못 된다.</p>
+          </div>
+          <div>
+            <p class="item mono"><b>릴리스 기록</b></p>
+            <p class="item">무엇이 나갔고 어디로 되돌아가는지</p>
+          </div>
+        </div>
+
+        <div class="station t-scope" data-tiers="standard critical">
+          <div class="station-id">
+            <span class="code mono">S5</span>
+            <span class="name">OPERATE<br>운영자 없는 운영</span>
+            <span class="purpose">1인이 감당할 수 있는 최소 운영 세트만 남긴다.</span>
+            <span><span class="chip chip-slice mono">조각 5</span></span>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-human">확인</span> 평문 알림 — 무슨 일이 났고 무엇을 해야 하는지 (알림만으로는 부족하다. <b>runbook이 짝이어야</b> 행동할 수 있다)</p>
+            <p class="item"><span class="chip chip-human">결정</span> <b>비용 상한의 동작을 고른다</b> — 하드 캡(도달 시 서비스 정지, 손님에게 오류)과 알림 전용(과금 계속)은 <b>사업 결정</b>이지 기술 선택이 아니다</p>
+            <p class="item">인계 시점 — 무엇이 남고 무엇이 사라지는지 확인</p>
+          </div>
+          <div>
+            <p class="item">managed 플랫폼 우선 — 그래도 백업·복원·의존성·런타임 EOL 책임은 남는다</p>
+            <p class="item"><b>산출물 5종</b>: 알림별 평문 runbook · <b>복원 리허설 실행 기록</b> · 만료 대장(EOL·인증서·플랜·도메인) · 비용 상한 설정 · <b>인계 패키지</b></p>
+            <p class="item">종료 절차(데이터 내보내기 · 과금 중단 · 도메인 처리)도 여기 산다 — 앱을 닫는 것도 비용 이벤트다</p>
+          </div>
+          <div>
+            <p class="item"><span class="chip chip-gate">G2</span> 과금이 커지는 변경은 다시 승인으로</p>
+            <p class="item"><span class="chip chip-advisory">나머지는 계측</span></p>
+          </div>
+          <div>
+            <p class="item mono"><b>두 갈래 신호</b></p>
+            <p class="item">① 사건 — 에러 · 사용 · 비용</p>
+            <p class="item">② <b>정비</b> — 런타임 EOL · 의존성 CVE · 만료 경과. <b>소유자는 goppi다</b>(사용자가 아니다). 세션 시작 시 표면화한다</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num mono">03</span>규칙은 어디에 실리는가</h2>
+    <p class="section-note">
+      한 프롬프트에 지시를 쌓을수록 준수율은 무너진다(지시 10개에서 60~94%, 80개에서 사실상 0%). 그래서 조향의 문제는
+      “많이 싣기”가 아니라 <b>적재 위치</b>다. 아래가 goppi가 규칙을 나눠 싣는 네 층이다.
+    </p>
+    <figure>
+      <div class="fig-frame">
+        <svg viewBox="0 0 960 330" role="img"
+             aria-label="L0 상시 지시와 L1 스킬은 점선으로 모델에 전달되어 무시될 수 있고, L2 게이트는 모델과 도구 실행 사이의 실선 관문으로 하네스가 직접 평가하며, L3는 도구 실행에서 이벤트 로그로 실선으로 기록된다. G4는 완료 주장 경로에 물린다.">
+          <defs>
+            <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="a2-adv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--advisory)"></path>
+            </marker>
+            <marker id="a2-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gate)"></path>
+            </marker>
+          </defs>
+
+          <!-- advisory layer -->
+          <g>
+            <rect x="20" y="24" width="200" height="52" rx="2" fill="none" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4"></rect>
+            <text x="120" y="46" font-size="11" text-anchor="middle" fill="var(--advisory)" font-weight="700">L0 상시</text>
+            <text x="120" y="64" font-size="12.5" text-anchor="middle">정체성 · 트리거 맵 · 안전 3줄</text>
+
+            <rect x="244" y="24" width="200" height="52" rx="2" fill="none" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4"></rect>
+            <text x="344" y="46" font-size="11" text-anchor="middle" fill="var(--advisory)" font-weight="700">L1 정거장 스킬</text>
+            <text x="344" y="64" font-size="12.5" text-anchor="middle">필요할 때만 펼쳐지는 절차</text>
+          </g>
+
+          <path d="M 120 78 L 120 128" fill="none" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a2-adv)"></path>
+          <path d="M 344 78 L 260 128" fill="none" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a2-adv)"></path>
+          <text x="470" y="60" font-size="12" fill="var(--advisory)">텍스트로 전달될 뿐 — 모델이 무시할 수 있다</text>
+
+          <!-- model -->
+          <rect x="90" y="132" width="220" height="62" rx="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+          <text x="200" y="160" font-size="13" text-anchor="middle" font-weight="700">모델의 한 턴</text>
+          <text x="200" y="180" font-size="12" text-anchor="middle" fill="var(--ink-2)">읽고 · 정하고 · 도구를 부른다</text>
+
+          <!-- gate on tool path -->
+          <path d="M 310 163 L 392 163" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#a2)"></path>
+          <text x="351" y="152" font-size="11.5" text-anchor="middle" fill="var(--ink-2)">도구 호출</text>
+
+          <rect x="396" y="128" width="128" height="70" rx="2" fill="var(--gate-soft)" stroke="var(--gate)" stroke-width="2"></rect>
+          <text x="460" y="152" font-size="11" text-anchor="middle" fill="var(--gate)" font-weight="700">L2 게이트</text>
+          <text x="460" y="170" font-size="12.5" text-anchor="middle" fill="var(--gate)" font-weight="700">G1 · G2 · G3</text>
+          <text x="460" y="187" font-size="11.5" text-anchor="middle" fill="var(--gate)">하네스가 평가</text>
+
+          <path d="M 524 163 L 606 163" fill="none" stroke="var(--gate)" stroke-width="2" marker-end="url(#a2-gate)"></path>
+          <text x="565" y="152" font-size="11.5" text-anchor="middle" fill="var(--gate)">통과분만</text>
+
+          <rect x="610" y="132" width="150" height="62" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+          <text x="685" y="160" font-size="13" text-anchor="middle" font-weight="700">실제 실행</text>
+          <text x="685" y="180" font-size="12" text-anchor="middle" fill="var(--ink-2)">파일 · 셸 · 네트워크</text>
+
+          <!-- deny path -->
+          <path d="M 460 128 L 460 100 L 200 100 L 200 128" fill="none" stroke="var(--gate)" stroke-width="1.5" marker-end="url(#a2-gate)"></path>
+          <text x="330" y="93" font-size="11.5" text-anchor="middle" fill="var(--gate)">차단 · 사람 승인으로 회부</text>
+
+          <!-- L3 -->
+          <path d="M 685 198 L 685 246" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#a2)"></path>
+          <rect x="576" y="250" width="218" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+          <text x="685" y="270" font-size="11" text-anchor="middle" fill="var(--ink-3)" font-weight="700">L3 계측 · 작업 트리 밖</text>
+          <text x="685" y="288" font-size="12.5" text-anchor="middle">훅만 쓴다 · G1이 쓰기를 막는다</text>
+
+          <!-- G4 -->
+          <path d="M 200 194 L 200 246" fill="none" stroke="var(--gate)" stroke-width="2" marker-end="url(#a2-gate)"></path>
+          <rect x="90" y="250" width="220" height="54" rx="2" fill="var(--gate-soft)" stroke="var(--gate)" stroke-width="2"></rect>
+          <text x="200" y="272" font-size="11" text-anchor="middle" fill="var(--gate)" font-weight="700">G4 · 완료 주장</text>
+          <text x="200" y="290" font-size="12.5" text-anchor="middle" fill="var(--gate)">L3 로그와 대조 후에만 “끝”</text>
+
+          <path d="M 570 277 L 316 277" fill="none" stroke="var(--gate)" stroke-width="1.5" stroke-dasharray="0" marker-end="url(#a2-gate)"></path>
+          <text x="443" y="268" font-size="11.5" text-anchor="middle" fill="var(--gate)">증거는 여기서 온다</text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>핵심은 화살표의 종류다.</b> L0·L1은 점선으로 모델에 들어가고(무시 가능), L2는 모델과 실제 실행 사이에
+        실선으로 놓여 하네스가 직접 평가한다. 목표는 <b>검증자를 검증 대상 바깥에 두는 것</b>인데,
+        <b>그것은 조건부로만 성립한다</b> — L3 로그가 작업 트리 밖 훅 전용 경로에 있고 그 경로 쓰기를 G1이
+        막을 때만이다(조각 1). 그 배치 전의 G4는 “모델이 쓴 기록을 대조하는 게이트”이며, 이 그림도 그렇게 읽어야 한다.
+        그리고 G4는 <b>절대 게이트가 아니라 8회 한도 게이트</b>다 — 그 뒤 확실한 것은 L3에 강제 해제가 남는 것뿐이다.
+      </figcaption>
+    </figure>
+
+    <h3>“계측이 필수”라면, 무엇을 재는가</h3>
+    <p class="section-note">
+      점선(advisory)을 실선(게이트)으로 승격시킬 근거가 계측이다. 그래서 무엇을 재는지가 정해져 있지 않으면
+      “계측이 필수”는 검증할 수 없는 구호다. 지표는 두 계열이고, <b>승격은 결과 계열을 요구한다</b>.
+    </p>
+    <div class="split">
+      <div class="panel">
+        <span class="kicker" style="color: var(--advisory);">process 계열 — 관찰용</span>
+        <ul>
+          <li>스킬 발화율</li>
+          <li>단계 이탈률</li>
+          <li>게이트 발화율 / <b>오탐율</b></li>
+          <li>완료주장 근거율</li>
+        </ul>
+        <p class="item"><b>단독으로는 승격 근거가 아니다.</b> 절차를 얼마나 지켰는지는 결과가 아니다.</p>
+      </div>
+      <div class="panel pack">
+        <span class="kicker">결과 계열 — 승격의 필요 조건</span>
+        <ul>
+          <li><b>이탈이 관측된 세션의 결과 손해율</b> — 그 세션에 인수기준 실패·UNVERIFIED·복구 발동이 있었는가</li>
+          <li><b>승인 이벤트 3필드</b> — 요청 종류 / 사용자 응답 / 제시된 것(결과·위험·복구의 유무)</li>
+          <li>완료 선언 후 뒤집힌 비율</li>
+        </ul>
+        <p class="item">승격 기준은 “이탈률이 높다”가 아니라 <b>“이탈한 세션에서 결과 손해가 높다”</b>. 그 결합을 못 만들면 in-field가 아니라 오프라인 스위트로만 판단한다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num mono">04</span>그래서 모델이 이걸 따르게 만드는 방법</h2>
+    <p class="section-note">
+      goppi는 새 실행 환경을 만들지 않는다. <b>Claude Code가 이미 제공하는 컴포넌트에 규칙을 나눠 싣는다.</b>
+      그 컴포넌트마다 <b>강제력이 다르고</b>, 그 차이가 공식 문서에 명시돼 있다 — 그래서 “어디에 싣느냐”가
+      곧 “지켜지느냐”가 된다.
+    </p>
+    <div class="lanes-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%">컴포넌트</th>
+            <th style="width: 26%">여기에 싣는 것</th>
+            <th style="width: 24%">강제력</th>
+            <th>따르는 근거</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>상시 지시문</b><br><span class="mono" style="font-size:12px">CLAUDE.md</span></td>
+            <td>정체성 한 줄 · 어느 상황에 어느 절차를 부를지 · 안전 불변 3~5줄 · 상태 파일 위치</td>
+            <td><span class="chip chip-advisory">권고</span> 텍스트로 주입될 뿐, 모델이 무시할 수 있다</td>
+            <td>Anthropic의 작성 기준 — 200줄 미만, <b>“이 줄을 지우면 모델이 틀리는가”</b> 로 매 줄을 검증</td>
+          </tr>
+          <tr>
+            <td><b>스킬</b><br><span class="mono" style="font-size:12px">Skills</span></td>
+            <td>정거장별 절차·산출물 양식·비례 규칙 (S0~S5 각 1개)</td>
+            <td><span class="chip chip-advisory">권고</span> 단, <b>필요할 때만 펼쳐진다</b> — 이름·설명만 상시, 본문은 호출 시</td>
+            <td>공개 스킬 표준(agentskills.io)의 <b>점진적 공개</b>. 본문 500줄 미만 + <b>내보내기 전 시나리오 3개 이상</b> 통과 규율</td>
+          </tr>
+          <tr>
+            <td><b>권한 규칙</b><br><span class="mono" style="font-size:12px">deny / ask / allow</span></td>
+            <td>G1 파괴 방지 · G2 외부 행위 승인 · G3 시크릿의 뼈대</td>
+            <td><span class="chip chip-gate">하드 게이트</span> 공식 문구 그대로: <b>“권한 규칙은 모델이 아니라 Claude Code가 집행한다”</b>. 계층은 deny &gt; ask &gt; allow</td>
+            <td>Claude Code 권한 공식 문서. 프롬프트나 지시문은 모델이 <b>시도할 일</b>을 바꿀 뿐 <b>허용되는 일</b>을 바꾸지 못한다</td>
+          </tr>
+          <tr>
+            <td><b>훅</b><br><span class="mono" style="font-size:12px">PreToolUse · Stop · SubagentStop</span></td>
+            <td>도구 호출 직전 검사(G1·G3) · 완료 주장 검사(G4) · 이벤트 기록</td>
+            <td><span class="chip chip-gate">차단 가능</span> 종료 코드 2 또는 차단 결정으로 호출을 막는다. <b>단 사후 훅은 로깅만</b> — 이미 일어난 일은 되돌리지 못한다</td>
+            <td>Claude Code 훅 공식 문서(차단 가능 시점이 명시돼 있음). <b>G4의 8회 한도도 같은 문서에서 나온 제약</b>이다</td>
+          </tr>
+          <tr>
+            <td><b>서브에이전트</b></td>
+            <td>독립 리뷰 — 저자의 결론을 보지 않은 새 컨텍스트</td>
+            <td><span class="chip chip-advisory">권고</span> + <span class="chip chip-gate">G4</span> 완료 주장은 <span class="mono">SubagentStop</span>으로도 검사</td>
+            <td>Anthropic의 <b>작성자/검토자 분리</b> 권고. 단 이 레이어는 과거 통제시험에서 오탐을 1건 늘린 이력이 있어 <b>조건부로만</b> 쓴다</td>
+          </tr>
+          <tr>
+            <td><b>이벤트 로그</b><br><span class="mono" style="font-size:12px">L3</span></td>
+            <td>세션·게이트 발화·승인 3필드·완료 선언 — 지표의 원천</td>
+            <td><span class="chip chip-gate">하네스가 기록</span> 작업 트리 밖 훅 전용 경로, 쓰기는 G1이 차단</td>
+            <td>OpenTelemetry의 생성형 AI 규약을 준거로 스키마를 맞춘다(자체 포맷을 새로 만들지 않는다)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>하네스 컴포넌트 지도에서 우리가 고른 것 — 그리고 비워 둔 것</h3>
+    <p class="section-note">
+      현행 리서치는 <b>완전한 하네스는 여섯 면(plane)으로 센다</b>고 기록한다 — 프롬프트·스킬·훅·MCP·
+      서브에이전트만 세면 <b>승인·복구·실행 상태·격리·관측·업데이트가 통째로 빠진다</b>는 지적이다.
+      그래서 goppi는 “무엇을 쓰는가”만이 아니라 <b>어느 면을 비워 두는가</b>를 함께 적는다. 빈칸을 적지
+      않으면 그 면이 없다는 사실 자체가 보이지 않는다.
+    </p>
+    <div class="lanes-scroll">
+      <table>
+        <thead>
+          <tr><th style="width:16%">면</th><th style="width:42%">goppi가 배치한 것</th><th>비워 둔 것 (의도 표기)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>제어</b></td>
+            <td>리스크 3티어(권고) · <b>승인·가드레일 = G1–G4</b> · <b>복구 = DoD 8항 + 승인 페이로드의 복원 결과</b></td>
+            <td>에이전트 루프·모델 선택·도구 라우팅은 <b>호스트가 제공</b>한다 — 다시 만들지 않는다</td>
+          </tr>
+          <tr>
+            <td><b>능력</b></td>
+            <td>상시 지시문 · 정거장 스킬 6종 · 훅 · 서브에이전트(조건부)</td>
+            <td><b>MCP 서버는 미사용</b> — 현재 범위 밖. 도입하면 “가져온 콘텐츠와 도구 설명은 비신뢰”가 먼저 필요</td>
+          </tr>
+          <tr>
+            <td><b>실행</b></td>
+            <td>권한 규칙(deny/ask)으로 파일·셸 경계</td>
+            <td><b>샌드박스·네트워크 격리는 연기(수용 리스크)</b>. 승인 프롬프트는 격리의 대체물이 아니라고 명시했다</td>
+          </tr>
+          <tr>
+            <td><b>상태·맥락</b></td>
+            <td><b>내구성 있는 인계 파일 = spec · progress · 조각 목록 · AC↔검사 매핑</b> · 세션 재개 순서</td>
+            <td>작업공간 스냅샷은 미배치 — 압축·실행 상태는 호스트에 맡긴다</td>
+          </tr>
+          <tr>
+            <td><b>보증</b></td>
+            <td><b>L3 로그·지표 2계열</b> · 오프라인 준수 스위트 · 독립 리뷰 · 위협 시나리오 · 비용 상한</td>
+            <td>사람 채점자 기반 평가는 확증시험 프로토콜에만 — 일상 루프에는 넣지 않는다</td>
+          </tr>
+          <tr>
+            <td><b>배포</b></td>
+            <td>설치 검증(음성 대조 포함) · 호스트는 하나라 어댑터 불필요</td>
+            <td><b>업데이트·롤백·폐기 절차 미배치</b> — 구 goppi를 걷어내며 그 비용을 실제로 겪었다</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split">
+      <div class="panel neutral">
+        <span class="kicker">왜 나눠 싣는가 — 실측 근거</span>
+        <ul>
+          <li>한 맥락에 지시를 쌓을수록 준수율이 무너진다 — <b>지시 10개일 때 59~94%가, 80개일 때 사실상 0%</b>로 떨어진 실험 결과가 있다.</li>
+          <li>긴 맥락에서는 <b>가운데 놓인 정보가 가장 잘 잊힌다</b>(Lost-in-the-Middle).</li>
+          <li>장기 작업의 실패 원인을 상태 관리 붕괴로 보는 분석이 있으나 <b>이것은 [주장]이고 수치가 제시되지 않았다</b> — 그래서 처방의 실근거는 “압축만으로는 부족하니 <b>내구성 있는 인계 파일</b>을 남기라”는 쪽이다.</li>
+          <li>결론: 조향은 <b>“많이 싣기”가 아니라 “적재 위치의 설계”</b>다. 그래서 위 표가 설계의 본체다.</li>
+        </ul>
+      </div>
+      <div class="panel pack">
+        <span class="kicker">리서치를 따르는 규율</span>
+        <ul>
+          <li><b>벤더 문서는 그 제품의 동작에만 권위가 있다</b> — 효과가 좋다는 근거가 아니다. “Claude Code가 이렇게 동작한다”는 1차, “이렇게 하면 좋다”는 별개 증거가 필요하다.</li>
+          <li><b>과거 하네스는 prior art로만 등장한다</b> — 채택하려면 현행 근거가 있어야 하고, 없으면 기각 사유와 함께 버린다.</li>
+          <li><b>주장의 강도를 뭉개지 않는다</b> — 규정(MUST)과 권고(SHOULD)와 주장을 표기로 구분하고, 출처 간 수치가 다르면 평균내지 않고 둘 다 남긴다.</li>
+          <li><b>인용이 주장을 지지하는지 따로 검사한다</b> — 이번 리뷰에서 “위험은 보수적으로 잡는다”의 근거로 달아 둔 인용이 실제로는 그 주장과 무관한 내용이었고, 인용을 철회하고 <b>“프로젝트 판단”</b>으로 고쳤다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num mono">05</span>웹 앱 너머로 넓히려면 — 무엇이 중립이고 무엇이 팩인가</h2>
+    <div class="status-strip" style="border-left-color: var(--gate);">
+      <strong>결론:</strong>
+      <span>루프·티어·게이트·계측은 <strong>아키타입 중립</strong>이고, 프로젝트 종류마다 달라지는 것은
+      <strong>다섯 칸짜리 “팩”</strong>뿐이다. 그래서 확장은 <strong>루프를 고치는 일이 아니라 팩을 채우는 일</strong>이다.
+      2026-08-05에 <strong>28개 축 전부에 배치 또는 기각 사유</strong>를 붙여 무엇이 중립이고 무엇이 팩인지 확정했다.
+      다만 <strong>진짜 비용은 팩 하나당 리서치 한 패스 + 실패 시나리오 세트</strong>이고, 추측으로 채우면
+      “모든 프로젝트에 28개 축을 강요”했던 과거 실패로 되돌아간다.</span>
+    </div>
+    <p class="section-note">
+      지금 설계가 웹 앱처럼 보이는 이유는 루프가 웹 전용이어서가 아니라, <b>첫 아키타입 팩만 채워져 있기 때문</b>이다.
+      CLI든 모바일 앱이든 데이터 파이프라인이든, 왼쪽은 그대로 두고 오른쪽 다섯 칸만 새로 채우면 된다.
+    </p>
+    <div class="split">
+      <div class="panel neutral">
+        <span class="kicker">아키타입 중립 — 한 번 짓고 계속 쓴다</span>
+        <h3>모든 프로젝트가 공유하는 뼈대</h3>
+        <ul>
+          <li><b>6 정거장 루프</b>와 닫힌 피드백</li>
+          <li><b>리스크 3티어</b>와 표면 기반 판정</li>
+          <li><b>G1–G4</b> 게이트의 매처와 정책</li>
+          <li><b>L0–L3</b> 조향·계측 배치</li>
+          <li><b>Rule Registry</b> — 규칙은 운반체·게이트·계측 3필드와 함께만 존재한다</li>
+          <li><b>완료의 정의</b> 6조건과 상태 정직성(PASS/FAIL/UNVERIFIED/BLOCKED)</li>
+          <li><b>상태 파일</b>(spec · progress)과 세션 간 이어받기</li>
+        </ul>
+      </div>
+      <div class="panel pack">
+        <span class="kicker">아키타입 팩 — 종류마다 새로 채운다</span>
+        <h3>“웹 앱”은 그중 첫 번째 팩일 뿐</h3>
+        <ul>
+          <li><b>① scaffold 기본값</b> — 인증, 데이터 접근 제어, 시크릿, CI, 에러 추적의 출발선</li>
+          <li><b>② 산출물 게이트</b> — S3에서 무엇을 통과해야 “됐다”인가 (웹: 인증·행 수준 접근 제어·접근성)</li>
+          <li><b>③ last-mile</b> — S4에서 공개까지 남은 실제 장벽 (웹: 도메인·DNS·결제 온보딩·개인정보 고지)</li>
+          <li><b>④ 운영 최소셋</b> — S5에서 1인이 감당할 것 (웹: 알림·백업/복원·비용 상한·런타임 EOL)</li>
+          <li><b>⑤ eval 시나리오</b> — 이 팩이 실제로 작동하는지 볼 실패 유도 과제들</li>
+        </ul>
+      </div>
+    </div>
+    <table>
+      <caption class="section-note" style="text-align:left; margin-bottom:8px;">
+        새 아키타입 하나를 추가하는 비용 — 다섯 칸을 <b>근거로</b> 채우는 일이다. 추측으로 채우면 gingoa의 실패(모든 것에 28개 축을 강요)로 돌아간다.
+      </caption>
+      <thead>
+        <tr><th>팩 칸</th><th>무엇을 모아야 하는가</th><th>웹 앱 팩의 현재 상태</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>① scaffold</b></td><td>공식 문서가 규정하는 프로덕션 출발선</td><td>수집 완료 — 문서가 스스로 “기본값이 안전하지 않다”고 밝힌 지점 5곳 포함</td></tr>
+        <tr><td><b>② 게이트</b></td><td>산출물 판정면에 걸 아키타입 조건</td><td>초안 — 판정 rubric의 웹 행과 일치시킴(개인정보·고지 추가) + 스키마 3배포 · 라이선스 스캔 · 최소 성능 예산. 매처는 미정</td></tr>
+        <tr><td><b>③ last-mile</b></td><td>과금·외부 노출·법적 책임이 발생하는 정확한 지점</td><td>수집 완료 — 사람만 할 수 있는 단계 5개 확인</td></tr>
+        <tr><td><b>④ 운영</b></td><td>플랫폼이 대신해 주지 <b>않는</b> 책임</td><td>수집 완료 — 비용 상한이 실제 정지인지 알림뿐인지가 서비스마다 갈림</td></tr>
+        <tr><td><b>⑤ eval</b></td><td>실패를 심어 둔 대표 과제</td><td>미착수 — 조각 6</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num mono">06</span>짓는 순서 — 위험한 것부터</h2>
+    <p class="section-note">
+      순서는 “쉬운 것부터”가 아니라 <b>“틀렸을 때 제일 비싼 것부터”</b>다. 각 조각은 얇은 수직 조각 하나이고,
+      조각당 작업 세션 2회를 넘기면 자동 연장 없이 범위를 다시 협상한다.
+    </p>
+    <div class="build">
+      <div class="build-row now">
+        <span class="n mono">조각 1</span>
+        <span class="what"><b>walking skeleton</b> — 설치 → 세션 → 계측이 끝까지 한 번 돈다 <b>+ 로그 무결성 · 승인 3필드 · 팩 자리</b></span>
+        <span class="why">여기서 막히면 나머지는 측정조차 불가능하다. 로그 경로와 승인 이벤트는 <b>지금 정하면 비용 0, 나중이면 재작업</b></span>
+      </div>
+      <div class="build-row">
+        <span class="n mono">조각 2</span>
+        <span class="what"><b>검증 스킬 + G4</b> — 거짓 완료를 막는 경로</span>
+        <span class="why">goppi가 가장 먼저 줄여야 할 실패</span>
+      </div>
+      <div class="build-row">
+        <span class="n mono">조각 3</span>
+        <span class="what"><b>인테이크 스킬</b> — 문제를 캐묻고 스펙으로 고정</span>
+        <span class="why">요구 누락과 의도 드리프트</span>
+      </div>
+      <div class="build-row">
+        <span class="n mono">조각 4</span>
+        <span class="what"><b>G1 · G3</b> — 파괴 방지와 시크릿 차단</span>
+        <span class="why">오탐율을 먼저 재고 나서 배선한다</span>
+      </div>
+      <div class="build-row">
+        <span class="n mono">조각 5</span>
+        <span class="what"><b>나머지 정거장 스킬</b> — shape · build · ship · operate</span>
+        <span class="why">스킬 본문이 쌓이는 컨텍스트 비용을 실측하면서</span>
+      </div>
+      <div class="build-row">
+        <span class="n mono">조각 6</span>
+        <span class="what"><b>오프라인 준수 스위트</b> — 실패를 심어 두고 통과율을 잰다</span>
+        <span class="why">튜닝에 쓴 과제는 확증시험에 재사용하지 않는다</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num mono">07</span>이 지도가 숨기지 않는 것</h2>
+    <p class="section-note">
+      이 절은 <b>2026-08-05 3인 독립 리뷰</b>가 찾은 것을 포함한다. 이전 판의 이 절은 직전 리뷰가 이미
+      반영시킨 한계만 다시 적고 있었다 — 알려진 한계의 재게시는 한계의 목록이 아니라는 지적을 받았고,
+      그 지적 자체가 아래 두 번째 칸에 들어가 있다.
+    </p>
+    <div class="split">
+      <div class="panel">
+        <h3>아직 게이트가 없는 곳</h3>
+        <ul>
+          <li><b>티어 판정</b>은 의미론적 판단이라 지금은 권고다 — 이탈률만이 아니라 <b>이탈한 세션의 결과 손해율</b>을 재서 승격을 정한다.</li>
+          <li><b>프롬프트 주입</b>은 부분적으로만 막힌다. 상태 파일 위생과 “가져온 내용은 인용하지 않기”로 완화하고, 감지 게이트는 red-team으로 잔여 위험을 잰 뒤 결정한다.</li>
+          <li><b>네트워크 유출 통제</b>는 연기된 수용 리스크다. 승인 프롬프트는 격리의 대체물이 아니다.</li>
+          <li><b>권한 상승 체인</b>도 “커버”에서 <b>연기</b>로 내렸다 — 그건 4링크의 연언인데 그중 둘이 열려 있으면 정의상 커버될 수 없다.</li>
+          <li><b>시크릿 게이트의 범위</b> — 도구 입력으로 새는 것만 본다. 명령이 환경변수에서 직접 읽는 경로는 덮지 않는다.</li>
+        </ul>
+      </div>
+      <div class="panel pack">
+        <h3>시니어 두 명이 실제로 지적한 것 <span style="font-weight:400; font-size:13px; color:var(--ink-3)">(2026-08-06 · 서로 다른 벤더)</span></h3>
+        <ul>
+          <li><b>인계 첫날 30분이 안 넘어간다</b> — README도 <code class="mono">.env.example</code>도 없어서 "이걸 어떻게 띄우나"를 추측하게 된다. <b>둘 다 HIGH로 지적</b> → 조각 1로 끌어올렸다.</li>
+          <li><b>완료 대장을 여전히 모델이 쓴다</b> — 로그의 위치는 옮겼는데 내용의 출처를 안 옮겼다. 이제 <b>실행 기록과 맞물리지 않는 PASS는 UNVERIFIED</b>.</li>
+          <li><b>앱 장애를 추적할 수단이 없다</b> — "하네스 로그는 사용자의 요청 실패를 설명하지 못한다". 요청 ID·배포 버전을 앱 쪽에 따로 넣었다.</li>
+          <li><b>가벼운 변경 경로가 완료 게이트와 충돌</b> — 계획 단계를 건너뛰는데 게이트는 그 산출물을 요구했다. 직전 판(rev3)에서 생긴 모순이다.</li>
+          <li><b>되돌릴 기준점이 없다</b> — "예전에 복원해봤다"와 "지금 이 데이터가 되돌아간다"는 다르다. 승인 화면에 스냅샷 시각을 넣었다.</li>
+        </ul>
+        <p class="item">그리고 <b>"과하다"</b>는 지적도 받아들였다 — 검수 장치 개수 제한을 정원이 아니라 <b>경고선</b>으로, 독립 검토는 <b>위험한 작업에만</b>, 설명의 장황도는 능력이 아니라 <b>되돌릴 수 있는지</b>에 맞춰서.</p>
+      </div>
+      <div class="panel">
+        <h3>이전 리뷰가 찾은 것</h3>
+        <ul>
+          <li><b>사용자가 브라우저에서 하는 일</b>은 게이트도 계측도 닿지 않는다 — 결제·도메인 대시보드는 하네스 밖이다. 그래서 사람의 진술이 아니라 <b>관측 가능한 부작용</b>으로만 통과 처리한다.</li>
+          <li><b>G4가 막는 동안 검사를 고치는 것</b>이 코드를 고치는 것보다 싸다. 기록은 남기지만 아직 게이트가 아니다.</li>
+          <li><b>보고서에 UNVERIFIED를 하네스가 직접 찍을 수 있는지</b>가 확인되지 않았다. 확실한 것은 로그에 남는 것뿐.</li>
+          <li><b>독립 리뷰</b>는 과거 통제시험에서 오탐을 1건 늘려 사전 등록된 “해롭다” 조건을 발화시킨 이력이 있다. 그래서 CRITICAL 한정 + 오탐 계측 조건부로만 쓴다.</li>
+          <li>28개 축 중 <b>다섯 개</b>(공급망·유지보수·성능·데이터 마이그레이션·라이선스)가 리서치가 닿지 않아 <b>기각도 수용도 아닌 침묵</b> 상태였다. 지금은 배치하거나 사유와 함께 기각했다.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>가치는 아직 증명되지 않았다</h3>
+        <ul>
+          <li>이 워크플로우가 실제로 도움이 되는지는 <b>확증시험만</b> 판정한다. 단계를 몇 개 밟았는지는 가치가 아니다.</li>
+          <li>절차가 <b>증거를 만들거나, 위험을 줄이거나, 판단을 이해 가능하게 하거나, 복구를 가능하게</b> 하지 못하면 그 단계는 삭제 대상이다.</li>
+          <li>하네스가 자기를 검증하느라 목적을 잠식하는 것이 이 프로젝트 최대 리스크다 — 그래서 검수 장치에도 만료 조건과 유지비 상한이 붙는다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>goppi-final · 워크플로우 표준 rev4 + 조향·검수 설계 rev4를 시각화한 것 · 2026-08-06</div>
+    <div><b>설계 승인 확정(2026-08-06)</b> · 구현 미착수. 근거는 <span class="mono">.scratch/research/corpus</span>, 현행 규율은 <span class="mono">spec.md</span>, 리뷰 findings는 <span class="mono">audit/WORKFLOW-REVIEW-2026-08-05.ko.md</span> · <span class="mono">audit/SENIOR-REVIEW-2026-08-06.ko.md</span>.</div>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var lanes = document.getElementById('lanes');
+    var desc = document.getElementById('tier-desc');
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('.tierbar button'));
+    var copy = {
+      light: '<b>LIGHT</b> — 작고 되돌릴 수 있으며 <b>사용자 노출 표면을 바꾸지 않는</b> 변경. 문제를 한 문단으로 적고, 만들고, 스스로 검증한다. <b>배포는 된다</b> — 다만 S4는 축약 레인(승인 화면 1문장 + 롤백 지점 확인)이다. 계획 문서는 없되 <b>“무엇으로 됐다고 볼지”와 그걸 확인할 검사 한 줄은 만든다</b>(안 그러면 완료 게이트가 판정할 대상이 없다). 게이트 G1~G4는 티어와 무관하게 항상 발화한다.',
+      standard: '<b>STANDARD</b> — 여러 파일을 건드리거나 회귀 위험이 있거나 공개 인터페이스가 바뀐다. 정거장을 전부 돌고 리뷰를 한 번 받으며, 스펙과 진행 상태 파일이 필수다.',
+      critical: '<b>CRITICAL</b> — 보안·인증·돈·데이터 파괴/이전·프로덕션·외부 공개. STANDARD에 더해 <b>독립 리뷰</b>와 <b>승인 게이트</b>가 붙고, <b>복구 계획이 작업보다 먼저</b> 나온다. 애매하면 위험 축은 올려 잡는다.'
+    };
+    function set(tier) {
+      lanes.setAttribute('data-active', tier);
+      desc.innerHTML = copy[tier];
+      buttons.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.tier === tier));
+      });
+    }
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () { set(b.dataset.tier); });
+    });
+    set('standard');
+  })();
+</script>

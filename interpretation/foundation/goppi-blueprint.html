@@ -1,0 +1,514 @@
+<title>goppi 청사진 — 아이디어 한 줄에서 손님이 쓰는 앱까지</title>
+
+<style>
+  :root {
+    --paper: #EFF2F1; --surface: #FFFFFF; --surface-2: #F7F9F8;
+    --ink: #0E1416; --ink-2: #4A5754; --ink-3: #6F7C79;
+    --line: #D2D9D7; --line-strong: #A9B4B1;
+    --human: #A81E57; --human-soft: #FBEAF1;
+    --gate: #076A6A; --gate-soft: #E1F0EF;
+    --advisory: #77837F; --build: #8A5205; --build-soft: #FBF0DE;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0A0F11; --surface: #121A1C; --surface-2: #172023;
+      --ink: #E7EEEC; --ink-2: #A2AFAB; --ink-3: #7E8B88;
+      --line: #243033; --line-strong: #3A4A4D;
+      --human: #FF7BA9; --human-soft: #2A141F;
+      --gate: #46C9C3; --gate-soft: #0E2A2A;
+      --advisory: #7E8C89; --build: #E5A63F; --build-soft: #2A2114;
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #EFF2F1; --surface: #FFFFFF; --surface-2: #F7F9F8;
+    --ink: #0E1416; --ink-2: #4A5754; --ink-3: #6F7C79;
+    --line: #D2D9D7; --line-strong: #A9B4B1;
+    --human: #A81E57; --human-soft: #FBEAF1;
+    --gate: #076A6A; --gate-soft: #E1F0EF;
+    --advisory: #77837F; --build: #8A5205; --build-soft: #FBF0DE;
+  }
+  :root[data-theme="dark"] {
+    --paper: #0A0F11; --surface: #121A1C; --surface-2: #172023;
+    --ink: #E7EEEC; --ink-2: #A2AFAB; --ink-3: #7E8B88;
+    --line: #243033; --line-strong: #3A4A4D;
+    --human: #FF7BA9; --human-soft: #2A141F;
+    --gate: #46C9C3; --gate-soft: #0E2A2A;
+    --advisory: #7E8C89; --build: #E5A63F; --build-soft: #2A2114;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Pretendard,
+                 "Noto Sans KR", system-ui, sans-serif;
+    font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; word-break: keep-all;
+  }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  .wrap {
+    max-width: 940px; margin: 0 auto;
+    padding: clamp(28px, 5vw, 60px) clamp(18px, 4vw, 36px) 90px;
+    display: flex; flex-direction: column; gap: clamp(44px, 6vw, 68px);
+  }
+
+  header { display: flex; flex-direction: column; gap: 14px; }
+  .eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  h1 { margin: 0; font-size: clamp(28px, 5vw, 42px); line-height: 1.18; letter-spacing: -.02em; font-weight: 700; text-wrap: balance; }
+  .lede { margin: 0; max-width: 60ch; font-size: clamp(16px, 2vw, 18px); color: var(--ink-2); }
+
+  section { display: flex; flex-direction: column; gap: 18px; }
+  h2 {
+    margin: 0; font-size: clamp(21px, 3vw, 26px); font-weight: 700; letter-spacing: -.01em;
+    display: flex; align-items: baseline; gap: 12px; text-wrap: balance;
+  }
+  h2 .n { font-size: 12px; letter-spacing: .1em; color: var(--ink-3); font-weight: 700; flex: none; }
+  h3 { margin: 0; font-size: 16.5px; font-weight: 700; }
+  .note { margin: 0; max-width: 66ch; color: var(--ink-2); font-size: 15px; }
+
+  figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .frame { background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: clamp(14px, 3vw, 24px); overflow-x: auto; }
+  .frame svg { display: block; max-width: 100%; height: auto; color: var(--ink); }
+  figcaption { font-size: 13.5px; color: var(--ink-2); max-width: 72ch; }
+  figcaption b { color: var(--ink); }
+
+  /* 사용자 질문 카드 */
+  .asks { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+  .ask {
+    background: var(--human-soft); border: 1px solid var(--human); border-radius: 3px;
+    padding: 15px 16px; display: flex; flex-direction: column; gap: 7px;
+  }
+  .ask .when { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--human); }
+  .ask .q { font-size: 15px; font-weight: 600; line-height: 1.45; }
+  .ask .why { font-size: 13px; color: var(--ink-2); }
+
+  /* 단계 리스트 */
+  .steps { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .step { background: var(--surface); padding: 15px 18px; display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: baseline; }
+  .step .name { font-weight: 700; font-size: 15px; }
+  .step .name small { display: block; font-weight: 400; font-size: 11.5px; color: var(--ink-3); letter-spacing: .06em; }
+  .step .what { font-size: 14.5px; color: var(--ink-2); }
+  .step .what b { color: var(--ink); font-weight: 600; }
+  .step.user { background: var(--surface-2); box-shadow: inset 3px 0 0 var(--human); }
+
+  /* 두 칸 */
+  .two { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px;
+    padding: 20px; display: flex; flex-direction: column; gap: 11px;
+  }
+  .card.ask-side { border-top: 3px solid var(--advisory); }
+  .card.lock-side { border-top: 3px solid var(--gate); }
+  .card .kicker { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+  .card.ask-side .kicker { color: var(--advisory); }
+  .card.lock-side .kicker { color: var(--gate); }
+  .card ul { margin: 0; padding-left: 17px; display: flex; flex-direction: column; gap: 7px; }
+  .card li { font-size: 14.5px; color: var(--ink-2); }
+  .card li b { color: var(--ink); font-weight: 600; }
+
+  /* 빌드 조각 */
+  .slices { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .slice { background: var(--surface); padding: 16px 18px; display: grid; grid-template-columns: 58px 1fr 1fr; gap: 16px; align-items: baseline; }
+  .slice .no { font-size: 12.5px; font-weight: 700; color: var(--ink-3); }
+  .slice .adds { font-size: 14.5px; }
+  .slice .adds b { font-weight: 700; }
+  .slice .then { font-size: 13.5px; color: var(--ink-2); }
+  .slice .then::before { content: "→ "; color: var(--ink-3); }
+  .slice.now { background: var(--build-soft); box-shadow: inset 3px 0 0 var(--build); }
+
+  .strip {
+    display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: baseline;
+    padding: 15px 17px; background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--build); border-radius: 3px; font-size: 14.5px; color: var(--ink-2);
+  }
+  .strip strong { color: var(--ink); }
+
+  footer { border-top: 1px solid var(--line); padding-top: 20px; font-size: 13px; color: var(--ink-3); display: flex; flex-direction: column; gap: 5px; }
+
+  @media (max-width: 660px) {
+    .step { grid-template-columns: 1fr; gap: 6px; }
+    .slice { grid-template-columns: 44px 1fr; }
+    .slice .then { grid-column: 2; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">goppi 청사진 · 요약판</div>
+    <h1>아이디어 한 줄에서 손님이 쓰는 앱까지</h1>
+    <p class="lede">
+      사용자는 <b>무엇을 원하는지</b>만 말한다. 엔지니어링 판단은 goppi가 진다. 다만 <b>기계가 막는 것은 네 가지뿐</b>이고(안전과 정직에 관한 최소셋), 나머지는 “이렇게 하기로 한 약속”이라 <b>지켰는지 세는 것</b>이 전부다 — 그 구분이 이 문서의 핵심이다.
+    </p>
+    <div class="strip">
+      <strong>지금:</strong>
+      <span>설계는 <strong>rev4 · 승인 확정(2026-08-06)</strong>. <strong>조각 1(뼈대)만 만들어졌고 판정은 아직 <span class="mono">UNVERIFIED</span></strong>다 — 2026-08-07에 자기 검사 하나가 <b>실패를 낼 수 없는 상태</b>였던 것을 발견해 고쳤다. 아래 자물쇠 중 <b>실제로 있는 것은 두 개</b>(부수기 방지의 일부 · 외부 행위 승인)이고, <b>거짓 완료 금지와 비밀 보호는 아직 없다</b>. 그리고 이 방식이 실제로 도움이 되는지는 <strong>아직 증명되지 않았다</strong>(시험 전).</span>
+    </div>
+  </header>
+
+  <!-- ============ PART 1 ============ -->
+  <section>
+    <h2><span class="n mono">01</span>사용자가 겪는 것 — 답할 질문은 네 가지뿐</h2>
+    <p class="note">
+      “동네 필라테스 스튜디오 예약 앱을 만들고 싶어”로 시작한다고 하자. 끝까지 가는 동안 사용자에게
+      돌아오는 질문은 아래 네 종류로 수렴한다. <b>기술 선택은 묻지 않는다</b> — 사용자가 검토할 수 없는
+      것을 승인시키는 건 떠넘기기니까.
+    </p>
+
+    <div class="asks">
+      <div class="ask">
+        <span class="when">시작할 때</span>
+        <span class="q">“회원 이름과 연락처를 받으실 건가요?”</span>
+        <span class="why">받는 순간 개인정보처리방침 의무가 생긴다. 사용자가 겪어본 적 없는 의무를 먼저 꺼내 준다.</span>
+      </div>
+      <div class="ask">
+        <span class="when">기준 정할 때</span>
+        <span class="q">“같은 시간에 두 명이 예약하면 안 되는 거죠?”</span>
+        <span class="why">이게 ‘됐다’의 기준이 된다. 나중에 이 문장 하나하나에 검사가 붙는다.</span>
+      </div>
+      <div class="ask">
+        <span class="when">못 되돌릴 때</span>
+        <span class="q">“비용이 한도에 닿으면 <b>예약을 멈출까요</b>, <b>돈이 나가게 둘까요</b>?”</span>
+        <span class="why">기술이 아니라 사업 결정이다. 플랫폼마다 동작이 달라서 미리 골라야 한다.</span>
+      </div>
+      <div class="ask">
+        <span class="when">밖으로 나갈 때</span>
+        <span class="q">“지금 배포하면 손님이 볼 수 있습니다. 되돌리는 방법은 이겁니다.”</span>
+        <span class="why">배포·결제·공개는 사람이 누른다. 자연어로 “조심해”는 통제가 아니다.</span>
+      </div>
+    </div>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 900 176" role="img"
+             aria-label="여섯 단계가 왼쪽에서 오른쪽으로 이어지고, 첫 단계와 넷째 다섯째 단계 위에 사람의 결정 지점이 표시되며, 마지막 단계에서 두 갈래 신호가 첫 단계로 돌아온다.">
+          <defs>
+            <marker id="b-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="b-ar-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--human)"></path>
+            </marker>
+          </defs>
+          <g font-size="13.5" text-anchor="middle">
+            <g>
+              <rect x="14" y="58" width="122" height="46" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+              <text x="75" y="87" font-weight="700">묻는다</text>
+            </g>
+            <g>
+              <rect x="152" y="58" width="122" height="46" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+              <text x="213" y="87" font-weight="700">계획한다</text>
+            </g>
+            <g>
+              <rect x="290" y="58" width="122" height="46" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+              <text x="351" y="87" font-weight="700">만든다</text>
+            </g>
+            <g>
+              <rect x="428" y="58" width="122" height="46" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+              <text x="489" y="87" font-weight="700">확인한다</text>
+            </g>
+            <g>
+              <rect x="566" y="58" width="122" height="46" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+              <text x="627" y="87" font-weight="700">내보낸다</text>
+            </g>
+            <g>
+              <rect x="704" y="58" width="122" height="46" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+              <text x="765" y="87" font-weight="700">지킨다</text>
+            </g>
+          </g>
+          <g stroke="currentColor" stroke-width="1.5" marker-end="url(#b-ar)">
+            <line x1="138" y1="81" x2="150" y2="81"></line>
+            <line x1="276" y1="81" x2="288" y2="81"></line>
+            <line x1="414" y1="81" x2="426" y2="81"></line>
+            <line x1="552" y1="81" x2="564" y2="81"></line>
+            <line x1="690" y1="81" x2="702" y2="81"></line>
+          </g>
+          <!-- human touchpoints -->
+          <g fill="var(--human)" font-size="11.5" font-weight="700" text-anchor="middle">
+            <line x1="75" y1="52" x2="75" y2="34" stroke="var(--human)" stroke-width="1.5"></line>
+            <circle cx="75" cy="30" r="4"></circle>
+            <text x="75" y="18">아이디어·기준</text>
+
+            <line x1="213" y1="52" x2="213" y2="34" stroke="var(--human)" stroke-width="1.5"></line>
+            <circle cx="213" cy="30" r="4"></circle>
+            <text x="213" y="18">못 되돌릴 선택</text>
+
+            <line x1="489" y1="52" x2="489" y2="34" stroke="var(--human)" stroke-width="1.5"></line>
+            <circle cx="489" cy="30" r="4"></circle>
+            <text x="489" y="18">결과 확인</text>
+
+            <line x1="627" y1="52" x2="627" y2="34" stroke="var(--human)" stroke-width="1.5"></line>
+            <circle cx="627" cy="30" r="4"></circle>
+            <text x="627" y="18">배포 승인</text>
+
+            <line x1="765" y1="52" x2="765" y2="34" stroke="var(--human)" stroke-width="1.5"></line>
+            <circle cx="765" cy="30" r="4"></circle>
+            <text x="765" y="18">알림 · 비용</text>
+          </g>
+          <path d="M765 106 L765 138 Q765 148 755 148 L85 148 Q75 148 75 138 L75 108"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#b-ar)"></path>
+          <text x="420" y="166" font-size="12" text-anchor="middle" fill="var(--ink-2)">
+            ① 손님이 겪은 문제 · ② 만료된 것(버전·인증서·플랜) → 다음 작업이 된다
+          </text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>한 바퀴가 기능 하나다.</b> 여섯 단계를 다 도는 건 위험한 작업일 때고, 문구 한 줄 고치는 데는
+        묻고·만들고·확인하고 내보낸다. <b>깊이는 위험에 비례한다</b> — 이건 <b>프로젝트 판단</b>이다(고정 파이프라인의 오버헤드를 다룬 자료가 있지만 사례 하나짜리 주장이라 확립된 사실로 쓰지 않는다).
+      </figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step user">
+        <span class="name">묻는다<small class="mono">S0 INTAKE</small></span>
+        <span class="what">원하는 것을 캐묻고 <b>“무엇이면 됐다고 할지”를 번호 붙은 문장</b>으로 고정한다. 새로 만드는지, 이미 있는 걸 인수하는지도 여기서 갈린다.</span>
+      </div>
+      <div class="step">
+        <span class="name">계획한다<small class="mono">S1 SHAPE</small></span>
+        <span class="what">그 문장 하나하나를 <b>검사로 번역</b>한다. <b>플랫폼 선택처럼 되돌리기 어려운 것만</b> 사용자에게 묻는다. 번역이 안 되는 건 “확인 불가”라고 알린다 — 조용히 넘기지 않는다. 기술 선택은 여기서 모델이 진다.</span>
+      </div>
+      <div class="step">
+        <span class="name">만든다<small class="mono">S2 BUILD</small></span>
+        <span class="what">코드와 함께 <b>저장소 바닥</b>을 깐다 — README, 설정 예시, 로그에 요청 ID. 남이 받아도 <b>내려받기→설치→테스트가 명령 5개 이하</b>로 끝나게.</span>
+      </div>
+      <div class="step">
+        <span class="name">확인한다<small class="mono">S3 VERIFY</small></span>
+        <span class="what">“검사가 돌았나”가 아니라 <b>“번호 붙은 문장마다 그걸 확인하는 검사가 있나”</b>를 본다. 하나라도 없으면 전체가 <b>미확인</b>이다.</span>
+      </div>
+      <div class="step user">
+        <span class="name">내보낸다<small class="mono">S4 SHIP</small></span>
+        <span class="what">도메인·결제·개인정보 고지처럼 <b>신원과 책임이 걸린 단계는 사람만</b> 할 수 있다. 순서와 되돌리는 법을 함께 준다.</span>
+      </div>
+      <div class="step user">
+        <span class="name">지킨다<small class="mono">S5 OPERATE</small></span>
+        <span class="what">평문 알림 + <b>대응 절차서</b> + 복원을 한 번 실제로 해본 기록 + 만료일 대장. <b>다만 이건 위험도에 비례한다</b> — 가벼운 프로젝트는 장애 알림과 비용 상한만. 남에게 넘길 때 필요한 것도 여기서 나온다(<b>넘기면 자물쇠는 사라진다 — 아래 참조</b>).</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PART 2 ============ -->
+  <section>
+    <h2><span class="n mono">02</span>모델이 따르게 하는 법 — 절반은 부탁, 절반은 자물쇠</h2>
+    <p class="note">
+      규칙을 텍스트로 많이 주면 지켜질 것 같지만 아니다. 한 자리에 지시가 쌓일수록 무너진다 —
+      <b>지시가 10개일 때 59~94% 지키던 것이 80개가 되면 사실상 0%</b>다. 그래서 문제는 “많이 싣기”가 아니라
+      <b>“어디에 싣나”</b>가 된다.
+    </p>
+
+    <figure>
+      <div class="frame">
+        <svg viewBox="0 0 900 250" role="img"
+             aria-label="지시문과 스킬은 점선으로 모델에 전달되어 무시될 수 있고, 권한 규칙과 훅은 모델과 실제 실행 사이의 실선 관문이며, 실행 결과는 기록으로 남아 완료 검사에 쓰인다.">
+          <defs>
+            <marker id="b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="b2-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--advisory)"></path>
+            </marker>
+            <marker id="b2-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--gate)"></path>
+            </marker>
+          </defs>
+
+          <rect x="20" y="20" width="190" height="46" rx="2" fill="none" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4"></rect>
+          <text x="115" y="41" font-size="11" text-anchor="middle" fill="var(--advisory)" font-weight="700">항상 보이는 것</text>
+          <text x="115" y="58" font-size="12.5" text-anchor="middle">정체성 · 언제 뭘 부를지</text>
+
+          <rect x="228" y="20" width="190" height="46" rx="2" fill="none" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4"></rect>
+          <text x="323" y="41" font-size="11" text-anchor="middle" fill="var(--advisory)" font-weight="700">필요할 때 펼치는 것</text>
+          <text x="323" y="58" font-size="12.5" text-anchor="middle">단계별 절차서 6개</text>
+
+          <path d="M115 68 L115 108" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#b2-a)"></path>
+          <path d="M323 68 L250 108" stroke="var(--advisory)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#b2-a)"></path>
+          <text x="452" y="46" font-size="12" fill="var(--advisory)">읽어달라는 부탁 — 무시될 수 있다</text>
+
+          <rect x="80" y="112" width="210" height="56" rx="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+          <text x="185" y="137" font-size="13" text-anchor="middle" font-weight="700">모델의 한 턴</text>
+          <text x="185" y="156" font-size="12" text-anchor="middle" fill="var(--ink-2)">읽고 · 정하고 · 도구를 부른다</text>
+
+          <path d="M290 140 L368 140" stroke="currentColor" stroke-width="1.5" marker-end="url(#b2)"></path>
+          <text x="329" y="130" font-size="11.5" text-anchor="middle" fill="var(--ink-2)">하려는 행동</text>
+
+          <rect x="372" y="108" width="132" height="64" rx="2" fill="var(--gate-soft)" stroke="var(--gate)" stroke-width="2"></rect>
+          <text x="438" y="132" font-size="11" text-anchor="middle" fill="var(--gate)" font-weight="700">막는 층</text>
+          <text x="438" y="151" font-size="12.5" text-anchor="middle" fill="var(--gate)" font-weight="700">권한 규칙 · 훅</text>
+          <text x="438" y="166" font-size="11" text-anchor="middle" fill="var(--gate)">프로그램이 판단</text>
+
+          <path d="M504 140 L582 140" stroke="var(--gate)" stroke-width="2" marker-end="url(#b2-g)"></path>
+          <text x="543" y="130" font-size="11.5" text-anchor="middle" fill="var(--gate)">통과분만</text>
+
+          <rect x="586" y="112" width="150" height="56" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+          <text x="661" y="137" font-size="13" text-anchor="middle" font-weight="700">실제 실행</text>
+          <text x="661" y="156" font-size="12" text-anchor="middle" fill="var(--ink-2)">파일 · 명령 · 네트워크</text>
+
+          <path d="M438 108 L438 90 L185 90 L185 108" fill="none" stroke="var(--gate)" stroke-width="1.5" marker-end="url(#b2-g)"></path>
+          <text x="311" y="83" font-size="11.5" text-anchor="middle" fill="var(--gate)">차단 · 또는 사람에게 물어봄</text>
+
+          <path d="M661 172 L661 200" stroke="currentColor" stroke-width="1.5" marker-end="url(#b2)"></path>
+          <rect x="556" y="204" width="210" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+          <text x="661" y="222" font-size="11" text-anchor="middle" fill="var(--ink-3)" font-weight="700">기록 — 앱 밖에 둘 예정</text>
+          <text x="661" y="238" font-size="12" text-anchor="middle">그래야 모델이 못 고친다 (조각 1)</text>
+
+          <path d="M552 224 L300 224" stroke="var(--gate)" stroke-width="1.5" marker-end="url(#b2-g)"></path>
+          <rect x="80" y="204" width="210" height="40" rx="2" fill="var(--gate-soft)" stroke="var(--gate)" stroke-width="2"></rect>
+          <text x="185" y="222" font-size="11" text-anchor="middle" fill="var(--gate)" font-weight="700">“끝났다” 검사</text>
+          <text x="185" y="238" font-size="12" text-anchor="middle" fill="var(--gate)">기록과 안 맞으면 미확인</text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>핵심은 화살표 종류다.</b> 위쪽 점선은 모델이 협조해야 지켜지고, 가운데 실선은 협조하지 않아도
+        지켜진다. 그리고 “끝났다” 검사가 대조하는 기록은 <b>앱 밖에 두고 모델이 못 쓰게 막을 예정이다(조각 1)</b> — 검사받는 쪽이 답안지를 쓸 수 있으면 그 검사는 없는 것과 같으니까. <b>그 배치가 끝나기 전까지는 “모델이 못 건드리는 증거”라고 말하지 않는다</b>.
+      </figcaption>
+    </figure>
+
+    <div class="two">
+      <div class="card ask-side">
+        <span class="kicker">부탁 — 그래서 지켰는지 센다</span>
+        <ul>
+          <li><b>항상 보이는 지시문</b> — 짧게. 200줄 미만, “이 줄을 지우면 모델이 틀리나”로 매 줄 검증</li>
+          <li><b>단계별 절차서(스킬) 6개</b> — 이름만 항상 보이고, 본문은 그 단계에 왔을 때만 펼쳐진다. ⚠️ 단 <b>한 번 펼쳐지면 그 세션 동안 계속 자리를 차지한다</b> — 전 단계를 다 돌면 6개가 쌓인다</li>
+        </ul>
+        <p class="note" style="font-size:13.5px">
+          지켜졌는지는 <b>기록으로 센다</b>. 그리고 “안 지킨 비율”이 아니라 <b>“안 지킨 세션에서 실제로 손해가 났는지”</b>가
+          자물쇠로 올릴 근거다 — 절차 준수율 자체는 가치가 아니다.
+        </p>
+      </div>
+      <div class="card lock-side">
+        <span class="kicker">자물쇠 — 협조 없이도 걸린다</span>
+        <ul>
+          <li><b>부수기 금지</b> — 되돌릴 수 없는 삭제, 강제 덮어쓰기</li>
+          <li><b>외부 행위 승인</b> — 배포·공개·과금·자격증명은 사람이 누른다</li>
+          <li><b>비밀 보호</b> — 비밀값이 명령에 섞여 나가는 것 차단</li>
+          <li><b>거짓 완료 금지</b> — “끝났다”고 <b>선언하려면</b> 기준마다 검사 결과를 대야 한다. ⚠️ 단 <b>선언하지 않고 그냥 산문으로 “끝냈습니다”라고만 말하면 이 검사를 지나가지 않는다</b> — 그 경우는 막는 게 아니라 <b>기록해서 센다</b></li>
+        </ul>
+        <p class="note" style="font-size:13.5px">
+          공식 문서 표현 그대로: <b>“권한 규칙은 모델이 아니라 프로그램이 집행한다.”</b> 다만 완료 검사는
+          연속 8회까지만 막을 수 있고, 그 뒤엔 기록만 남는다 — 절대 게이트가 아니다.
+        </p>
+        <p class="note" style="font-size:13.5px; border-top:1px solid var(--line); padding-top:11px;">
+          <b>사실 집행 주체는 셋이다.</b> 모델(약속) · 하네스(위 자물쇠) · 그리고 <b>플랫폼</b>
+          — 저장소 설정으로 거는 것들(중요 브랜치 보호, 통과해야 하는 검사 지정). 비용이 0이고
+          <b>goppi를 지워도 남는 유일한 층</b>이라, 위험에 비례해 기본으로 깔아 둔다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PART 3 ============ -->
+  <section>
+    <h2><span class="n mono">03</span>어떤 순서로 만드나 — 위험한 것부터, 조각마다 쓸모를 확인</h2>
+    <p class="note">
+      한 번에 다 만들지 않는다. <b>조각 하나가 끝나면 그때부터 무언가가 실제로 가능해지고</b>, 쓸모없으면
+      전체가 아니라 그 조각만 지운다. “만들고 엎고”를 반복하지 않으려는 <b>이 프로젝트의 방식</b>이다 — 효과는 아직 시험 전이다.
+    </p>
+
+    <div class="slices">
+      <div class="slice now">
+        <span class="no mono">조각 1</span>
+        <span class="adds"><b>뼈대</b> — 설치되고, 세션이 돌고, 기록이 남는다 + 저장소 바닥(README·설정 예시·요청 ID 로그)</span>
+        <span class="then">여기서 막히면 나머지는 <b>측정조차 못 한다</b>. 기록을 앱 밖으로 빼는 것도 지금 안 하면 나중에 재작업</span>
+      </div>
+      <div class="slice">
+        <span class="no mono">조각 2</span>
+        <span class="adds"><b>“끝났다” 검사</b> — 기준마다 검사 결과를 대야 완료로 인정</span>
+        <span class="then">거짓 완료를 막는다 — goppi가 가장 먼저 줄여야 할 실패</span>
+      </div>
+      <div class="slice">
+        <span class="no mono">조각 3</span>
+        <span class="adds"><b>묻는 절차</b> — 아이디어에서 기준을 뽑아내고, 말 안 한 의무를 먼저 꺼낸다</span>
+        <span class="then">요구가 새거나 도중에 어긋나는 걸 막는다</span>
+      </div>
+      <div class="slice">
+        <span class="no mono">조각 4</span>
+        <span class="adds"><b>부수기·비밀 자물쇠</b></span>
+        <span class="then">먼저 <b>헛발질 빈도를 재고</b> 나서 건다 — 오작동하는 자물쇠는 작업을 방해할 뿐</span>
+      </div>
+      <div class="slice">
+        <span class="no mono">조각 5</span>
+        <span class="adds"><b>나머지 절차서</b> — 계획·만들기·내보내기·지키기</span>
+        <span class="then">쌓이는 컨텍스트 비용을 실측하면서</span>
+      </div>
+      <div class="slice">
+        <span class="no mono">조각 6</span>
+        <span class="adds"><b>시험 세트</b> — 실패를 일부러 심어두고 통과율을 잰다</span>
+        <span class="then">여기까지 오면 <b>“정말 쓸모 있나”를 물어볼 수 있다</b></span>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <h3>조각마다 지키는 완료 조건</h3>
+        <ul>
+          <li>새 규칙은 세 가지와 함께만 등록 — <b>어디에 실렸는지 · 어떻게 잡는지(<u>못 잡으면 “못 잡는다”고 적는다</u>) · 어떻게 세는지</b></li>
+          <li>설치 검증이 <b>미설치를 실제로 잡아내는지</b>까지 확인(통과만 보면 안 됨)</li>
+          <li>절차서를 건드렸으면 <b>시나리오 3개 이상</b> 통과</li>
+          <li><b>되돌리기를 한 번 실제로 해본다</b> — “백업이 있다”는 충족이 아니다</li>
+          <li>검사 장치를 늘렸으면 <b>언제 지울지</b>도 같이 적는다</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>넘지 않기로 한 선</h3>
+        <ul>
+          <li><b>조각당 세션 2회</b>(첫 조각만 3~4회). 넘으면 자동 연장 없이 범위를 다시 협상한다</li>
+          <li><b>검사 장치가 7개를 넘으면</b> 왜 필요한지 적고 넘어간다 — 늘어나는 걸 눈에 보이게</li>
+          <li><b>하네스가 자기를 검사하는 데 시간을 쓰는 것</b>이 이 프로젝트가 죽는 방식이다. 매번 상기한다</li>
+          <li>절차를 몇 개 밟았는지는 <b>가치가 아니다</b>. 결과·증거·판단·복구 중 하나를 개선해야 한다</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ PART 4 ============ -->
+  <section>
+    <h2><span class="n mono">04</span>이 청사진이 <em>약속하지 않는</em> 것</h2>
+    <p class="note">
+      위 세 장을 읽고 나면 “자물쇠가 걸려 있으니 안전하겠다”로 읽히기 쉽다. 그건 사실과 다르고,
+      정본 설계 문서는 <b>“사용자가 이걸 반드시 들어야 한다”</b>고 못박아 두었다.
+    </p>
+
+    <div class="two">
+      <div class="card lock-side">
+        <h3>넘겨주면 자물쇠는 사라진다</h3>
+        <p class="note" style="font-size:14px">
+          나중에 다른 개발자에게 넘기거나 goppi를 그만 쓰면, 무엇이 남고 무엇이 없어지는지가 갈린다.
+        </p>
+        <ul>
+          <li><b>남는 것</b> — 코드 · 테스트 · 기준 문서 · 결정 기록 · README · <b>플랫폼에 걸어 둔 설정</b>(브랜치 보호 등)</li>
+          <li><b>사라지는 것</b> — <b>자물쇠 4개 전부</b> · 규칙 등록부 · 기록 장치 · <b>만료일을 알려주던 장치</b></li>
+        </ul>
+        <p class="note" style="font-size:13.5px">
+          마지막 항목이 특히 조용히 아프다 — 만료 대장은 파일로 남지만 <b>“이거 곧 만료돼요”라고 말해주던
+          쪽이 없어진다.</b> 런타임 만료는 <b>기존 배포는 계속 돌고 새 배포만 막히는</b> 방식으로 오기 때문에,
+          급한 수정을 올리려는 순간 사고와 차단이 동시에 온다.
+        </p>
+      </div>
+      <div class="card ask-side">
+        <h3>막지 못한다고 적어 둔 것</h3>
+        <ul>
+          <li><b>증거 기록장에 숨겨 쓰는 것</b> — 자물쇠는 <b>숨기려 하지 않는</b> 상대만 막는다. 경로를 문자열로 쪼개거나 암호화해 우회하면 통과한다(2026-08-07 실측). 같은 컴퓨터 계정에서 도는 이상 원리적으로 못 막으며, 애초에 <b>사용자가 언제든 goppi를 끌 수 있다</b></li>
+      <li><b>가져온 내용에 섞인 지시</b> — 외부에서 읽어온 글에 “이렇게 해라”가 숨어 있는 경우. 완화 규칙만 있고 감지 장치는 <b>연기</b></li>
+          <li><b>바깥으로 나가는 통신</b> — 승인은 받지만 <b>구조적으로 격리하지는 않는다</b>. 수용한 위험으로 적어 뒀다</li>
+          <li><b>비밀 보호의 사각지대</b> — 명령에 비밀값이 <b>글자로 섞이는 것</b>만 막는다. 프로그램이 환경에서 직접 읽어가는 경로는 못 본다</li>
+          <li><b>완료 검사의 예비 경로</b> — 8회를 넘었을 때 보고서에 표시를 남길 수 있는지 <b>아직 확인 못 했다</b></li>
+        </ul>
+        <p class="note" style="font-size:13.5px">
+          이것들이 “빠뜨린 것”이 아니라 <b>“지금은 못 한다고 적어 둔 것”</b>이라는 게 차이다. 모르는 위험보다
+          적어 둔 위험이 낫다.
+        </p>
+      </div>
+    </div>
+
+    <div class="strip" style="border-left-color: var(--human);">
+      <strong>그리고 가장 중요한 것:</strong>
+      <span>이 방식이 <strong>실제로 도움이 되는지는 아직 증명되지 않았다.</strong> 지금까지 만든 건 설계와
+      근거이고, <strong>효과는 시험으로만 판정한다</strong> — 그 시험을 돌릴 수 있는 상태를 만드는 것이
+      ③의 조각 1~6이다. 절차를 몇 개 밟았는지는 그 자체로 가치가 아니다.</span>
+    </div>
+  </section>
+
+  <footer>
+    <div>goppi-final · 워크플로우 표준 rev4 + 조향·검수 설계 rev4의 요약판 · 2026-08-06</div>
+    <div>상세판은 같은 폴더의 <span class="mono">goppi-workflow-map.html</span> · 정본은 두 설계 문서 · 근거는 <span class="mono">.scratch/research/corpus</span></div>
+  </footer>
+</div>

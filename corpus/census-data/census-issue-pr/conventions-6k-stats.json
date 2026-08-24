@@ -1,0 +1,73 @@
+{
+  "source": "writing-conventions re-harvest of the template-bearing subset of records-2k.json (conventions.py)",
+  "n_repos": 2425,
+  "issue_form": {
+    "n_forms": 3248,
+    "parse_ok_pct": 99.7,
+    "forms_by_category": {
+      "bug": 1399,
+      "feature": 1097,
+      "other": 388,
+      "docs": 168,
+      "question": 124,
+      "task": 51,
+      "perf": 16,
+      "security": 5
+    },
+    "n_fields": 20837,
+    "field_type_distribution_pct": {
+      "markdown": 13.7,
+      "textarea": 53.2,
+      "input": 15.3,
+      "dropdown": 8.8,
+      "checkboxes": 9.1
+    },
+    "required_rate_input_fields_pct": 55.9,
+    "help_text_rate_input_fields_pct": 87.2,
+    "required_rate_by_field_type_pct": {
+      "textarea": 57.8,
+      "input": 68.6,
+      "dropdown": 76.2,
+      "checkboxes": 3.4
+    },
+    "required_rate_by_category_pct": {
+      "bug": 58.8,
+      "feature": 50.0,
+      "task": 61.9,
+      "docs": 51.6,
+      "question": 52.4,
+      "other": 55.1
+    },
+    "coc_checkbox_form_pct": 6.5,
+    "preflight_checkbox_form_pct": 22.3,
+    "median_fields_per_form_by_category": {
+      "other": 5,
+      "docs": 4,
+      "feature": 5,
+      "bug": 8,
+      "question": 4,
+      "perf": 8,
+      "task": 3,
+      "security": 2
+    },
+    "render_shell_field_n": 1034
+  },
+  "pr_template": {
+    "n_pr_templates": 1077,
+    "checklist_style_pct": {
+      "empty": 63.2,
+      "pre-checked": 0.3,
+      "none": 36.5
+    },
+    "median_checklist_items": 5,
+    "has_html_comment_guidance_pct": 63.8,
+    "median_sections": 3,
+    "type_of_change_present_pct": 11.9,
+    "type_of_change_style_pct_among_present": {
+      "checkbox": 89.8,
+      "bullet": 8.6,
+      "freetext": 1.6,
+      "none": 0.0
+    }
+  }
+}

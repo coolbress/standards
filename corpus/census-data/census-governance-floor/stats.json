@@ -1,0 +1,723 @@
+{
+  "n": 6582,
+  "source": "global top-by-stars software repos, deeper per-language search (census-governance-floor/census.py)",
+  "method": "GraphQL native fields + directory-tree entry detection (root/.github/docs/ISSUE_TEMPLATE/workflows); archetype from manifest text",
+  "star_range": [
+    29,
+    451107
+  ],
+  "ecosystem_distribution": {
+    "java": 1247,
+    "node": 907,
+    "rust": 474,
+    "elixir": 469,
+    "php": 447,
+    "go": 445,
+    "ruby": 437,
+    "scala": 423,
+    "dart": 405,
+    "swift": 384,
+    "python": 347,
+    "cpp": 171,
+    "clojure": 135,
+    "ocaml": 69,
+    "shell": 63,
+    "zig": 33,
+    "dotnet": 28,
+    "perl": 27,
+    "lua": 23,
+    "crystal": 22,
+    "haskell": 15,
+    "nim": 8,
+    "julia": 3
+  },
+  "archetype_counts": {
+    "monorepo": 496,
+    "cli": 312,
+    "library": 824,
+    "app_service": 5789
+  },
+  "archetype_pct": {
+    "monorepo": 8,
+    "cli": 5,
+    "library": 13,
+    "app_service": 88
+  },
+  "overall_presence_pct": {
+    "license": 94,
+    "contributing": 48,
+    "security": 21,
+    "codeowners": 12,
+    "coc": 32,
+    "changelog": 41,
+    "support": 2,
+    "governance": 1,
+    "cla": 1,
+    "editorconfig": 21,
+    "gitattributes": 29,
+    "env_example": 4,
+    "precommit": 5,
+    "dependabot": 25,
+    "renovate": 6,
+    "dep_update_bot": 30,
+    "agents_md": 13,
+    "claude_md": 11,
+    "adr_dir": 1,
+    "has_issue_tmpl": 48,
+    "issue_forms": 20,
+    "issue_config": 22,
+    "pr_template": 29,
+    "funding": 29,
+    "discussions": 39,
+    "readme": 100,
+    "gitignore": 99,
+    "has_lockfile": 38,
+    "has_ci": 85
+  },
+  "licensing": {
+    "present_pct": 94,
+    "recognized_pct": 82,
+    "recognized_given_present_pct": 87,
+    "top_spdx": [
+      [
+        "MIT",
+        2604
+      ],
+      [
+        "Apache-2.0",
+        1690
+      ],
+      [
+        "NOASSERTION",
+        778
+      ],
+      [
+        "GPL-3.0",
+        387
+      ],
+      [
+        "AGPL-3.0",
+        204
+      ],
+      [
+        "BSD-3-Clause",
+        175
+      ],
+      [
+        "MPL-2.0",
+        61
+      ],
+      [
+        "GPL-2.0",
+        49
+      ],
+      [
+        "EPL-1.0",
+        44
+      ],
+      [
+        "BSD-2-Clause",
+        43
+      ],
+      [
+        "LGPL-3.0",
+        28
+      ],
+      [
+        "Unlicense",
+        20
+      ]
+    ]
+  },
+  "coc_covenant_share_of_all_pct": 18,
+  "merge_policy": {
+    "n_resolved": 6582,
+    "squash_allowed_pct": 97,
+    "merge_commit_allowed_pct": 74,
+    "rebase_allowed_pct": 81
+  },
+  "by_ecosystem": {
+    "java": {
+      "n": 1247,
+      "license": 91,
+      "contributing": 33,
+      "security": 12,
+      "coc": 22,
+      "codeowners": 7,
+      "changelog": 27,
+      "editorconfig": 24,
+      "dep_update_bot": 26,
+      "has_ci": 74,
+      "pr_template": 22,
+      "agents_md": 9,
+      "claude_md": 7
+    },
+    "node": {
+      "n": 907,
+      "license": 97,
+      "contributing": 70,
+      "security": 37,
+      "coc": 47,
+      "codeowners": 17,
+      "changelog": 43,
+      "editorconfig": 44,
+      "dep_update_bot": 34,
+      "has_ci": 92,
+      "pr_template": 46,
+      "agents_md": 22,
+      "claude_md": 20
+    },
+    "rust": {
+      "n": 474,
+      "license": 98,
+      "contributing": 65,
+      "security": 32,
+      "coc": 41,
+      "codeowners": 22,
+      "changelog": 50,
+      "editorconfig": 25,
+      "dep_update_bot": 47,
+      "has_ci": 98,
+      "pr_template": 39,
+      "agents_md": 24,
+      "claude_md": 18
+    },
+    "elixir": {
+      "n": 469,
+      "license": 88,
+      "contributing": 22,
+      "security": 4,
+      "coc": 17,
+      "codeowners": 5,
+      "changelog": 63,
+      "editorconfig": 4,
+      "dep_update_bot": 19,
+      "has_ci": 90,
+      "pr_template": 8,
+      "agents_md": 6,
+      "claude_md": 5
+    },
+    "php": {
+      "n": 447,
+      "license": 97,
+      "contributing": 53,
+      "security": 41,
+      "coc": 40,
+      "codeowners": 8,
+      "changelog": 50,
+      "editorconfig": 49,
+      "dep_update_bot": 37,
+      "has_ci": 87,
+      "pr_template": 29,
+      "agents_md": 8,
+      "claude_md": 6
+    },
+    "go": {
+      "n": 445,
+      "license": 99,
+      "contributing": 67,
+      "security": 43,
+      "coc": 49,
+      "codeowners": 26,
+      "changelog": 33,
+      "editorconfig": 15,
+      "dep_update_bot": 59,
+      "has_ci": 96,
+      "pr_template": 46,
+      "agents_md": 18,
+      "claude_md": 15
+    },
+    "ruby": {
+      "n": 437,
+      "license": 96,
+      "contributing": 55,
+      "security": 17,
+      "coc": 30,
+      "codeowners": 8,
+      "changelog": 66,
+      "editorconfig": 11,
+      "dep_update_bot": 37,
+      "has_ci": 93,
+      "pr_template": 21,
+      "agents_md": 9,
+      "claude_md": 6
+    },
+    "scala": {
+      "n": 423,
+      "license": 93,
+      "contributing": 36,
+      "security": 6,
+      "coc": 33,
+      "codeowners": 10,
+      "changelog": 25,
+      "editorconfig": 4,
+      "dep_update_bot": 22,
+      "has_ci": 86,
+      "pr_template": 15,
+      "agents_md": 4,
+      "claude_md": 4
+    }
+  },
+  "by_archetype": {
+    "coc": {
+      "overall": 32,
+      "monorepo": {
+        "pct": 57,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 30,
+        "n": 6086
+      },
+      "library": {
+        "pct": 42,
+        "n": 824
+      },
+      "cli": {
+        "pct": 42,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 31,
+        "n": 5789
+      }
+    },
+    "codeowners": {
+      "overall": 12,
+      "monorepo": {
+        "pct": 31,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 11,
+        "n": 6086
+      },
+      "library": {
+        "pct": 14,
+        "n": 824
+      },
+      "cli": {
+        "pct": 16,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 12,
+        "n": 5789
+      }
+    },
+    "contributing": {
+      "overall": 48,
+      "monorepo": {
+        "pct": 83,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 45,
+        "n": 6086
+      },
+      "library": {
+        "pct": 61,
+        "n": 824
+      },
+      "cli": {
+        "pct": 65,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 46,
+        "n": 5789
+      }
+    },
+    "security": {
+      "overall": 21,
+      "monorepo": {
+        "pct": 51,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 19,
+        "n": 6086
+      },
+      "library": {
+        "pct": 33,
+        "n": 824
+      },
+      "cli": {
+        "pct": 41,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 20,
+        "n": 5789
+      }
+    },
+    "changelog": {
+      "overall": 41,
+      "monorepo": {
+        "pct": 42,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 41,
+        "n": 6086
+      },
+      "library": {
+        "pct": 41,
+        "n": 824
+      },
+      "cli": {
+        "pct": 46,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 41,
+        "n": 5789
+      }
+    },
+    "funding": {
+      "overall": 29,
+      "monorepo": {
+        "pct": 44,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 28,
+        "n": 6086
+      },
+      "library": {
+        "pct": 34,
+        "n": 824
+      },
+      "cli": {
+        "pct": 37,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 29,
+        "n": 5789
+      }
+    },
+    "discussions": {
+      "overall": 39,
+      "monorepo": {
+        "pct": 71,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 37,
+        "n": 6086
+      },
+      "library": {
+        "pct": 49,
+        "n": 824
+      },
+      "cli": {
+        "pct": 56,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 38,
+        "n": 5789
+      }
+    },
+    "agents_md": {
+      "overall": 13,
+      "monorepo": {
+        "pct": 42,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 10,
+        "n": 6086
+      },
+      "library": {
+        "pct": 18,
+        "n": 824
+      },
+      "cli": {
+        "pct": 30,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 12,
+        "n": 5789
+      }
+    },
+    "claude_md": {
+      "overall": 11,
+      "monorepo": {
+        "pct": 35,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 9,
+        "n": 6086
+      },
+      "library": {
+        "pct": 16,
+        "n": 824
+      },
+      "cli": {
+        "pct": 26,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 10,
+        "n": 5789
+      }
+    },
+    "editorconfig": {
+      "overall": 21,
+      "monorepo": {
+        "pct": 48,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 19,
+        "n": 6086
+      },
+      "library": {
+        "pct": 29,
+        "n": 824
+      },
+      "cli": {
+        "pct": 25,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 21,
+        "n": 5789
+      }
+    },
+    "precommit": {
+      "overall": 5,
+      "monorepo": {
+        "pct": 4,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 5,
+        "n": 6086
+      },
+      "library": {
+        "pct": 22,
+        "n": 824
+      },
+      "cli": {
+        "pct": 28,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 3,
+        "n": 5789
+      }
+    },
+    "dep_update_bot": {
+      "overall": 30,
+      "monorepo": {
+        "pct": 49,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 29,
+        "n": 6086
+      },
+      "library": {
+        "pct": 32,
+        "n": 824
+      },
+      "cli": {
+        "pct": 36,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 30,
+        "n": 5789
+      }
+    },
+    "adr_dir": {
+      "overall": 1,
+      "monorepo": {
+        "pct": 4,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 1,
+        "n": 6086
+      },
+      "library": {
+        "pct": 1,
+        "n": 824
+      },
+      "cli": {
+        "pct": 4,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 1,
+        "n": 5789
+      }
+    },
+    "pr_template": {
+      "overall": 29,
+      "monorepo": {
+        "pct": 61,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 26,
+        "n": 6086
+      },
+      "library": {
+        "pct": 42,
+        "n": 824
+      },
+      "cli": {
+        "pct": 47,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 27,
+        "n": 5789
+      }
+    },
+    "issue_forms": {
+      "overall": 20,
+      "monorepo": {
+        "pct": 52,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 17,
+        "n": 6086
+      },
+      "library": {
+        "pct": 30,
+        "n": 824
+      },
+      "cli": {
+        "pct": 36,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 19,
+        "n": 5789
+      }
+    },
+    "governance": {
+      "overall": 1,
+      "monorepo": {
+        "pct": 2,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 1,
+        "n": 6086
+      },
+      "library": {
+        "pct": 1,
+        "n": 824
+      },
+      "cli": {
+        "pct": 2,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 1,
+        "n": 5789
+      }
+    },
+    "support": {
+      "overall": 2,
+      "monorepo": {
+        "pct": 4,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 2,
+        "n": 6086
+      },
+      "library": {
+        "pct": 3,
+        "n": 824
+      },
+      "cli": {
+        "pct": 3,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 2,
+        "n": 5789
+      }
+    },
+    "cla": {
+      "overall": 1,
+      "monorepo": {
+        "pct": 3,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 1,
+        "n": 6086
+      },
+      "library": {
+        "pct": 2,
+        "n": 824
+      },
+      "cli": {
+        "pct": 1,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 1,
+        "n": 5789
+      }
+    },
+    "gitattributes": {
+      "overall": 29,
+      "monorepo": {
+        "pct": 50,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 27,
+        "n": 6086
+      },
+      "library": {
+        "pct": 35,
+        "n": 824
+      },
+      "cli": {
+        "pct": 42,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 28,
+        "n": 5789
+      }
+    },
+    "env_example": {
+      "overall": 4,
+      "monorepo": {
+        "pct": 11,
+        "n": 496
+      },
+      "not_monorepo": {
+        "pct": 3,
+        "n": 6086
+      },
+      "library": {
+        "pct": 6,
+        "n": 824
+      },
+      "cli": {
+        "pct": 12,
+        "n": 312
+      },
+      "app_service": {
+        "pct": 4,
+        "n": 5789
+      }
+    }
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "n": 2000,
+  "source": "global top-2000 by stars, per-language star-sorted software repos (census2k.py)",
+  "presence_method": "has_issue_tmpl/has_pr_tmpl via recursive-tree case-insensitive regex (repair mode; census-expanded-comparable). template field-labels/headers/titles via GraphQL.",
+  "star_range": [
+    8251,
+    306241
+  ],
+  "issue_templates_pct": 68,
+  "issue_forms_pct": 31,
+  "issue_legacy_md_pct": 34,
+  "issue_config_pct": 36,
+  "pr_template_pct": 44,
+  "pr_template_with_checklist_pct": 15,
+  "pr_cc_adoption_ge70_pct": 21,
+  "pr_cc_mostly_ge30_pct": 41,
+  "pr_cc_mean_ratio": 0.33,
+  "issue_cc_mean_ratio": 0.01,
+  "issue_prefix_mean_ratio": 0.22,
+  "issue_title_avg_len": 54.4,
+  "pr_template_top_headers": [
+    [
+      "description",
+      100
+    ],
+    [
+      "checklist",
+      78
+    ],
+    [
+      "summary",
+      39
+    ],
+    [
+      "checklist:",
+      29
+    ],
+    [
+      "type of change",
+      28
+    ],
+    [
+      "related issues",
+      24
+    ],
+    [
+      "testing",
+      23
+    ],
+    [
+      "types of changes",
+      19
+    ],
+    [
+      "motivation and context",
+      19
+    ],
+    [
+      "what does this pr do?",
+      17
+    ],
+    [
+      "how has this been tested?",
+      17
+    ],
+    [
+      "related issue",
+      13
+    ],
+    [
+      "changes",
+      11
+    ],
+    [
+      "pr checklist",
+      11
+    ],
+    [
+      "documentation",
+      9
+    ],
+    [
+      "proposed changes",
+      9
+    ],
+    [
+      "motivation",
+      9
+    ],
+    [
+      "test plan",
+      9
+    ],
+    [
+      "solution",
+      9
+    ],
+    [
+      "additional information",
+      8
+    ],
+    [
+      "screenshots",
+      8
+    ],
+    [
+      "overview",
+      7
+    ],
+    [
+      "changes made",
+      6
+    ],
+    [
+      "tests",
+      6
+    ],
+    [
+      "additional notes",
+      6
+    ]
+  ],
+  "issue_form_top_field_labels": [
+    [
+      "additional context",
+      247
+    ],
+    [
+      "steps to reproduce",
+      227
+    ],
+    [
+      "expected behavior",
+      210
+    ],
+    [
+      "description",
+      198
+    ],
+    [
+      "additional information",
+      126
+    ],
+    [
+      "operating system",
+      106
+    ],
+    [
+      "describe the bug",
+      89
+    ],
+    [
+      "version",
+      83
+    ],
+    [
+      "what happened?",
+      73
+    ],
+    [
+      "actual behavior",
+      72
+    ],
+    [
+      "relevant log output",
+      70
+    ],
+    [
+      "code of conduct",
+      68
+    ],
+    [
+      "environment",
+      65
+    ],
+    [
+      "checklist",
+      63
+    ],
+    [
+      "anything else?",
+      58
+    ],
+    [
+      "is there an existing issue for this?",
+      54
+    ],
+    [
+      "describe the solution you'd like",
+      53
+    ],
+    [
+      "proposed solution",
+      51
+    ],
+    [
+      "alternatives considered",
+      48
+    ],
+    [
+      "summary",
+      44
+    ],
+    [
+      "describe alternatives you've considered",
+      40
+    ],
+    [
+      "current behavior",
+      39
+    ],
+    [
+      "logs",
+      38
+    ],
+    [
+      "reproduction steps",
+      37
+    ],
+    [
+      "bug description",
+      36
+    ]
+  ],
+  "issue_md_top_headers": [
+    [
+      "additional context",
+      137
+    ],
+    [
+      "expected behavior",
+      119
+    ],
+    [
+      "steps to reproduce",
+      86
+    ],
+    [
+      "environment",
+      68
+    ],
+    [
+      "description",
+      66
+    ],
+    [
+      "describe the bug",
+      48
+    ],
+    [
+      "actual behavior",
+      47
+    ],
+    [
+      "to reproduce",
+      40
+    ],
+    [
+      "summary",
+      36
+    ],
+    [
+      "describe alternatives you've considered",
+      35
+    ],
+    [
+      "checklist",
+      34
+    ],
+    [
+      "screenshots",
+      33
+    ],
+    [
+      "describe the solution you'd like",
+      32
+    ],
+    [
+      "motivation",
+      28
+    ],
+    [
+      "proposed solution",
+      24
+    ],
+    [
+      "feature request",
+      24
+    ],
+    [
+      "bug report",
+      21
+    ],
+    [
+      "alternatives",
+      19
+    ],
+    [
+      "expected behaviour",
+      18
+    ],
+    [
+      "is your feature request related to a problem? please describe.",
+      18
+    ]
+  ],
+  "repos_with_pr_data": 1987
+}

@@ -1,0 +1,39 @@
+name: CI
+#
+# 이 저장소의 무결성 검사. 전부 오프라인이라 Actions 분을 거의 쓰지 않는다
+# (비공개 저장소는 Free 플랜에서 2,000분/월 과금 — corpus/aspects/04 visibility-provision-matrix).
+# 네트워크가 필요한 외부 URL 감사는 url-audit.yml 에서 월 1회만 돈다.
+#
+# Actions는 커밋 SHA로 핀한다 (corpus/aspects/04 foundation-floor-artifact-checklist: MUST).
+# 인라인 주석의 버전은 핀된 SHA가 가리키는 태그다.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+
+      - name: 코퍼스 구조 검증
+        run: python3 tools/validate_corpus.py
+
+      - name: 라우팅 지도 최신 여부
+        run: node tools/build-routes.mjs --check
+
+      - name: 검색 계약 (30/30)
+        run: python3 tools/evaluate_retrieval_contract.py
+        continue-on-error: true   # 계약 러너의 CI 이식성 미검증 — 초록 강제 전까지 정보용

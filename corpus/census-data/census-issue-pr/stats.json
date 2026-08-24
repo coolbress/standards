@@ -1,0 +1,243 @@
+{
+  "n": 500,
+  "source": "census-expanded top-500 (manifest-filtered top-starred software)",
+  "issue_templates_pct": 78,
+  "issue_forms_pct": 54,
+  "issue_legacy_md_pct": 32,
+  "issue_config_pct": 58,
+  "pr_template_pct": 35,
+  "pr_template_with_checklist_pct": 22,
+  "pr_cc_adoption_ge70_pct": 34,
+  "pr_cc_mostly_ge30_pct": 57,
+  "pr_cc_mean_ratio": 0.45,
+  "issue_cc_mean_ratio": 0.02,
+  "issue_prefix_mean_ratio": 0.31,
+  "issue_title_avg_len": 60.5,
+  "pr_template_top_headers": [
+    [
+      "checklist",
+      33
+    ],
+    [
+      "description",
+      29
+    ],
+    [
+      "summary",
+      21
+    ],
+    [
+      "type of change",
+      16
+    ],
+    [
+      "what does this pr do?",
+      11
+    ],
+    [
+      "testing",
+      9
+    ],
+    [
+      "test plan",
+      9
+    ],
+    [
+      "additional information",
+      6
+    ],
+    [
+      "checklist:",
+      6
+    ],
+    [
+      "related issues",
+      6
+    ],
+    [
+      "motivation and context",
+      5
+    ],
+    [
+      "motivation",
+      4
+    ],
+    [
+      "documentation",
+      4
+    ],
+    [
+      "changes made",
+      4
+    ],
+    [
+      "types of changes",
+      4
+    ],
+    [
+      "changes",
+      4
+    ],
+    [
+      "additional notes",
+      3
+    ],
+    [
+      "linked issue",
+      3
+    ],
+    [
+      "related issue",
+      3
+    ],
+    [
+      "how to test",
+      3
+    ]
+  ],
+  "issue_form_top_field_labels": [
+    [
+      "steps to reproduce",
+      111
+    ],
+    [
+      "additional context",
+      100
+    ],
+    [
+      "expected behavior",
+      92
+    ],
+    [
+      "description",
+      78
+    ],
+    [
+      "additional information",
+      62
+    ],
+    [
+      "operating system",
+      52
+    ],
+    [
+      "actual behavior",
+      35
+    ],
+    [
+      "what happened?",
+      34
+    ],
+    [
+      "version",
+      32
+    ],
+    [
+      "environment",
+      30
+    ],
+    [
+      "bug description",
+      29
+    ],
+    [
+      "describe the bug",
+      26
+    ],
+    [
+      "logs",
+      25
+    ],
+    [
+      "summary",
+      24
+    ],
+    [
+      "current behavior",
+      23
+    ],
+    [
+      "alternatives considered",
+      23
+    ],
+    [
+      "proposed solution",
+      23
+    ],
+    [
+      "relevant log output",
+      22
+    ],
+    [
+      "feature description",
+      22
+    ],
+    [
+      "checklist",
+      21
+    ]
+  ],
+  "issue_md_top_headers": [
+    [
+      "expected behavior",
+      19
+    ],
+    [
+      "additional context",
+      18
+    ],
+    [
+      "steps to reproduce",
+      14
+    ],
+    [
+      "environment",
+      13
+    ],
+    [
+      "describe the bug",
+      12
+    ],
+    [
+      "description",
+      7
+    ],
+    [
+      "actual behavior",
+      6
+    ],
+    [
+      "describe alternatives you've considered",
+      5
+    ],
+    [
+      "proposed solution",
+      5
+    ],
+    [
+      "to reproduce",
+      5
+    ],
+    [
+      "motivation",
+      4
+    ],
+    [
+      "bug report",
+      4
+    ],
+    [
+      "current behavior",
+      4
+    ],
+    [
+      "describe the solution you'd like",
+      4
+    ],
+    [
+      "summary",
+      4
+    ]
+  ],
+  "repos_with_pr_data": 499
+}

@@ -1,0 +1,49 @@
+population (form OR pr-template repos): 1104
+  80/1104
+  160/1104
+  240/1104
+  320/1104
+  400/1104
+  480/1104
+  560/1104
+  640/1104
+  720/1104
+  800/1104
+  880/1104
+  960/1104
+  1040/1104
+wrote docs/research/census-data/census-issue-pr/conventions-roster-records.json (1104 repos)
+
+-- unbucketed tail (2872/8734 labels = 32.9%) — refine SECTION_BUCKETS from these, then re-run `roster` --
+    23  Search before asking
+    19  Question
+    18  OS
+    18  Context
+    18  Are you willing to submit a PR?
+    17  What did you expect to happen?
+    14  Configuration
+    13  Installation Method
+    13  问题描述
+    12  References
+    11  Example
+    11  Impact
+    11  Actual Result
+    11  Company or project name
+    10  Type
+    10  Other
+    10  Installation method
+    10  复现步骤
+     9  Component
+     9  Area
+     9  操作系统
+     9  Participation
+     8  Feature request
+     8  Self Checks
+     8  Validations
+     8  Architecture
+     8  补充信息
+     7  What would you like to share?
+     7  Contribution
+     7  Your contribution
+
+wrote docs/research/census-data/census-issue-pr/conventions-roster.json

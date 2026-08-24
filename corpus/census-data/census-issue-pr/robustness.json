@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "method": {
+    "confidence_interval": "Wilson score, 95%, unweighted",
+    "cluster_sensitivity": "deterministic owner-cluster bootstrap, 2000 replicates, seed 20260711",
+    "stratification": "within-cohort star-count quartiles",
+    "recency_weighting": "not applied: createdAt absent from preserved records"
+  },
+  "cohorts": {
+    "senior": {
+      "input": "conventions-records.json",
+      "input_sha256": "94ad52236b6b33bb8abb652a86382930ee17e206774e6d535c89ee2499216bca",
+      "repo_n": 1104,
+      "owner_cluster_n": 970,
+      "metrics": {
+        "form_help_text": {
+          "unit": "input-like field",
+          "successes": 7609,
+          "observations": 8734,
+          "pct": 87.12,
+          "wilson_95_pct": [
+            86.4,
+            87.81
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            85.52,
+            88.68
+          ],
+          "owner_equal_pct": 86.52,
+          "owner_equal_minus_pooled_pp": -0.6,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 276,
+              "star_range": [
+                8251,
+                14116
+              ],
+              "successes": 1943,
+              "observations": 2193,
+              "pct": 88.6
+            },
+            {
+              "quartile": 2,
+              "repo_n": 276,
+              "star_range": [
+                14139,
+                22482
+              ],
+              "successes": 1506,
+              "observations": 1714,
+              "pct": 87.86
+            },
+            {
+              "quartile": 3,
+              "repo_n": 276,
+              "star_range": [
+                22491,
+                35386
+              ],
+              "successes": 1736,
+              "observations": 2000,
+              "pct": 86.8
+            },
+            {
+              "quartile": 4,
+              "repo_n": 276,
+              "star_range": [
+                35391,
+                306241
+              ],
+              "successes": 2424,
+              "observations": 2827,
+              "pct": 85.74
+            }
+          ]
+        },
+        "form_preflight": {
+          "unit": "form",
+          "successes": 360,
+          "observations": 1610,
+          "pct": 22.36,
+          "wilson_95_pct": [
+            20.39,
+            24.46
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            18.75,
+            25.81
+          ],
+          "owner_equal_pct": 24.05,
+          "owner_equal_minus_pooled_pp": 1.69,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 276,
+              "star_range": [
+                8251,
+                14116
+              ],
+              "successes": 82,
+              "observations": 411,
+              "pct": 19.95
+            },
+            {
+              "quartile": 2,
+              "repo_n": 276,
+              "star_range": [
+                14139,
+                22482
+              ],
+              "successes": 74,
+              "observations": 321,
+              "pct": 23.05
+            },
+            {
+              "quartile": 3,
+              "repo_n": 276,
+              "star_range": [
+                22491,
+                35386
+              ],
+              "successes": 68,
+              "observations": 380,
+              "pct": 17.89
+            },
+            {
+              "quartile": 4,
+              "repo_n": 276,
+              "star_range": [
+                35391,
+                306241
+              ],
+              "successes": 136,
+              "observations": 498,
+              "pct": 27.31
+            }
+          ]
+        },
+        "pr_empty_checklist": {
+          "unit": "PR template",
+          "successes": 312,
+          "observations": 503,
+          "pct": 62.03,
+          "wilson_95_pct": [
+            57.71,
+            66.16
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            57.66,
+            66.48
+          ],
+          "owner_equal_pct": 63.02,
+          "owner_equal_minus_pooled_pp": 0.99,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 276,
+              "star_range": [
+                8251,
+                14116
+              ],
+              "successes": 74,
+              "observations": 121,
+              "pct": 61.16
+            },
+            {
+              "quartile": 2,
+              "repo_n": 276,
+              "star_range": [
+                14139,
+                22482
+              ],
+              "successes": 78,
+              "observations": 123,
+              "pct": 63.41
+            },
+            {
+              "quartile": 3,
+              "repo_n": 276,
+              "star_range": [
+                22491,
+                35386
+              ],
+              "successes": 79,
+              "observations": 126,
+              "pct": 62.7
+            },
+            {
+              "quartile": 4,
+              "repo_n": 276,
+              "star_range": [
+                35391,
+                306241
+              ],
+              "successes": 81,
+              "observations": 133,
+              "pct": 60.9
+            }
+          ]
+        },
+        "pr_html_guidance": {
+          "unit": "PR template",
+          "successes": 351,
+          "observations": 503,
+          "pct": 69.78,
+          "wilson_95_pct": [
+            65.63,
+            73.63
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            65.66,
+            73.99
+          ],
+          "owner_equal_pct": 69.06,
+          "owner_equal_minus_pooled_pp": -0.72,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 276,
+              "star_range": [
+                8251,
+                14116
+              ],
+              "successes": 82,
+              "observations": 121,
+              "pct": 67.77
+            },
+            {
+              "quartile": 2,
+              "repo_n": 276,
+              "star_range": [
+                14139,
+                22482
+              ],
+              "successes": 80,
+              "observations": 123,
+              "pct": 65.04
+            },
+            {
+              "quartile": 3,
+              "repo_n": 276,
+              "star_range": [
+                22491,
+                35386
+              ],
+              "successes": 90,
+              "observations": 126,
+              "pct": 71.43
+            },
+            {
+              "quartile": 4,
+              "repo_n": 276,
+              "star_range": [
+                35391,
+                306241
+              ],
+              "successes": 99,
+              "observations": 133,
+              "pct": 74.44
+            }
+          ]
+        },
+        "pr_type_of_change": {
+          "unit": "PR template",
+          "successes": 58,
+          "observations": 503,
+          "pct": 11.53,
+          "wilson_95_pct": [
+            9.03,
+            14.62
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            8.82,
+            14.32
+          ],
+          "owner_equal_pct": 12.14,
+          "owner_equal_minus_pooled_pp": 0.61,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 276,
+              "star_range": [
+                8251,
+                14116
+              ],
+              "successes": 13,
+              "observations": 121,
+              "pct": 10.74
+            },
+            {
+              "quartile": 2,
+              "repo_n": 276,
+              "star_range": [
+                14139,
+                22482
+              ],
+              "successes": 16,
+              "observations": 123,
+              "pct": 13.01
+            },
+            {
+              "quartile": 3,
+              "repo_n": 276,
+              "star_range": [
+                22491,
+                35386
+              ],
+              "successes": 10,
+              "observations": 126,
+              "pct": 7.94
+            },
+            {
+              "quartile": 4,
+              "repo_n": 276,
+              "star_range": [
+                35391,
+                306241
+              ],
+              "successes": 19,
+              "observations": 133,
+              "pct": 14.29
+            }
+          ]
+        }
+      }
+    },
+    "wide": {
+      "input": "conventions-6k-records.json",
+      "input_sha256": "a32df5580ee52c5e1b149665324819aa6b58d11f984c58f5f2e3aab0d44235a8",
+      "repo_n": 2425,
+      "owner_cluster_n": 2002,
+      "metrics": {
+        "form_help_text": {
+          "unit": "input-like field",
+          "successes": 15688,
+          "observations": 17991,
+          "pct": 87.2,
+          "wilson_95_pct": [
+            86.7,
+            87.68
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            86.09,
+            88.31
+          ],
+          "owner_equal_pct": 87.0,
+          "owner_equal_minus_pooled_pp": -0.2,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 606,
+              "star_range": [
+                67,
+                5044
+              ],
+              "successes": 2908,
+              "observations": 3261,
+              "pct": 89.18
+            },
+            {
+              "quartile": 2,
+              "repo_n": 606,
+              "star_range": [
+                5067,
+                13904
+              ],
+              "successes": 3863,
+              "observations": 4364,
+              "pct": 88.52
+            },
+            {
+              "quartile": 3,
+              "repo_n": 606,
+              "star_range": [
+                13914,
+                26457
+              ],
+              "successes": 3761,
+              "observations": 4361,
+              "pct": 86.24
+            },
+            {
+              "quartile": 4,
+              "repo_n": 607,
+              "star_range": [
+                26473,
+                451107
+              ],
+              "successes": 5156,
+              "observations": 6005,
+              "pct": 85.86
+            }
+          ]
+        },
+        "form_preflight": {
+          "unit": "form",
+          "successes": 724,
+          "observations": 3248,
+          "pct": 22.29,
+          "wilson_95_pct": [
+            20.89,
+            23.75
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            19.97,
+            24.71
+          ],
+          "owner_equal_pct": 23.49,
+          "owner_equal_minus_pooled_pp": 1.2,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 606,
+              "star_range": [
+                67,
+                5044
+              ],
+              "successes": 129,
+              "observations": 572,
+              "pct": 22.55
+            },
+            {
+              "quartile": 2,
+              "repo_n": 606,
+              "star_range": [
+                5067,
+                13904
+              ],
+              "successes": 179,
+              "observations": 785,
+              "pct": 22.8
+            },
+            {
+              "quartile": 3,
+              "repo_n": 606,
+              "star_range": [
+                13914,
+                26457
+              ],
+              "successes": 174,
+              "observations": 834,
+              "pct": 20.86
+            },
+            {
+              "quartile": 4,
+              "repo_n": 607,
+              "star_range": [
+                26473,
+                451107
+              ],
+              "successes": 242,
+              "observations": 1057,
+              "pct": 22.89
+            }
+          ]
+        },
+        "pr_empty_checklist": {
+          "unit": "PR template",
+          "successes": 681,
+          "observations": 1077,
+          "pct": 63.23,
+          "wilson_95_pct": [
+            60.31,
+            66.06
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            59.57,
+            66.54
+          ],
+          "owner_equal_pct": 64.42,
+          "owner_equal_minus_pooled_pp": 1.19,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 606,
+              "star_range": [
+                67,
+                5044
+              ],
+              "successes": 154,
+              "observations": 251,
+              "pct": 61.35
+            },
+            {
+              "quartile": 2,
+              "repo_n": 606,
+              "star_range": [
+                5067,
+                13904
+              ],
+              "successes": 162,
+              "observations": 267,
+              "pct": 60.67
+            },
+            {
+              "quartile": 3,
+              "repo_n": 606,
+              "star_range": [
+                13914,
+                26457
+              ],
+              "successes": 184,
+              "observations": 279,
+              "pct": 65.95
+            },
+            {
+              "quartile": 4,
+              "repo_n": 607,
+              "star_range": [
+                26473,
+                451107
+              ],
+              "successes": 181,
+              "observations": 280,
+              "pct": 64.64
+            }
+          ]
+        },
+        "pr_html_guidance": {
+          "unit": "PR template",
+          "successes": 687,
+          "observations": 1077,
+          "pct": 63.79,
+          "wilson_95_pct": [
+            60.87,
+            66.6
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            60.47,
+            66.89
+          ],
+          "owner_equal_pct": 62.94,
+          "owner_equal_minus_pooled_pp": -0.85,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 606,
+              "star_range": [
+                67,
+                5044
+              ],
+              "successes": 122,
+              "observations": 251,
+              "pct": 48.61
+            },
+            {
+              "quartile": 2,
+              "repo_n": 606,
+              "star_range": [
+                5067,
+                13904
+              ],
+              "successes": 162,
+              "observations": 267,
+              "pct": 60.67
+            },
+            {
+              "quartile": 3,
+              "repo_n": 606,
+              "star_range": [
+                13914,
+                26457
+              ],
+              "successes": 189,
+              "observations": 279,
+              "pct": 67.74
+            },
+            {
+              "quartile": 4,
+              "repo_n": 607,
+              "star_range": [
+                26473,
+                451107
+              ],
+              "successes": 214,
+              "observations": 280,
+              "pct": 76.43
+            }
+          ]
+        },
+        "pr_type_of_change": {
+          "unit": "PR template",
+          "successes": 128,
+          "observations": 1077,
+          "pct": 11.88,
+          "wilson_95_pct": [
+            10.09,
+            13.95
+          ],
+          "owner_cluster_bootstrap_95_pct": [
+            9.88,
+            13.9
+          ],
+          "owner_equal_pct": 12.96,
+          "owner_equal_minus_pooled_pp": 1.08,
+          "by_star_quartile": [
+            {
+              "quartile": 1,
+              "repo_n": 606,
+              "star_range": [
+                67,
+                5044
+              ],
+              "successes": 32,
+              "observations": 251,
+              "pct": 12.75
+            },
+            {
+              "quartile": 2,
+              "repo_n": 606,
+              "star_range": [
+                5067,
+                13904
+              ],
+              "successes": 28,
+              "observations": 267,
+              "pct": 10.49
+            },
+            {
+              "quartile": 3,
+              "repo_n": 606,
+              "star_range": [
+                13914,
+                26457
+              ],
+              "successes": 36,
+              "observations": 279,
+              "pct": 12.9
+            },
+            {
+              "quartile": 4,
+              "repo_n": 607,
+              "star_range": [
+                26473,
+                451107
+              ],
+              "successes": 32,
+              "observations": 280,
+              "pct": 11.43
+            }
+          ]
+        }
+      }
+    }
+  }
+}

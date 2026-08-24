@@ -1,0 +1,844 @@
+{
+  "simple": {
+    "fetched": 488,
+    "inspected": 488,
+    "software": 429,
+    "nonSoftware": 59,
+    "archetypeDistribution": {
+      "monorepo": 90,
+      "other": 38,
+      "library": 93,
+      "non-software": 55,
+      "backend-service": 67,
+      "data-ml": 24,
+      "cli": 77,
+      "mobile": 11,
+      "web-app": 33
+    },
+    "adoptionPctOverall": {
+      "manifest": 88,
+      "license": 97,
+      "runtime_pin": 24,
+      "pkg_manager_pin": 19,
+      "lockfile": 57,
+      "build_config": 65,
+      "linter": 69,
+      "formatter": 51,
+      "typechecker": 50,
+      "editorconfig": 39,
+      "precommit_hooks": 33,
+      "test_framework": 88,
+      "coverage_config": 25,
+      "gitignore": 97,
+      "gitattributes": 58,
+      "commit_convention": 14,
+      "codeowners": 32,
+      "issue_template": 82,
+      "pr_template": 58,
+      "ci": 92,
+      "pr_title_check": 8,
+      "dep_bot": 49,
+      "release_automation": 50,
+      "supply_chain_security": 28,
+      "readme": 97,
+      "contributing": 73,
+      "security_md": 54,
+      "code_of_conduct": 43,
+      "changelog": 45,
+      "docs_dir": 50,
+      "devcontainer": 21,
+      "dockerfile": 46,
+      "env_example": 18,
+      "task_runner": 66,
+      "editor_recommendations": 24
+    },
+    "toolWinners": {
+      "linter": {
+        "eslint": 111,
+        "ruff": 52,
+        "clippy": 27,
+        "golangci-lint": 27,
+        "flake8": 17,
+        "biome": 11,
+        "oxlint": 10,
+        "checkstyle": 7
+      },
+      "formatter": {
+        "prettier": 92,
+        "ruff": 37,
+        "gofmt": 26,
+        "rustfmt": 23,
+        "biome": 16,
+        "black": 13,
+        "clang-format": 10,
+        "oxfmt": 8
+      },
+      "typechecker": {
+        "tsc": 125,
+        "mypy": 31,
+        "go": 22,
+        "flow": 3,
+        "pyright": 2,
+        "go-vet": 2,
+        "ty": 1,
+        "dart-analyzer": 1
+      },
+      "test": {
+        "pytest": 98,
+        "vitest": 62,
+        "go-test": 42,
+        "jest": 31,
+        "cargo-test": 30,
+        "mocha": 17,
+        "junit": 13,
+        "playwright": 6
+      },
+      "pkg_manager": {
+        "npm": 71,
+        "pip": 68,
+        "pnpm": 56,
+        "go": 37,
+        "yarn": 32,
+        "uv": 31,
+        "cargo": 31,
+        "gradle": 15
+      },
+      "ci": {
+        "github-actions": 372,
+        "circleci": 9,
+        "travis": 8,
+        "azure": 3,
+        "other": 3,
+        "travis,github-actions": 1
+      },
+      "dep_bot": {
+        "dependabot": 172,
+        "renovate": 40
+      }
+    },
+    "conditionalByArchetype": {
+      "monorepo": {
+        "count": 90,
+        "build_config": 88,
+        "release_automation": 67,
+        "devcontainer": 31,
+        "dockerfile": 53,
+        "env_example": 37,
+        "coverage_config": 24,
+        "precommit_hooks": 50,
+        "contributing": 84,
+        "security_md": 66,
+        "code_of_conduct": 54,
+        "docs_dir": 58,
+        "editor_recommendations": 47,
+        "gitattributes": 61,
+        "codeowners": 47,
+        "issue_template": 91,
+        "pr_template": 76
+      },
+      "other": {
+        "count": 35,
+        "build_config": 69,
+        "release_automation": 23,
+        "devcontainer": 26,
+        "dockerfile": 26,
+        "env_example": 3,
+        "coverage_config": 17,
+        "precommit_hooks": 20,
+        "contributing": 66,
+        "security_md": 46,
+        "code_of_conduct": 43,
+        "docs_dir": 40,
+        "editor_recommendations": 20,
+        "gitattributes": 71,
+        "codeowners": 29,
+        "issue_template": 86,
+        "pr_template": 43
+      },
+      "library": {
+        "count": 93,
+        "build_config": 68,
+        "release_automation": 44,
+        "devcontainer": 15,
+        "dockerfile": 22,
+        "env_example": 8,
+        "coverage_config": 43,
+        "precommit_hooks": 44,
+        "contributing": 81,
+        "security_md": 53,
+        "code_of_conduct": 44,
+        "docs_dir": 55,
+        "editor_recommendations": 13,
+        "gitattributes": 57,
+        "codeowners": 22,
+        "issue_template": 77,
+        "pr_template": 59
+      },
+      "backend-service": {
+        "count": 67,
+        "build_config": 52,
+        "release_automation": 46,
+        "devcontainer": 25,
+        "dockerfile": 79,
+        "env_example": 24,
+        "coverage_config": 31,
+        "precommit_hooks": 28,
+        "contributing": 73,
+        "security_md": 64,
+        "code_of_conduct": 42,
+        "docs_dir": 46,
+        "editor_recommendations": 22,
+        "gitattributes": 60,
+        "codeowners": 34,
+        "issue_template": 82,
+        "pr_template": 64
+      },
+      "data-ml": {
+        "count": 23,
+        "build_config": 30,
+        "release_automation": 26,
+        "devcontainer": 4,
+        "dockerfile": 57,
+        "env_example": 4,
+        "coverage_config": 13,
+        "precommit_hooks": 35,
+        "contributing": 43,
+        "security_md": 35,
+        "code_of_conduct": 39,
+        "docs_dir": 52,
+        "editor_recommendations": 9,
+        "gitattributes": 35,
+        "codeowners": 26,
+        "issue_template": 43,
+        "pr_template": 26
+      },
+      "cli": {
+        "count": 77,
+        "build_config": 45,
+        "release_automation": 58,
+        "devcontainer": 16,
+        "dockerfile": 45,
+        "env_example": 4,
+        "coverage_config": 14,
+        "precommit_hooks": 10,
+        "contributing": 77,
+        "security_md": 47,
+        "code_of_conduct": 32,
+        "docs_dir": 45,
+        "editor_recommendations": 13,
+        "gitattributes": 57,
+        "codeowners": 30,
+        "issue_template": 84,
+        "pr_template": 56
+      },
+      "mobile": {
+        "count": 11,
+        "build_config": 91,
+        "release_automation": 45,
+        "devcontainer": 0,
+        "dockerfile": 18,
+        "env_example": 9,
+        "coverage_config": 18,
+        "precommit_hooks": 9,
+        "contributing": 64,
+        "security_md": 18,
+        "code_of_conduct": 36,
+        "docs_dir": 27,
+        "editor_recommendations": 27,
+        "gitattributes": 36,
+        "codeowners": 18,
+        "issue_template": 91,
+        "pr_template": 36
+      },
+      "web-app": {
+        "count": 33,
+        "build_config": 79,
+        "release_automation": 52,
+        "devcontainer": 24,
+        "dockerfile": 52,
+        "env_example": 45,
+        "coverage_config": 12,
+        "precommit_hooks": 36,
+        "contributing": 48,
+        "security_md": 52,
+        "code_of_conduct": 42,
+        "docs_dir": 45,
+        "editor_recommendations": 30,
+        "gitattributes": 58,
+        "codeowners": 30,
+        "issue_template": 82,
+        "pr_template": 45
+      }
+    }
+  },
+  "weighted": {
+    "n_software": 429,
+    "n_with_dates": 429,
+    "half_life_yr": 2.0,
+    "ref": "2026-06-23",
+    "young_count": 163,
+    "young_pct_of_pop": 38,
+    "median_created_year": 2019,
+    "effective_weight_sum": 89.3,
+    "components": {
+      "manifest": {
+        "uniform": 88,
+        "weighted": 91,
+        "young": 90,
+        "delta": 3
+      },
+      "license": {
+        "uniform": 97,
+        "weighted": 97,
+        "young": 97,
+        "delta": 0
+      },
+      "runtime_pin": {
+        "uniform": 24,
+        "weighted": 28,
+        "young": 30,
+        "delta": 4
+      },
+      "pkg_manager_pin": {
+        "uniform": 19,
+        "weighted": 18,
+        "young": 20,
+        "delta": -1
+      },
+      "lockfile": {
+        "uniform": 57,
+        "weighted": 61,
+        "young": 61,
+        "delta": 4
+      },
+      "build_config": {
+        "uniform": 65,
+        "weighted": 54,
+        "young": 54,
+        "delta": -11
+      },
+      "linter": {
+        "uniform": 69,
+        "weighted": 59,
+        "young": 63,
+        "delta": -10
+      },
+      "formatter": {
+        "uniform": 51,
+        "weighted": 48,
+        "young": 54,
+        "delta": -3
+      },
+      "typechecker": {
+        "uniform": 50,
+        "weighted": 49,
+        "young": 50,
+        "delta": -1
+      },
+      "editorconfig": {
+        "uniform": 39,
+        "weighted": 19,
+        "young": 21,
+        "delta": -20
+      },
+      "precommit_hooks": {
+        "uniform": 33,
+        "weighted": 35,
+        "young": 39,
+        "delta": 2
+      },
+      "test_framework": {
+        "uniform": 88,
+        "weighted": 86,
+        "young": 85,
+        "delta": -2
+      },
+      "coverage_config": {
+        "uniform": 25,
+        "weighted": 17,
+        "young": 17,
+        "delta": -8
+      },
+      "gitignore": {
+        "uniform": 97,
+        "weighted": 97,
+        "young": 97,
+        "delta": 0
+      },
+      "gitattributes": {
+        "uniform": 58,
+        "weighted": 52,
+        "young": 54,
+        "delta": -6
+      },
+      "commit_convention": {
+        "uniform": 14,
+        "weighted": 15,
+        "young": 17,
+        "delta": 1
+      },
+      "codeowners": {
+        "uniform": 32,
+        "weighted": 33,
+        "young": 35,
+        "delta": 1
+      },
+      "issue_template": {
+        "uniform": 82,
+        "weighted": 79,
+        "young": 80,
+        "delta": -3
+      },
+      "pr_template": {
+        "uniform": 58,
+        "weighted": 55,
+        "young": 55,
+        "delta": -3
+      },
+      "ci": {
+        "uniform": 92,
+        "weighted": 91,
+        "young": 91,
+        "delta": -1
+      },
+      "pr_title_check": {
+        "uniform": 8,
+        "weighted": 7,
+        "young": 10,
+        "delta": -1
+      },
+      "dep_bot": {
+        "uniform": 49,
+        "weighted": 44,
+        "young": 44,
+        "delta": -5
+      },
+      "release_automation": {
+        "uniform": 50,
+        "weighted": 51,
+        "young": 54,
+        "delta": 1
+      },
+      "supply_chain_security": {
+        "uniform": 28,
+        "weighted": 20,
+        "young": 17,
+        "delta": -8
+      },
+      "readme": {
+        "uniform": 97,
+        "weighted": 99,
+        "young": 98,
+        "delta": 2
+      },
+      "contributing": {
+        "uniform": 73,
+        "weighted": 64,
+        "young": 65,
+        "delta": -9
+      },
+      "security_md": {
+        "uniform": 54,
+        "weighted": 56,
+        "young": 55,
+        "delta": 2
+      },
+      "code_of_conduct": {
+        "uniform": 43,
+        "weighted": 35,
+        "young": 37,
+        "delta": -8
+      },
+      "changelog": {
+        "uniform": 45,
+        "weighted": 43,
+        "young": 40,
+        "delta": -2
+      },
+      "docs_dir": {
+        "uniform": 50,
+        "weighted": 55,
+        "young": 55,
+        "delta": 5
+      },
+      "devcontainer": {
+        "uniform": 21,
+        "weighted": 21,
+        "young": 22,
+        "delta": 0
+      },
+      "dockerfile": {
+        "uniform": 46,
+        "weighted": 58,
+        "young": 62,
+        "delta": 12
+      },
+      "env_example": {
+        "uniform": 18,
+        "weighted": 36,
+        "young": 37,
+        "delta": 18
+      },
+      "task_runner": {
+        "uniform": 66,
+        "weighted": 59,
+        "young": 56,
+        "delta": -7
+      },
+      "editor_recommendations": {
+        "uniform": 24,
+        "weighted": 21,
+        "young": 25,
+        "delta": -3
+      }
+    },
+    "tools": {
+      "linter": {
+        "uniform": [
+          [
+            "eslint",
+            111
+          ],
+          [
+            "ruff",
+            52
+          ],
+          [
+            "golangci-lint",
+            27
+          ],
+          [
+            "clippy",
+            27
+          ],
+          [
+            "flake8",
+            17
+          ],
+          [
+            "biome",
+            11
+          ]
+        ],
+        "weighted": [
+          [
+            "ruff",
+            15.0
+          ],
+          [
+            "eslint",
+            14.3
+          ],
+          [
+            "clippy",
+            6.7
+          ],
+          [
+            "biome",
+            4.9
+          ],
+          [
+            "oxlint",
+            3.1
+          ],
+          [
+            "flake8",
+            3.0
+          ]
+        ]
+      },
+      "formatter": {
+        "uniform": [
+          [
+            "prettier",
+            92
+          ],
+          [
+            "ruff",
+            37
+          ],
+          [
+            "gofmt",
+            26
+          ],
+          [
+            "rustfmt",
+            23
+          ],
+          [
+            "biome",
+            16
+          ],
+          [
+            "black",
+            13
+          ]
+        ],
+        "weighted": [
+          [
+            "prettier",
+            15.9
+          ],
+          [
+            "ruff",
+            11.6
+          ],
+          [
+            "biome",
+            6.0
+          ],
+          [
+            "rustfmt",
+            4.7
+          ],
+          [
+            "black",
+            4.0
+          ],
+          [
+            "gofmt",
+            1.6
+          ]
+        ]
+      },
+      "typechecker": {
+        "uniform": [
+          [
+            "tsc",
+            125
+          ],
+          [
+            "mypy",
+            31
+          ],
+          [
+            "go",
+            22
+          ],
+          [
+            "flow",
+            3
+          ],
+          [
+            "go-vet",
+            2
+          ],
+          [
+            "pyright",
+            2
+          ]
+        ],
+        "weighted": [
+          [
+            "tsc",
+            30.4
+          ],
+          [
+            "mypy",
+            5.9
+          ],
+          [
+            "go",
+            1.9
+          ],
+          [
+            "ty",
+            0.7
+          ],
+          [
+            "pyright",
+            0.7
+          ],
+          [
+            "basedpyright",
+            0.5
+          ]
+        ]
+      },
+      "test": {
+        "uniform": [
+          [
+            "pytest",
+            98
+          ],
+          [
+            "vitest",
+            62
+          ],
+          [
+            "go-test",
+            42
+          ],
+          [
+            "jest",
+            31
+          ],
+          [
+            "cargo-test",
+            30
+          ],
+          [
+            "mocha",
+            17
+          ]
+        ],
+        "weighted": [
+          [
+            "pytest",
+            28.9
+          ],
+          [
+            "vitest",
+            20.5
+          ],
+          [
+            "cargo-test",
+            6.7
+          ],
+          [
+            "go-test",
+            4.7
+          ],
+          [
+            "jest",
+            2.5
+          ],
+          [
+            "bun-test",
+            2.5
+          ]
+        ]
+      },
+      "pkg_manager": {
+        "uniform": [
+          [
+            "npm",
+            71
+          ],
+          [
+            "pip",
+            68
+          ],
+          [
+            "pnpm",
+            56
+          ],
+          [
+            "go",
+            37
+          ],
+          [
+            "yarn",
+            32
+          ],
+          [
+            "cargo",
+            31
+          ]
+        ],
+        "weighted": [
+          [
+            "pip",
+            17.5
+          ],
+          [
+            "pnpm",
+            13.6
+          ],
+          [
+            "npm",
+            13.4
+          ],
+          [
+            "uv",
+            13.1
+          ],
+          [
+            "cargo",
+            7.4
+          ],
+          [
+            "bun",
+            6.4
+          ]
+        ]
+      },
+      "ci": {
+        "uniform": [
+          [
+            "github-actions",
+            372
+          ],
+          [
+            "circleci",
+            9
+          ],
+          [
+            "travis",
+            8
+          ],
+          [
+            "azure",
+            3
+          ],
+          [
+            "other",
+            3
+          ],
+          [
+            "travis,github-actions",
+            1
+          ]
+        ],
+        "weighted": [
+          [
+            "github-actions",
+            80.0
+          ],
+          [
+            "circleci",
+            0.6
+          ],
+          [
+            "travis",
+            0.3
+          ],
+          [
+            "azure",
+            0.1
+          ],
+          [
+            "other",
+            0.0
+          ],
+          [
+            "travis,github-actions",
+            0.0
+          ]
+        ]
+      },
+      "dep_bot": {
+        "uniform": [
+          [
+            "dependabot",
+            172
+          ],
+          [
+            "renovate",
+            40
+          ]
+        ],
+        "weighted": [
+          [
+            "dependabot",
+            35.6
+          ],
+          [
+            "renovate",
+            3.5
+          ]
+        ]
+      }
+    }
+  }
+}

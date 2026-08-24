@@ -1,0 +1,21 @@
+{
+  "checker_version": 1,
+  "completed_at": "2026-08-24T01:32:56.669676Z",
+  "corpus_root": ".scratch/research/corpus",
+  "counts": {
+    "access-blocked": 49,
+    "dead": 2,
+    "reachable": 689,
+    "redirected": 88
+  },
+  "schema_version": 1,
+  "semantics": {
+    "access_blocked": "The server responded but denied/limited this checker; content is unverified.",
+    "dead": "The endpoint returned 404 or 410.",
+    "http_or_network_error": "No healthy/blocked/dead disposition was established after retries.",
+    "reachable_or_redirected": "An endpoint returned 2xx/3xx; content support was not assessed."
+  },
+  "started_at": "2026-08-24T01:32:20.715944Z",
+  "url_count": 828,
+  "url_set_sha256": "611b5a8e93e8d9d88dd0740868525320a1b765252fca0be3ad09fc6065095296"
+}

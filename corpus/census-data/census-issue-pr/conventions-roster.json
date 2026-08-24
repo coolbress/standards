@@ -1,0 +1,416 @@
+{
+  "source": "section-roster clustering of issue-form field labels (conventions.py roster \u2014 top-2000 senior class)",
+  "n_repos": 1104,
+  "bucket_taxonomy": [
+    "preflight",
+    "code_of_conduct",
+    "repro_steps",
+    "expected",
+    "actual",
+    "environment",
+    "logs",
+    "proposed",
+    "alternatives",
+    "problem",
+    "acceptance",
+    "scope",
+    "goal",
+    "description",
+    "context"
+  ],
+  "unbucketed_label_pct": 28.6,
+  "rosters": {
+    "bug": {
+      "n_forms": 669,
+      "median_sections_per_form": 4,
+      "sections": [
+        {
+          "section": "environment",
+          "present_pct": 83.0,
+          "n_forms": 555,
+          "required_pct_of_present": 84.1
+        },
+        {
+          "section": "repro_steps",
+          "present_pct": 74.0,
+          "n_forms": 495,
+          "required_pct_of_present": 78.8
+        },
+        {
+          "section": "description",
+          "present_pct": 68.0,
+          "n_forms": 455,
+          "required_pct_of_present": 89.7
+        },
+        {
+          "section": "expected",
+          "present_pct": 51.9,
+          "n_forms": 347,
+          "required_pct_of_present": 74.1
+        },
+        {
+          "section": "logs",
+          "present_pct": 46.6,
+          "n_forms": 312,
+          "required_pct_of_present": 22.1
+        },
+        {
+          "section": "context",
+          "present_pct": 42.8,
+          "n_forms": 286,
+          "required_pct_of_present": 2.4
+        },
+        {
+          "section": "actual",
+          "present_pct": 26.6,
+          "n_forms": 178,
+          "required_pct_of_present": 83.7
+        },
+        {
+          "section": "preflight",
+          "present_pct": 24.8,
+          "n_forms": 166,
+          "required_pct_of_present": 3.6
+        },
+        {
+          "section": "problem",
+          "present_pct": 6.3,
+          "n_forms": 42,
+          "required_pct_of_present": 85.7
+        },
+        {
+          "section": "code_of_conduct",
+          "present_pct": 4.6,
+          "n_forms": 31,
+          "required_pct_of_present": 3.2
+        },
+        {
+          "section": "proposed",
+          "present_pct": 3.3,
+          "n_forms": 22,
+          "required_pct_of_present": 9.1
+        },
+        {
+          "section": "scope",
+          "present_pct": 1.0,
+          "n_forms": 7,
+          "required_pct_of_present": 42.9
+        },
+        {
+          "section": "alternatives",
+          "present_pct": 0.6,
+          "n_forms": 4,
+          "required_pct_of_present": 25.0
+        },
+        {
+          "section": "acceptance",
+          "present_pct": 0.6,
+          "n_forms": 4,
+          "required_pct_of_present": 0.0
+        }
+      ]
+    },
+    "feature": {
+      "n_forms": 516,
+      "median_sections_per_form": 3,
+      "sections": [
+        {
+          "section": "proposed",
+          "present_pct": 51.2,
+          "n_forms": 264,
+          "required_pct_of_present": 77.7
+        },
+        {
+          "section": "problem",
+          "present_pct": 47.3,
+          "n_forms": 244,
+          "required_pct_of_present": 79.1
+        },
+        {
+          "section": "context",
+          "present_pct": 46.7,
+          "n_forms": 241,
+          "required_pct_of_present": 3.7
+        },
+        {
+          "section": "description",
+          "present_pct": 34.9,
+          "n_forms": 180,
+          "required_pct_of_present": 82.8
+        },
+        {
+          "section": "alternatives",
+          "present_pct": 27.1,
+          "n_forms": 140,
+          "required_pct_of_present": 25.7
+        },
+        {
+          "section": "preflight",
+          "present_pct": 26.0,
+          "n_forms": 134,
+          "required_pct_of_present": 3.0
+        },
+        {
+          "section": "environment",
+          "present_pct": 10.3,
+          "n_forms": 53,
+          "required_pct_of_present": 66.0
+        },
+        {
+          "section": "scope",
+          "present_pct": 4.7,
+          "n_forms": 24,
+          "required_pct_of_present": 25.0
+        },
+        {
+          "section": "code_of_conduct",
+          "present_pct": 4.3,
+          "n_forms": 22,
+          "required_pct_of_present": 4.5
+        },
+        {
+          "section": "expected",
+          "present_pct": 3.3,
+          "n_forms": 17,
+          "required_pct_of_present": 82.4
+        },
+        {
+          "section": "logs",
+          "present_pct": 2.3,
+          "n_forms": 12,
+          "required_pct_of_present": 25.0
+        },
+        {
+          "section": "actual",
+          "present_pct": 1.7,
+          "n_forms": 9,
+          "required_pct_of_present": 88.9
+        },
+        {
+          "section": "acceptance",
+          "present_pct": 1.6,
+          "n_forms": 8,
+          "required_pct_of_present": 37.5
+        },
+        {
+          "section": "goal",
+          "present_pct": 1.0,
+          "n_forms": 5,
+          "required_pct_of_present": 80.0
+        },
+        {
+          "section": "repro_steps",
+          "present_pct": 0.6,
+          "n_forms": 3,
+          "required_pct_of_present": 66.7
+        }
+      ]
+    },
+    "task": {
+      "n_forms": 26,
+      "median_sections_per_form": 2,
+      "sections": [
+        {
+          "section": "description",
+          "present_pct": 61.5,
+          "n_forms": 16,
+          "required_pct_of_present": 100.0
+        },
+        {
+          "section": "context",
+          "present_pct": 23.1,
+          "n_forms": 6,
+          "required_pct_of_present": 33.3
+        },
+        {
+          "section": "proposed",
+          "present_pct": 19.2,
+          "n_forms": 5,
+          "required_pct_of_present": 80.0
+        },
+        {
+          "section": "acceptance",
+          "present_pct": 15.4,
+          "n_forms": 4,
+          "required_pct_of_present": 100.0
+        },
+        {
+          "section": "scope",
+          "present_pct": 11.5,
+          "n_forms": 3,
+          "required_pct_of_present": 66.7
+        },
+        {
+          "section": "preflight",
+          "present_pct": 11.5,
+          "n_forms": 3,
+          "required_pct_of_present": 0.0
+        },
+        {
+          "section": "goal",
+          "present_pct": 11.5,
+          "n_forms": 3,
+          "required_pct_of_present": 100.0
+        },
+        {
+          "section": "alternatives",
+          "present_pct": 3.8,
+          "n_forms": 1,
+          "required_pct_of_present": 0.0
+        },
+        {
+          "section": "environment",
+          "present_pct": 3.8,
+          "n_forms": 1,
+          "required_pct_of_present": 100.0
+        },
+        {
+          "section": "actual",
+          "present_pct": 3.8,
+          "n_forms": 1,
+          "required_pct_of_present": 100.0
+        },
+        {
+          "section": "expected",
+          "present_pct": 3.8,
+          "n_forms": 1,
+          "required_pct_of_present": 100.0
+        },
+        {
+          "section": "logs",
+          "present_pct": 3.8,
+          "n_forms": 1,
+          "required_pct_of_present": 0.0
+        },
+        {
+          "section": "problem",
+          "present_pct": 3.8,
+          "n_forms": 1,
+          "required_pct_of_present": 100.0
+        }
+      ]
+    }
+  },
+  "top_unbucketed_labels": [
+    [
+      "Question",
+      19
+    ],
+    [
+      "OS",
+      18
+    ],
+    [
+      "Are you willing to submit a PR?",
+      18
+    ],
+    [
+      "Example",
+      11
+    ],
+    [
+      "Impact",
+      11
+    ],
+    [
+      "Company or project name",
+      11
+    ],
+    [
+      "Type",
+      10
+    ],
+    [
+      "Other",
+      10
+    ],
+    [
+      "Component",
+      9
+    ],
+    [
+      "Area",
+      9
+    ],
+    [
+      "Participation",
+      9
+    ],
+    [
+      "Feature request",
+      8
+    ],
+    [
+      "Validations",
+      8
+    ],
+    [
+      "Architecture",
+      8
+    ],
+    [
+      "What would you like to share?",
+      7
+    ],
+    [
+      "Contribution",
+      7
+    ],
+    [
+      "Your contribution",
+      7
+    ],
+    [
+      "Why is this needed?",
+      7
+    ],
+    [
+      "Feature Area",
+      7
+    ],
+    [
+      "What did you do?",
+      7
+    ],
+    [
+      "Are you willing to submit PR?",
+      7
+    ],
+    [
+      "Bug prevalence",
+      7
+    ],
+    [
+      "GitHub hash of the SDK that was being used",
+      7
+    ],
+    [
+      "Flutter Doctor output",
+      6
+    ],
+    [
+      "Code sample",
+      6
+    ],
+    [
+      "Complete Verbose Output",
+      6
+    ],
+    [
+      "What would you like to be added?",
+      6
+    ],
+    [
+      "Code",
+      6
+    ],
+    [
+      "What subscription do you have?",
+      6
+    ],
+    [
+      "\u9644\u52a0\u4fe1\u606f",
+      6
+    ]
+  ]
+}
