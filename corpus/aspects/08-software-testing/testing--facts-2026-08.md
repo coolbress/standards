@@ -106,6 +106,19 @@ Rafique와 Mišić의 메타분석(2013, 27개 연구)은 TDD가 생산성에 �
 
 Fucci et al.(2018, 2021)의 종단 연구는 TDD가 외부 품질과 개발자 생산성에 통계적으로 유의미한 영향을 주지 않음을 보고했다 [https://neverworkintheory.org/2016/10/05/test-driven-development.html]. 연구들은 TDD가 기능 품질을 개선할 수 있으나 생산성 향상은 미흡함을 보여준다.
 
+> ⚠️ **2026-08-24 재검증 — 이 절은 2차 출처(블로그)를 통해 1차 연구를 인용하고 있었다.**
+> [`EVIDENCE-POLICY`](../../methods/EVIDENCE-POLICY.md) 는 *"avoid routing an important factual claim through
+> [secondary sources] when the primary source is available"* 라고 규정한다. 아래 claim table 이 1차 출처를 붙인다.
+
+### Claim table — TDD 순서 효과 (R5-1 배치 C · 1차 출처 직접 확인)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **TDD-001** | empirical | **테스트를 먼저 쓰는 "순서" 자체는 영향이 없었다.** 초록 그대로: *"Quality and productivity improvements were primarily positively associated with the **granularity and uniformity**. **Sequencing**, the order in which test and production code are written, **had no important influence**."* 저자 결론: *"claimed benefits of TDD may not be due to its distinctive test-first dynamic, but rather due to the fact that TDD-like processes encourage **fine-grained, steady steps**"* | `TDD-DISSECTION-2016` | medium-high | 2026-08-24 |
+| **TDD-002** | synthesis | ⚠️ **표본 한정.** TDD-001 은 **전문 개발자 39명에게서 얻은 82개 데이터 포인트**에 기반한다. 따라서 *"순서는 무의미하다"* 로 확정하지 말고 **이 연구는 순서의 영향을 발견하지 못했다** 로 쓴다. 저자도 refactoring effort 항목에서 *"unexpected negative correlation with quality"* 라는 설명되지 않은 결과를 남겼다 | `TDD-DISSECTION-2016` | medium | 2026-08-24 |
+
+**재검증 기록 (배치 C)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: 유지 + 1차 출처 부착 + 표본 한정 병기** · **불일치 없음** · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
 ---
 
 ## 코드 커버리지

@@ -87,3 +87,12 @@ maps_from: ["census-data/census-release-ops"]
 - [`last-mile-domain-hosting--facts-2026-08.md`](last-mile-domain-hosting--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-10 전반): 코드 완성 이후 공개까지의 도메인 등록(ICANN 연락처 검증·갱신/만료 유예) · DNS 연결과 TLS 자동 발급 · PaaS 프로덕션 배포와 롤백 · 무료→유료 과금 전환 트리거, 그리고 **과금·외부 노출·자격증명이 발생하는 정확한 단계**. 본문 미확인 claim은 `[미확인]`으로 강등 표기됨.
 - [`last-mile-payments-privacy--facts-2026-08.md`](last-mile-payments-privacy--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-10 후반): PSP 온보딩 요건(신원·UBO·은행계좌) · PCI DSS SAQ 범위와 6.4.3/11.6.1 · PIPA 제30조 · GDPR Art.13/14 정보 제공 의무, 그리고 **신원·계약·법적 책임 때문에 사람만 할 수 있는 단계**. PIPA 조문 각 호는 1차 미확보로 `미해결`.
 - [`release-operate-artifact-checklist.md`](release-operate-artifact-checklist.md) — *research-log* — the ④ release+operate artifact checklist: supply-chain provenance (SBOM/SLSA/cosign/checksum) + the SRE/operate half (SLO/error-budget/runbook/postmortem/OTel/DORA); also grounds aspects 18 & 20.
+
+## Claim table — feature toggle 의 비용 (R5-1 배치 C · 1차 출처 직접 확인)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **REL-001** | definition | 원문은 feature toggle 을 **"technical debt(기술 부채)"** 라고 부르지 **않는다.** 쓰는 표현은 ***"inventory which comes with a carrying cost"*** 다: *"Savvy teams view their Feature Toggles as inventory which comes with a carrying cost, and work to keep that inventory as low as possible."* | `FOWLER-FEATURE-TOGGLES` | high | 2026-08-24 |
+| **REL-002** | synthesis | ⚠️ ***"feature flag 는 부채"* 는 과일반화다.** 원문은 토글을 **수명별로 구분**한다 — Release(며칠~주) · Experiment(시간~주) · Ops(가변) · **Permissioning(수년)**. Permissioning 토글은 *"multiple years"* 존속이 **설계 의도**이고 부채로 취급되지 않으며, 원문의 처방은 *"different toggles [should be] managed in different ways"* 다. **비용은 개수를 줄여 관리할 대상이지 토글 자체가 부채인 것이 아니다** | `FOWLER-FEATURE-TOGGLES` | high | 2026-08-24 |
+
+**재검증 기록 (배치 C)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: 한정 추가** · **불일치 없음**(Codex 가 *"원문이 유형별 비용 차이를 명시적으로 단정하지는 않는다"* 를 더 정밀하게 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
