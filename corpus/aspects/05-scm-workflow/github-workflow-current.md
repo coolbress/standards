@@ -13,6 +13,9 @@ sources:
   - GITHUB-PR
   - GITHUB-DEPLOY
   - GITHUB-ACTIONS-SECURE
+  - GITFLOW-NOTE
+  - DORA-SODR-2017
+  - DORA-TBD
 ---
 
 # Current GitHub workflow — evidence and bounded defaults
@@ -31,7 +34,13 @@ or deployment policy for every project.
 | GHW-004 | vendor-behavior | Reverting a merged pull request creates a new pull request that reverses the merge; complex or conflicting changes can require a manual revert. | `GITHUB-DEPLOY` | high | 2026-08-02; review 2026-11-02 |
 | GHW-005 | vendor-behavior | GitHub recommends minimum necessary `GITHUB_TOKEN` permissions and says only a full-length commit SHA is immutable when pinning an action. | `GITHUB-ACTIONS-SECURE` | high | 2026-08-02; review 2026-11-02 |
 | GHW-006 | synthesis | GitHub Flow does not itself require an issue, a commit-message convention, squash merging, a particular reviewer count, or a deployment strategy. These are project policy choices. | `GITHUB-FLOW`; `GITHUB-PR` | medium-high | review when GitHub Flow changes |
+| GHW-008 | vendor-behavior | **Git Flow 창시자의 2020 철회 단서.** Vincent Driessen 이 원 글에 **"Note of reflection" (2020-03-05)** 를 덧붙였다: 지속적 배포 팀에는 *"a much simpler workflow"* (GitHub Flow)를 권하고, *"Web apps are typically continuously delivered, not rolled back… **This is not the class of software that I had in mind** when I wrote the blog post 10 years ago."* 다만 **명시적으로 버전이 붙는 소프트웨어·다중 버전 지원**에는 *"git-flow may still be as good of a fit"* 이라고 남겼다 — **전면 철회가 아니라 적용 범위의 한정**이다 | `GITFLOW-NOTE` | high | 2026-08-24 재검증 |
+| GHW-009 | synthesis | ⚠️ **DORA 의 브랜치 수치는 설문 자기보고다.** *"≤3 active branches · 하루 1회 이상 trunk 병합"* 은 **저장소 계측이나 통제실험이 아니라 State of DevOps 설문 응답**에 기반한다. [`05 overview`](05-scm-workflow--overview.md) 가 *"DORA's **measured** rule"* 이라 쓴 표현은 계측을 함의하므로 **한정을 병기해야 한다** | `DORA-SODR-2017`; `DORA-TBD` | medium-high | 2026-08-24 |
 | GHW-007 | synthesis | A defensible default path is isolate change → automated verification → risk/ownership-proportional review → protected merge → observable deployment → recoverable rollback. This is a recommended control chain, not a GitHub-mandated standard. | `GITHUB-FLOW`; `GITHUB-PR`; `GITHUB-DEPLOY`; `GITHUB-ACTIONS-SECURE` | medium | review 2026-11-02 |
+
+**재검증 기록 (R5-1 배치 B)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: GHW-008 신규 승계 · GHW-009 한정 추가** · **불일치 없음**(Codex 가 GHW-009 의 설문-자기보고 성격을 추가로 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
+> **R5-1 목록 오류 2건째**: *"Git Flow 2020 note"* 는 **미승계가 아니었다.** 결론은 [`05 overview`](05-scm-workflow--overview.md) *"GitFlow — ruled out for continuously-delivered software"* 로 **이미 승계돼 있었고, 창시자 note 라는 출처만 안 붙어 있었다.** 처분은 *"승계 또는 삭제"* 가 아니라 **출처 부착**이다.
 
 ## Risk-scaled application
 

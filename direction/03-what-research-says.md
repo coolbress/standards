@@ -15,13 +15,14 @@
 > | [`07-...--overview.md`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) · [`codereview--facts-2026-08.md`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) | `review-needed` / `draft` | 리뷰 필수·경량·빠름 · CL ~100줄 · **400 LOC 임계** · 생성코드 동일 게이트 |
 > | [`cicd-release--facts-2026-08.md`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) | `draft` | **10분 빌드**(Fowler 1차 URL) · CI 실무 |
 > | ✅ **2026-08-24 재검증 완료(배치 A)** | `codereview--facts` **CR-005~008** | **중앙값 24줄**=유지 · **4시간**=수정(응답→전 과정 지연) · **DORA 50%**=삭제(출처 없음) · **"다중 승인자·체크리스트 DORA 안티패턴"**=삭제(오귀속) |
-> | ⬜ **미검증** | — | **"브랜치 다이어그램은 ceremony"** · Git Flow 2020 note · TDD 순서 · feature flag 부채 — 배치 B·C |
+> | ✅ **2026-08-24 재검증 완료(배치 B)** | `github-workflow-current` **GHW-008·009** | **Git Flow 2020 note**=출처 부착(미승계가 아니었다) · **"브랜치 다이어그램은 ceremony"**=프로젝트 판단으로 재분류(연구 결과 아님) |
+> | ⬜ **미검증** | — | TDD 순서 효과 · feature flag 부채 — 배치 C |
 >
 > **아직 안 옮긴 것**: Git Flow 창시자의 2020 note · 테스트 피라미드 80/15/5 · TDD 순서 효과 ·
 > feature flag 부채. `audit/GAPS.ko.md` R5-1에 등재했다.
 
 1. 고성과의 공통분모는 브랜치 모델이 아니라 **"작게, 자주, 빨리 통합"** — 활성 브랜치 ≤3, 하루 1회 머지, **브랜치 수명 몇 시간**
-2. Git Flow는 **창시자가 2020년에 웹앱에 비추천**했다
+2. Git Flow는 **창시자가 2020년에 웹앱에 비추천**했다 — ✅ **2026-08-24 1차 출처 확인**(`github-workflow-current` **GHW-008**). 단 **전면 철회가 아니라 범위 한정**이다: *"명시적으로 버전이 붙는 소프트웨어·다중 버전 지원에는 여전히 맞을 수 있다"*
 3. **리뷰는 빨라야 한다** — Google 응답 규범 1영업일. ⚠️ **2026-08-24 재검증**: *"빠른 팀이 배포 성과 50% 높음"* 은 **1차 출처에서 찾을 수 없어 삭제**했다(`codereview--facts` **CR-007**). 그리고 실측 *"중앙값 4시간"* 은 **응답 시간이 아니라 전체 리뷰 과정의 지연**이다 — 첫 피드백은 소형 1시간 미만·대형 약 5시간(**CR-006**)
 4. 리뷰의 전제는 **작은 변경** — Google 중앙값 **24줄**, 100줄 적정 / 1000줄 과대, **200줄 목표 · 400줄 상한**(⚠️ 2026-08-24 재검증 — *"급락"* 은 원문에 없다. `codereview--facts` CR-001~003)
 5. 진짜 CI = 메인라인 + 자동빌드 + 자기검증 테스트 + **10분 이내** + **깨지면 즉시 수리**. *"이것이 없으면 나머지는 장식이다"*
@@ -34,7 +35,14 @@
 ### 하중을 받는 것 vs 의식(ceremony)
 
 > 하중을 받는 것은 *"브랜치 수명 단축 + 매일 통합"이라는 **행동**"* 이지 모델의 이름이 아니다.
-> **브랜치 다이어그램을 정교하게 그리는 것 자체는 ceremony다.**
+>
+> ⚠️ **2026-08-24 재검증 — 두 부분을 갈랐다.**
+> **앞 문장(행동이 하중을 받는다)은 리서치가 받친다**: DORA 의 *"≤3 active branches · 하루 1회 이상 trunk 병합"*
+> ([`05 overview`](../corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md)). 단 그 수치는 **설문 자기보고**이지
+> 저장소 계측이 아니다(`github-workflow-current` **GHW-009**).
+> **뒷 문장(*"브랜치 다이어그램을 정교하게 그리는 것 자체는 ceremony다"*)은 리서치가 아니다** —
+> *"다이어그램을 그리는 행위"* 를 측정한 연구를 찾지 못했다. **프로젝트 판단으로 재분류**한다.
+> `EVIDENCE-POLICY` 가 이름 붙인 범주 오류가 *"disguising author judgment as fact"* 다.
 >
 > ⚠️ **2026-08-24 재검증으로 삭제됨.** 이전 판은 *"다중 필수 승인자·형식적 체크리스트 채우기는 DORA가 명시한 안티패턴"* 이라 적었으나 **DORA 가 한 말이 아니다.** DORA 가 비판한 것은 **CAB·고위 관리자 등 팀 외부의 중량급 변경 승인**이고, 오히려 **팀 내 동료 리뷰를 권장**한다. 동료 리뷰의 승인자 수와 체크리스트는 DORA 범위 밖이다 (`codereview--facts` **CR-008**).
 
