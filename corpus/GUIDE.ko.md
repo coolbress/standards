@@ -44,3 +44,5 @@ claim disposition을 기록했습니다. `review-needed` 원문은 계속 설계
 현재 부족 영역과 해제 조건은 `../audit/GAPS.ko.md`, 기획 판단 기준은
 `../interpretation/foundation/`, 통합 agent 보안 지도는
 `aspects/27-ai-harness-archetype/agent-threat-model.md`에 있습니다.
+
+<!-- 확증시험: 매니페스트 해시를 일부러 어긋나게 한다 -->
