@@ -12,10 +12,10 @@
 
 | 등급 | 개수 | 뜻 |
 |---|---|---|
-| `active` | 40 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
+| `active` | 45 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
 | `decision` | 10 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
-| `reference` | 134 | **물어봤을 때만** — 과거 하네스·원시 census |
+| `reference` | 141 | **물어봤을 때만** — 과거 하네스·원시 census |
 | `archive` | 12 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
@@ -55,14 +55,19 @@
 | aspect-overview | `corpus/aspects/26-mlops-ml-lifecycle/26-mlops-ml-lifecycle--overview.md` | Production ML treats data, code, and models as co-versioned first-class artifacts driven t |
 | unlabeled | `corpus/aspects/27-ai-harness-archetype/27-ai-harness-archetype--overview.md` | A mature AI-harness ships the full normal-software floor PLUS an additive capability layer |
 | reference | `corpus/aspects/27-ai-harness-archetype/agent-threat-model.md` | Integrated Agent Authority, Credential, Egress, Injection, and Production Threat Model |
+| evidence | `corpus/aspects/27-ai-harness-archetype/approval-attribution-channels--measured-2026-08.md` | 승인 귀속 채널 실측 — 사람 클릭을 증명할 수 있는가 |
 | reference | `corpus/aspects/27-ai-harness-archetype/harness-control-plane-standard.md` | Agent Harness Control Plane, Execution Boundary, and Lifecycle |
+| evidence | `corpus/aspects/27-ai-harness-archetype/hook-output-surfaces--measured-2026-08.md` | 훅 출력 표면 실측 — 하네스가 사용자에게 말할 수 있는가 |
 | reference | `corpus/aspects/27-ai-harness-archetype/hooks-commands-subagents-standard.md` | Hooks · Slash-commands · Subagents build standard (the orchestration/lifecycle layer — the |
 | evidence | `corpus/aspects/27-ai-harness-archetype/host-config-schemas.md` | Host config-integration schemas (cross-host adapter evidence) |
 | reference | `corpus/aspects/27-ai-harness-archetype/mcp-server-standard.md` | MCP server build standard (Tools · Resources · Prompts — the frontier-AI standard) |
 | reference | `corpus/aspects/27-ai-harness-archetype/multi-agent-orchestration-standard.md` | Multi-agent orchestration — the topology/when-to-dispatch standard (orchestrator-worker, s |
 | reference | `corpus/aspects/27-ai-harness-archetype/plugin-marketplace-memory-standard.md` | Plugin · Marketplace · Memory build standard (the packaging + memory layer — the frontier- |
+| evidence | `corpus/aspects/27-ai-harness-archetype/pretool-ask-exit-codes--measured-2026-08.md` | PreToolUse ask의 exit code 동작 실측 |
 | reference | `corpus/aspects/27-ai-harness-archetype/prompts-and-evals-standard.md` | Prompts · Evals build standard (prompt authoring/versioning + eval-harness design — the fr |
 | reference | `corpus/aspects/27-ai-harness-archetype/skill-authoring-standard.md` | Agent Skill authoring standard (SKILL.md — the frontier-AI build standard) |
+| evidence | `corpus/aspects/27-ai-harness-archetype/stop-event-rendering--measured-2026-08.md` | Stop 이벤트 렌더 관측 |
+| evidence | `corpus/aspects/27-ai-harness-archetype/user-channel-rendering--measured-2026-08.md` | 사용자 채널 렌더링 판정 — 사람 관측 |
 | aspect-overview | `corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md` | Implementation is driven by process tailored to each change's risk — light gates for trivi |
 
 ## decision — 프로젝트 판단 (근거가 아니다)
@@ -106,10 +111,10 @@
 - `interpretation/legacy/gingoa-taxonomy.md`
 - `interpretation/legacy/three-tier-ledger.md`
 
-## reference — 134개, 물어봤을 때만
+## reference — 141개, 물어봤을 때만
 
 전문은 `ROUTES.jsonl` 에서 `tier="reference"` 로 조회한다. 종류별 개수:
 
 - research-log: 51
+- census: 45
 - prior-art: 45
-- census: 38
