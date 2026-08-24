@@ -125,3 +125,22 @@ This is the **meta-layer over aspect-07** (construction practices) and aspect-08
 > **자체 생성 단위시험을 실제 실행한 신호**로 구동된다(`REFLEXION-2023`). ⓒ 그리고 **IPW-002 가 통째로 빠져 있었다.**
 
 **재검증 기록 (배치 1)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의, 결론 비공개) · **판정: 유지 3 · 출처 정정 1 · 신규 추가 1** · **불일치 없음**(4개 항목 전부 일치. Codex 가 IPW-003 의 과제 범위와 IPW-004 의 *"initial evidence"* 한정을 추가로 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
+## Claim table — 독립 리뷰어의 근거 (배치 2 · 1차 출처 직접 확인 2026-08-24)
+
+이 행들은 [`direction/04`](../../../direction/04-the-plan.md) **만들 것 ⑥(`@claude` PR 리뷰어 — diff 만 보는 제3자)** 를 떠받친다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **IPW-006** | empirical | **컨텍스트를 분리한 리뷰가 같은 세션 자기리뷰보다 낫다 — 통제실험.** 30개 산출물 · 150개 주입 오류 · **360 리뷰** · 4개 조건. **CCR F1 28.6%** vs 같은세션 자기리뷰 **24.6%**(p=0.008, d=0.52) · 반복 자기리뷰 21.7%(p<0.001) · 컨텍스트 있는 서브에이전트 23.8%(p=0.004). ⭐ **SR2 대조가 결정적** — 같은 세션에서 두 번 리뷰해도 한 번보다 낫지 않았다(p=0.11). **반복이 아니라 컨텍스트 분리 자체가 원인**이다 | `CROSS-CONTEXT-REVIEW-2026` | high | 2026-08-24 |
+| **IPW-007** | synthesis | ⚠️ **그러나 절대 성능은 낮다.** 최선 조건(CCR)에서도 **F1 28.6%** — 주입된 오류의 **약 71%를 놓친다.** *"+16%"* 는 **상대 개선**(28.6/24.6)이지 절대 수준이 아니다. → **독립 리뷰어는 갖출 값이 있지만 안전망으로 취급하면 안 된다.** 게이트는 여전히 CI 다 | `CROSS-CONTEXT-REVIEW-2026` | high | 2026-08-24 **신규** |
+| **IPW-008** | vendor-behavior | Cognition 은 자사 Devin Review 가 *"catches an **average of 2 bugs per PR**, of which roughly 58% are severe"* 라고 보고한다. ⚠️ **절대 평균값이지 다른 방식 대비 증분이 아니다.** 표본·대조군·심각도 판정 절차 **미제시**. 벤더의 자기 제품 보고다 | `COGNITION-MULTIAGENT-2025` | medium | 2026-08-24 **수치 재해석** |
+| **IPW-009** | vendor-behavior | **교차벤더 라우팅은 비용이 아니라 역량 최적화다** — *"Cross-frontier communication is less about a weaker model knowing when to ask a stronger one, and more about routing to whichever model is best at the specific sub-task… The delegation logic becomes a **capability router** rather than a difficulty escalator."* | `COGNITION-MULTIAGENT-2025` | medium-high | 2026-08-24 |
+| **IPW-010** | synthesis | ❌ ***"정적 역할 배정이 프로덕션 표준이고 동적 per-query 라우팅은 아직 연구 단계"* 는 받쳐지지 않는다.** 배포 통계가 없고, **같은 출처(Cognition)가 동적 교차벤더 라우팅을 *"in production for a meaningful stretch"* 로 돌렸다고 밝힌다** — 자기모순이다. MasRouter 도 선행연구를 Fixed·Dynamic 양쪽으로 분류할 뿐이다 | `COGNITION-MULTIAGENT-2025` | high (반증) | 2026-08-24 **삭제 권고** |
+
+> **배치 2 의 요점: 결론은 맞는데 근거가 뒤바뀌어 있었다.**
+> *"작성자 컨텍스트가 없는 리뷰어가 더 찾는다"* 는 **통제실험(IPW-006)이 받친다.** 그런데 이전 판은
+> 그 문장에 **Cognition 의 *"2건/PR"* 을 근거로 붙였다** — 그건 **절대값이고 대조군이 없어** 비교 주장을
+> 받칠 수 없다. 강한 근거와 약한 근거가 한 문장에 섞여 **약한 쪽이 하중을 지고 있었다.**
+
+**재검증 기록 (배치 2)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: 유지 2 · 한정 추가 1 · 수치 재해석 1 · 삭제 1** · **불일치 없음**(Codex 가 IPW-010 의 자기모순을 독립적으로 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
