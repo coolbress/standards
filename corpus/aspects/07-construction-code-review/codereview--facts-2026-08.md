@@ -34,6 +34,19 @@ method: "Haiku web-research agents, facts-only rules ([정의/규정]/[데이터
 
 > **분류가 왜 `operational-lesson` 인가**: [`EVIDENCE-POLICY`](../../methods/EVIDENCE-POLICY.md) §*Evidence hierarchy is claim-relative* 에서 **단일 조직의 1차 보고**는 operational-lesson 이고, 그 범주 오류는 ***"generalizing one organization to all teams"*** 다. 이것을 **효과·인과** 주장으로 쓰면(*"400줄 넘으면 결함 발견율이 급락한다"*) 재현 연구가 필요한데 **이 연구 하나로는 안 된다.**
 
+### Claim table — 리뷰 속도·승인 절차 (R5-1 배치 A · 1차 출처 직접 확인)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **CR-005** | industry-prevalence | Google 의 변경당 **수정 줄 수 중앙값은 24**: *"Over 10% of changes modify only a single line of code, and the median number of lines modified is 24."* ⚠️ 저자가 일반화 한계를 명시했다 — *"our results **may not generalize** to other contexts"* | [ICSE-SEIP 2018 원문 PDF](https://sback.it/publications/icse2018seip.pdf) | high (인용) / **low (일반화)** | 2026-08-24 **유지** |
+| **CR-006** | industry-prevalence | ⚠️ **정정.** 이전 판은 *"리뷰 응답 실측 중앙값 4시간"* 이라 적었으나 원문은 **두 수치를 구분**한다: **첫 피드백까지의 대기**는 *"a median time of under an hour for small changes and about 5 hours for very large changes"*, **전체 리뷰 과정의 지연**이 *"under 4 hours"* 다. **4시간은 응답 시간이 아니라 전 과정 지연**이다 | 〃 | high | 2026-08-24 **수정** |
+| **CR-007** | not-found | ⚠️ **1차 출처에서 찾을 수 없음.** *"빠른 리뷰 팀이 배포 성과 50% 높다"* 는 DORA 수치를 확인하지 못했다. `dora.dev` 능력 카탈로그에서 코드리뷰 관련 항목은 [`streamlining-change-approval`](https://dora.dev/capabilities/streamlining-change-approval/) **하나뿐**이고 거기에 그 수치가 없다 | 검색 실패 | — | 2026-08-24 **삭제 권고** |
+| **CR-008** | misattribution | ⚠️ **오귀속.** *"다중 필수 승인자·형식적 체크리스트는 DORA 가 명시한 안티패턴"* 은 **DORA 가 한 말이 아니다.** DORA 가 비판한 것은 **CAB·고위 관리자 등 팀 외부의 중량급 변경 승인**이고, 오히려 **팀 내 동료 리뷰를 권장**한다: *"Use peer review to meet the goal of segregation of duties."* **동료 리뷰의 승인자 수와 체크리스트는 DORA 의 범위가 아니다** | [DORA streamlining-change-approval](https://dora.dev/capabilities/streamlining-change-approval/) | high | 2026-08-24 **삭제** |
+
+> **CR-007·008 이 이 재검증의 요점이다.** 둘 다 *"DORA 가 그렇게 말한다"* 는 형태였는데, 하나는 **수치를 찾을 수 없었고** 하나는 **다른 대상에 대한 발견을 옮겨 붙인 것**이었다. 각주가 없어서가 아니라 **각주가 가리키는 곳에 그 말이 없어서** 틀렸다.
+
+**재검증 기록 (배치 A)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의, 결론 비공개) · **판정: 유지 1 · 수정 1 · 삭제 2** · **불일치 없음**(4개 항목 전부 일치. Codex 가 CR-008 을 자체 웹 검색으로 교차 확인) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
 **재검증 기록** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0` (독립 질의, 결론 비공개) · 1차출처 [`code-review-cisco-case-study.pdf`](https://static0.smartbear.co/support/media/resources/cc/book/code-review-cisco-case-study.pdf) · **판정 수정** · **불일치 없음**(4개 항목 전부 일치. Codex 가 한계 문장 1건을 추가로 발견) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
 
 **검사 속도** — *"Inspection rates less than 300 LOC/hour result in best defect detection. Rates under 500 are still good; expect to miss significant percentage of defects if faster than that."* (1차 PDF `Conclusions`)
@@ -85,6 +98,12 @@ method: "Haiku web-research agents, facts-only rules ([정의/규정]/[데이터
 > ⚠️ 2026-08-24 재검증에서 **1차 출처가 추가됐다.** 이전 판은 벤더 마케팅 페이지만 인용했다.
 > Code Review at Cisco Systems (SmartBear, 2006 · 케이스 스터디 원문 PDF):
 > https://static0.smartbear.co/support/media/resources/cc/book/code-review-cisco-case-study.pdf
+>
+> Modern Code Review: A Case Study at Google (ICSE-SEIP 2018 · 원문 PDF):
+> https://sback.it/publications/icse2018seip.pdf
+>
+> DORA — Streamlining change approval:
+> https://dora.dev/capabilities/streamlining-change-approval/
 
 > [1차] = 원저자·원기관 발행 / [2차] = 제3자의 정리·집계
 
