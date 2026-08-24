@@ -6,7 +6,7 @@
 ## 이 세션에서 할 일
 
 **[`direction/04-the-plan.md`](direction/04-the-plan.md)의 만들 것 13개를 순서대로 만든다.**
-지금은 **③번(`project-template`)** 차례다.
+지금은 **④번(`/kickoff`)** 차례다 — ②③⑤가 끝났고, 남은 구간이 거기다.
 
 ## ⓪ 먼저 읽을 것 — 3개
 
@@ -25,7 +25,7 @@
 | 하네스 6세대 | **정리 끝** — 원격 3개 삭제(2026-08-24) · 로컬은 `~/Archive/` |
 | 이 저장소 | 공개 · 룰셋 `main protection` 활성 · CI 초록 · **PR로만 머지 가능** |
 | 벽 | **실물 확증 4/4** — 직접 푸시·빨간불 머지·`--admin` 강제 머지 전부 거부 |
-| 만들 것 | **2/13** — ①(벽) · ②(`coolbress/workflows`). 둘 다 **합성 시험**이다. 위 *완료의 정의* 참조 |
+| 만들 것 | **4/13** — ①(벽) · ②(`workflows`) · ③(`project-template`) · ⑤(`new-project.sh`). 루프는 실제로 한 바퀴 돌았다. **다만 완료의 정의는 아직 미충족** — 아래 |
 | 정리 | ✅ **완료 2026-08-24 (2차)** — 원격 3개 삭제 · 로컬 5개 `~/Archive/`(1.1GB) · 홈 8표면 0건. ⚠️ 1차의 *"0건"* 은 **틀렸었다** — [2차 기록](legacy/judgments/harness-removal-record-2026-08-24.md) |
 
 ## 🎯 완료의 정의 — 이걸 먼저 읽어라
@@ -78,7 +78,65 @@ goppi가 정확히 이 함정에서 죽었다:
 마지막 줄이 특히 위험하다 — ②가 없는 채로 룰셋만 걸면 필수 검사가 영원히 보고되지 않아
 **머지가 불가능한 저장소**가 나온다.
 
-**순서: ② ✅ → ③ → ⑤ → 실전 프로젝트 end-to-end.** ①은 ⑤가 돌면 자동으로 채워진다.
+**순서: ② ✅ → ③ ✅ → ⑤ ✅ → 실전 프로젝트 end-to-end.** ①은 ⑤가 돌면 자동으로 채워졌다.
+
+## ✅ ③⑤ 완료 (2026-08-24) + 루프 1회 통과
+
+| | |
+|---|---|
+| [`coolbress/project-template`](https://github.com/coolbress/project-template) | 공개 · `is_template` · **도는 uv 프로젝트**(빈 껍데기가 아니다) |
+| [`coolbress/workflows`](https://github.com/coolbress/workflows) `new-project.sh` | **로직 9줄** — 저장소 뜨기 · 룰셋 걸기 · 시크릿 탐지/푸시 보호 켜기 |
+
+### 템플릿이 빈 껍데기면 안 되는 이유 — 설계 제약 하나
+
+`uv sync --locked` 는 **락파일이 없으면 실패한다.** 그런데 벽 때문에 빨간 상태에서는
+아무것도 머지할 수 없다. 즉 **템플릿이 도는 프로젝트가 아니면 인스턴스의 첫 PR 부터 막힌다.**
+그래서 템플릿에 `pyproject.toml` · `uv.lock` · 패키지 · 테스트가 실제로 들어 있고,
+푸시 전에 로컬에서 5개(lint·format·typecheck·test·build)를 통과시켰다.
+
+### 🔬 end-to-end 1회 통과 — 실측
+
+`new-project.sh loop-probe` 로 만든 임시 저장소에서:
+
+```
+new-project.sh → 이슈(AC-1·AC-2) → 브랜치 → PR → CI 4/4 초록 → 머지 → 이슈 자동 종료
+```
+
+⑤가 실제로 건 것: `public` · `secret_scanning: enabled` · `push_protection: enabled` ·
+룰셋 `active` · `우회: never` · 요구 검사 `ci / lint`·`ci / typecheck`·`ci / test`·`ci / build`.
+
+**벽 4/4** (새 저장소에서 다시): 직접 푸시 `GH013` 거부 · 브랜치 허용 ·
+빨간불 머지 거부 · **소유자 `--admin` 강제 머지 거부**(`Required status check "ci / typecheck" is failing`).
+
+### 4개로 쪼갠 설계가 값을 한 지점
+
+일부러 타입 힌트를 뺀 PR 에서:
+
+```
+ci / lint        pass   ← ruff 는 통과시켰다
+ci / typecheck   fail   ← mypy strict 만 잡았다
+ci / test        pass
+ci / build       pass
+```
+
+한 잡 4스텝이었으면 *"CI 실패"* 하나만 보이고 **무엇이 왜 실패했는지 알 수 없었다.**
+
+`loop-probe` 는 확인 후 **삭제했다** — 임시 프로브였다.
+
+## 🎯 그래서 완료의 정의는 아직 **미충족**이다
+
+통과한 것은 `이슈 → 브랜치 → PR → CI → 머지` 다. 정의가 요구하는 것은:
+
+```
+new-project.sh → /kickoff → 이슈 → 브랜치 → PR → CI → 머지
+                 ~~~~~~~~
+```
+
+**`/kickoff`(④)가 아직 없고**, 시험 저장소는 *작고 진짜인 것*이 아니라 **임시 프로브**였다.
+즉 **기계 구간은 검증됐고, *아이디어 → 과제 번역* 구간은 한 번도 시험되지 않았다.**
+그 구간이 정확히 가짜 프로젝트로는 시험되지 않는 곳이다.
+
+**남은 것: ④ `/kickoff` + 진짜 아이디어 하나.**
 
 ## ✅ ② 완료 (2026-08-24) — `coolbress/workflows`
 
