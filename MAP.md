@@ -16,7 +16,7 @@
 | `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 96 | **물어봤을 때만** — 과거 하네스·원시 census |
-| `archive` | 34 | 검색 제외 (폐기·legacy) |
+| `archive` | 38 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
 
@@ -98,6 +98,7 @@
 
 ## archive — 검색에서 제외됨 (지우지 않았다)
 
+- `legacy/ARCHIVE-INDEX.md`
 - `legacy/judgments/00-overview.md`
 - `legacy/judgments/01-sdlc-lifecycle.md`
 - `legacy/judgments/02-engineering-practices.md`
@@ -115,12 +116,15 @@
 - `legacy/judgments/gingoa-specific-sections.md`
 - `legacy/judgments/gingoa-taxonomy.md`
 - `legacy/judgments/goppi-final-decisions.md`
+- `legacy/judgments/harness-removal-record-2026-08-04.md`
 - `legacy/judgments/README.md`
 - `legacy/judgments/spec-research-foundation.md`
 - `legacy/judgments/three-tier-ledger.md`
 - `legacy/LINEAGE.md`
 - `legacy/README.md`
+- `legacy/sources/claudeck-v1/ARCHIVE-RECORD.md`
 - `legacy/sources/claudeck-v1/harness-notes.md`
+- `legacy/sources/claudeck-v1/README-v1.md`
 - `legacy/sources/claudeck-v1/researcher.md`
 - `legacy/sources/claudeck/harness-concept-notes.md`
 - `legacy/sources/goppi-trial-web/PROVENANCE.md`
