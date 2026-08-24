@@ -12,7 +12,7 @@ sources: [FAIR-2016, W3C-PROV-O, RO-CRATE-1.2]
 # Evidence Corpus Schema
 
 This schema governs the active corpus. The inherited gingoa schema is preserved at
-`../interpretation/legacy/gingoa-schema.md`; it no longer governs because it mixed evidence, project
+`../legacy/judgments/gingoa-schema.md`; it no longer governs because it mixed evidence, project
 application, and retrieval rules.
 
 ## 1. Layers and authority
@@ -67,7 +67,7 @@ This was executed only after the blockers were removed, in this order:
 3. **Path-carrying ledgers** were updated: `audit/after-manifest.tsv` regenerated, `audit/retrieval-cases.jsonl`
    30 `expected_path` values rewritten, plus in-document links.
 4. **Deliberately not touched** — historical records: `audit/before-manifest.tsv` (pre-curation state),
-   the `arm == "before"` branch in `tools/evaluate_retrieval_before_after.py`, `interpretation/legacy/`,
+   the `arm == "before"` branch in `tools/evaluate_retrieval_before_after.py`, `legacy/judgments/`,
    and `audit/ARCHIVE-LEDGER.md`. Rewriting those would falsify history.
 5. **Safeguard**: `archive/2026-08-08/pre-rename-snapshot.tar.gz` (323 files, SHA-256 in the ledger). The tree is
    not under version control, so the snapshot is the only rollback path.

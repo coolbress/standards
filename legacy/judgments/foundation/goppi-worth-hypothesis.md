@@ -3,7 +3,7 @@
 > 상태: **확증시험 전 프로젝트 가설** · 2026-08-02  
 > 근거 모델: `corpus/methods/target-user-capability-model.md` ·
 > `corpus/methods/trustworthy-completion-evidence-model.md`  
-> 실행 프로토콜: `interpretation/foundation/trustworthy-completion-evaluation-protocol.md`  
+> 실행 프로토콜: `legacy/judgments/foundation/trustworthy-completion-evaluation-protocol.md`  
 > 변경 이유: goppi의 주된 목적은 모델의 평균 산출물 점수만 올리는 것이 아니라, 프로젝트 경험이 없는
 > 비엔지니어가 결과를 맹신하지 않고 검증·판단·복구 가능한 완료에 도달하도록 돕는 것이다.
 
@@ -202,7 +202,7 @@ token overhead는 +13.8%에서 2.7배였다. kickoff만 분명한 양의 margin�
 
 그러나 이 실험들은 주로 agent 결과와 비용을 측정했으며 target-user의 false confidence, 증거 이해,
 decision allocation, recovery를 직접 측정하지 않았다. 따라서 전체 goppi의 핵심 존재 가설에 대한
-판정은 **INCONCLUSIVE**다. 원본은 `imported/goppi/harness-eval-results/`에 보존한다.
+판정은 **INCONCLUSIVE**다. 원본은 `legacy/sources/goppi/harness-eval-results/`에 보존한다.
 
 ## 시험마다 남길 감사 표면
 

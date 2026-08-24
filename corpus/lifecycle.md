@@ -25,7 +25,7 @@ four stages below are a compact way to retrieve evidence; activities may be conc
 
 Greenfield and brownfield are applicability modes, not separate life cycles. Brownfield work adds discovery,
 compatibility, non-clobbering, incremental adoption, and rollback constraints. Detailed gingoa-era activation
-decisions are preserved at `../interpretation/legacy/gingoa-lifecycle.md` and are not evidence.
+decisions are preserved at `../legacy/judgments/gingoa-lifecycle.md` and are not evidence.
 
 ## Sources
 

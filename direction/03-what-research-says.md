@@ -4,7 +4,7 @@
 
 ## 현업 팀이 실제로 하는 것 — 10줄
 
-출처: [`interpretation/02-engineering-practices.md`](../interpretation/02-engineering-practices.md)
+출처: [`legacy/judgments/02-engineering-practices.md`](../legacy/judgments/02-engineering-practices.md)
 (1차 출처 정리 — Google eng-practices · DORA · trunkbaseddevelopment.com · Fowler · ICSE-SEIP 2018)
 
 1. 고성과의 공통분모는 브랜치 모델이 아니라 **"작게, 자주, 빨리 통합"** — 활성 브랜치 ≤3, 하루 1회 머지, **브랜치 수명 몇 시간**
@@ -70,7 +70,7 @@ census: 브랜치 보호가 강하게 걸린 저장소는 **10~13%**뿐이다 �
 
 **추적성**: 인수기준마다 **안정 ID**(`AC-1`…)를 붙이고, `AC-n → 검사 ID → 검사 파일` 매핑표를 만든다.
 매핑할 수 없는 인수기준은 **`UNVERIFIABLE`로 표시하고 알린다 — 조용히 통과시키지 않는다**
-([`interpretation/foundation/goppi-workflow-standard.md`](../interpretation/foundation/goppi-workflow-standard.md) WF-01).
+([`legacy/judgments/foundation/goppi-workflow-standard.md`](../legacy/judgments/foundation/goppi-workflow-standard.md) WF-01).
 
 ## 여러 모델을 어떻게 쓰나
 

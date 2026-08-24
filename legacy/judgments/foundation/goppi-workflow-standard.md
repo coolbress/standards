@@ -261,7 +261,7 @@ rev2에서 이 절은 두 줄이었다. §2 머리가 약속한 네 항목(목�
 |---|---|---|
 | goppi 5조항 계약(advisory 중심) | 변형 계승 | 원칙 유지, 집행은 게이트+계측으로 이동(27 facts) |
 | goppi kickoff 트리거 | 계승(계측 조건부) | 인터뷰 가치는 측정됨(14 vs 3); 트리거 조건은 미검증 → 계측으로 검증 |
-| **goppi review(독립 리뷰 레이어)** | **조건부 계승 — 부정 증거 병기(WF-06 신설 행)** | 통제시험 `imported/goppi/harness-eval-results/2026-07-26-review-precision.md`는 사전 등록된 harmful 조건이 **발화**했다고 기록한다: recall 8/8 대 8/8(동일), false positive vanilla 0 대 harness 1 → **"1 > 0. That condition is met."** 그 문서 자신이 n=1·채점기 결함·recall 동일을 함께 기록한다. rev2는 이 항목을 표에 올리지 않은 채 CRITICAL 필수로 재도입했다(§0 계승 규칙 우회). rev3의 판정: **CRITICAL 한정 + 오탐 계측 필수 + 동등성 부인 고지**를 조건으로 계승하고, 오탐율이 개선되지 않으면 축소·삭제 후보로 둔다 |
+| **goppi review(독립 리뷰 레이어)** | **조건부 계승 — 부정 증거 병기(WF-06 신설 행)** | 통제시험 `legacy/sources/goppi/harness-eval-results/2026-07-26-review-precision.md`는 사전 등록된 harmful 조건이 **발화**했다고 기록한다: recall 8/8 대 8/8(동일), false positive vanilla 0 대 harness 1 → **"1 > 0. That condition is met."** 그 문서 자신이 n=1·채점기 결함·recall 동일을 함께 기록한다. rev2는 이 항목을 표에 올리지 않은 채 CRITICAL 필수로 재도입했다(§0 계승 규칙 우회). rev3의 판정: **CRITICAL 한정 + 오탐 계측 필수 + 동등성 부인 고지**를 조건으로 계승하고, 오탐율이 개선되지 않으면 축소·삭제 후보로 둔다 |
 | goppi ship 고정 세리머니 | 기각→재설계 | ADR-0041 운반체 실패 + P2. 행동 기준(짧은 브랜치·통합)만 유지 |
 | goppi 듀얼 호스트 | 기각(연기) | 사용자 결정. 스킬 개방 표준(agentskills.io)이 이식성 확보 |
 | gingoa 28-aspect 오버레이 | 변형 계승 | **스테이션→aspect 매핑은 신규 작업** — rev3의 §6에서 실행 |

@@ -69,6 +69,6 @@ validator가 영구히 녹색**이 된다 — 파일과 *"파일이 원래 무�
 
 ### 허용된 변경 (additive only)
 
-- 프론트매터 **추가**(내용 무수정): `interpretation/05-goppi-analysis.md`
+- 프론트매터 **추가**(내용 무수정): `legacy/judgments/05-goppi-analysis.md`
 - `_schema.md` §2 에 **신규 파일 명명 규약** 한 줄
 - `ROUTES.jsonl` 재생성 (생성물 — 손편집 금지, `--check` 로 신선도 검사)

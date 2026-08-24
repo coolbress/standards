@@ -1,9 +1,9 @@
 source	imported	items	sha256_or_tree_sha256	result
-/Users/coolbress/Archive/claudeck-v1.git:HEAD:docs/harness-notes.md	.scratch/research/imported/claudeck-v1/harness-notes.md	1	f3ea4fc5886c7fea773bba0110973cef75482705c0bdcdfa35838d619b7df190	MATCH
-/Users/coolbress/Archive/claudeck-v1.git:HEAD:agents/researcher.md	.scratch/research/imported/claudeck-v1/researcher.md	1	580e4ddfc21f679080c71953bf9ea579ccfec73516c9866ed72e5b564654e22f	MATCH
-/Users/coolbress/claudeck/.scratch/harness-concept-notes.md	.scratch/research/imported/claudeck/harness-concept-notes.md	1	81669c45fb8551bdce97ce1bf1a781a4b6a7c58e1a8bc82047a921a4fec339fb	MATCH
-/Users/coolbress/goppi/docs/standards.md	.scratch/research/imported/goppi/standards.md	1	6fa32a84e0d7573de7d2ab5e563fd0c49d0cd75e3272e700f073647e1d236e5f	MATCH
-/Users/coolbress/goppi/.scratch/what-is-a-harness.md	.scratch/research/imported/goppi/what-is-a-harness.md	1	410af9237088867bb62f2ab1d609b44f104fdbd088d3995c36ab1d587d811bef	MATCH
-/Users/coolbress/goppi/docs/design.md	.scratch/research/imported/goppi/design.md	1	2b43191a33dcfff3041d3788166c94e0c542c28b610bc07f1c0b0b97c75ef8ae	MATCH
-/Users/coolbress/goppi/references	.scratch/research/imported/goppi/references	10	6cc30f32b40921237c68de5d322861102a56b5d8ba327302cc1e416bf2b9a3d9	MATCH
-/Users/coolbress/goppi/evals/harness-eval/results	.scratch/research/imported/goppi/harness-eval-results	26	6fbf7a510df2b66ca21d673484c340a666ae1c5b47513f72d0e6cabb2fc691eb	MATCH
+/Users/coolbress/Archive/claudeck-v1.git:HEAD:docs/harness-notes.md	.scratch/research/legacy/sources/claudeck-v1/harness-notes.md	1	f3ea4fc5886c7fea773bba0110973cef75482705c0bdcdfa35838d619b7df190	MATCH
+/Users/coolbress/Archive/claudeck-v1.git:HEAD:agents/researcher.md	.scratch/research/legacy/sources/claudeck-v1/researcher.md	1	580e4ddfc21f679080c71953bf9ea579ccfec73516c9866ed72e5b564654e22f	MATCH
+/Users/coolbress/claudeck/.scratch/harness-concept-notes.md	.scratch/research/legacy/sources/claudeck/harness-concept-notes.md	1	81669c45fb8551bdce97ce1bf1a781a4b6a7c58e1a8bc82047a921a4fec339fb	MATCH
+/Users/coolbress/goppi/docs/standards.md	.scratch/research/legacy/sources/goppi/standards.md	1	6fa32a84e0d7573de7d2ab5e563fd0c49d0cd75e3272e700f073647e1d236e5f	MATCH
+/Users/coolbress/goppi/.scratch/what-is-a-harness.md	.scratch/research/legacy/sources/goppi/what-is-a-harness.md	1	410af9237088867bb62f2ab1d609b44f104fdbd088d3995c36ab1d587d811bef	MATCH
+/Users/coolbress/goppi/docs/design.md	.scratch/research/legacy/sources/goppi/design.md	1	2b43191a33dcfff3041d3788166c94e0c542c28b610bc07f1c0b0b97c75ef8ae	MATCH
+/Users/coolbress/goppi/references	.scratch/research/legacy/sources/goppi/references	10	6cc30f32b40921237c68de5d322861102a56b5d8ba327302cc1e416bf2b9a3d9	MATCH
+/Users/coolbress/goppi/evals/harness-eval/results	.scratch/research/legacy/sources/goppi/harness-eval-results	26	6fbf7a510df2b66ca21d673484c340a666ae1c5b47513f72d0e6cabb2fc691eb	MATCH

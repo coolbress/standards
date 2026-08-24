@@ -3,7 +3,7 @@
 이 문서는 claudeck v1 → claudeck → gingoa → goppi 자료를 “모두 최신 사실”로 합치는 대신,
 각 자료를 **원본 증거, 현재 검토 대상, 설계 해석** 중 어디에 둘지 추적한다. 원본 사본은
 `../imported/`, gingoa 계보의 활성 문서는 `../corpus/`, 프로젝트 적용 문서는
-`../interpretation/legacy/`에 있다.
+`../legacy/judgments/`에 있다.
 
 ## 판정 규칙
 
@@ -16,15 +16,15 @@
 
 | 세대 / 원본 | 현재 위치 | 연결되는 현재 영역 | 판정과 다음 단계 |
 |---|---|---|---|
-| claudeck-v1 `harness-notes.md` | `imported/claudeck-v1/` | aspect 27 control/state/security/lifecycle | historical 원본. 제품 동작은 R0-3/R1-5에서 현행 공식 문서로 재검증 |
-| claudeck-v1 `researcher.md` | `imported/claudeck-v1/` | `methods/EVIDENCE-POLICY.md` | 방법론 prior art. 새 정책과 중복 비교 후 고유 규칙만 승계 |
-| claudeck `harness-concept-notes.md` | `imported/claudeck/` | aspects 22, 27; census 계보 | 14-component taxonomy/census는 claim 후보, PART V 설계는 interpretation |
+| claudeck-v1 `harness-notes.md` | `legacy/sources/claudeck-v1/` | aspect 27 control/state/security/lifecycle | historical 원본. 제품 동작은 R0-3/R1-5에서 현행 공식 문서로 재검증 |
+| claudeck-v1 `researcher.md` | `legacy/sources/claudeck-v1/` | `methods/EVIDENCE-POLICY.md` | 방법론 prior art. 새 정책과 중복 비교 후 고유 규칙만 승계 |
+| claudeck `harness-concept-notes.md` | `legacy/sources/claudeck/` | aspects 22, 27; census 계보 | 14-component taxonomy/census는 claim 후보, PART V 설계는 interpretation |
 | gingoa research corpus | `corpus/` | 28 stable aspect paths | 구조는 승계, inherited 50문서는 `review-needed`; gingoa 적용 절은 legacy로 분리 |
-| goppi `standards.md` | `imported/goppi/` | methods, aspects 01/04/05/08/09/17/22/24/27 | 1차 자료 연결은 재사용 후보, 제품·시장 사실은 만료 검토, goppi 규범은 interpretation |
-| goppi `what-is-a-harness.md` | `imported/goppi/` | aspect 27 | `design.md`에 의해 superseded된 개념 에세이 |
-| goppi `design.md` | `imported/goppi/` | R0-5 worth hypothesis, 전체 설계 | 현재 요구·판단의 기록. 객관 corpus에 직접 병합하지 않음 |
-| goppi `references/` 10개 | `imported/goppi/references/` | security, review, verification, scaffold, sandbox, publishing | 적용 reference. 각 규칙은 해당 P0/P1 unit에서 source-to-claim 재심사 |
-| goppi harness eval 원본 | `imported/goppi/harness-eval-results/` | R0-5, R1-4, R1-5 | 가장 직접적인 로컬 empirical evidence. n, isolation, scorer, 반복성 한계까지 함께 승계 |
+| goppi `standards.md` | `legacy/sources/goppi/` | methods, aspects 01/04/05/08/09/17/22/24/27 | 1차 자료 연결은 재사용 후보, 제품·시장 사실은 만료 검토, goppi 규범은 interpretation |
+| goppi `what-is-a-harness.md` | `legacy/sources/goppi/` | aspect 27 | `design.md`에 의해 superseded된 개념 에세이 |
+| goppi `design.md` | `legacy/sources/goppi/` | R0-5 worth hypothesis, 전체 설계 | 현재 요구·판단의 기록. 객관 corpus에 직접 병합하지 않음 |
+| goppi `references/` 10개 | `legacy/sources/goppi/references/` | security, review, verification, scaffold, sandbox, publishing | 적용 reference. 각 규칙은 해당 P0/P1 unit에서 source-to-claim 재심사 |
+| goppi harness eval 원본 | `legacy/sources/goppi/harness-eval-results/` | R0-5, R1-4, R1-5 | 가장 직접적인 로컬 empirical evidence. n, isolation, scorer, 반복성 한계까지 함께 승계 |
 
 ## goppi eval 결과군 전수 배치
 

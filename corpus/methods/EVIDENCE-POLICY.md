@@ -80,7 +80,7 @@ meet the chosen systematic-review protocol. PRISMA is used as a transparency che
 ## Search craft (absorbed 2026-08-02 from claudeck-v1 `researcher.md`)
 
 Three collection rules from the claudeck-v1 researcher agent that this policy previously lacked. Provenance:
-`imported/claudeck-v1/researcher.md`; the first rule is recorded as A/B-verified in that harness's own local
+`legacy/sources/claudeck-v1/researcher.md`; the first rule is recorded as A/B-verified in that harness's own local
 records (goppi design §8 cites it) — a local record, not independently replicated.
 
 1. **Domain-scope the query when the term is also a product category.** When a technique's name doubles as a

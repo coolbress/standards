@@ -18,7 +18,7 @@
  *   - `facts-2026-08-*` — **날짜가 앞**을 차지해 정작 질문이 파일명 뒤로 밀림
  *   - evidence · standard · checklist · census · prior-art · research-log 가 **한 디렉터리에 섞임**
  *   - 개념상 3층(evidence → method → interpretation)인데 **물리 경로가 불일치**
- *     (`interpretation/` 은 `corpus/` 안이 아니라 형제다)
+ *     (`legacy/` 는 `corpus/` 안이 아니라 형제다)
  *
  * ── 왜 원본 프론트매터를 바꾸지 않는가 ─────────────────────────────────────
  * ① `tools/validate_corpus.py` 가 `lifecycle_stages`·`evidence_track`·`claim` 을 **직접 강제**한다.
@@ -42,9 +42,9 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, ".."); // .scratch/research
 /* ⚠️ `imported/` 를 빠뜨리면 안 된다 (2026-08-08 첫 판의 버그).
  * 첫 판은 `corpus`+`interpretation` 만 훑었는데, **오늘 이 프로젝트의 계보(4세대 6색깔)와
- * 안전 통제 은퇴 규칙이 나온 파일이 `imported/goppi/design.md`** 였다.
+ * 안전 통제 은퇴 규칙이 나온 파일이 `legacy/sources/goppi/design.md`** 였다.
  * 그 파일이 라우터에 없으면, 라우터가 바로 그 문제 — *"있는데 안 읽힌다"* — 를 재현한다. */
-const SCAN = ["direction", "corpus", "interpretation", "imported"];
+const SCAN = ["direction", "corpus", "legacy"];
 const OUT = join(ROOT, "ROUTES.jsonl");
 
 /* ── 최소 YAML 프론트매터 파서 ───────────────────────────────────────────
