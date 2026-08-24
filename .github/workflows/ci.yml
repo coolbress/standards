@@ -36,4 +36,3 @@ jobs:
 
       - name: 검색 계약 (30/30)
         run: python3 tools/evaluate_retrieval_contract.py
-        continue-on-error: true   # 계약 러너의 CI 이식성 미검증 — 초록 강제 전까지 정보용
