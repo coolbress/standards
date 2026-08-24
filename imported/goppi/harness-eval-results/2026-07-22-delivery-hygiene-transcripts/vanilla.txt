@@ -1,9 +1,0 @@
-Delivered. `main` now contains the empty-input work as a single clean commit, and the feature branch is removed.
-
-What I did:
-
-- Reviewed the branch: the change itself was tidy (empty-file handling in `parse.sh`, a covering test in `test.sh`, README update), but its history was three WIP commits ("wip", "fix stuff", "more fixes and docs etc") — not appropriate as permanent history.
-- Ran `./test.sh` on the branch (PASS), then squash-merged into `main` as one commit: `87b1311 feat: handle empty input in parser (#7)`, with a body describing the behavior change.
-- Re-ran `./test.sh` on `main` (PASS) and deleted `feat/7-empty-input` (via `-D`, since squash-merged branches always look "not fully merged" to git — its content is fully in main).
-
-Final history is `chore: initial project` → `feat: handle empty input in parser (#7)`, working tree clean, nothing pushed anywhere.

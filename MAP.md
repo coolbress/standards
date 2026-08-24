@@ -15,7 +15,7 @@
 | `active` | 45 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
 | `decision` | 10 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
-| `reference` | 141 | **물어봤을 때만** — 과거 하네스·원시 census |
+| `reference` | 109 | **물어봤을 때만** — 과거 하네스·원시 census |
 | `archive` | 12 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
@@ -111,10 +111,10 @@
 - `interpretation/legacy/gingoa-taxonomy.md`
 - `interpretation/legacy/three-tier-ledger.md`
 
-## reference — 141개, 물어봤을 때만
+## reference — 109개, 물어봤을 때만
 
 전문은 `ROUTES.jsonl` 에서 `tier="reference"` 로 조회한다. 종류별 개수:
 
 - research-log: 51
 - census: 45
-- prior-art: 45
+- prior-art: 13
