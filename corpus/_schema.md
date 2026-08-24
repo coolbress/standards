@@ -15,6 +15,9 @@ This schema governs the active corpus. The inherited gingoa schema is preserved 
 `../legacy/judgments/gingoa-schema.md`; it no longer governs because it mixed evidence, project
 application, and retrieval rules.
 
+> ⚠️ **2026-08-24 층 개편**: `imported/` + `interpretation/` → **`legacy/`** 로 통합됐고,
+> **`direction/`**(결론 층)이 신설됐다. 아래 표는 그 개편을 반영한다.
+
 ## 1. Layers and authority
 
 | Layer | Purpose | May contain goppi decisions? | Mutable? |
@@ -22,8 +25,9 @@ application, and retrieval rules.
 | `corpus/methods/` | evidence and curation rules | no | yes, reviewed |
 | `corpus/aspects/` | topic synthesis and claim registers | no | yes, reviewed |
 | `corpus/census-data/` | raw or derived local empirical evidence | no | append-only |
-| `imported/` | immutable historical source copies | historical content only | no |
-| `interpretation/` | goppi conclusions, comparisons, and decisions | yes | yes |
+| `legacy/sources/` | immutable historical source copies (구 `imported/`) | historical content only | no |
+| `legacy/judgments/` | 폐기된 하네스의 결론·비교·결정 (구 `interpretation/`) | historical | reviewed |
+| `direction/` | **현행 방향과 계획** — 이 저장소의 결론 층 (2026-08-24 신설) | yes | yes |
 | `audit/` | manifests, findings, dispositions, validation reports | no | append-only per audit |
 | `archive/` | recoverable material removed from active retrieval | historical content only | no |
 
@@ -139,7 +143,7 @@ Agents load progressively:
 3. Claim rows needed for the question.
 4. Source-registry records and raw evidence only when validating or resolving a conflict.
 
-Agents must not treat `review-needed`, `draft`, `imported`, `interpretation/`, or `archive/` as verified general
+Agents must not treat `review-needed`, `draft`, `legacy/`, or `archive/` as verified general
 evidence. Retrieval status and evidence strength are filters, not prose hints.
 
 ## 7. Source registry and provenance

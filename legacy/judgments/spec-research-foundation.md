@@ -1,3 +1,7 @@
+> ⚠️ **2026-08-24 이관**: 저장소 루트의 고아 문서였다. 어떤 문서도 인용하지 않고,
+> 본문이 참조하는 `../../spec.md`·`../../progress.md`는 이 저장소 밖(삭제 예정)이다.
+> 역사 기록으로 `legacy/judgments/`에 둔다.
+
 # spec — goppi_final research foundation audit
 
 > **이관 기록 (2026-08-04):** 이 파일은 리서치 토대 단계에서 루트 `spec.md`로 운용된 Governed 계약

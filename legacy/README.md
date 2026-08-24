@@ -1,6 +1,6 @@
 # legacy — 과거 하네스가 남긴 전부
 
-네 번의 시도(claudeck → gingoa → goppi → goppi_final)가 남긴 것을 한자리에 모았다.
+**5세대**(claudeck-v1 → claudeck → gingoa → goppi → goppi_final)가 남긴 것을 한자리에 모았다.
 **이 층은 전부 지나간 것이다.** 현행 방향은 [`direction/`](../direction/)이고,
 둘이 충돌하면 `direction/`이 이긴다.
 
