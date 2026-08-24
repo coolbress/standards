@@ -27,10 +27,10 @@ method: "Haiku web-research agents, facts-only rules ([정의/규정]/[데이터
 
 | Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
 |---|---|---|---|---|---|
-| **CR-001** | operational-lesson | 원문 결론 불릿: **"LOC under review should be under 200, not to exceed 400. Anything larger overwhelms reviewers and defects are not uncovered."** 즉 **권고는 200 미만이고 400은 상한**이다 — 400이 목표치가 아니다 | 1차 PDF `Conclusions` 절 | high (인용 정확도) / **low (일반화)** — 아래 CR-004 | 2026-08-24 |
-| **CR-002** | operational-lesson | LOC 증가에 따른 효과 저하는 **200 부근에서 시작**한다: *"Anything below 200 lines produces a relatively high rate of defects… After that the results trail off considerably; no review larger than 250 lines produced more than 37 defects per 1000 lines."* **"급락(plummet)"이라는 표현은 LOC 에 쓰이지 않았다** | 1차 PDF | high | 2026-08-24 |
-| **CR-003** | operational-lesson | 원문에서 *"Defect detection rates **plummet** after that time"* 는 **총 리뷰 시간(60분 초과·90분 상한)**에 대한 서술이지 **LOC 에 대한 것이 아니다** | 1차 PDF `Conclusions` 절 | high | 2026-08-24 |
-| **CR-004** | limitation | 저자가 밝힌 한계 2건: ① 각주 5 — *"we're tacitly assuming that true defect density is constant over both large and small code changes"* ② *"we don't know how each of these reviews would have fared with a different process."* 표본은 **Cisco MeetingPlace 제품 그룹 1곳 · 개발자 50명 · 리뷰 2,500건 · 2005-07~2006-05** | 1차 PDF | high | 2026-08-24 |
+| **CR-001** | empirical | 원문 결론 불릿: **"LOC under review should be under 200, not to exceed 400. Anything larger overwhelms reviewers and defects are not uncovered."** 즉 **권고는 200 미만이고 400은 상한**이다 — 400이 목표치가 아니다 | 1차 PDF `Conclusions` 절 | high (인용 정확도) / **low (일반화)** — 아래 CR-004 | 2026-08-24 |
+| **CR-002** | empirical | LOC 증가에 따른 효과 저하는 **200 부근에서 시작**한다: *"Anything below 200 lines produces a relatively high rate of defects… After that the results trail off considerably; no review larger than 250 lines produced more than 37 defects per 1000 lines."* **"급락(plummet)"이라는 표현은 LOC 에 쓰이지 않았다** | 1차 PDF | high | 2026-08-24 |
+| **CR-003** | empirical | 원문에서 *"Defect detection rates **plummet** after that time"* 는 **총 리뷰 시간(60분 초과·90분 상한)**에 대한 서술이지 **LOC 에 대한 것이 아니다** | 1차 PDF `Conclusions` 절 | high | 2026-08-24 |
+| **CR-004** | synthesis | 저자가 밝힌 한계 2건: ① 각주 5 — *"we're tacitly assuming that true defect density is constant over both large and small code changes"* ② *"we don't know how each of these reviews would have fared with a different process."* 표본은 **Cisco MeetingPlace 제품 그룹 1곳 · 개발자 50명 · 리뷰 2,500건 · 2005-07~2006-05** | 1차 PDF | high | 2026-08-24 |
 
 > **분류가 왜 `operational-lesson` 인가**: [`EVIDENCE-POLICY`](../../methods/EVIDENCE-POLICY.md) §*Evidence hierarchy is claim-relative* 에서 **단일 조직의 1차 보고**는 operational-lesson 이고, 그 범주 오류는 ***"generalizing one organization to all teams"*** 다. 이것을 **효과·인과** 주장으로 쓰면(*"400줄 넘으면 결함 발견율이 급락한다"*) 재현 연구가 필요한데 **이 연구 하나로는 안 된다.**
 
@@ -38,10 +38,15 @@ method: "Haiku web-research agents, facts-only rules ([정의/규정]/[데이터
 
 | Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
 |---|---|---|---|---|---|
-| **CR-005** | industry-prevalence | Google 의 변경당 **수정 줄 수 중앙값은 24**: *"Over 10% of changes modify only a single line of code, and the median number of lines modified is 24."* ⚠️ 저자가 일반화 한계를 명시했다 — *"our results **may not generalize** to other contexts"* | [ICSE-SEIP 2018 원문 PDF](https://sback.it/publications/icse2018seip.pdf) | high (인용) / **low (일반화)** | 2026-08-24 **유지** |
-| **CR-006** | industry-prevalence | ⚠️ **정정.** 이전 판은 *"리뷰 응답 실측 중앙값 4시간"* 이라 적었으나 원문은 **두 수치를 구분**한다: **첫 피드백까지의 대기**는 *"a median time of under an hour for small changes and about 5 hours for very large changes"*, **전체 리뷰 과정의 지연**이 *"under 4 hours"* 다. **4시간은 응답 시간이 아니라 전 과정 지연**이다 | 〃 | high | 2026-08-24 **수정** |
-| **CR-007** | not-found | ⚠️ **1차 출처에서 찾을 수 없음.** *"빠른 리뷰 팀이 배포 성과 50% 높다"* 는 DORA 수치를 확인하지 못했다. `dora.dev` 능력 카탈로그에서 코드리뷰 관련 항목은 [`streamlining-change-approval`](https://dora.dev/capabilities/streamlining-change-approval/) **하나뿐**이고 거기에 그 수치가 없다 | 검색 실패 | — | 2026-08-24 **삭제 권고** |
-| **CR-008** | misattribution | ⚠️ **오귀속.** *"다중 필수 승인자·형식적 체크리스트는 DORA 가 명시한 안티패턴"* 은 **DORA 가 한 말이 아니다.** DORA 가 비판한 것은 **CAB·고위 관리자 등 팀 외부의 중량급 변경 승인**이고, 오히려 **팀 내 동료 리뷰를 권장**한다: *"Use peer review to meet the goal of segregation of duties."* **동료 리뷰의 승인자 수와 체크리스트는 DORA 의 범위가 아니다** | [DORA streamlining-change-approval](https://dora.dev/capabilities/streamlining-change-approval/) | high | 2026-08-24 **삭제** |
+| **CR-005** | empirical | Google 의 변경당 **수정 줄 수 중앙값은 24**: *"Over 10% of changes modify only a single line of code, and the median number of lines modified is 24."* ⚠️ 저자가 일반화 한계를 명시했다 — *"our results **may not generalize** to other contexts"* | [ICSE-SEIP 2018 원문 PDF](https://sback.it/publications/icse2018seip.pdf) | high (인용) / **low (일반화)** | 2026-08-24 **유지** |
+| **CR-006** | empirical | ⚠️ **정정.** 이전 판은 *"리뷰 응답 실측 중앙값 4시간"* 이라 적었으나 원문은 **두 수치를 구분**한다: **첫 피드백까지의 대기**는 *"a median time of under an hour for small changes and about 5 hours for very large changes"*, **전체 리뷰 과정의 지연**이 *"under 4 hours"* 다. **4시간은 응답 시간이 아니라 전 과정 지연**이다 | 〃 | high | 2026-08-24 **수정** |
+| **CR-007** | synthesis | ⚠️ **1차 출처에서 찾을 수 없음.** *"빠른 리뷰 팀이 배포 성과 50% 높다"* 는 DORA 수치를 확인하지 못했다. `dora.dev` 능력 카탈로그에서 코드리뷰 관련 항목은 [`streamlining-change-approval`](https://dora.dev/capabilities/streamlining-change-approval/) **하나뿐**이고 거기에 그 수치가 없다 | 검색 실패 | — | 2026-08-24 **삭제 권고** |
+| **CR-008** | synthesis | ⚠️ **오귀속.** *"다중 필수 승인자·형식적 체크리스트는 DORA 가 명시한 안티패턴"* 은 **DORA 가 한 말이 아니다.** DORA 가 비판한 것은 **CAB·고위 관리자 등 팀 외부의 중량급 변경 승인**이고, 오히려 **팀 내 동료 리뷰를 권장**한다: *"Use peer review to meet the goal of segregation of duties."* **동료 리뷰의 승인자 수와 체크리스트는 DORA 의 범위가 아니다** | [DORA streamlining-change-approval](https://dora.dev/capabilities/streamlining-change-approval/) | high | 2026-08-24 **삭제** |
+
+> ⚠️ **class 어휘 정정 (2026-08-24)**: 첫 판은 `operational-lesson`·`limitation`·`industry-prevalence`·`not-found`·`misattribution` 을 썼는데
+> **전부 검증기의 허용 어휘가 아니다**(`definition`·`normative`·`empirical`·`vendor-behavior`·`synthesis`·`local-census`).
+> 그런데도 CI 는 초록이었다 — 검증기가 claim table 을 **`status: verified` 문서에만** 검사하기 때문이다(`validate_corpus.py:573`).
+> 이 문서는 `draft` 라 통과했다. → [`GAPS`](../../../audit/GAPS.ko.md) **R5-12**
 
 > **CR-007·008 이 이 재검증의 요점이다.** 둘 다 *"DORA 가 그렇게 말한다"* 는 형태였는데, 하나는 **수치를 찾을 수 없었고** 하나는 **다른 대상에 대한 발견을 옮겨 붙인 것**이었다. 각주가 없어서가 아니라 **각주가 가리키는 곳에 그 말이 없어서** 틀렸다.
 
