@@ -21,11 +21,11 @@ three whole layers (interview *style*, principled question *selection*, structur
 | Family | Sources | Build ingredient it contributes |
 |---|---|---|
 | **A. AI-native spec tools** | Spec-Kit · Kiro · BMAD-METHOD | `[NEEDS CLARIFICATION]` don't-guess marker + checklist-as-"unit-tests-for-English" lock-gate (Spec-Kit); EARS-structured requirements + analyze-for-gaps (Kiro); **multi-AGENT pipeline** Analyst→PM→Architect (BMAD) |
-| **B. Customer-discovery interviewing** | The Mom Test · JTBD Switch Interview (Moesta) · Continuous Discovery (Torres) | **Interview STYLE layer (most-missed):** talk about their life/**past specifics**, never your idea or **hypotheticals**; listen 80% — "every word you speak is bias." Frame around the **job/progress** (4 forces: push/pull/anxiety/habit). Collect **stories, not opinions**; discover opportunities, not solutions. |
+| **B. Customer-discovery interviewing** | The Mom Test · JTBD Switch Interview (Moesta) · Continuous Discovery (Torres) | **Interview STYLE layer (most-missed):** talk about their life/**past specifics**, never your idea or **hypotheticals**; talk less and listen more. ⚠️ **2026-08-25 배치 5 (ELI-006)**: *"80%"* 라는 수치와 *"every word you speak is bias"* 라는 **따옴표 인용은 1차 출처로 확인되지 않았다** — 코퍼스가 출처로 단 것은 책이 아니라 **제3자 서평**이고, 그 서평에도 둘 다 없다. 규칙 자체는 널리 확인되므로 유지하되 **수치와 인용부호는 내린다.** Frame around the **job/progress** (4 forces: push/pull/anxiety/habit). Collect **stories, not opinions**; discover opportunities, not solutions. |
 | **C. Classic RE** | Gause-Weinberg context-free questions · Volere (Robertson) · Zowghi-Coulin survey | **Context-free question set** (process/product/meta) that opens any project; the Volere **fit criterion** — every requirement carries a measurable "how we'll know it's met." |
 | **D. Goal / opportunity decomposition** | KAOS · i* · Tropos (GORE) · Opportunity-Solution-Tree | Refine goals via **AND/OR**; **obstacle (anti-goal) analysis** = goal-driven fault-tree — derive requirements from *what can go wrong* (the unhappy-path completeness a category checklist misses). |
 | **E. LLM clarifying-question mechanism** | Active Task Disambiguation (Bayesian Experimental Design) · Structured-Uncertainty Clarification (arXiv 2511.08798) · Ask-before-Plan · Modeling-Future-Turns (arXiv 2410.13788) | **Principled "which question next":** pick the question with **maximum expected information gain** (sample the solution space). **When** to ask = uncertainty estimate; **stop** when further questions yield ~no utility (the ambiguity threshold, made rigorous). |
-| **F. Spec notation (the locked output)** | EARS (Mavin, RE'09) · Gherkin/BDD Given-When-Then · Example Mapping + Three Amigos (Spec by Example, Adzic) | Write acceptance criteria as **machine-parseable templates** (EARS `WHEN/IF/WHILE…SHALL`, 5 patterns; or Gherkin GWT). Example Mapping's **"questions" pile = the clarification backlog**; concrete **examples** beat abstract prose. |
+| **F. Spec notation (the locked output)** | EARS (Mavin, RE'09) · Gherkin/BDD Given-When-Then · Example Mapping + Three Amigos (Spec by Example, Adzic) | Write acceptance criteria as **machine-parseable templates** (EARS; or Gherkin GWT). ⚠️ **2026-08-25 배치 5 (ELI-005) 정정 — 패턴은 5개가 아니라 6개**이고 키워드에 **`WHERE`** 가 빠져 있었다: Ubiquitous(키워드 없음) · State driven `While` · Event driven `When` · Optional feature `Where` · Unwanted behaviour `If…Then` · Complex(조합). Example Mapping's **"questions" pile = the clarification backlog**; concrete **examples** beat abstract prose. |
 | **G. Forcing functions** | Amazon Working-Backwards **PR/FAQ** | Write the future press-release + FAQ FIRST as a customer-clarity forcing function. **Internal FAQ = every-department question sweep** → a stakeholder-completeness checklist. |
 
 ## The distilled US-2 build recipe (what to take from the full spectrum)
@@ -52,7 +52,7 @@ A multi-agent loop: **Interviewer** asks (Mom-Test style, info-gain-selected, JT
 full serial context** — each question sees all prior answers, iReDev) ↔ **Analyst** attaches `[NEEDS CLARIFICATION]`,
 measures ambiguity/coverage over {functional · 9 NFR · scope · constraints · assumptions · risks · anti-goals ·
 stakeholders}, runs the **risk classifier** (ADR-0012). Loop until ambiguity-threshold + 0 markers (**risk-adjusted
-depth ≈ 8 / 12 / 18 turns, ~15–20 cap** — iReDev/AIRE; not a fixed list, not a 30-turn marathon); high-risk → hard-stop. Emit **EARS/GWT acceptance + fit-criterion + traceability ID** per requirement into
+depth ≈ 8 / 12 / 18 turns, ~15–20 cap**; not a fixed list, not a 30-turn marathon). 🔴 **2026-08-25 배치 5 (ELI-004) 출처 철회 — `8 / 12 / 18` 은 iReDev 에도 AIRE 에도 없다.** 두 검증자가 독립으로 확인했다: iReDev 에는 턴 수 상한도 위험 비례 깊이 규칙도 없고, AIRE_03 은 **교육용 인터뷰 스크립트 생성** 연구다. `~15–20` 만 AIRE 원문에 있는데 그마저 *"we aim to include approximately **15 to 20 turns in the script**"* — **생성할 스크립트의 목표 길이**이지 실제 인터뷰의 측정된 상한이 아니다. **세 숫자는 프로젝트 판단이다.**; high-risk → hard-stop. Emit **EARS/GWT acceptance + fit-criterion + traceability ID** per requirement into
 `prd.yml` (SSOT) → `PRD.md`. **Lock-gate** = checklist-as-unit-tests (markers 0 · 29148-clean · ISO-25010 complete ·
 risks resolved) → `status: locked`. An **eval case set** grades competence. Each emitted requirement is traceable
 (→ ADR/design → acceptance test), per [`requirements-engineering-craft.md`](requirements-engineering-craft.md).
@@ -63,7 +63,7 @@ The method is empirically supported (not just argued):
   simulated product experience, then interview them → surfaces **latent needs** the real-user interview misses. A
   concrete technique for the tacit-knowledge layer, beyond questioning the one real user. [lit] arXiv 2404.16045
 - **LLMREI** (RE'25) — an LLM elicitation-interview chatbot makes ~human-level mistakes and elicits **up to 73.7%**
-  of requirements across 33 simulated interviews (zero-shot vs least-to-most prompting won; fine-tuning lost). A
+  of requirements across 33 simulated interviews — ⚠️ **2026-08-25 배치 5 (ELI-002): 73.7% 는 완전 도출 60.94% + 부분 도출 12.76% 의 합이다.** 완전 도출만 보면 **60.94%** 이고, 참가자는 대부분 학생이다 (zero-shot vs least-to-most prompting won; fine-tuning lost). A
   realistic competence baseline + a prompting-strategy signal. [lit] arXiv 2507.02564
 - **Follow-Up Question Generation** (RE'25) — GPT-4o follow-ups match human quality, and **beat human when GUIDED by
   a framework of common interviewer mistakes** — direct empirical validation of feeding the interviewer a
@@ -92,3 +92,27 @@ https://johnfergusonsmart.com/three-amigos-requirements-discovery/ · Amazon Wor
 BMAD-METHOD https://github.com/bmad-code-org/BMAD-METHOD · GitHub Spec-Kit https://github.com/github/spec-kit/blob/main/spec-driven.md ·
 AWS Kiro Specs https://kiro.dev/docs/specs/ · ReqElicitGym (interview competence, arXiv 2602.18306) https://arxiv.org/abs/2602.18306 ·
 GenAI for RE — systematic review (arXiv 2409.06741) https://arxiv.org/abs/2409.06741
+
+## Claim table — 기획 인터뷰의 근거 (배치 5 · 1차 출처 직접 확인 2026-08-25)
+
+이 행들은 [`direction/03`](../../../direction/03-what-research-says.md) *"기획은 어떻게 이끄나"* 절과
+만들 것 ④ [`/kickoff`](https://github.com/coolbress/workflows/blob/main/commands/kickoff.md) 를 떠받친다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| ELI-001 | empirical | ⭐ **흔한 실수 목록을 쥐여주면 LLM 후속질문이 사람을 이긴다 — 통제실험 2개.** 원문 그대로: *"the LLM-generated questions are **no worse than** the human-authored questions with respect to clarity, relevancy, and informativeness"*, 그리고 *"LLM-generated questions **outperform** human-authored questions **when guided by common mistakes types**."* 설계는 *"a controlled experiment"* + *"a second controlled experiment"* 다. → **이것이 `/kickoff` 에 실수 목록을 넣은 이유이고, 근거는 예상보다 강하다** | `FOLLOWUP-QGEN-RE25` | high | 2026-08-25 |
+| ELI-002 | empirical | **LLM 인터뷰어의 도출률 기준선은 완전 60.94% · 부분 12.76%(합 73.7%)다.** 원문 그대로: *"LLMREI was able to **completely elicit up to 60.94%** of all requirements and **partially elicit up to 12.76%** (in total 73.7%)."* ⚠️ **`73.7%` 만 쓰면 3분의 1이 *부분* 도출이라는 사실이 가려진다.** 표본은 **33건의 모의 인터뷰**이고 참가자는 대부분 학생 — 저자 스스로 표본 크기를 한계로 든다 | `LLMREI-2025` | medium-high | 2026-08-25 **수치 분해** |
+| ELI-003 | vendor-behavior | **턴당 ≤2문항 — 출처는 실재하고 인용도 맞다.** iReDev 의 Interviewer Agent 프로파일(Fig. 3): *"**Limit each question turn to no more than two questions** to maintain a natural conversational flow."* LLMREI 도 독립적으로 같은 조정을 했다(*"one question at a time or only ask two questions if it is about one specific topic"*). ⚠️ **다만 둘 다 프롬프트 설계 선택이지 비교 측정된 파라미터가 아니다** — 두 팀이 수렴했다는 것이 근거의 전부다 | `IREDEV-2025`; `LLMREI-2025` | medium | 2026-08-25 |
+| ELI-004 | synthesis | 🔴 ***"위험별 깊이 8 / 12 / 18턴"* 은 출처가 없다.** 인용해 온 두 논문 어디에도 없다 — iReDev 에는 **턴 수 상한도 위험 비례 깊이 규칙도 없고**(*"multi-round dialogue"* 까지다), AIRE_03 은 **교육용 인터뷰 스크립트를 생성**하는 연구다. `~15–20` 만 AIRE 원문에 있으나 *"we aim to include approximately **15 to 20 turns in the script**"* — **생성물의 목표 길이**이지 인터뷰 깊이의 측정치가 아니다. → **세 숫자는 프로젝트 판단으로 재분류**한다 | `IREDEV-2025`; `AIRE-SCRIPTGEN-2023` | high (반증) | 2026-08-25 **출처 철회** |
+| ELI-005 | definition | **EARS 패턴은 5개가 아니라 6개다.** 표기법 저자 본인의 페이지 기준: Ubiquitous(키워드 없음) · State driven **`While`** · Event driven **`When`** · Optional feature **`Where`** · Unwanted behaviour **`If…Then`** · Complex(둘 이상 조합). 이 코퍼스와 `direction/03` 은 **5개**라 적고 키워드 목록에서 **`Where` 를 빠뜨렸다.** ⚠️ 또한 이 페이지는 *"reduces or even eliminates common problems"* 라 주장할 뿐 **모호성 감소의 실증을 제시하지 않는다** — 그 근거는 별도 Springer 벤치마크다 | `EARS-MAVIN` | high | 2026-08-25 **수정** |
+| ELI-006 | synthesis | ⚠️ **Mom Test 의 *"80% 듣기 · 'every word you speak is bias'"* 는 1차 출처로 확인되지 않았다.** 코퍼스가 단 출처는 **책이 아니라 제3자 서평**이고, 그 서평에 **수치도 그 문장도 없다.** 세 규칙(그들의 삶을 묻는다 · 미래 의견이 아니라 **과거의 구체**를 묻는다 · 말을 줄이고 듣는다)은 널리 확인되므로 **규칙은 유지**하되, **수치와 따옴표 인용은 내린다.** 원저 접근이 되면 `UNVERIFIABLE` 을 해제한다 | `MOMTEST-2013` | low (1차 미확인) | 2026-08-25 **`UNVERIFIABLE` 표시** |
+
+> **배치 5 의 결론 — 기획 절은 *가장 강한 근거*와 *가장 약한 근거*를 나란히 들고 있었다.**
+> **ELI-001 은 이 저장소에서 손에 꼽게 강하다** — 통제실험 두 개가 *"실수 목록을 주면 사람을 이긴다"* 를 직접 시험했다.
+> `/kickoff` 가 실수 목록을 핵심으로 삼은 판단은 그대로 선다.
+>
+> 🔴 **반면 `8 / 12 / 18` 은 두 논문 이름을 달고 있었지만 그 논문들에 없다.** 배치 4 의 *"계획을 파일로"*(IPW-016)와
+> **같은 형태**다 — 실재하는 논문을, 그 논문이 하지 않은 말의 근거로 달았다. 각주가 있어서 검증돼 보였을 뿐이다.
+> 이 두 건이 연속으로 나왔다는 것은 **`direction` 의 인용 습관 자체에 계통 오차가 있다**는 신호다.
+
+**재검증 기록 (배치 5 · 기획)** — 검증일 `2026-08-25` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의, 결론 비공개) · **판정: 유지 1 · 수치 분해 1 · 한정 1 · 출처 철회 1 · 수정 1 · `UNVERIFIABLE` 1** · **불일치 없음**(Codex 가 AIRE 원문의 *"approximately 15 to 20 turns in the script"* 를 **추가로 찾아내 `~15–20` 의 진짜 출처와 그 범위를 확정**했다 — 내 1차 조사에서는 못 찾은 문장이다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)

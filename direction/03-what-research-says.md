@@ -1,6 +1,7 @@
 # 03 — 리서치는 무엇을 말하는가
 
-> 갱신 2026-08-24 · rev1 · 근거는 전부 `corpus/`에 있다. 여기는 **방향에 걸리는 것만** 추린 색인이다.
+> 갱신 2026-08-25 · rev2 · 근거는 전부 `corpus/`에 있다. 여기는 **방향에 걸리는 것만** 추린 색인이다.
+> **하중 18건 재검증(프로그램 #49) 배치 1~5 완료** — 판정은 각 항목에 인라인으로 붙어 있다.
 
 ## 현업 팀이 실제로 하는 것 — 10줄
 
@@ -21,7 +22,7 @@
 > **아직 안 옮긴 것**: Git Flow 창시자의 2020 note · 테스트 피라미드 80/15/5 · TDD 순서 효과 ·
 > feature flag 부채. `audit/GAPS.ko.md` R5-1에 등재했다.
 
-1. 고성과의 공통분모는 브랜치 모델이 아니라 **"작게, 자주, 빨리 통합"** — 활성 브랜치 ≤3, 하루 1회 머지, **브랜치 수명 몇 시간**
+1. 고성과의 공통분모는 브랜치 모델이 아니라 **"작게, 자주, 빨리 통합"** — 활성 브랜치 ≤3, 하루 1회 머지, **브랜치 수명 몇 시간** ✅ **2026-08-25 1차 출처 직접 확인**(`github-workflow-current` **GHW-010**): 세 수치 전부 dora.dev 원문 그대로다 — *"three or fewer active branches"* · *"Merge branches to trunk at least once a day"* · *"branches … typically last no more than a few hours"*. ⚠️ **단 근거는 페이지 자신이 밝히듯 *"Analysis of DORA data from 2016 and 2017"*, 즉 설문 분석의 상관 진술**이지 저장소 계측이 아니다
 2. Git Flow는 **창시자가 2020년에 웹앱에 비추천**했다 — ✅ **2026-08-24 1차 출처 확인**(`github-workflow-current` **GHW-008**). 단 **전면 철회가 아니라 범위 한정**이다: *"명시적으로 버전이 붙는 소프트웨어·다중 버전 지원에는 여전히 맞을 수 있다"*
 3. **리뷰는 빨라야 한다** — Google 응답 규범 1영업일. ⚠️ **2026-08-24 재검증**: *"빠른 팀이 배포 성과 50% 높음"* 은 **1차 출처에서 찾을 수 없어 삭제**했다(`codereview--facts` **CR-007**). 그리고 실측 *"중앙값 4시간"* 은 **응답 시간이 아니라 전체 리뷰 과정의 지연**이다 — 첫 피드백은 소형 1시간 미만·대형 약 5시간(**CR-006**)
 4. 리뷰의 전제는 **작은 변경** — Google 중앙값 **24줄**, 100줄 적정 / 1000줄 과대, **200줄 목표 · 400줄 상한**(⚠️ 2026-08-24 재검증 — *"급락"* 은 원문에 없다. `codereview--facts` CR-001~003)
@@ -39,12 +40,21 @@
 > ⚠️ **2026-08-24 재검증 — 두 부분을 갈랐다.**
 > **앞 문장(행동이 하중을 받는다)은 리서치가 받친다**: DORA 의 *"≤3 active branches · 하루 1회 이상 trunk 병합"*
 > ([`05 overview`](../corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md)). 단 그 수치는 **설문 자기보고**이지
-> 저장소 계측이 아니다(`github-workflow-current` **GHW-009**).
+> 저장소 계측이 아니다(`github-workflow-current` **GHW-009**, 2026-08-25 **GHW-010** 으로 1차 확인 승격).
+>
 > **뒷 문장(*"브랜치 다이어그램을 정교하게 그리는 것 자체는 ceremony다"*)은 리서치가 아니다** —
 > *"다이어그램을 그리는 행위"* 를 측정한 연구를 찾지 못했다. **프로젝트 판단으로 재분류**한다.
 > `EVIDENCE-POLICY` 가 이름 붙인 범주 오류가 *"disguising author judgment as fact"* 다.
 >
 > ⚠️ **2026-08-24 재검증으로 삭제됨.** 이전 판은 *"다중 필수 승인자·형식적 체크리스트 채우기는 DORA가 명시한 안티패턴"* 이라 적었으나 **DORA 가 한 말이 아니다.** DORA 가 비판한 것은 **CAB·고위 관리자 등 팀 외부의 중량급 변경 승인**이고, 오히려 **팀 내 동료 리뷰를 권장**한다. 동료 리뷰의 승인자 수와 체크리스트는 DORA 범위 밖이다 (`codereview--facts` **CR-008**).
+>
+> 🔴 **2026-08-25 배치 5 — 이 삭제를 부분 복원했다.** *"다중 승인자"* 절반에는 **DORA 출처가 있다** —
+> **trunk-based-development 역량 페이지의 *Common pitfalls*** 가 *"An overly heavy code-review process …
+> **requires multiple approvals** before changes can be merged into trunk"* 을 **TBD 채택의 흔한 장애물**로 명시한다
+> (`github-workflow-current` **GHW-011**). 다만 범위가 좁다 — ***코드리뷰 일반의 안티패턴이 아니라 trunk 기반 개발
+> 채택의 장애물***이고, **체크리스트 쪽은 여전히 무출처**(해당 페이지 등장 0회)다.
+> **배치 A 는 `streamlining-change-approval` 한 페이지만 보고 *"출처가 없다"* 고 적었다** — *"못 찾았다"* 와 다르다.
+> 부수 확인: 같은 절이 *"Performing code reviews **asynchronously**"* 도 장애물로 들며 **동기 리뷰를 권한다.**
 
 ## 테스트는 어디에 있어야 하나 — 에이전트 코딩에서 특히 강하다
 
@@ -127,15 +137,25 @@ census: 브랜치 보호가 강하게 걸린 저장소는 **10~13%**뿐이다 �
 
 | 층 | 처방 |
 |---|---|
-| 질문 **스타일** | Mom Test — 유도·가정 질문 금지, **과거의 구체적 행동**에 근거, 80% 듣기 |
+| 질문 **스타일** | Mom Test — 유도·가정 질문 금지, **과거의 구체적 행동**에 근거, **말을 줄이고 듣는다**. ⚠️ *"80% 듣기"* 는 **1차 출처 미확인이라 내렸다**(**ELI-006**) |
 | 질문 **선택** | 다음 질문 = **기대 정보이득 최대** |
-| **분량** | **턴당 ≤2문항**, 위험별 깊이 **8/12/18턴**, 상한 15~20 |
-| **표기법** | **EARS** (`WHEN/IF/WHILE… SHALL`) + 요구사항마다 **적합 기준** |
+| **분량** | **턴당 ≤2문항** ✅(iReDev 원문 확인 · **ELI-003**) · 🔴 위험별 깊이 **8/12/18턴** = **출처 없음, 프로젝트 판단**(**ELI-004**) · 상한 **15~20** 은 AIRE 원문에 있으나 *"생성할 **스크립트**의 목표 길이"* 다 |
+| **표기법** | **EARS** — ⚠️ **패턴은 5개가 아니라 6개**이고 `WHERE`(선택 기능)가 빠져 있었다(**ELI-005**): 없음·`While`·`When`·`Where`·`If…Then`·조합 + 요구사항마다 **적합 기준** |
 | **완결성** | GORE **안티목표** — *"뭐가 잘못될 수 있나"*에서 역산 |
 | **잠금** | `[NEEDS CLARIFICATION]` 마커 **0개**일 때만 확정 |
 
 **실증**: LLM 후속질문은 사람 수준이고, **"흔한 인터뷰 실수 프레임워크"를 주면 사람을 이긴다** (RE'25).
 → 인터뷰 스킬에는 질문 목록만이 아니라 **하지 말아야 할 실수 목록**을 넣어야 한다.
+
+> ✅ **2026-08-25 1차 출처 확인 — 이 절에서 가장 강한 근거다** (`elicitation-interview-build-standard` **ELI-001**).
+> 설계가 **통제실험 2개**다: 최소 가이드 조건에서 *"the LLM-generated questions are **no worse than** the
+> human-authored questions with respect to clarity, relevancy, and informativeness"*, 그리고 실수 유형으로
+> 가이드한 조건에서 *"LLM-generated questions **outperform** human-authored questions"*.
+> **④ `/kickoff` 가 실수 목록을 핵심으로 삼은 판단은 그대로 선다.**
+>
+> ⚠️ **같은 절의 다른 수치는 그렇지 않다.** LLMREI 의 *"최대 73.7% 도출"* 은 **완전 60.94% + 부분 12.76%** 의 합이고
+> 표본은 모의 인터뷰 33건·참가자 대부분 학생이다(**ELI-002**). 그리고 **`8/12/18턴` 은 인용한 두 논문 어디에도 없다**(**ELI-004**) —
+> 배치 4 의 *"계획을 파일로"*(IPW-016)와 **같은 형태**다: 실재하는 논문을, 그 논문이 하지 않은 말의 근거로 달았다.
 
 **추적성**: 인수기준마다 **안정 ID**(`AC-1`…)를 붙이고, `AC-n → 검사 ID → 검사 파일` 매핑표를 만든다.
 매핑할 수 없는 인수기준은 **`UNVERIFIABLE`로 표시하고 알린다 — 조용히 통과시키지 않는다**
@@ -145,9 +165,15 @@ census: 브랜치 보호가 강하게 걸린 저장소는 **10~13%**뿐이다 �
 
 [`corpus/aspects/27-ai-harness-archetype/multi-agent-orchestration-standard.md`](../corpus/aspects/27-ai-harness-archetype/multi-agent-orchestration-standard.md)
 
-- 지배적 토폴로지 = **오케스트레이터-워커 + 컨텍스트 격리**. 연구 평가에서 **+90.2%**, 다만 **토큰 ~15배**
+- 🔴 ~~지배적 토폴로지 =~~ **널리 서술되는 토폴로지 = 오케스트레이터-워커 + 컨텍스트 격리**. ⚠️ **2026-08-25 재검증으로 *"지배적"* 을 내렸다**(`multi-agent-orchestration-standard` **MAO-003**): 세 출처 어디에도 **채택률의 모집단 조사·설문·배포 통계가 없고**, Anthropic 은 **자사 아키텍처**를 서술할 뿐이다. 결정적으로 **같은 근거로 인용해 온 Cognition 이 정반대를 쓴다** — *"**No single approach to building agents has become the standard yet**"*. → **프로젝트 판단으로 재분류**
+- **+90.2%** · **토큰 ~15배** ✅ **2026-08-25 1차 출처 확인**(**MAO-001·002**) — 수치는 원문 그대로다: *"outperformed single-agent Claude Opus 4 by 90.2% on **our internal research eval**"* · *"agents typically use about **4×** … multi-agent systems use about **15×** more tokens than chats"* · *"token usage by itself explains **80%** of the variance"*. ⚠️ **다만 벤더 내부 평가이고 표본 수·과제 구성·방법론이 공개돼 있지 않다.** 저자가 우수 영역을 *"breadth-first queries"* 로 스스로 좁힌다
 - 🔴 **단일 작성자 원칙**(Cognition) — 병렬 작업자는 **지능을 기여하지 행동을 하지 않는다.**
   *"행동에는 암묵적 결정이 실리고, 충돌하는 결정은 나쁜 결과를 낳는다"*
+  ✅ **2026-08-25 1차 출처 확인**(**MAO-004**) — 인용은 정확하다. 그 문장은 2024년 글의 **Principle 2 제목 그대로**이고,
+  운용 규칙은 2025년 후속 글에 있다: *"multi-agent systems work best today when **writes stay single-threaded**
+  and the additional agents contribute **intelligence rather than actions**."*
+  ⚠️ **근거의 종류는 통제실험이 아니라 자사 운영 경험**이고, 예시(Flappy Bird)에는 저자 스스로 *"This may seem contrived"*
+  라 단서를 달았다. ⚠️ 그리고 ***"single-writer"* 라는 이름은 이 코퍼스의 것**이다 — 원문 표현은 *"one writer"* · *"single-threaded"*
 - **생성자-검증자** — 작성자의 컨텍스트가 **없는** 리뷰어가 오히려 버그를 더 찾는다.
   ✅ **2026-08-24 1차 출처 재검증** (`28 overview` **IPW-006~008**):
   - **근거는 통제실험이다** — 30개 산출물·150개 주입 오류·**360 리뷰**. CCR **F1 28.6%** vs 같은세션
@@ -160,7 +186,7 @@ census: 브랜치 보호가 강하게 걸린 저장소는 **10~13%**뿐이다 �
     받칠 수 없는 수치였다 (**IPW-008**)
 - **교차벤더 라우팅은 비용이 아니라 역량 최적화** ✅ **재검증**(**IPW-009**) — *"The delegation logic becomes a **capability router** rather than a difficulty escalator."* 단 출처는 벤더 경험 보고다
 - ~~**정적 역할 배정이 프로덕션 표준** — 동적 per-query 라우팅은 아직 연구 단계~~ ❌ **2026-08-24 재검증으로 삭제**(**IPW-010**) — 배포 통계가 없고, **같은 출처(Cognition)가 동적 교차벤더 라우팅을 *"in production for a meaningful stretch"* 로 돌렸다고 밝힌다.** 자기모순이었다
-- ⚠️ 대부분의 **코딩 작업은 다중 에이전트에 부적합** — 진짜 병렬 가능한 하위작업이 적다
+- ⚠️ 대부분의 **코딩 작업은 다중 에이전트에 부적합** — 진짜 병렬 가능한 하위작업이 적다. ⚠️ **2026-08-25 한정**(**MAO-005**): 원문은 단정이 아니라 **비교문**이다 — *"most coding tasks involve **fewer truly parallelizable tasks than research**"*. 저자가 실제로 든 부적합 조건은 과제 종류가 아니라 **구조**다 — *"domains that require **all agents to share the same context** or involve **many dependencies**"*. → *"코딩이라서 안 된다"* 가 아니라 ***"공유 컨텍스트·상호 의존이 많으면 안 된다"*** 로 쓴다
 
 호스트 제약: 서브에이전트 `model` 필드는 **Anthropic 모델만** 받는다(`fable` 포함).
 외부 모델 경로는 **MCP 또는 셸아웃 둘뿐**
