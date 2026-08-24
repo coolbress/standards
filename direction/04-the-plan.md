@@ -32,15 +32,16 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 | 1 | **브랜치 보호 · 룰셋** (`bypass_actors: []`) | ① | 🔒 벽 |
 | 2 | **`coolbress/workflows`** — ci(lint·typecheck·**test**·build) · pipeline-guard(**테스트 동반 검사** 포함) | ①② | 🔒 벽 |
 | 3 | **`coolbress/project-template`** — Issue Form · PR 템플릿 · `CLAUDE.md`(20줄) · 5줄 `ci.yml` | ①② | 1회 복사 |
-| 4 | **`~/.claude/commands/kickoff.md`** — 기획 인터뷰 | ②③ | 🤝 안내 |
+| 4 | **`~/.claude/commands/kickoff.md`** — 기획 인터뷰 (+ 아키타입 질문 **2개**: 공개 여부 · 개인정보) | ②③ | 🤝 안내 |
 | 5 | **`ruleset.json` + `new-project.sh`**(4줄) | 반복 제거 | 1회 실행 |
 | 6 | **`@claude` PR 리뷰어** — diff만 보는 제3자 | ① | 🤝 안내 |
 | 7 | **세션 시작 이슈 낭독 훅** | ④ | 🤝 기억 |
 | 8 | **`~/.claude/CLAUDE.md` 전역 규칙** — ⓐ 쉬운 말이 **기본값** ⓑ **결정 회부 기준**(무엇을 묻고 무엇을 재량으로) ⓒ 선택지엔 근거·위험·불확실성을 함께 | **③** | 🤝 안내 |
 | 9 | (나중) 라우팅 표 6줄 + `consensus` MCP + `clink` | **⑤** | 속도 |
-| **10** | **`floor-check` CI 잡** — 락파일·`.env` 커밋 여부·Actions SHA 핀·`.env.example` | 산출물 바닥 | 🔒 벽 |
+| **10** | **`floor-check` CI 잡** — 락파일·`.env` 커밋 여부·Actions SHA 핀·`.env.example` + **존재 기반 조건부 검사**(`migrations/` 있으면 · `openapi.*` 있으면) | 산출물 바닥 | 🔒 벽 |
 | **11** | **Dependabot/Renovate 설정**을 템플릿에 | 산출물 바닥 (MUST) | 1회 복사 |
 | **12** | **SAST(Semgrep) + gitleaks**를 `coolbress/workflows`에 | 산출물 바닥 (MUST) | 🔒 벽 |
+| **13** | (첫 공개 웹앱 때) **공개 웹앱 층** — 접근성 · 개인정보 · spend cap · 헬스체크 | 아키타입 gated | 🔒 벽 · **조건부** |
 
 > **10~12는 [`05`](05-the-output-floor.md)에서 나왔다** — `04`가 *일하는 방식*만 다루고
 > *산출물 바닥*(MUST 49개)을 빠뜨리고 있었다. 바닥은 **가장 약한 항목으로 점수가 매겨진다.**
