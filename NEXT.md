@@ -6,7 +6,7 @@
 ## 이 세션에서 할 일
 
 **[`direction/04-the-plan.md`](direction/04-the-plan.md)의 만들 것 13개를 순서대로 만든다.**
-지금은 **①번(브랜치 보호)** 차례다.
+지금은 **③번(`project-template`)** 차례다.
 
 ## ⓪ 먼저 읽을 것 — 3개
 
@@ -25,7 +25,7 @@
 | 하네스 6세대 | **정리 끝** — 원격 3개 삭제(2026-08-24) · 로컬은 `~/Archive/` |
 | 이 저장소 | 공개 · 룰셋 `main protection` 활성 · CI 초록 · **PR로만 머지 가능** |
 | 벽 | **실물 확증 4/4** — 직접 푸시·빨간불 머지·`--admin` 강제 머지 전부 거부 |
-| 만들 것 | **1/13** (①이 이 저장소에서 검증됨 — 다만 **합성 시험**이다. 위 *완료의 정의* 참조) |
+| 만들 것 | **2/13** — ①(벽) · ②(`coolbress/workflows`). 둘 다 **합성 시험**이다. 위 *완료의 정의* 참조 |
 | 정리 | ✅ **완료 2026-08-24 (2차)** — 원격 3개 삭제 · 로컬 5개 `~/Archive/`(1.1GB) · 홈 8표면 0건. ⚠️ 1차의 *"0건"* 은 **틀렸었다** — [2차 기록](legacy/judgments/harness-removal-record-2026-08-24.md) |
 
 ## 🎯 완료의 정의 — 이걸 먼저 읽어라
@@ -36,8 +36,14 @@
 
 | 여기서 시험되나 | 만들 것 |
 |---|---|
-| 🟢 된다 | ② 재사용 워크플로(이 저장소 `ci.yml`을 `uses:` 호출로 바꿔보기) · ⑫ gitleaks |
-| 🔴 **안 된다** | ⑤ `new-project.sh`(새 저장소를 실제로 만들어야) · ③ 템플릿(인스턴스를 떠야) · ④ `/kickoff`(진짜 기획거리가 있어야) · ⑦ 세션 훅(이슈·마일스톤이 있어야) · ⑩ `floor-check`(락파일이 없어 FAIL만 난다) |
+| 🟢 된다 | ② 재사용 워크플로의 **기계장치**(호출이 도는가 · 검사 이름이 무엇이 되는가) · ⑫ gitleaks |
+| 🔴 **안 된다** | ⑤ `new-project.sh`(새 저장소를 실제로 만들어야) · ③ 템플릿(인스턴스를 떠야) · ④ `/kickoff`(진짜 기획거리가 있어야) · ⑦ 세션 훅(이슈·마일스톤이 있어야) · ⑩ `floor-check`(락파일이 없어 FAIL만 난다) · **②의 내용**(`python-ci.yml` 은 uv 프로젝트가 있어야 돈다) |
+
+> ⚠️ **위 🟢 칸의 첫 판은 *"이 저장소 `ci.yml`을 `uses:` 호출로 바꿔보기"* 였다. 그렇게 하면 안 된다.**
+> 재사용 호출은 검사 이름을 `{호출잡}/{피호출잡}` 으로 바꾼다(실측 · 코퍼스 CPR-007).
+> 이 저장소 룰셋은 `integrity` 를 요구하므로, 바꾸는 순간 그 이름이 영원히 보고되지 않아
+> **자기 벽을 자기가 부순다.** 기계장치는 **별도 프로브 워크플로를 얹어서** 재는 것이 안전하다
+> (기존 `integrity` 잡을 건드리지 않으므로 벽이 유지된다). 실제로 그렇게 쟀다 — PR #33.
 
 ### 그래서 완료의 정의는 이렇다
 
@@ -59,12 +65,51 @@ goppi가 정확히 이 함정에서 죽었다:
 리서치의 처방도 같다 — **walking skeleton: 첫 조각은 end-to-end 한 줄기**
 ([`direction/03`](direction/03-what-research-says.md)).
 
-## ① 지금 할 일 — 브랜치 보호를 새 프로젝트에
+## 순서 — ⑤를 먼저 하면 막힌다
 
-이 저장소에는 이미 걸려 있다. **다음 프로젝트에 같은 것을 거는 게 ①의 완성**이다.
-그런데 ①은 ⑤(`new-project.sh`)와 같이 만드는 게 낫다 — 매번 손으로 걸 이유가 없다.
+첫 판의 권장 순서(⑤ → ② → ③)는 **의존이 정반대**라 쓸 수 없다:
 
-**권장 순서**: ⑤ `ruleset.json` + `new-project.sh` → ② `coolbress/workflows` → ③ `project-template`
+| | 무엇이 먼저 있어야 하나 |
+|---|---|
+| ⑤ `new-project.sh` | `gh repo create --template coolbress/project-template` → **③** |
+| ③ 템플릿의 5줄 `ci.yml` | `uses: coolbress/workflows/...` → **②** |
+| ⑤ `ruleset.json` | 요구하는 context 를 **②가 실제로 내보내야** 한다 |
+
+마지막 줄이 특히 위험하다 — ②가 없는 채로 룰셋만 걸면 필수 검사가 영원히 보고되지 않아
+**머지가 불가능한 저장소**가 나온다.
+
+**순서: ② ✅ → ③ → ⑤ → 실전 프로젝트 end-to-end.** ①은 ⑤가 돌면 자동으로 채워진다.
+
+## ✅ ② 완료 (2026-08-24) — `coolbress/workflows`
+
+공개 저장소. main 보호됨. **직접 푸시 `GH013` 거부 실측.**
+
+| 파일 | 무엇 |
+|---|---|
+| `.github/workflows/python-ci.yml` | 재사용 CI — **`lint`·`typecheck`·`test`·`build` 4개 별도 잡**. uv·ruff·mypy·pytest. Actions 전부 SHA 핀 · `permissions: contents: read` |
+| `.github/workflows/ci.yml` | 자기 검사 — actionlint(다이제스트 핀). 잡 이름 `integrity` |
+| `ruleset.json` | ⑤가 `--input` 으로 쓸 벽의 실물 |
+
+**4개로 쪼갠 이유**: 바닥이 *"lint·typecheck·test·build를 **각각 별도 required check**로"* 를
+MUST 로 요구한다([`05`](direction/05-the-output-floor.md) §CI/CD). 한 잡 4스텝이면 첫 실패에서
+멈춰 나머지 상태를 알 수 없고 룰셋이 개별 검사를 요구할 수도 없다.
+
+### 🔴 ③·⑤가 반드시 지켜야 할 결합
+
+검사 이름은 **`{호출잡}/{피호출잡}`** 이다(실측 · CPR-007). 호출잡을 `ci` 로 두면:
+
+```
+ci / lint     ci / typecheck     ci / test     ci / build
+```
+
+`ruleset.json` 이 요구하는 것도 이 네 이름이다. **템플릿의 호출잡 이름을 바꾸면 룰셋이
+요구하는 이름이 영원히 보고되지 않아 저장소가 조용히 머지 불가로 잠긴다.**
+
+### ②에 아직 없는 것
+
+pipeline-guard(테스트 동반 검사) · ⑫ SAST·gitleaks · ⑩ floor-check.
+**루프가 한 번 초록으로 돈 뒤에** 붙인다 — *walking skeleton* 과 *"벽보다 도구를 먼저 늘리기 ✕"*.
+그리고 `python-ci.yml` 의 **내용은 아직 한 번도 실제 프로젝트에서 돌지 않았다.**
 
 ### ⑤의 실물 (참고 — 이 저장소에 걸린 것)
 
