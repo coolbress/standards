@@ -39,6 +39,8 @@ sources:
 | GEB-002 | local-census | 소유자 계정 coolbress에서 비공개 저장소 `fyan`·`goppi`의 `GET /repos/{o}/{r}/rulesets`는 **403**과 `"Upgrade to GitHub Pro or make this repository public to enable this feature."`를 반환한다. 공개 저장소 `VertexLab`의 같은 호출은 **200**과 `enforcement: active`인 룰셋 1건을 반환한다. | 2026-08-24 `gh api` 실행 | high (n=3, 단일 계정) | 2026-08-24; 플랜 변경 시 무효 |
 | GEB-003 | vendor-behavior | `POST /repos/{owner}/{repo}/issues`의 파라미터는 `title`(필수)·`body`·`milestone`·`labels`·`assignees`·`issue_field_values`·`type`이다. **이슈 템플릿·이슈 폼을 참조하거나 검증하는 파라미터가 없다.** | GitHub REST 문서 | high | 2026-08-24; API 버전 변경 시 재확인 |
 | GEB-004 | synthesis | 따라서 이슈 폼의 `validations.required`는 **웹 UI 제출 경로에만** 걸린다. 에이전트나 스크립트가 쓰는 REST/CLI 경로는 폼을 거치지 않으므로 필수 필드가 집행되지 않는다. 이는 우회(bypass)가 아니라 **설계상 별개 경로**다. | GEB-003 + 폼 문서가 "기여자가 폼을 채우면 응답이 마크다운으로 변환되어 본문에 추가된다"고만 규정 | medium-high | 재검토: GitHub이 API에 템플릿 파라미터를 추가하면 |
+| GEB-005 | local-census | 룰셋(`bypass_actors: []` · required status check `integrity`)이 걸린 저장소에서 **소유자가 관리자 권한으로 강제 머지를 시도해도 거부된다.** `gh pr merge --squash --admin` → `GraphQL: Repository rule violations found / Required status check "integrity" is failing.` CI 실패 PR은 `mergeStateStatus: BLOCKED`을 유지했고 `main`은 움직이지 않았다. | 2026-08-24 소유자 본인 실행 (coolbress/standards PR #2) | high (n=1 · 단일 저장소·단일 룰셋 구성) | 2026-08-24; 룰셋 정책 변경 시 |
+| GEB-006 | synthesis | 따라서 이 구성의 벽은 **협조 위에 서지 않는다** — 훅·로컬 검사와 달리 최고 권한 보유자의 우회 플래그로도 넘지 못한다. ⚠️ **증명하지 않는 것**: 소유자가 룰셋 자체를 비활성화·삭제한 뒤 머지하는 경로는 여전히 열려 있다. 다만 그것은 플래그 한 개가 아니라 **별도의 의도적이고 기록되는 행위**이며, 표류(drift)와 의지(intent)를 가르는 경계가 거기 있다. | GEB-005 | medium-high | 룰셋 삭제 경로는 미측정 |
 
 ## 함의 (근거 층에 남기는 범위)
 
@@ -46,6 +48,7 @@ sources:
 - 이슈 본문의 필수 항목을 **기계 경로에서도** 요구하려면 집행 지점이 폼이 아니라 **CI 검사**여야 한다.
   이는 부모 aspect의 tension T3(*pre-commit 훅은 게이트가 아니다 — 진짜 게이트는 CI + 브랜치 보호*)와
   같은 형태의 결론이며, 같은 이유(로컬/클라이언트 측 검사는 우회 가능)에서 나온다.
+- **GEB-005가 답하는 것은 하네스 문헌의 미해결 질문이다.** goppi L0는 자기 게이트에 대해 *"자물쇠는 협조 위에 선다"* 와 *"훅-ask 강제 vs allow 우회 판별 UNVERIFIED"* 를 고지했다 — 같은 uid·같은 프로세스 경계 안의 통제는 원리적으로 그 질문에 답할 수 없기 때문이다. **서버 측 룰셋은 그 질문에 답한다**: 경계가 사용자 머신 밖에 있으므로 최고 권한 클라이언트도 넘지 못한다.
 - GEB-001·002가 참인 환경에서는 **CI 검사도 최종 집행이 되지 못한다.** 검사는 돌지만 병합을 막지 못하기
   때문이다. 즉 비공개 + Free 조합에서는 제어 사슬(GHW-007)의 "protected merge" 고리가 빠진다.
 - 같은 선택(비공개 유지 vs 공개 전환 vs 유료 전환)에는 **Actions 분 과금**도 함께 걸린다 — 선행 matrix에
