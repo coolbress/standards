@@ -13,7 +13,7 @@
 | 등급 | 개수 | 뜻 |
 |---|---|---|
 | `active` | 53 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
-| `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
+| `decision` | 6 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 7 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 101 | **물어봤을 때만** — 과거 하네스·원시 census |
 | `archive` | 53 | 검색 제외 (폐기·legacy) |
@@ -85,6 +85,7 @@
 | method | `corpus/methods/evidence-durability--grading-model.md` | 근거 수명 등급 모델 — 무엇이 안 바뀌고, 무엇이 바뀌며, 바뀌면 어디까지 무너지는가 |
 | method | `corpus/methods/EVIDENCE-POLICY.md` | Evidence Review and AI-Readable Corpus Policy |
 | reference | `corpus/methods/framework-crosswalk-2026.md` | SWEBOK V4.0a × ISO/IEC/IEEE 12207:2026 × ISO/IEC 25010:2023 × goppi 28-Aspects |
+| method | `corpus/methods/reverification-protocol.md` | 재검증 절차 — 이미 있는 주장을 다시 확인하는 법 |
 | reference | `corpus/methods/target-user-capability-model.md` | Target User Capability and Responsibility Model |
 | reference | `corpus/methods/trustworthy-completion-evidence-model.md` | Trustworthy Completion, Assurance, and Appropriate Reliance Evidence Model |
 

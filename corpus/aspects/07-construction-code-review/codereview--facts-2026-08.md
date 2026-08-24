@@ -21,7 +21,22 @@ method: "Haiku web-research agents, facts-only rules ([정의/규정]/[데이터
 
 **변경량 기준** — 구글 eng-practices는 "100줄은 보통 합리적, 1000줄은 보통 너무 큼"이라 규정한다 [https://google.github.io/eng-practices/review/developer/small-cls.html]. "파일 분산이 중요함: 파일 1개의 200줄 변경은 허용되나 50개 파일에 걸친 동일 변경은 보통 너무 크다."
 
-**리뷰 효율** — SmartBear가 시스코 팀을 대상으로 수행한 연구는 "200-400 LOC를 60-90분에 리뷰하면 70-90% 결함 발견율을 얻는다"고 보고했다 [https://smartbear.com/learn/code-review/best-practices-for-peer-code-review/]. "300 LOC/시간 이하의 검사 속도가 최고 결함 발견을 산출하며, 500 이하도 양호하다. 그 이상 속도에서는 상당한 결함 누락을 예상하라."
+**리뷰 효율** — ⚠️ **2026-08-24 재검증으로 정정됨.** 이전 판은 SmartBear **마케팅 페이지**를 인용해 *"200-400 LOC를 60-90분에 리뷰하면 70-90% 결함 발견율"* 이라 적었다. **1차 출처(케이스 스터디 원문 PDF)를 열어 보니 결론이 다르다** — 아래 claim table CR-001~004 참조.
+
+### Claim table — SmartBear/Cisco 케이스 스터디 (1차 출처 직접 확인)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **CR-001** | operational-lesson | 원문 결론 불릿: **"LOC under review should be under 200, not to exceed 400. Anything larger overwhelms reviewers and defects are not uncovered."** 즉 **권고는 200 미만이고 400은 상한**이다 — 400이 목표치가 아니다 | 1차 PDF `Conclusions` 절 | high (인용 정확도) / **low (일반화)** — 아래 CR-004 | 2026-08-24 |
+| **CR-002** | operational-lesson | LOC 증가에 따른 효과 저하는 **200 부근에서 시작**한다: *"Anything below 200 lines produces a relatively high rate of defects… After that the results trail off considerably; no review larger than 250 lines produced more than 37 defects per 1000 lines."* **"급락(plummet)"이라는 표현은 LOC 에 쓰이지 않았다** | 1차 PDF | high | 2026-08-24 |
+| **CR-003** | operational-lesson | 원문에서 *"Defect detection rates **plummet** after that time"* 는 **총 리뷰 시간(60분 초과·90분 상한)**에 대한 서술이지 **LOC 에 대한 것이 아니다** | 1차 PDF `Conclusions` 절 | high | 2026-08-24 |
+| **CR-004** | limitation | 저자가 밝힌 한계 2건: ① 각주 5 — *"we're tacitly assuming that true defect density is constant over both large and small code changes"* ② *"we don't know how each of these reviews would have fared with a different process."* 표본은 **Cisco MeetingPlace 제품 그룹 1곳 · 개발자 50명 · 리뷰 2,500건 · 2005-07~2006-05** | 1차 PDF | high | 2026-08-24 |
+
+> **분류가 왜 `operational-lesson` 인가**: [`EVIDENCE-POLICY`](../../methods/EVIDENCE-POLICY.md) §*Evidence hierarchy is claim-relative* 에서 **단일 조직의 1차 보고**는 operational-lesson 이고, 그 범주 오류는 ***"generalizing one organization to all teams"*** 다. 이것을 **효과·인과** 주장으로 쓰면(*"400줄 넘으면 결함 발견율이 급락한다"*) 재현 연구가 필요한데 **이 연구 하나로는 안 된다.**
+
+**재검증 기록** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0` (독립 질의, 결론 비공개) · 1차출처 [`code-review-cisco-case-study.pdf`](https://static0.smartbear.co/support/media/resources/cc/book/code-review-cisco-case-study.pdf) · **판정 수정** · **불일치 없음**(4개 항목 전부 일치. Codex 가 한계 문장 1건을 추가로 발견) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
+**검사 속도** — *"Inspection rates less than 300 LOC/hour result in best defect detection. Rates under 500 are still good; expect to miss significant percentage of defects if faster than that."* (1차 PDF `Conclusions`)
 
 **반복 횟수** — "Modern Code Review: A Case Study at Google"(ICSE 2018)는 "80% 이상의 모든 변경이 최대 1회 반복만 거친다"고 기록했다 [https://doi.org/10.1145/3183519.3183525]. 리뷰어 수는 "보통 하나의 리뷰어만 필요하다"(소유권 및 가독성 요구사항 충족).
 
@@ -66,6 +81,10 @@ method: "Haiku web-research agents, facts-only rules ([정의/규정]/[데이터
 ---
 
 ## 출처
+
+> ⚠️ 2026-08-24 재검증에서 **1차 출처가 추가됐다.** 이전 판은 벤더 마케팅 페이지만 인용했다.
+> Code Review at Cisco Systems (SmartBear, 2006 · 케이스 스터디 원문 PDF):
+> https://static0.smartbear.co/support/media/resources/cc/book/code-review-cisco-case-study.pdf
 
 > [1차] = 원저자·원기관 발행 / [2차] = 제3자의 정리·집계
 

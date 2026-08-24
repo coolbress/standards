@@ -34,7 +34,7 @@ corpus/aspects/05-scm-workflow/github-workflow-current.md	4448	1787534871	96a6e5
 corpus/aspects/06-config-secrets/06-config-secrets--overview.md	8234	1787558487	93efa3167c1604b825d36395ad6d25e02c71cc663fb5541df9d928adc01eba48	active
 corpus/aspects/06-config-secrets/config-validation-secrets--facts-2026-08.md	19503	1787558487	d6b0cbc8585f66252b07db993bd8ae00e62c672d15692c6f247040bce94551a0	active
 corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md	8498	1787558487	14a34f43471e7e95481636f00657934e5b5553399e26466416182ed54a664e0a	active
-corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md	6766	1787558487	98b683958727d80babaed43dcca92d49cc7898c700d7996fe4d619cb5cd4f7ed	active
+corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md	9821	1787576507	e50482eaa7d29528295084a5d1dd665255b9358e501a52785e4501733e9f843d	active
 corpus/aspects/08-software-testing/08-software-testing--overview.md	10171	1787558487	4c7f14f762b80095b90bdd59413bc2739d14700027d2ccbee22b7b27712abc81	active
 corpus/aspects/08-software-testing/testing--facts-2026-08.md	10507	1787558487	ec1e6f6545e49e21adc49c4291f7f6dcd6bc931642112fb6a9fff5f2b44f0a6c	active
 corpus/aspects/09-application-security/09-application-security--overview.md	12130	1787558487	b1171dff821c78c3c562e25fe271988644015636036d37c89f230ad409d48535	active
@@ -245,5 +245,6 @@ corpus/matrix--facts-2026-08.md	3035	1787558487	c69d94cb8913e7b509ea648a5c67455c
 corpus/methods/EVIDENCE-POLICY.md	6774	1787541524	d9638a3664d0c341e1069b9d44454197f4a10d698a43868933a48102ad262d8c	active
 corpus/methods/evidence-durability--grading-model.md	18974	1787558487	d83e64181186a6b5eafa810f525f3e40edb5b15dd41bfa5e833a4a3799d8e392	active
 corpus/methods/framework-crosswalk-2026.md	9141	1785665220	a090b65733693a521ab9dba8f5cbf8c4a25baea70df733fd4874a065fec369d8	active
+corpus/methods/reverification-protocol.md	4658	1787576469	07b62e9ecbd07be6f1d6853b9b722001dc5da28bfe628b2ddc4f02341eff08a1	active
 corpus/methods/target-user-capability-model.md	9495	1785668813	a546cadafd331527929584283f8350c1414085893f0dc1545d3b0ebfaa8254fe	active
 corpus/methods/trustworthy-completion-evidence-model.md	9427	1785668620	0df5604a70a9a59f522e30aee15dd0238a726c1a49a693b500dda2c71e356f53	active
