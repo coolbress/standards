@@ -12,11 +12,11 @@
 
 | 등급 | 개수 | 뜻 |
 |---|---|---|
-| `active` | 50 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
+| `active` | 51 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
 | `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
-| `reference` | 96 | **물어봤을 때만** — 과거 하네스·원시 census |
-| `archive` | 38 | 검색 제외 (폐기·legacy) |
+| `reference` | 101 | **물어봤을 때만** — 과거 하네스·원시 census |
+| `archive` | 41 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
 
@@ -57,6 +57,7 @@
 | reference | `corpus/aspects/27-ai-harness-archetype/agent-threat-model.md` | Integrated Agent Authority, Credential, Egress, Injection, and Production Threat Model |
 | evidence | `corpus/aspects/27-ai-harness-archetype/approval-attribution-channels--measured-2026-08.md` | 승인 귀속 채널 실측 — 사람 클릭을 증명할 수 있는가 |
 | reference | `corpus/aspects/27-ai-harness-archetype/harness-control-plane-standard.md` | Agent Harness Control Plane, Execution Boundary, and Lifecycle |
+| evidence | `corpus/aspects/27-ai-harness-archetype/harness-self-threat-model--2026-07.md` | 하네스 자기 공격면 STRIDE 전수 (goppi, 2026-07) |
 | evidence | `corpus/aspects/27-ai-harness-archetype/hook-output-surfaces--measured-2026-08.md` | 훅 출력 표면 실측 — 하네스가 사용자에게 말할 수 있는가 |
 | reference | `corpus/aspects/27-ai-harness-archetype/hooks-commands-subagents-standard.md` | Hooks · Slash-commands · Subagents build standard (the orchestration/lifecycle layer — the |
 | evidence | `corpus/aspects/27-ai-harness-archetype/host-config-schemas.md` | Host config-integration schemas (cross-host adapter evidence) |
@@ -99,6 +100,7 @@
 ## archive — 검색에서 제외됨 (지우지 않았다)
 
 - `legacy/ARCHIVE-INDEX.md`
+- `legacy/DISPOSITION.md`
 - `legacy/judgments/00-overview.md`
 - `legacy/judgments/01-sdlc-lifecycle.md`
 - `legacy/judgments/02-engineering-practices.md`
@@ -110,12 +112,14 @@
 - `legacy/judgments/foundation/production-output-rubric.md`
 - `legacy/judgments/foundation/steering-verification-design.md`
 - `legacy/judgments/foundation/trustworthy-completion-evaluation-protocol.md`
+- `legacy/judgments/gingoa-constitution.md`
 - `legacy/judgments/gingoa-guide.ko.md`
 - `legacy/judgments/gingoa-lifecycle.md`
 - `legacy/judgments/gingoa-schema.md`
 - `legacy/judgments/gingoa-specific-sections.md`
 - `legacy/judgments/gingoa-taxonomy.md`
 - `legacy/judgments/goppi-final-decisions.md`
+- `legacy/judgments/goppi-operating-contract.md`
 - `legacy/judgments/harness-removal-record-2026-08-04.md`
 - `legacy/judgments/README.md`
 - `legacy/judgments/spec-research-foundation.md`
@@ -137,9 +141,9 @@
 - `legacy/sources/goppi/what-is-a-harness.md`
 - `legacy/sources/README.md`
 
-## reference — 96개, 물어봤을 때만
+## reference — 101개, 물어봤을 때만
 
 전문은 `ROUTES.jsonl` 에서 `tier="reference"` 로 조회한다. 종류별 개수:
 
 - research-log: 51
-- census: 45
+- census: 50

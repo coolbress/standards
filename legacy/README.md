@@ -15,6 +15,7 @@
 |---|---|---|
 | `LINEAGE.md` | 계보 서사 | **진입점** |
 | `judgments/` | 그때 내린 **판단** — goppi 워크플로 표준 rev4 · 가치가설 · 산출물 루브릭 · gingoa 스키마 | 역사 기록. 단 방법론 일부는 `direction/03`이 선별 인용한다 |
+| [`DISPOSITION.md`](DISPOSITION.md) | **처분 대장** — 5세대 문서 274건 전수와 각각의 처분. 미분류 0 | *"누락인가 의도인가"* 를 여기서 확인 |
 | [`ARCHIVE-INDEX.md`](ARCHIVE-INDEX.md) | **이 저장소 밖의 로컬 아카이브 목록** — `~/Archive/`에만 있고 백업이 없는 것들 | 무엇이 승계됐고 무엇이 안 됐나 |
 | `sources/` | **원본 사본** — claudeck·goppi 관찰 노트, goppi-trial-web 물증 | provenance이지 승인이 아니다 |
 
