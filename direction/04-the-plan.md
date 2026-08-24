@@ -61,7 +61,7 @@ MUST 49개를 9묶음으로, 그리고 그중 무엇이 만들 것 2·3·5에서
 
 | 항목 | 값 | 왜 |
 |---|---|---|
-| PR diff 상한 | **400줄** | 400 LOC 초과에서 결함 발견율 급락 — [`codereview--facts-2026-08.md`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) `draft` (SmartBear). 100/1000줄 기준은 [`07 overview`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) `review-needed` |
+| PR diff | **200줄 목표 · 400줄 상한** | ⚠️ **2026-08-24 재검증으로 정정.** 원문 결론은 *"LOC under review should be **under 200, not to exceed 400**"* — 400은 목표가 아니라 **상한**이다. 이전 판의 *"400 초과에서 급락"* 은 **원문에 없다**(`plummet` 은 LOC 가 아니라 **리뷰 시간 90분**에 대한 말). [`codereview--facts`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) **CR-001~003** `draft`. ⚠️ **CR-004**: 단일 조직(Cisco 1개 팀·50명) 케이스 스터디이므로 `operational-lesson` 이다 — *"일관된 연구 결과"* 로 쓰면 범주 오류다 |
 | **테스트 동반** | **소스가 바뀌면 테스트도 바뀐다 — CI가 검사** | `04 foundation-floor` *"tests required on every PR (MUST)"* · `08` 4대 검사 |
 | **RED→GREEN** | 실패하는 테스트를 **먼저** — 단 **권고**(강제 아님) | `07` SWEBOK. ⚠️ 순서 자체의 효과는 불분명(`GAPS` R5-1) — 강제하지 않는 이유 |
 | CI 소요 | **10분 이내** | [`04 facts-cicd`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) `draft` — Fowler 1차 URL |
