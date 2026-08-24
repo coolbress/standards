@@ -1,4 +1,9 @@
-# goppi_final Engineering Evidence Corpus — INDEX
+# 근거 코퍼스 — 에이전트 진입점
+
+> ⚠️ **2026-08-24 재스코프**: 이 문서는 `goppi_final`의 코퍼스로 쓰였다. 저장소는 이제
+> [`coolbress/standards`](../README.md)이고 목적이 넓어졌다 — 근거뿐 아니라 **계보(`legacy/`)와
+> 방향(`direction/`)** 을 담는다. 아래 본문의 goppi 관련 서술은 역사로 읽고,
+> **현행 공백은 `audit/GAPS.ko.md` §R3**을 본다(그 앞 절은 goppi 시대 기록이다).
 
 > **Agent entry point. Read this first, then load only the relevant aspect.** This is an evidence base, not a
 > book of universal best practices. Most inherited aspect documents are `review-needed`; check frontmatter and

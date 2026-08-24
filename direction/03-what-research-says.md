@@ -4,8 +4,20 @@
 
 ## 현업 팀이 실제로 하는 것 — 10줄
 
-출처: [`legacy/judgments/02-engineering-practices.md`](../legacy/judgments/02-engineering-practices.md)
-(1차 출처 정리 — Google eng-practices · DORA · trunkbaseddevelopment.com · Fowler · ICSE-SEIP 2018)
+> ⚠️ **출처 재지정 (2026-08-24 · Fable 5 적대 검수 지적)**
+> 이 절의 첫 판은 [`legacy/judgments/02-engineering-practices.md`](../legacy/judgments/02-engineering-practices.md)를
+> 출처로 적었는데, 그 문서 1행에 ***"활성 근거로 인용하지 않는다"*** 배너가 붙어 있다
+> (`legacy/README` 인용 규칙 2와도 충돌). **현행 코퍼스로 재지정했고, 코퍼스에 없는 수치는 그렇게 표시했다.**
+>
+> | 출처 | status | 무엇을 받치나 |
+> |---|---|---|
+> | [`05-scm-workflow--overview.md`](../corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md) | `review-needed` | trunk ≤3·매일 통합 · 브랜치보호 10~13% · 리뷰강제 41% · T3(훅은 게이트 아님) |
+> | [`07-...--overview.md`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) · [`facts-2026-08-codereview.md`](../corpus/aspects/07-construction-code-review/facts-2026-08-codereview.md) | `review-needed` / `draft` | 리뷰 필수·경량·빠름 · CL ~100줄 · **400 LOC 임계** · 생성코드 동일 게이트 |
+> | [`facts-2026-08-cicd-release.md`](../corpus/aspects/04-build-ci-engineering/facts-2026-08-cicd-release.md) | `draft` | **10분 빌드**(Fowler 1차 URL) · CI 실무 |
+> | ❌ **코퍼스에 없음** | — | **중앙값 24줄 · 응답 4시간 · DORA 리뷰속도 50%** — 아래 ⚠️ 표시 |
+>
+> **아직 안 옮긴 것**: Git Flow 창시자의 2020 note · 테스트 피라미드 80/15/5 · TDD 순서 효과 ·
+> feature flag 부채. `audit/GAPS.ko.md` R3-1에 등재했다.
 
 1. 고성과의 공통분모는 브랜치 모델이 아니라 **"작게, 자주, 빨리 통합"** — 활성 브랜치 ≤3, 하루 1회 머지, **브랜치 수명 몇 시간**
 2. Git Flow는 **창시자가 2020년에 웹앱에 비추천**했다

@@ -1,4 +1,4 @@
-# imported/ — 과거 하네스 리서치 원본 이관
+# legacy/sources/ — 과거 하네스 리서치 원본 이관
 
 과거 하네스 4대(claudeck v1 → claudeck → gingoa → goppi)에서 가져온 리서치 원본.
 **파일 내용은 바이트 수정 없이 사본 그대로** — 출처·시점·성격은 이 표가 기록한다.

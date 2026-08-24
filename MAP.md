@@ -16,7 +16,7 @@
 | `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 96 | **물어봤을 때만** — 과거 하네스·원시 census |
-| `archive` | 33 | 검색 제외 (폐기·legacy) |
+| `archive` | 34 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
 
@@ -116,6 +116,7 @@
 - `legacy/judgments/gingoa-taxonomy.md`
 - `legacy/judgments/goppi-final-decisions.md`
 - `legacy/judgments/README.md`
+- `legacy/judgments/spec-research-foundation.md`
 - `legacy/judgments/three-tier-ledger.md`
 - `legacy/LINEAGE.md`
 - `legacy/README.md`
