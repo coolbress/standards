@@ -9,6 +9,22 @@
 | `goppi-removal-2026-08-04/` | 44MB | 구 goppi 제거 백업 — 설정 4종 · plugin-remnants · doctor BEFORE/AFTER · SHA256SUMS | [`judgments/harness-removal-record-2026-08-04.md`](judgments/harness-removal-record-2026-08-04.md) — 기록 본문 |
 | `goppi-final-2026-08/GOPPI_state/` | 32KB | precompact 훅이 남긴 세션 스냅샷 4건 (2026-08-02) | ❌ 승계 안 함 — 참조 0건이고 같은 기간을 `progress.md`가 덮었다(원 아카이브 사유 그대로) |
 | `2026-08-24-harness-cleanup/goppi-trial-web/` | 224KB | 트라이얼 저장소 원본 | ✅ [`sources/goppi-trial-web/`](sources/goppi-trial-web/) — 해시 6/6 대조 완료 |
+| `2026-08-24-harness-cleanup/claudeck/` | 1.8MB | **원격 삭제됨(2026-08-24)** · 로컬 사본 | 계보 §3 · [`sources/claudeck/`](sources/claudeck/) · 처분 전수는 [`DISPOSITION.md`](DISPOSITION.md) |
+| `2026-08-24-harness-cleanup/gingoa/` | 698MB | **원격 삭제됨** · 로컬 사본 | **28측면 코퍼스 전체**가 `corpus/`로 승계 · ADR 21 제목 §4 · 헌법 `judgments/gingoa/` |
+| `2026-08-24-harness-cleanup/goppi/` | 22MB | **원격 삭제됨** · 로컬 사본 | 결정 41 제목 §4 · references `sources/goppi/` · 5조 계약 `judgments/goppi/` |
+| `2026-08-24-harness-cleanup/goppi_test/` | 319MB | LedgerLens 레거시 (하네스 아님) | ❌ 승계 안 함 — 후속 저장소 `~/divtadel`이 운영판이다 |
+| `harness-removal-2026-08-24/` | 560KB | **설정 제거 백업** — Claude·Codex 설정 7종 + SHA256 + 플러그인 캐시 | 절차는 [`judgments/harness-removal-record-2026-08-04.md`](judgments/harness-removal-record-2026-08-04.md)(선례) |
+
+## 2026-08-24 제거 실행 기록
+
+| 단계 | 결과 |
+|---|---|
+| 실제 상태 조회 | 선례의 교훈대로 문서가 아니라 시스템에 물었다 — **Codex `config.toml`의 `trust_level` 4블록과 `writable_roots`의 `gingoa`** 를 그렇게 찾았다(문서만 봤으면 놓쳤다) |
+| 백업 + 해시 | `harness-removal-2026-08-24/` · 설정 7종 · SHA256 |
+| goppi 플러그인 제거 | 흔적 **0건** — 플러그인·pluginUsage·projects 4건·캐시·Codex 설정 |
+| 로컬 4개 → Archive | claudeck · gingoa · goppi · goppi_test |
+| **원격 3개 삭제** | ✅ **API 404로 확인** (claudeck · gingoa · goppi) |
+| `goppi_final` | 세션 종료 후 소유자가 이동 예정 |
 
 ## 원칙
 
