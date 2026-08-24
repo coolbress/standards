@@ -1,5 +1,24 @@
 # goppi design document
 
+> ## ⚠️ 2026-08-24 처분 기록 — 이 문서가 인용하는 측정 원자료는 삭제됐다
+>
+> 본문은 `results/2026-07-*.md` 형태로 **하네스 eval 결과 25곳을 인용**한다. 그 파일들은
+> 2026-08-24 가지치기에서 **삭제됐다** (하네스 효과 측정 · n=1 · 폐기된 구현에 종속).
+>
+> **따라서 본문의 수치는 원자료로 되짚을 수 없다.** 토큰 예산·스킬 본문 크기·페어 비교 결과 등
+> 구체적 숫자가 본문에 남아 있으나, `corpus/methods/EVIDENCE-POLICY.md`의 claim-relative 원칙에 따라
+> **검증 불가(2차)** 로 취급한다 — 인용하려면 다시 측정해야 한다.
+>
+> 살아남은 예외 하나: `results/2026-07-26-review-precision.md`는
+> [`harness-eval-results/2026-07-26-review-precision.md`](harness-eval-results/2026-07-26-review-precision.md)로
+> 유지된다(`interpretation/foundation/goppi-workflow-standard.md`가 통제시험 근거로 인용하기 때문).
+>
+> 확증시험의 **원자료가 남아 있는** 측정은 `corpus/census-data/harness-confirmation-trial/`에 있다.
+> 하네스 전체의 계보는 [`../LINEAGE.md`](../LINEAGE.md).
+
+---
+
+
 > **goppi (고삐)** — not the bridle (gingoa/긴고아) that clamps down on the model, but the rein you hold to steer it.
 >
 > *This design doc is the fuller narrative, in English (canonical, like the rest of
