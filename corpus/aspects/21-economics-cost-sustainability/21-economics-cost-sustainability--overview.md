@@ -65,4 +65,4 @@ maps_from: []
 - EU Corporate Sustainability Reporting Directive (CSRD) / ESRS — https://finance.ec.europa.eu/capital-markets-union-and-financial-markets/company-reporting-and-auditing/company-reporting/corporate-sustainability-reporting_en
 
 ## Sub-documents
-- [`facts-2026-08-serverless-cost-model.md`](facts-2026-08-serverless-cost-model.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-3): **과금 단위 표** — AWS Lambda(GB-s: 실행시간이 곧 비용) vs Vercel(부분) vs Cloudflare(CPU-ms: 아님). **어느 플랫폼도 "성능=비용"을 공식 원칙으로 규정하지 않는다** · FinOps는 재단의 처방.
+- [`serverless-cost-model--facts-2026-08.md`](serverless-cost-model--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-3): **과금 단위 표** — AWS Lambda(GB-s: 실행시간이 곧 비용) vs Vercel(부분) vs Cloudflare(CPU-ms: 아님). **어느 플랫폼도 "성능=비용"을 공식 원칙으로 규정하지 않는다** · FinOps는 재단의 처방.

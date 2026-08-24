@@ -12,9 +12,9 @@
 
 | 등급 | 개수 | 뜻 |
 |---|---|---|
-| `active` | 51 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
+| `active` | 52 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
 | `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
-| `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
+| `meta` | 7 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 101 | **물어봤을 때만** — 과거 하네스·원시 census |
 | `archive` | 41 | 검색 제외 (폐기·legacy) |
 
@@ -70,6 +70,7 @@
 | evidence | `corpus/aspects/27-ai-harness-archetype/stop-event-rendering--measured-2026-08.md` | Stop 이벤트 렌더 관측 |
 | evidence | `corpus/aspects/27-ai-harness-archetype/user-channel-rendering--measured-2026-08.md` | 사용자 채널 렌더링 판정 — 사람 관측 |
 | aspect-overview | `corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md` | Implementation is driven by process tailored to each change's risk — light gates for trivi |
+| unlabeled | `corpus/matrix--facts-2026-08.md` | matrix--facts-2026-08 |
 | unlabeled | `direction/01-what-i-want.md` | 01-what-i-want |
 | unlabeled | `direction/02-why-past-attempts-failed.md` | 02-why-past-attempts-failed |
 | unlabeled | `direction/03-what-research-says.md` | 03-what-research-says |
@@ -90,7 +91,6 @@
 
 - `corpus/_meta/README.md`
 - `corpus/_schema.md`
-- `corpus/facts-2026-08-matrix.md`
 - `corpus/GUIDE.ko.md`
 - `corpus/INDEX.md`
 - `corpus/lifecycle.md`
@@ -101,29 +101,29 @@
 
 - `legacy/ARCHIVE-INDEX.md`
 - `legacy/DISPOSITION.md`
-- `legacy/judgments/00-overview.md`
-- `legacy/judgments/01-sdlc-lifecycle.md`
-- `legacy/judgments/02-engineering-practices.md`
-- `legacy/judgments/03-planning-and-requirements.md`
-- `legacy/judgments/04-solo-and-ai-assisted-dev.md`
-- `legacy/judgments/05-goppi-analysis.md`
-- `legacy/judgments/foundation/goppi-workflow-standard.md`
-- `legacy/judgments/foundation/goppi-worth-hypothesis.md`
-- `legacy/judgments/foundation/production-output-rubric.md`
-- `legacy/judgments/foundation/steering-verification-design.md`
-- `legacy/judgments/foundation/trustworthy-completion-evaluation-protocol.md`
-- `legacy/judgments/gingoa-constitution.md`
-- `legacy/judgments/gingoa-guide.ko.md`
-- `legacy/judgments/gingoa-lifecycle.md`
-- `legacy/judgments/gingoa-schema.md`
-- `legacy/judgments/gingoa-specific-sections.md`
-- `legacy/judgments/gingoa-taxonomy.md`
-- `legacy/judgments/goppi-final-decisions.md`
-- `legacy/judgments/goppi-operating-contract.md`
+- `legacy/judgments/gingoa/constitution.md`
+- `legacy/judgments/gingoa/guide.ko.md`
+- `legacy/judgments/gingoa/lifecycle.md`
+- `legacy/judgments/gingoa/schema.md`
+- `legacy/judgments/gingoa/specific-sections.md`
+- `legacy/judgments/gingoa/taxonomy.md`
+- `legacy/judgments/gingoa/three-tier-ledger.md`
+- `legacy/judgments/goppi/final-decisions.md`
+- `legacy/judgments/goppi/foundation/production-output-rubric.md`
+- `legacy/judgments/goppi/foundation/steering-verification-design.md`
+- `legacy/judgments/goppi/foundation/trustworthy-completion-evaluation-protocol.md`
+- `legacy/judgments/goppi/foundation/workflow-standard.md`
+- `legacy/judgments/goppi/foundation/worth-hypothesis.md`
+- `legacy/judgments/goppi/operating-contract.md`
 - `legacy/judgments/harness-removal-record-2026-08-04.md`
 - `legacy/judgments/README.md`
-- `legacy/judgments/spec-research-foundation.md`
-- `legacy/judgments/three-tier-ledger.md`
+- `legacy/judgments/research-interpretation/00-overview.md`
+- `legacy/judgments/research-interpretation/01-sdlc-lifecycle.md`
+- `legacy/judgments/research-interpretation/02-engineering-practices.md`
+- `legacy/judgments/research-interpretation/03-planning-and-requirements.md`
+- `legacy/judgments/research-interpretation/04-solo-and-ai-assisted-dev.md`
+- `legacy/judgments/research-interpretation/05-goppi-analysis.md`
+- `legacy/judgments/research-interpretation/spec-research-foundation.md`
 - `legacy/LINEAGE.md`
 - `legacy/README.md`
 - `legacy/sources/claudeck-v1/ARCHIVE-RECORD.md`

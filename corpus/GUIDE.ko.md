@@ -42,5 +42,5 @@ sources: []
 2026-08-02 감사에서 과거 `verified` 문서 50개는 `review-needed`로 낮췄고, 이후 50/50 load-bearing
 claim disposition을 기록했습니다. `review-needed` 원문은 계속 설계 사실로 직접 인용하지 않습니다.
 현재 부족 영역과 해제 조건은 `../audit/GAPS.ko.md`, 기획 판단 기준은
-`../legacy/judgments/foundation/`, 통합 agent 보안 지도는
+`../legacy/judgments/goppi/foundation/`, 통합 agent 보안 지도는
 `aspects/27-ai-harness-archetype/agent-threat-model.md`에 있습니다.

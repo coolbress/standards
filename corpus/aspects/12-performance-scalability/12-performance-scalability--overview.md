@@ -72,4 +72,4 @@ Outside these archetypes the aspect does **not** fire.
 - Google SRE Book — Handling Overload (criticality, throttling, retry budgets, load shedding): https://sre.google/sre-book/handling-overload/
 
 ## Sub-documents
-- [`facts-2026-08-web-performance-thresholds.md`](facts-2026-08-web-performance-thresholds.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-3): Core Web Vitals 임계값과 **그 지위 — Google의 정책이지 표준 기관 산출물 아님** · 성능 예산은 처방 · Lighthouse의 임계값 강제 방식. 표준 §6의 aspect 12 기각 사유 교정의 근거.
+- [`web-performance-thresholds--facts-2026-08.md`](web-performance-thresholds--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-3): Core Web Vitals 임계값과 **그 지위 — Google의 정책이지 표준 기관 산출물 아님** · 성능 예산은 처방 · Lighthouse의 임계값 강제 방식. 표준 §6의 aspect 12 기각 사유 교정의 근거.

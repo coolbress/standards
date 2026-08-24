@@ -20,7 +20,7 @@
 
 | Unit | 질문 | 왜 열려 있나 | 종료 기준 |
 |---|---|---|---|
-| **R5-1** 리서치 미승계 claim | `direction`이 인용하지만 코퍼스에 없는 것을 어떻게 처분하나 — **수치 7건**(중앙값 24줄 · 응답 4시간 · DORA 50% · Git Flow 2020 note · 피라미드 80/15/5 · TDD 순서 · feature flag 부채) **+ 문장 2건**(*"브랜치 다이어그램은 ceremony"* · *"다중 승인자·형식 체크리스트는 DORA 안티패턴"* — 2차 검수에서 추가 발견) | SUPERSEDED 문서(`legacy/judgments/02-engineering-practices.md`)에만 있고, 그 문서는 *"활성 근거로 인용하지 않는다"* 배너가 붙어 있다 | 각 수치를 1차 출처로 재확인해 해당 aspect의 facts 문서로 승계하거나, `direction`에서 **삭제** |
+| **R5-1** 리서치 미승계 claim | `direction`이 인용하지만 코퍼스에 없는 것을 어떻게 처분하나 — **수치 7건**(중앙값 24줄 · 응답 4시간 · DORA 50% · Git Flow 2020 note · 피라미드 80/15/5 · TDD 순서 · feature flag 부채) **+ 문장 2건**(*"브랜치 다이어그램은 ceremony"* · *"다중 승인자·형식 체크리스트는 DORA 안티패턴"* — 2차 검수에서 추가 발견) | SUPERSEDED 문서(`legacy/judgments/research-interpretation/02-engineering-practices.md`)에만 있고, 그 문서는 *"활성 근거로 인용하지 않는다"* 배너가 붙어 있다 | 각 수치를 1차 출처로 재확인해 해당 aspect의 facts 문서로 승계하거나, `direction`에서 **삭제** |
 | **R5-2** 요구 ⑥ 막다른 길 신호 | CI 연속 실패·같은 파일 반복 수정 같은 **전략 전환 시점**을 무엇으로 감지하나 | `direction/01` 요구 6(P22)에 **만들 것이 없다**. 출발점은 `28-implementation-process`의 *circuit-breaker · 진동 감지* | 감지 신호 2개 이상을 정의하고, 그중 **CI로 관측 가능한 것**을 최소 1개 배선 |
 | **R5-3** 요구 ③ 판정 기준 | *결정이 나에게 오고 판독 가능한 형태로 온다*를 **어떻게 측정하나** | 이 요구를 채우는 수단(전역 규칙·`/kickoff`)이 전부 **협조 기반**인데, 확증시험은 협조 기반 회부가 실사용에서 무너짐을 보였다(승인 피로·판독 실패) | 사전등록된 관측 지표 확보 — 아래 `direction/04` 판정 기준 참조 |
 | **R5-4** 인용 status 규율 | README 절대규칙 3(*review-needed·draft 인용 금지*)이 사문화됐다 — `direction`이 인용하는 문서 대부분이 그 상태다 | 상속 verified 50건이 2026-08-02에 전부 강등됐다. 규칙을 지키면 direction은 거의 아무것도 인용할 수 없다 | 규칙을 **status 병기 의무**로 개정하거나(→ 2026-08-24 시행), direction이 하중을 싣는 claim만 verified로 승격 |
@@ -42,10 +42,10 @@
 | R0-2 Current framework crosswalk | STRUCTURE CLOSED / ISO CLAUSES INCONCLUSIVE 2026-08-02 | 28개 coverage/gap/overlap은 표로 만듦; 유료 ISO 상세 조항은 미확정 | [`framework-crosswalk-2026.md`](../corpus/methods/framework-crosswalk-2026.md); 라이선스 본문+review 전 ISO conformance 표현 금지 |
 | R0-3 Harness control plane | CLOSED 2026-08-02 | 기존 aspect-27이 콘텐츠 컴포넌트 중심이고 approvals/recovery/state/isolation/observability/update가 약했음 | [`harness-control-plane-standard.md`](../corpus/aspects/27-ai-harness-archetype/harness-control-plane-standard.md)에 6-plane 표준·claim register·검증 표면 기록 |
 | R0-4 Agent security model | MODEL CLOSED / BUILD EVAL OPEN 2026-08-02 | 통합 dataflow·12 threat path·8 invariant·red-team suite 고정; 구현은 아직 없음 | [`agent-threat-model.md`](../corpus/aspects/27-ai-harness-archetype/agent-threat-model.md); 구현이 모든 seeded test를 통과해야 build GO |
-| R0-4A Comprehensible report & approval | FORMAT CLOSED / RELIANCE EVAL OPEN 2026-08-02 | what/harm/control/evidence/recovery 형식은 고정; 되풀이만으로 이해를 인정하지 않도록 새 decision scenario와 seeded incorrect advice를 추가 | [`production-output-rubric.md`](../legacy/judgments/foundation/production-output-rubric.md); target-user 선택·거절·escalation·recovery 시험 필요 |
-| R0-5A Production-output rubric | CLOSED AS PROJECT DECISION 2026-08-02 | L0–L3, 8면, 6 archetype 추가 gate 고정 | [`production-output-rubric.md`](../legacy/judgments/foundation/production-output-rubric.md); 보편 표준이 아니라 spec 수용 기준으로 사용 |
+| R0-4A Comprehensible report & approval | FORMAT CLOSED / RELIANCE EVAL OPEN 2026-08-02 | what/harm/control/evidence/recovery 형식은 고정; 되풀이만으로 이해를 인정하지 않도록 새 decision scenario와 seeded incorrect advice를 추가 | [`production-output-rubric.md`](../legacy/judgments/goppi/foundation/production-output-rubric.md); target-user 선택·거절·escalation·recovery 시험 필요 |
+| R0-5A Production-output rubric | CLOSED AS PROJECT DECISION 2026-08-02 | L0–L3, 8면, 6 archetype 추가 gate 고정 | [`production-output-rubric.md`](../legacy/judgments/goppi/foundation/production-output-rubric.md); 보편 표준이 아니라 spec 수용 기준으로 사용 |
 | R0-5B Trustworthy completion / assurance basis | EVIDENCE MODEL CLOSED / GOPPI TRANSFER OPEN 2026-08-02 | NIST assurance·GenAI profile, appropriate reliance, 비전공 실무자/초보 coder 연구로 결과·증거·적정 의존 분리 근거를 연결; full-lifecycle harness 직접 연구는 없음 | [`trustworthy-completion-evidence-model.md`](../corpus/methods/trustworthy-completion-evidence-model.md); goppi target-user confirmatory study 전 효과 일반화 금지 |
-| R0-5 goppi worth hypothesis | CONSTRUCT + PROTOCOL CLOSED / THRESHOLD + PRODUCT PROOF OPEN 2026-08-02 | 1차 가치를 target 비엔지니어의 trustworthy completion과 false completion 감소로 개정; 임의 50%/30%·비용 수치는 superseded, 형성→pilot→분리 confirmatory protocol과 raw audit surface를 정의 | [`goppi-worth-hypothesis.md`](../legacy/judgments/foundation/goppi-worth-hypothesis.md) · [`trustworthy-completion-evaluation-protocol.md`](../legacy/judgments/foundation/trustworthy-completion-evaluation-protocol.md); baseline/pilot 뒤 margin 동결·확증 실행 전 제품 가치 INCONCLUSIVE |
+| R0-5 goppi worth hypothesis | CONSTRUCT + PROTOCOL CLOSED / THRESHOLD + PRODUCT PROOF OPEN 2026-08-02 | 1차 가치를 target 비엔지니어의 trustworthy completion과 false completion 감소로 개정; 임의 50%/30%·비용 수치는 superseded, 형성→pilot→분리 confirmatory protocol과 raw audit surface를 정의 | [`worth-hypothesis.md`](../legacy/judgments/goppi/foundation/worth-hypothesis.md) · [`trustworthy-completion-evaluation-protocol.md`](../legacy/judgments/goppi/foundation/trustworthy-completion-evaluation-protocol.md); baseline/pilot 뒤 margin 동결·확증 실행 전 제품 가치 INCONCLUSIVE |
 | R0-6 GitHub delivery workflow refresh | CLOSED 2026-08-02 | current rulesets, merge queue, deployment environments, Actions pinning/permissions 근거가 흩어져 있었음 | [`github-workflow-current.md`](../corpus/aspects/05-scm-workflow/github-workflow-current.md)에 공식 source map·risk-scaled controls·rollback 경계 기록 |
 | R0-7 Research retrieval eval | STRUCTURAL + MODEL PILOT CLOSED 2026-08-02 | 30문항 deterministic 5회와 동일 10문항 fresh model 3회/arm 완료; 다른 모델/언어 일반화와 actual token은 미측정 | [`RETRIEVAL-BEFORE-AFTER.ko.md`](RETRIEVAL-BEFORE-AFTER.ko.md) · [`RETRIEVAL-MODEL-AB-RESULTS.ko.md`](RETRIEVAL-MODEL-AB-RESULTS.ko.md): model correctness 5·5·9→10·10·10, unsupported 5·5·1→0·0·0, bytes −56.1% |
 
@@ -69,9 +69,9 @@ goppi-arm **확증시험은 빌드 이후 product GO를 gate**한다 (protocol�
 | R1-6 Observability and economics | 어떤 trace/metrics가 디버깅과 worth 판단에 필요하며 개인정보/비용을 어떻게 제한하는가? | telemetry schema, redaction, cost budget, retention policy |
 | R1-7 Human decision rights | 모델이 제안/자동실행/중단할 경계를 어떤 위험 신호로 정하는가? | NIST AI RMF, agent security guidance, user tests, false-positive/negative eval |
 | R1-8 Brownfield adoption | 기존 규칙과 충돌할 때 import/merge/ratchet/decline을 어떻게 결정하는가? | representative repositories, no-clobber/rollback tests, ownership lineage |
-| R1-9 Solo-operated / low-operations software | **FACTS CLOSED 2026-08-04 / DESIGN OPEN** · managed service를 써도 1인 소유자에게 어떤 비용·장애·복구·보안 책임이 남는가? | 산출: [`20/facts-2026-08-solo-operations-minimum`](../corpus/aspects/20-operations-incident-reliability/facts-2026-08-solo-operations-minimum.md) — AWS·Vercel·Render·Fly.io·Supabase 공식 문서로 책임분담/알림/백업·복원/spend cap(hard vs alert-only)/런타임 EOL·인시던트 오너십 수집. **미조사: Netlify·Railway·Cloudflare 책임 모델, 알림 보존기간, SLA** (문서 `미해결` 절). 설계 반영은 spec B17 |
-| R1-10 Archetype last-mile | **FACTS CLOSED 2026-08-04 / DESIGN OPEN** · 코드 이후 실제 공개까지 도메인·호스팅·고지·결제 장벽을 어떻게 안전하게 넘는가? | 산출 2건: [`17/…domain-hosting`](../corpus/aspects/17-release-engineering/facts-2026-08-last-mile-domain-hosting.md)(ICANN·PaaS — 과금/노출/자격증명 발생 지점 5개; fetch 검증 후 미확인 claim 9개 강등) · [`17/…payments-privacy`](../corpus/aspects/17-release-engineering/facts-2026-08-last-mile-payments-privacy.md)(Stripe 온보딩·PCI SSC·GDPR Art.13/14 — 사람만 할 수 있는 단계). **미확보: PIPA 제30조 각 호 원문(law.go.kr 접근 실패)·PCI SAQ 공식 PDF·GDPR 원문 대조** |
-| R1-11 Web-app scaffold baseline | **FACTS CLOSED 2026-08-04 / DESIGN OPEN** · 2026 현행 웹 앱의 표준 구성(스택 중립 베이스라인)은 무엇이 공식 문서로 규정되는가? | 산출: [`04/facts-2026-08-web-scaffold-baseline`](../corpus/aspects/04-build-ci-engineering/facts-2026-08-web-scaffold-baseline.md) — OWASP·PostgreSQL·Supabase·GitHub·Next.js/Vercel·Sentry 공식 문서. **침묵의 위험 지점 5개**(RLS 미적용 전체 노출·service_role 우회·Actions 마스킹 실패·`NEXT_PUBLIC_` 인라인·Sentry 미스크럽)와 **표준 vs 플랫폼 상충**(시크릿의 환경변수 저장) 병기. **CI 최소 게이트는 공식 규정 부재로 부분 미해결.** scaffold 기본값 표는 spec B12 |
+| R1-9 Solo-operated / low-operations software | **FACTS CLOSED 2026-08-04 / DESIGN OPEN** · managed service를 써도 1인 소유자에게 어떤 비용·장애·복구·보안 책임이 남는가? | 산출: [`20/facts-2026-08-solo-operations-minimum`](../corpus/aspects/20-operations-incident-reliability/solo-operations-minimum--facts-2026-08.md) — AWS·Vercel·Render·Fly.io·Supabase 공식 문서로 책임분담/알림/백업·복원/spend cap(hard vs alert-only)/런타임 EOL·인시던트 오너십 수집. **미조사: Netlify·Railway·Cloudflare 책임 모델, 알림 보존기간, SLA** (문서 `미해결` 절). 설계 반영은 spec B17 |
+| R1-10 Archetype last-mile | **FACTS CLOSED 2026-08-04 / DESIGN OPEN** · 코드 이후 실제 공개까지 도메인·호스팅·고지·결제 장벽을 어떻게 안전하게 넘는가? | 산출 2건: [`17/…domain-hosting`](../corpus/aspects/17-release-engineering/last-mile-domain-hosting--facts-2026-08.md)(ICANN·PaaS — 과금/노출/자격증명 발생 지점 5개; fetch 검증 후 미확인 claim 9개 강등) · [`17/…payments-privacy`](../corpus/aspects/17-release-engineering/last-mile-payments-privacy--facts-2026-08.md)(Stripe 온보딩·PCI SSC·GDPR Art.13/14 — 사람만 할 수 있는 단계). **미확보: PIPA 제30조 각 호 원문(law.go.kr 접근 실패)·PCI SAQ 공식 PDF·GDPR 원문 대조** |
+| R1-11 Web-app scaffold baseline | **FACTS CLOSED 2026-08-04 / DESIGN OPEN** · 2026 현행 웹 앱의 표준 구성(스택 중립 베이스라인)은 무엇이 공식 문서로 규정되는가? | 산출: [`04/facts-2026-08-web-scaffold-baseline`](../corpus/aspects/04-build-ci-engineering/web-scaffold-baseline--facts-2026-08.md) — OWASP·PostgreSQL·Supabase·GitHub·Next.js/Vercel·Sentry 공식 문서. **침묵의 위험 지점 5개**(RLS 미적용 전체 노출·service_role 우회·Actions 마스킹 실패·`NEXT_PUBLIC_` 인라인·Sentry 미스크럽)와 **표준 vs 플랫폼 상충**(시크릿의 환경변수 저장) 병기. **CI 최소 게이트는 공식 규정 부재로 부분 미해결.** scaffold 기본값 표는 spec B12 |
 
 ## R2 — craft-layer 패스 (2026-08-05, FACTS CLOSED)
 
@@ -80,10 +80,10 @@ goppi-arm **확증시험은 빌드 이후 product GO를 gate**한다 (protocol�
 
 | Unit | 산출 | 핵심 결과 |
 |---|---|---|
-| R2-1 | [`03/…reproducible-environment`](../corpus/aspects/03-dev-environment/facts-2026-08-reproducible-environment.md) · [`06/…config-validation-secrets`](../corpus/aspects/06-config-secrets/facts-2026-08-config-validation-secrets.md) | **시작 시점 설정 검증에 국제 표준이 없다**(프레임워크 기능으로만 존재) · 시크릿 회전 주기의 구체값은 어느 벤더 문서에도 없음 · GitHub secret scanning이 스스로 밝힌 탐지 한계 |
-| R2-2 | [`19/…structured-logging-metrics`](../corpus/aspects/19-observability-telemetry/facts-2026-08-structured-logging-metrics.md) · [`22/…repo-docs-adr-runbook`](../corpus/aspects/22-documentation-knowledge/facts-2026-08-repo-docs-adr-runbook.md) | **표준 vs 처방 구분**: 12-Factor · RED/USE · Diátaxis · Keep a Changelog · ADR(Nygard) · SRE runbook은 **표준 기관 산출물이 아니다**(7건) |
-| R2-3 | [`11/…refactoring-debt-discipline`](../corpus/aspects/11-maintainability-techdebt-refactoring/facts-2026-08-refactoring-debt-discipline.md) · [`10/…dependency-updates-scope`](../corpus/aspects/10-supply-chain-security/facts-2026-08-dependency-updates-scope.md) | **SLSA·Scorecard·SBOM 어느 것도 자체 호스팅 웹 앱 적용을 명시하지 않음**(SBOM 의무는 정부/규제 산업 판매 기준) → 표준 §6 aspect 10의 기각이 판단에서 **확인**으로 승격 |
-| R2-4 | [`14/…migration-discipline`](../corpus/aspects/14-data-management-migrations/facts-2026-08-migration-discipline.md) · [`25/…license-obligations`](../corpus/aspects/25-licensing-foss-compliance/facts-2026-08-license-obligations.md) | **AGPL-3.0 §13·GPL-3.0·MIT·Apache-2.0 §4 원문 직접 확인** + 조문 인용표 · expand-contract의 원저자 귀속(Nygard 2007) 확인 |
+| R2-1 | [`03/…reproducible-environment`](../corpus/aspects/03-dev-environment/reproducible-environment--facts-2026-08.md) · [`06/…config-validation-secrets`](../corpus/aspects/06-config-secrets/config-validation-secrets--facts-2026-08.md) | **시작 시점 설정 검증에 국제 표준이 없다**(프레임워크 기능으로만 존재) · 시크릿 회전 주기의 구체값은 어느 벤더 문서에도 없음 · GitHub secret scanning이 스스로 밝힌 탐지 한계 |
+| R2-2 | [`19/…structured-logging-metrics`](../corpus/aspects/19-observability-telemetry/structured-logging-metrics--facts-2026-08.md) · [`22/…repo-docs-adr-runbook`](../corpus/aspects/22-documentation-knowledge/repo-docs-adr-runbook--facts-2026-08.md) | **표준 vs 처방 구분**: 12-Factor · RED/USE · Diátaxis · Keep a Changelog · ADR(Nygard) · SRE runbook은 **표준 기관 산출물이 아니다**(7건) |
+| R2-3 | [`11/…refactoring-debt-discipline`](../corpus/aspects/11-maintainability-techdebt-refactoring/refactoring-debt-discipline--facts-2026-08.md) · [`10/…dependency-updates-scope`](../corpus/aspects/10-supply-chain-security/dependency-updates-scope--facts-2026-08.md) | **SLSA·Scorecard·SBOM 어느 것도 자체 호스팅 웹 앱 적용을 명시하지 않음**(SBOM 의무는 정부/규제 산업 판매 기준) → 표준 §6 aspect 10의 기각이 판단에서 **확인**으로 승격 |
+| R2-4 | [`14/…migration-discipline`](../corpus/aspects/14-data-management-migrations/migration-discipline--facts-2026-08.md) · [`25/…license-obligations`](../corpus/aspects/25-licensing-foss-compliance/license-obligations--facts-2026-08.md) | **AGPL-3.0 §13·GPL-3.0·MIT·Apache-2.0 §4 원문 직접 확인** + 조문 인용표 · expand-contract의 원저자 귀속(Nygard 2007) 확인 |
 
 **품질 관리**: 4패스 모두 오케스트레이터가 전수 검사했고 **3건에 수리 패스**를 돌렸다 — 서술형/스킴 없는
 인용을 완전 URL로 교체, 벤더 해설(SonarSource)의 1차 오분류 재분류, 스니펫 기반 claim 강등, 예산 미사용분
@@ -96,10 +96,10 @@ goppi-arm **확증시험은 빌드 이후 product GO를 gate**한다 (protocol�
 
 | Unit | 산출 | 핵심 결과 |
 |---|---|---|
-| R3-1 | [`15/…accessibility-obligations`](../corpus/aspects/15-accessibility-ux/facts-2026-08-accessibility-obligations.md) | WCAG 2.2 적합성 정의 · 의무 발생 조건 표 · 자동 검사 한계. **EAA 조문·한국 법령 조항은 fetch 실패로 미확보** |
-| R3-2 | [`16/…privacy-statutory-duties`](../corpus/aspects/16-privacy-data-protection/facts-2026-08-privacy-statutory-duties.md) | **개인정보 보호법 제30조 제1항 각 호 원문 확보**(처리방침 필수 기재 11항목, 시행일 2025-10-02, 법률 제20897호) — **R1-10b의 최대 미해결 종결**. GDPR Art.13/14는 요약본 기반 |
-| R3-3 | [`12/…web-performance-thresholds`](../corpus/aspects/12-performance-scalability/facts-2026-08-web-performance-thresholds.md) · [`21/…serverless-cost-model`](../corpus/aspects/21-economics-cost-sustainability/facts-2026-08-serverless-cost-model.md) | Core Web Vitals=Google 정책 · 성능 예산·FinOps=처방 · **어느 플랫폼도 "성능=비용"을 규정하지 않음**(Lambda GB-s 예 / Cloudflare CPU-ms 아니오) |
-| R3-4 | [`13/…api-scope-boundary`](../corpus/aspects/13-api-interface-design/facts-2026-08-api-scope-boundary.md) · [`24/…solo-governance-handover`](../corpus/aspects/24-governance-collaboration-compliance/facts-2026-08-solo-governance-handover.md) | **RFC 9110·OpenAPI는 공개/내부 API를 구분하지 않음** · **개발자 인계에 공식 표준이 팀 규모와 무관하게 없음** · GitHub 커뮤니티 항목은 전부 "권장" |
+| R3-1 | [`15/…accessibility-obligations`](../corpus/aspects/15-accessibility-ux/accessibility-obligations--facts-2026-08.md) | WCAG 2.2 적합성 정의 · 의무 발생 조건 표 · 자동 검사 한계. **EAA 조문·한국 법령 조항은 fetch 실패로 미확보** |
+| R3-2 | [`16/…privacy-statutory-duties`](../corpus/aspects/16-privacy-data-protection/privacy-statutory-duties--facts-2026-08.md) | **개인정보 보호법 제30조 제1항 각 호 원문 확보**(처리방침 필수 기재 11항목, 시행일 2025-10-02, 법률 제20897호) — **R1-10b의 최대 미해결 종결**. GDPR Art.13/14는 요약본 기반 |
+| R3-3 | [`12/…web-performance-thresholds`](../corpus/aspects/12-performance-scalability/web-performance-thresholds--facts-2026-08.md) · [`21/…serverless-cost-model`](../corpus/aspects/21-economics-cost-sustainability/serverless-cost-model--facts-2026-08.md) | Core Web Vitals=Google 정책 · 성능 예산·FinOps=처방 · **어느 플랫폼도 "성능=비용"을 규정하지 않음**(Lambda GB-s 예 / Cloudflare CPU-ms 아니오) |
+| R3-4 | [`13/…api-scope-boundary`](../corpus/aspects/13-api-interface-design/api-scope-boundary--facts-2026-08.md) · [`24/…solo-governance-handover`](../corpus/aspects/24-governance-collaboration-compliance/solo-governance-handover--facts-2026-08.md) | **RFC 9110·OpenAPI는 공개/내부 API를 구분하지 않음** · **개발자 인계에 공식 표준이 팀 규모와 무관하게 없음** · GitHub 커뮤니티 항목은 전부 "권장" |
 
 **이 패스의 성과는 "기각을 확인한 것"이 아니라 "기각 사유가 틀렸음을 잡은 것"이다.** 표준 §6의 네 행
 (12·13·23·24)에서 결론은 대체로 유지됐지만 **이유를 교정**했다 — "해당 없음/스케일 때문"이 아니라
@@ -111,7 +111,7 @@ goppi-arm **확증시험은 빌드 이후 product GO를 gate**한다 (protocol�
 ## R4 — 법령 원문 재시도 (2026-08-05, **부분 실패 — 도구 환경 제약 확정**)
 
 R3-1/R3-2가 fetch 실패로 남긴 3건을 **접근 경로를 바꿔** 재시도했다. 산출:
-[`15/facts-2026-08-accessibility-legal-sources`](../corpus/aspects/15-accessibility-ux/facts-2026-08-accessibility-legal-sources.md).
+[`15/facts-2026-08-accessibility-legal-sources`](../corpus/aspects/15-accessibility-ux/accessibility-legal-sources--facts-2026-08.md).
 
 | 대상 | 결과 |
 |---|---|
@@ -185,7 +185,7 @@ EUR-Lex 원문 · ISO 12207:2026과 SWEBOK v4 전문(유료) · CISQ 기술부�
 - [ ] `legacy/sources/` 잔여 접목 — imported/README "다음 처리" 기준, GAPS unit이 요구하는 claim만
 - [x] `legacy/judgments/` 깨진 링크 21개 — 각 파일 상단 아카이브 배너로 처리 (2026-08-02)
 - [x] `interpretation/00–04` SUPERSEDED 배너 (2026-08-02)
-- [x] `facts-2026-08-matrix.md` 슬림화 — 수치 상이 목록 + 1차 재확인 대상만 유지 (2026-08-02)
+- [x] `matrix--facts-2026-08.md` 슬림화 — 수치 상이 목록 + 1차 재확인 대상만 유지 (2026-08-02)
 - [x] `tools/` bytecode ignore 규칙 (2026-08-02; 기존 `__pycache__` 폴더는 rm 권한 정책상 잔존 — 무해)
 - [x] claudeck-v1 `researcher.md` 차이표 (2026-08-02 — 위 표 참조)
 

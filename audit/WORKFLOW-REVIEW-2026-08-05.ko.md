@@ -1,6 +1,6 @@
 # 워크플로우 표준 독립 리뷰 — findings 레지스터 (2026-08-05)
 
-> **대상**: `legacy/judgments/foundation/goppi-workflow-standard.md` (rev2) ·
+> **대상**: `legacy/judgments/goppi/foundation/workflow-standard.md` (rev2) ·
 > `steering-verification-design.md` (rev2) · `spec.md` · 워크플로우 시각화 아티팩트
 > **질문**: 이 워크플로우를 "현업 개발 프로세스의 기준점"이라 부르기에 부족한 점이 있는가?
 > **방법**: fresh-context 리뷰어 3인, 서로 다른 렌즈, **작성자의 결론 미제공**(Writer/Reviewer 분리).

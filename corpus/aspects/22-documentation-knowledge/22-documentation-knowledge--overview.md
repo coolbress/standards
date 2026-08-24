@@ -94,5 +94,5 @@ maps_from: ["census-data/census-governance", "census-data/census-expanded"]
 - Google SRE Book, Being On-Call — https://sre.google/sre-book/being-on-call/
 
 ## Sub-documents
-- [`facts-2026-08-repo-docs-adr-runbook.md`](facts-2026-08-repo-docs-adr-runbook.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-2): README/CONTRIBUTING/SECURITY/CHANGELOG의 근거 · ADR 원형식(Nygard) · runbook. **Keep a Changelog·Diátaxis·ADR·SRE runbook은 표준 기관 산출물이 아님**(표준 vs 처방 구분표 포함).
+- [`repo-docs-adr-runbook--facts-2026-08.md`](repo-docs-adr-runbook--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-2): README/CONTRIBUTING/SECURITY/CHANGELOG의 근거 · ADR 원형식(Nygard) · runbook. **Keep a Changelog·Diátaxis·ADR·SRE runbook은 표준 기관 산출물이 아님**(표준 vs 처방 구분표 포함).
 - [`content-ci-linting-and-jargon-gate.md`](content-ci-linting-and-jargon-gate.md) — *research-log* — content/prose linting in CI (markdownlint/Vale/cspell/link-check) + the de-jargon (forbidden-internal-terms) gate for a public/internal doc split: lit + gh adoption census + the de-facto-tool verdict.

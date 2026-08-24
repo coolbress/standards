@@ -11,7 +11,7 @@
 >
 > 살아남은 예외 하나: `results/2026-07-26-review-precision.md`는
 > [`harness-eval-results/2026-07-26-review-precision.md`](harness-eval-results/2026-07-26-review-precision.md)로
-> 유지된다(`legacy/judgments/foundation/goppi-workflow-standard.md`가 통제시험 근거로 인용하기 때문).
+> 유지된다(`legacy/judgments/goppi/foundation/workflow-standard.md`가 통제시험 근거로 인용하기 때문).
 >
 > 확증시험의 **원자료가 남아 있는** 측정은 `corpus/census-data/harness-confirmation-trial/`에 있다.
 > 하네스 전체의 계보는 [`../LINEAGE.md`](../LINEAGE.md).

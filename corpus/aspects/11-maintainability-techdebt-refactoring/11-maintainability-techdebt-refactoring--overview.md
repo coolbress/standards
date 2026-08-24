@@ -86,4 +86,4 @@ census_todo: "Deferred — needs a targeted workflow-content/topology survey; th
 - SonarQube metric definitions (technical-debt ratio, quality gate) — https://docs.sonarsource.com/sonarqube-server/latest/user-guide/metric-definitions/
 
 ## Sub-documents
-- [`facts-2026-08-refactoring-debt-discipline.md`](facts-2026-08-refactoring-debt-discipline.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-3): 리팩터링과 행동 변경의 분리(Fowler·Google eng-practices) · 기술부채 등록/추적 · ISO 25010 maintainability(전문 유료라 **카탈로그 수준까지만 1차**) · SWEBOK 전문 미확보.
+- [`refactoring-debt-discipline--facts-2026-08.md`](refactoring-debt-discipline--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-3): 리팩터링과 행동 변경의 분리(Fowler·Google eng-practices) · 기술부채 등록/추적 · ISO 25010 maintainability(전문 유료라 **카탈로그 수준까지만 1차**) · SWEBOK 전문 미확보.

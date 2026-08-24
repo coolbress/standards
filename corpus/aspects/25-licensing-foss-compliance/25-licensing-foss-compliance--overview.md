@@ -80,4 +80,4 @@ maps_from: ["census-data/census-governance"]
 - https://developercertificate.org/
 
 ## Sub-documents
-- [`facts-2026-08-license-obligations.md`](facts-2026-08-license-obligations.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-4): **라이선스 원문 4종 직접 확인** — AGPL-3.0 §13 네트워크 사용 조항 · GPL-3.0 · MIT · Apache-2.0 §4 · 조문 인용표(조항 번호·요구 내용·조건절) · SPDX 식별자와 REUSE 규격.
+- [`license-obligations--facts-2026-08.md`](license-obligations--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-4): **라이선스 원문 4종 직접 확인** — AGPL-3.0 §13 네트워크 사용 조항 · GPL-3.0 · MIT · Apache-2.0 §4 · 조문 인용표(조항 번호·요구 내용·조건절) · SPDX 식별자와 REUSE 규격.

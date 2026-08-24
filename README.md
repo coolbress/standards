@@ -44,9 +44,12 @@ corpus/              근거 — 판단이 들어가면 안 되는 층
   ├ aspects/         28측면 종합 + claim register
   ├ census-data/     원시 empirical 증거 (append-only)
   └ methods/         연구·큐레이션 규칙
-legacy/           📜 과거 — 다섯 하네스가 남긴 전부. 진입점은 LINEAGE.md
-  ├ LINEAGE.md       계보 서사 — 무엇을 지었고 왜 죽었나
-  ├ judgments/       그때의 판단 (goppi 워크플로 표준 · 가치가설 · gingoa 스키마)
+legacy/           📜 과거 — 5세대가 남긴 전부. 진입점은 LINEAGE.md
+  ├ LINEAGE.md       계보 서사 — 무엇을 지었고 왜 죽었나 (§5b 소유자 회고는 미완)
+  ├ DISPOSITION.md   처분 대장 — 문서 274건 전수와 각각의 처분. 미분류 0
+  ├ ARCHIVE-INDEX.md 저장소 밖 로컬 아카이브와 승계 여부
+  ├ judgments/       그때의 판단 — 세대별로 묶음
+  │   ├ goppi/ · gingoa/ · research-interpretation/
   └ sources/         원본 사본 — provenance이지 승인이 아니다
 audit/               감사·공백·무결성 대장 (append-only)
 tools/               구조 검증 · 지도 생성 · 검색 계약 평가

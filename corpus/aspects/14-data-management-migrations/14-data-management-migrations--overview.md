@@ -70,4 +70,4 @@ This aspect **fires only for the `backend` and `data-ml` archetypes** — i.e. p
 - https://www.postgresql.org/docs/current/continuous-archiving.html
 
 ## Sub-documents
-- [`facts-2026-08-migration-discipline.md`](facts-2026-08-migration-discipline.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-4): 마이그레이션 도구별 rollback/downgrade 규정과 제약(Flyway·Alembic·Prisma·Django) · **expand-contract의 원저자 귀속**(Nygard 2007) 확인.
+- [`migration-discipline--facts-2026-08.md`](migration-discipline--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-4): 마이그레이션 도구별 rollback/downgrade 규정과 제약(Flyway·Alembic·Prisma·Django) · **expand-contract의 원저자 귀속**(Nygard 2007) 확인.

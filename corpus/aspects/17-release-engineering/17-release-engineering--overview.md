@@ -84,6 +84,6 @@ maps_from: ["census-data/census-release-ops"]
 - *Accelerate* (Forsgren, Humble, Kim 2018) · *Site Reliability Engineering* (Beyer et al., Google 2016)
 
 ## Sub-documents
-- [`facts-2026-08-last-mile-domain-hosting.md`](facts-2026-08-last-mile-domain-hosting.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-10 전반): 코드 완성 이후 공개까지의 도메인 등록(ICANN 연락처 검증·갱신/만료 유예) · DNS 연결과 TLS 자동 발급 · PaaS 프로덕션 배포와 롤백 · 무료→유료 과금 전환 트리거, 그리고 **과금·외부 노출·자격증명이 발생하는 정확한 단계**. 본문 미확인 claim은 `[미확인]`으로 강등 표기됨.
-- [`facts-2026-08-last-mile-payments-privacy.md`](facts-2026-08-last-mile-payments-privacy.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-10 후반): PSP 온보딩 요건(신원·UBO·은행계좌) · PCI DSS SAQ 범위와 6.4.3/11.6.1 · PIPA 제30조 · GDPR Art.13/14 정보 제공 의무, 그리고 **신원·계약·법적 책임 때문에 사람만 할 수 있는 단계**. PIPA 조문 각 호는 1차 미확보로 `미해결`.
+- [`last-mile-domain-hosting--facts-2026-08.md`](last-mile-domain-hosting--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-10 전반): 코드 완성 이후 공개까지의 도메인 등록(ICANN 연락처 검증·갱신/만료 유예) · DNS 연결과 TLS 자동 발급 · PaaS 프로덕션 배포와 롤백 · 무료→유료 과금 전환 트리거, 그리고 **과금·외부 노출·자격증명이 발생하는 정확한 단계**. 본문 미확인 claim은 `[미확인]`으로 강등 표기됨.
+- [`last-mile-payments-privacy--facts-2026-08.md`](last-mile-payments-privacy--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-10 후반): PSP 온보딩 요건(신원·UBO·은행계좌) · PCI DSS SAQ 범위와 6.4.3/11.6.1 · PIPA 제30조 · GDPR Art.13/14 정보 제공 의무, 그리고 **신원·계약·법적 책임 때문에 사람만 할 수 있는 단계**. PIPA 조문 각 호는 1차 미확보로 `미해결`.
 - [`release-operate-artifact-checklist.md`](release-operate-artifact-checklist.md) — *research-log* — the ④ release+operate artifact checklist: supply-chain provenance (SBOM/SLSA/cosign/checksum) + the SRE/operate half (SLO/error-budget/runbook/postmortem/OTel/DORA); also grounds aspects 18 & 20.

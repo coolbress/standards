@@ -19,7 +19,7 @@ ISO/IEC/IEEE 12207:2017(현재 폐기된 역사적 판본)·25010·29148·OWASP�
 
 ## 승계 후 적응 (완료 기록)
 
-- [x] **2026-08-02 facts 층 접목 완료** — 11개 파일이 `facts-2026-08-*.md`로 각 aspect에 편입(§3a frontmatter, `kind: research-log`, `language: ko`), `<topic>--overview.md` Sub-documents + INDEX deep-dive에 링크. 매트릭스는 corpus 루트 `facts-2026-08-matrix.md`(경로 매핑 헤더 포함).
+- [x] **2026-08-02 facts 층 접목 완료** — 11개 파일이 `facts-2026-08-*.md`로 각 aspect에 편입(§3a frontmatter, `kind: research-log`, `language: ko`), `<topic>--overview.md` Sub-documents + INDEX deep-dive에 링크. 매트릭스는 corpus 루트 `matrix--facts-2026-08.md`(경로 매핑 헤더 포함).
 
 > **열린 작업은 이 파일에서 추적하지 않는다.** 남은 적응·유지보수 항목(gingoa 표기 정리, imported 접목,
 > census 시효, 태그 통일, 교차 링크 등)은 [`../audit/GAPS.ko.md`](../audit/GAPS.ko.md)의 유지보수 backlog가
@@ -46,15 +46,15 @@ Full recovery snapshot:
 
 | 원 파일 | 현재 경로 |
 |---|---|
-| 06 | `aspects/28-implementation-process-workflow/facts-2026-08-sdlc-models.md` |
-| 07 | `aspects/01-requirements-planning/facts-2026-08-requirements.md` |
-| 08 | `aspects/02-architecture-design/facts-2026-08-design-practice.md` |
-| 09 | `aspects/07-construction-code-review/facts-2026-08-codereview.md` |
-| 10 | `aspects/08-software-testing/facts-2026-08-testing.md` |
-| 11 | `aspects/04-build-ci-engineering/facts-2026-08-cicd-release.md` |
-| 12 | `aspects/20-operations-incident-reliability/facts-2026-08-operations-sre.md` |
-| 13 | `aspects/28-implementation-process-workflow/facts-2026-08-agile-adoption.md` |
-| 14 | `aspects/09-application-security/facts-2026-08-security-sdlc.md` |
-| 15 | `aspects/01-requirements-planning/facts-2026-08-estimation-failure-data.md` |
-| 16 | `aspects/24-governance-collaboration-compliance/facts-2026-08-roles-teams.md` |
-| 17 | `facts-2026-08-matrix.md` (corpus 루트) |
+| 06 | `aspects/28-implementation-process-workflow/sdlc-models--facts-2026-08.md` |
+| 07 | `aspects/01-requirements-planning/requirements--facts-2026-08.md` |
+| 08 | `aspects/02-architecture-design/design-practice--facts-2026-08.md` |
+| 09 | `aspects/07-construction-code-review/codereview--facts-2026-08.md` |
+| 10 | `aspects/08-software-testing/testing--facts-2026-08.md` |
+| 11 | `aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md` |
+| 12 | `aspects/20-operations-incident-reliability/operations-sre--facts-2026-08.md` |
+| 13 | `aspects/28-implementation-process-workflow/agile-adoption--facts-2026-08.md` |
+| 14 | `aspects/09-application-security/security-sdlc--facts-2026-08.md` |
+| 15 | `aspects/01-requirements-planning/estimation-failure-data--facts-2026-08.md` |
+| 16 | `aspects/24-governance-collaboration-compliance/roles-teams--facts-2026-08.md` |
+| 17 | `matrix--facts-2026-08.md` (corpus 루트) |

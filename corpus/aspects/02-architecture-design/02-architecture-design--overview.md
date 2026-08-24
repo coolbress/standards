@@ -84,4 +84,4 @@ census_todo: "Deferred — needs a targeted workflow-content/topology survey; th
 - Buchgeher et al., ADRs in OSS (IEEE Access 2023) — https://research.jku.at/en/publications/using-architecture-decision-records-in-open-source-projects-an-ms/
 
 ## Sub-documents
-- [`facts-2026-08-design-practice.md`](facts-2026-08-design-practice.md) — *research-log (ko)* — 2026-08 facts-only pass: Google design docs · company RFC processes · Nygard ADR · C4 · walking-skeleton/tracer-bullet originals.
+- [`design-practice--facts-2026-08.md`](design-practice--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: Google design docs · company RFC processes · Nygard ADR · C4 · walking-skeleton/tracer-bullet originals.

@@ -80,11 +80,11 @@
 ## 6. 부수 발견 — 추적 밖 참조 2건 (P18 계열) · ⚠️ 최초 보고는 오판이었다
 
 **정정(같은 날 · 소유자 처분 지시로 재검증)**: 이 절의 최초 판은 두 문서를 "실물이 어디에도 없는
-죽은 참조"라고 적었다. **틀렸다** — 둘 다 `.scratch/research/legacy/judgments/foundation/`에 실재했다.
+죽은 참조"라고 적었다. **틀렸다** — 둘 다 `.scratch/research/legacy/judgments/goppi/foundation/`에 실재했다.
 내 검색이 얕았다(`find -maxdepth 2~3` + `mdfind` — 숨은 디렉토리 미포괄). 마지막 문장 *"현행
 정본은 이 문서다"*도 그 오판 위의 과잉 주장이었으므로 철회한다.
 
-**실제 상태**: `goppi-worth-hypothesis.md` · `trustworthy-completion-evaluation-protocol.md`(둘 다
+**실제 상태**: `worth-hypothesis.md` · `trustworthy-completion-evaluation-protocol.md`(둘 다
 2026-08-02 · 이전 세대)는 실재하지만 **git 추적 밖이었다**(`.gitignore`의 `.scratch/`). 추적 표면의
 권위 표(§G)가 비추적 파일을 가리키면 조용한 소실 위험이 있다 — 그 위험이 P18 계열의 실제 내용이다.
 

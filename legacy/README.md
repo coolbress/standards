@@ -28,7 +28,7 @@
 ## 왜 지우지 않았나
 
 - **`LINEAGE.md`** — 이 저장소 목적의 절반(계보·실패 분석)이 여기 있다.
-- **`judgments/foundation/goppi-workflow-standard.md`** — cross-vendor 적대 리뷰를 거쳐 rev4까지 간
+- **`judgments/foundation/workflow-standard.md`** — cross-vendor 적대 리뷰를 거쳐 rev4까지 간
   설계 문서다. 하네스는 죽었지만 **인수기준 안정 ID · `AC-n → 검사` 매핑 · `UNVERIFIABLE` 표기**(WF-01)는
   살아 있고 `direction/03`이 근거로 인용한다.
 - **`sources/`** — 코퍼스가 실제로 인용하는 것만 남겼다(2026-08-24 가지치기에서 32건 삭제).
