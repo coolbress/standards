@@ -14,7 +14,7 @@
 |---|---|---|
 | 1 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | **만들 것 13개 · 원칙 4 · 리서치에서 나온 수치 · 판정 기준** |
 | 2 | [`direction/05-the-output-floor.md`](direction/05-the-output-floor.md) | **무엇이 저장소에 남아야 시니어급인가** (MUST 49) · 아키타입 판정 |
-| 3 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) §진단의 진단 | **같은 실수를 아홉 번 했다.** 열 번째를 하지 않기 위해 |
+| 3 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) §진단의 진단 | **같은 실수를 열 번 했다.** 열한 번째를 하지 않기 위해 |
 
 나머지(`01`·`03`)는 **물어봤을 때만** 읽는다. `01`=요구 6가지의 근거, `03`=리서치 색인.
 
@@ -151,7 +151,7 @@ new-project.sh → /kickoff → 이슈 → 브랜치 → PR → CI → 머지
 **그 목록을 쥐고 있을 때만** 사람보다 나은 후속 질문을 한다는 것을 보였다 —
 있으면 좋은 게 아니라 이 커맨드가 값을 하는 이유다.
 
-0번 절은 **"이미 있는 것인지 먼저 확인"** 이다. 이 확인을 건너뛴 실수가 아홉 번 있었다.
+0번 절은 **"이미 있는 것인지 먼저 확인"** 이다. 이 확인을 건너뛴 실수가 **열 번** 있었고, **그 절이 이 세션에서 두 번 발화해 두 번 다 막았다**(`zipline Ledger` · `LedgerLens`).
 
 ## ✅ ② 완료 (2026-08-24) — `coolbress/workflows`
 
@@ -204,7 +204,7 @@ gh api repos/coolbress/<repo>/rulesets -X POST --input ruleset.json
 2. **로직을 설정 층에 넣지 않는다.** `new-project.sh`가 20줄을 넘어가면 그게 신호다.
 3. **에이전트에게 규율을 프롬프트로 심지 않는다.** 벽은 GitHub에 있다.
 4. **새로 짓기 전에 [`MAP.md`](MAP.md)를 주제어로 훑는다** (README 절대규칙 6).
-   *"없다"* 고 단정하기 전에 확인한다 — 이 실수를 **아홉 번** 했다.
+   *"없다"* 고 단정하기 전에 확인한다 — 이 실수를 **열 번** 했다.
 5. **지적을 받으면 그 좌표가 아니라 그 종류를 전 저장소에 grep한다** (절대규칙 7).
 
 ## 이 저장소에서 작업할 때
