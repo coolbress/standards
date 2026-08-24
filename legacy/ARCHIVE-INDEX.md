@@ -13,6 +13,7 @@
 | `2026-08-24-harness-cleanup/gingoa/` | 698MB | **원격 삭제됨** · 로컬 사본 | **28측면 코퍼스 전체**가 `corpus/`로 승계 · ADR 21 제목 §4 · 헌법 `judgments/gingoa/` |
 | `2026-08-24-harness-cleanup/goppi/` | 22MB | **원격 삭제됨** · 로컬 사본 | 결정 41 제목 §4 · references `sources/goppi/` · 5조 계약 `judgments/goppi/` |
 | `2026-08-24-harness-cleanup/goppi_test/` | 319MB | LedgerLens 레거시 (하네스 아님) | ❌ 승계 안 함 — 후속 저장소 `~/divtadel`이 운영판이다 |
+| `2026-08-24-harness-cleanup/goppi_final/` | 42MB | **마지막 세대** · 원격은 처음부터 없었다 | **이 저장소의 모체** — `corpus/`·`legacy/`·`direction/`이 전부 여기서 나왔다. 처분 전수는 [`DISPOSITION.md`](DISPOSITION.md) |
 | `harness-removal-2026-08-24/` | 560KB | **설정 제거 백업** — Claude·Codex 설정 7종 + SHA256 + 플러그인 캐시 | 절차는 [`judgments/harness-removal-record-2026-08-04.md`](judgments/harness-removal-record-2026-08-04.md)(선례) |
 
 ## 2026-08-24 제거 실행 기록
@@ -24,7 +25,7 @@
 | goppi 플러그인 제거 | 흔적 **0건** — 플러그인·pluginUsage·projects 4건·캐시·Codex 설정 |
 | 로컬 4개 → Archive | claudeck · gingoa · goppi · goppi_test |
 | **원격 3개 삭제** | ✅ **API 404로 확인** (claudeck · gingoa · goppi) |
-| `goppi_final` | 세션 종료 후 소유자가 이동 예정 |
+| `goppi_final` | ✅ **이동 완료 2026-08-24** — 홈에 하네스 0건 |
 
 ## 원칙
 
