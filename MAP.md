@@ -16,7 +16,7 @@
 | `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 7 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 101 | **물어봤을 때만** — 과거 하네스·원시 census |
-| `archive` | 41 | 검색 제외 (폐기·legacy) |
+| `archive` | 52 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
 
@@ -132,6 +132,17 @@
 - `legacy/sources/claudeck-v1/README-v1.md`
 - `legacy/sources/claudeck-v1/researcher.md`
 - `legacy/sources/claudeck/harness-concept-notes.md`
+- `legacy/sources/codex-native/ARCHIVE-RECORD.md`
+- `legacy/sources/codex-native/skills/codex-native-harness/references/evaluation.md`
+- `legacy/sources/codex-native/skills/codex-native-harness/references/governed.md`
+- `legacy/sources/codex-native/skills/codex-native-harness/references/independent-review.md`
+- `legacy/sources/codex-native/skills/codex-native-harness/references/routing.md`
+- `legacy/sources/codex-native/skills/codex-native-harness/references/verification.md`
+- `legacy/sources/codex-native/skills/codex-native-harness/SKILL.md`
+- `legacy/sources/codex-native/skills/github-workflow/references/codex-native-settings.md`
+- `legacy/sources/codex-native/skills/github-workflow/references/evidence-baseline.md`
+- `legacy/sources/codex-native/skills/github-workflow/references/merge-execution.md`
+- `legacy/sources/codex-native/skills/github-workflow/SKILL.md`
 - `legacy/sources/goppi-trial-web/PROVENANCE.md`
 - `legacy/sources/goppi-trial-web/README.md`
 - `legacy/sources/goppi-trial-web/TRIAL.md`

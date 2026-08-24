@@ -1,0 +1,34 @@
+{
+  "name": "codex-native",
+  "version": "0.3.1+codex.20260714042339",
+  "description": "A native-first adaptive Codex workflow with proportional verification, independent review, reviewed improvement, and evidence-aware GitHub delivery.",
+  "author": {
+    "name": "coolbress"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "codex",
+    "workflow",
+    "verification",
+    "code-review",
+    "github"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Native",
+    "shortDescription": "Native-first execution, review, and GitHub delivery",
+    "longDescription": "Use the lightest workflow that can verify the outcome, add independent review in proportion to risk, preserve high-signal failures through a reviewed improvement loop, and load evidence-aware GitHub delivery guidance only when the task reaches GitHub.",
+    "developerName": "coolbress",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Complete this task with the lightest verified workflow.",
+      "Review this material change independently before handoff.",
+      "Deliver this change through a safe GitHub workflow."
+    ]
+  }
+}
