@@ -1,4 +1,4 @@
-# 처분 대장 — 5세대 문서 전수 (2026-08-24)
+# 처분 대장 — 6세대 문서 전수 (2026-08-24)
 
 > 원본 저장소 삭제 전에 **모든 마크다운 문서의 처분을 확정**한 표다.
 > *"이건 누락인가 의도인가"* 를 매번 재확인하지 않기 위해 만들었다 — 그 재확인을 **네 번** 하고 나서 — 그 자체가 이 대장이 필요한 이유다.
@@ -18,11 +18,17 @@
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | **claudeck** | 1 | — | 2 | — | — | — | — | — | 2 | 1 | **6** |
 | **gingoa** | 12 | 2 | 30 | — | — | — | — | 2 | 8 | 5 | **59** |
+| **codex-native** | 10 | — | — | — | — | — | — | — | — | — | **10** |
 | **goppi** | 15 | 2 | 41 | — | 32 | — | — | 7 | 9 | 38 | **144** |
 | **goppi_final** | 2 | 25 | — | — | — | 13 | 7 | — | — | 18 | **65** |
-| **합계** | **30** | **29** | **73** | **0** | **32** | **13** | **7** | **9** | **19** | **62** | **274** |
+| **합계** | **40** | **29** | **73** | **0** | **32** | **13** | **7** | **9** | **19** | **62** | **284** |
 
-**승계 59건 · 제목보존 73건 · 폐기 142건.**
+**승계 69건 · 제목보존 73건 · 폐기 142건.**
+
+> **2026-08-24 개정** — `~/plugins/codex-native`(여섯 번째 하네스)를 뒤늦게 발견해 md 10건을 추가했다.
+> 첫 판은 274건이었고 **codex-native 저장소 자체가 표에 없었다** — 그 누락의 경위는
+> [`sources/codex-native/ARCHIVE-RECORD.md`](sources/codex-native/ARCHIVE-RECORD.md)와
+> `direction/02` *진단의 진단* **8번**이 기록한다.
 
 > claudeck-v1은 저장소가 아니라 bare 아카이브라 이 표 밖이다 —
 > [`sources/claudeck-v1/FILE-MANIFEST.txt`](sources/claudeck-v1/FILE-MANIFEST.txt)(272행)가 그 전수다.
@@ -37,6 +43,17 @@
 
 나머지 비-md(`.mjs` 하네스 구현 · `.json` 설정 · `.sh` 스크립트)는 전부 **폐기 · 구현**이다.
 
+### codex-native의 비-md (2026-08-24 추가)
+
+| 파일 | 처분 |
+|---|---|
+| `.codex-plugin/plugin.json` | **승계** — 정체·버전·자기 서술 |
+| `skills/*/agents/openai.yaml` (2) | 폐기 · 구현 — 2026-07 시점 모델 라우팅 값 |
+| `skills/codex-native-harness/evals/{cases,fixtures,manifest}.json` + `results/2026-07-12.json` | **폐기 · 하네스 효과 n=1** — 3케이스 × n=1, 자기 기록이 `"status":"partial"` · `"traceability":"legacy-untraceable"` |
+| `skills/*/scripts/*.py` (5, 1,406줄) | 폐기 · 구현 |
+
+전수는 [`sources/codex-native/FILE-MANIFEST.tsv`](sources/codex-native/FILE-MANIFEST.tsv)가 SHA-256과 함께 기록한다.
+
 ## 전수 목록
 
 | 저장소 | 경로 | 처분 |
@@ -47,6 +64,16 @@
 | claudeck | `docs/conventions/paths.md` | 폐기 · 프로젝트 문서 |
 | claudeck | `docs/specs/2026-06-20-p2-foundation-resolver.md` | 제목보존 |
 | claudeck | `docs/specs/2026-06-20-p3-agent-semaphore.md` | 제목보존 |
+| codex-native | `skills/codex-native-harness/SKILL.md` | 승계 |
+| codex-native | `skills/codex-native-harness/references/evaluation.md` | 승계 |
+| codex-native | `skills/codex-native-harness/references/governed.md` | 승계 |
+| codex-native | `skills/codex-native-harness/references/independent-review.md` | 승계 |
+| codex-native | `skills/codex-native-harness/references/routing.md` | 승계 |
+| codex-native | `skills/codex-native-harness/references/verification.md` | 승계 |
+| codex-native | `skills/github-workflow/SKILL.md` | 승계 |
+| codex-native | `skills/github-workflow/references/codex-native-settings.md` | 승계 |
+| codex-native | `skills/github-workflow/references/evidence-baseline.md` | 승계 |
+| codex-native | `skills/github-workflow/references/merge-execution.md` | 승계 |
 | gingoa | `.github/PULL_REQUEST_TEMPLATE.md` | 폐기 · 보일러플레이트 |
 | gingoa | `AGENTS.md` | 폐기 · 보일러플레이트 |
 | gingoa | `CHANGELOG.md` | 폐기 · 보일러플레이트 |

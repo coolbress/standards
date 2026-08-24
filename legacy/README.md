@@ -1,12 +1,12 @@
 # legacy — 과거 하네스가 남긴 전부
 
-**5세대**(claudeck-v1 → claudeck → gingoa → goppi → goppi_final)가 남긴 것을 한자리에 모았다.
+**6세대**(claudeck-v1 → claudeck → gingoa → codex-native → goppi → goppi_final)가 남긴 것을 한자리에 모았다.
 **이 층은 전부 지나간 것이다.** 현행 방향은 [`direction/`](../direction/)이고,
 둘이 충돌하면 `direction/`이 이긴다.
 
 ## 먼저 읽을 것
 
-**[`LINEAGE.md`](LINEAGE.md)** — 다섯 하네스가 무엇을 하려 했고, 어떻게 지었고, 왜 죽었나.
+**[`LINEAGE.md`](LINEAGE.md)** — 여섯 하네스가 무엇을 하려 했고, 어떻게 지었고, 왜 죽었나.
 결정 64건 · 스펙 11종의 제목과 되살릴 수 없는 실측 12건이 여기 있다. **나머지는 이 문서의 각주다.**
 
 ## 구성

@@ -83,9 +83,9 @@
 
 ## 이 목적은 바뀐 적이 없다
 
-다섯 하네스(claudeck·gingoa·goppi·goppi_final)의 한 문장은 표현만 다르고 같은 것을 말한다 —
+여섯 하네스(claudeck-v1·claudeck·gingoa·codex-native·goppi·goppi_final)의 한 문장은 표현만 다르고 같은 것을 말한다 —
 [`legacy/LINEAGE.md`](../legacy/LINEAGE.md) §2. 바뀐 것은 **그것을 어디에 지을 것인가**였고,
-다섯 번 다 같은 자리(에이전트 안쪽)를 골랐다.
+여섯 번 다 같은 자리(에이전트 안쪽)를 골랐다.
 
 ## 1차 근거 — 네 가지는 어디서 나왔나
 

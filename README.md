@@ -2,7 +2,7 @@
 
 **소프트웨어를 현업 개발팀처럼 만들기 위한 근거·계보·방향 저장소.**
 
-하네스 **5세대**(claudeck-v1 → claudeck → gingoa → goppi → goppi_final)에서 살아남은 것을 모았다.
+하네스 **6세대**(claudeck-v1 → claudeck → gingoa → codex-native → goppi → goppi_final)에서 살아남은 것을 모았다.
 목적은 네 가지다:
 
 1. **모아둔 리서치를 한자리에** — 28측면 · SWEBOK/ISO 12207:2026/25010 앵커 · 6,582 저장소 census
@@ -21,13 +21,13 @@
 | 순서 | 문서 | 답하는 질문 |
 |---|---|---|
 | 01 | [`direction/01-what-i-want.md`](direction/01-what-i-want.md) | 무엇을 원하는가 — **요구 6가지**, 문제 45개로 추적 |
-| 02 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) | 왜 다섯 번 무너졌는가 |
+| 02 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) | 왜 여섯 번 무너졌는가 |
 | 03 | [`direction/03-what-research-says.md`](direction/03-what-research-says.md) | 리서치는 무엇을 말하는가 |
 | 04 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | 그래서 무엇을 만드는가 — 만들 것 12 |
 | 05 | [`direction/05-the-output-floor.md`](direction/05-the-output-floor.md) | **무엇이 남아야 시니어급인가** — 산출물 바닥 |
 
 ### 계보가 궁금하면
-[`legacy/LINEAGE.md`](legacy/LINEAGE.md) — 다섯 하네스 · 결정 64건 · 스펙 11종 제목 · 되살릴 수 없는 실측 12건
+[`legacy/LINEAGE.md`](legacy/LINEAGE.md) — 여섯 하네스 · 결정 64건 · 스펙 11종 제목 · 되살릴 수 없는 실측 12건
 
 ### 근거를 파려면
 
@@ -49,7 +49,7 @@ corpus/              근거 — 판단이 들어가면 안 되는 층
   ├ aspects/         28측면 종합 + claim register
   ├ census-data/     원시 empirical 증거 (append-only)
   └ methods/         연구·큐레이션 규칙
-legacy/           📜 과거 — 5세대가 남긴 전부. 진입점은 LINEAGE.md
+legacy/           📜 과거 — 6세대가 남긴 전부. 진입점은 LINEAGE.md
   ├ LINEAGE.md       계보 서사 — 무엇을 지었고 왜 죽었나 (§5b 소유자 회고는 미완)
   ├ DISPOSITION.md   처분 대장 — 문서 274건 전수와 각각의 처분. 미분류 0
   ├ ARCHIVE-INDEX.md 저장소 밖 로컬 아카이브와 승계 여부
@@ -70,8 +70,9 @@ archive/             복구 가능한 스냅샷
 3. `review-needed`·`draft` 문서를 인용할 때는 **인용 지점에 status를 병기한다.** *(2026-08-24 개정 — 원문은 "인용하지 않는다"였으나, 2026-08-02 감사에서 상속 `verified` 50건이 전부 강등돼 지키면 아무것도 인용할 수 없는 사문이 됐다. `audit/GAPS` R5-4.)* 하중이 큰 claim은 `verified` 승격을 먼저 한다.
 4. 합성 판단은 `synthesis`, 프로젝트 선택은 `direction/`으로 표시한다.
 5. 새 연구는 **질문·검색일·포함/제외·claim-source 관계·시효·종료 기준**을 갖는다.
-6. **새로 짓기 전에 [`MAP.md`](MAP.md)를 주제어로 훑는다** — 없는 것을 새로 만들었다고 착각한 사례가 **7회** 있다([`direction/02`](direction/02-why-past-attempts-failed.md) *진단의 진단* 전수표).
+6. **새로 짓기 전에 [`MAP.md`](MAP.md)를 주제어로 훑는다** — 없는 것을 새로 만들었다고 착각한 사례가 **8회** 있다([`direction/02`](direction/02-why-past-attempts-failed.md) *진단의 진단* 전수표).
 7. **지적을 받으면 그 좌표가 아니라 그 종류를 전 저장소에 grep한다** — 좌표만 고치면 다음 검수가 같은 결함을 다른 좌표에서 찾는다(2026-08-24 2차 적대 검수 총평).
+8. **"없다"고 쓰기 전에 디스크를 본다** — 계보·이력·산출물에 대한 부정 주장은 저장소 grep으로 끝내지 않고 `~/`를 실제로 훑은 뒤에 쓴다. `~/plugins/codex-native`가 **여섯 번째 하네스**로 2026-08-24에야 발견됐다([`direction/02`](direction/02-why-past-attempts-failed.md) *진단의 진단* 8번).
 
 ## 검사
 
