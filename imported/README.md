@@ -36,3 +36,20 @@ directory diff로 대조했다. 결과는 `../audit/imported-integrity.tsv`에 �
 ## 계보
 
 **[`LINEAGE.md`](LINEAGE.md)** — claudeck → gingoa → goppi → goppi_final 네 하네스가 무엇을 하려 했고 왜 죽었는지. 원본 저장소(로컬·원격)는 2026-08-24에 삭제됐고, 이 문서가 그 자리를 대신한다. 결정 64건의 제목 목록과 되살릴 수 없는 실측 수치를 포함한다.
+
+
+## 2026-08-24 가지치기 — 무엇이 남았고 왜인가
+
+원본 저장소 삭제와 함께 **인용되지 않는 32개 파일을 지웠다.** 남긴 기준은 하나다 —
+**살아있는 문서가 실제로 인용하는가.**
+
+| 남은 것 | 왜 |
+|---|---|
+| `LINEAGE.md` | 네 하네스의 계보. 삭제된 것들을 대신한다 |
+| `claudeck/·claudeck-v1/` 3건 | 코퍼스가 `[census: claudeck v1]`로 인용하는 초기 관찰 (서브에이전트 권한 릴레이 부재 등) |
+| `goppi/` 5건 | `design.md`·`standards.md`·`what-is-a-harness.md`·`model-roster.md`·`review-precision.md` — 인용됨 |
+| `goppi-trial-web/` 전체 | G4 실물 확증의 **물증** — 세트로 의미가 있어 통째로 유지 |
+
+**지운 것**: 하네스 eval 결과 23건(하네스 효과 측정 · n=1 · 하네스와 함께 소멸) ·
+하네스 참조 문서 9건(폐기된 구현의 설계) · 트랜스크립트.
+핵심 수치는 `LINEAGE.md` §5에, 방법론은 `corpus/census-data/harness-confirmation-trial/`에 남아 있다.
