@@ -1,5 +1,5 @@
 path	bytes	mtime_epoch	sha256	state
-corpus/GUIDE.ko.md	2337	1785665764	afcc107d29bbc30f7cffdcaf93bea21c16d6a44fc029531a6bc52e4fb2ee607f	active
+corpus/GUIDE.ko.md	2337	1787536850	afcc107d29bbc30f7cffdcaf93bea21c16d6a44fc029531a6bc52e4fb2ee607f	active
 corpus/INDEX.md	17087	1786195540	998c647f54b317bef3a6084a1a30036e4718d66f116dee1668a41e413cd722f9	active
 corpus/PROVENANCE.md	4249	1786195652	848f448c4600a957bb910e2c9052ca3da8548275d6d31118cf6e378c85842e88	active
 corpus/TAXONOMY.md	3622	1785665764	a967081376676c78275c75472e58eedda14dd534a8b4e0bc6ea55e513dfdd2f9	active
@@ -29,7 +29,7 @@ corpus/aspects/04-build-ci-engineering/facts-2026-08-web-scaffold-baseline.md	17
 corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md	12616	1785658908	0046a6d2781fa1a4e12df05fa4d4e8c726b125c5fd0fe5316b893eb933379085	active
 corpus/aspects/04-build-ci-engineering/visibility-provision-matrix.md	7186	1785658908	15b50f355b4e57ac213aaab98faa56c0bc6875ae362db89fe27f23f0bbe4c645	active
 corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md	14330	1787535067	809d58b8e6221285c45e9614a89f2a13145f66dac33c8037745dc638de22cfc0	active
-corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md	6665	1787535023	a3cf4686b21c383b46016f83ffe0231f2a4712afc1786a23271c213bddc0e95e	active
+corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md	8318	1787536850	f131573c39b686f1878b014438b5cd74fc01f6e20f58e66944b9d5558b8c7803	active
 corpus/aspects/05-scm-workflow/github-workflow-current.md	4448	1787534871	96a6e56235a0153632bc176dca1c84134cb0f33f4cbba5b94f5ed6a205f678c6	active
 corpus/aspects/06-config-secrets/06-config-secrets--overview.md	8232	1785922315	8be38a0bcae40aa4141abfb6ccba05c8c67fd4f5683bbaefd7eee916ef22b2aa	active
 corpus/aspects/06-config-secrets/facts-2026-08-config-validation-secrets.md	19502	1785918847	c59f19bbc9afd59daeda3103fdad11d577c27849cd000bbacf6fa044342af182	active
