@@ -7,7 +7,7 @@
 | # | 원칙 | 근거 |
 |---|---|---|
 | **01** | **집행은 에이전트 밖에서 한다.** 규율을 심지 않고, 통과해야만 하는 벽을 밖에 세운다 | [02](02-why-past-attempts-failed.md) 진단 1 · GEB-005·006 |
-| **02** | **완료는 주장이 아니라 머지된 커밋이다.** *"다 했습니다"* 를 막을 필요가 없다 | [03](03-what-research-says.md) 실무 정의 9 |
+| **02** | **완료는 주장이 아니라 머지된 커밋이다.** *"다 했습니다"* 를 막을 필요가 없다. **코드 수준에서는 테스트가 같은 일을 한다** — 에이전트의 자기평가를 기계 판정으로 대체한다 | [03](03-what-research-says.md) 실무 정의 9 · 테스트 규율 ② |
 | **03** | **집행은 벽으로, 기억은 훅으로.** 막는 데는 우회 동기가 있어 벽이 필요하고, 보여주는 데는 없다. ⚠️ **단서**: *우회 동기가 없어도* 승인 피로·판독 실패로 무너질 수 있다 — 확증시험이 그것을 보였다. 이 원칙은 **막는 것**에만 검증됐고 **보여주는 것**에는 미검증이다 | 진단 1·2 · 미검증 부분은 `GAPS` R5-3 |
 | **04** | **판단은 위임하지 않는다. 노동만 위임한다.** | 단일 작성자 원칙 |
 
@@ -30,7 +30,7 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 | # | 만들 것 | 어느 요구를 채우나 | 성격 |
 |---|---|---|---|
 | 1 | **브랜치 보호 · 룰셋** (`bypass_actors: []`) | ① | 🔒 벽 |
-| 2 | **`coolbress/workflows`** — 재사용 워크플로(ci · pipeline-guard) | ①② | 🔒 벽 |
+| 2 | **`coolbress/workflows`** — ci(lint·typecheck·**test**·build) · pipeline-guard(**테스트 동반 검사** 포함) | ①② | 🔒 벽 |
 | 3 | **`coolbress/project-template`** — Issue Form · PR 템플릿 · `CLAUDE.md`(20줄) · 5줄 `ci.yml` | ①② | 1회 복사 |
 | 4 | **`~/.claude/commands/kickoff.md`** — 기획 인터뷰 | ②③ | 🤝 안내 |
 | 5 | **`ruleset.json` + `new-project.sh`**(4줄) | 반복 제거 | 1회 실행 |
@@ -50,6 +50,8 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 | 항목 | 값 | 왜 |
 |---|---|---|
 | PR diff 상한 | **400줄** | 400 LOC 초과에서 결함 발견율 급락 — [`codereview--facts-2026-08.md`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) `draft` (SmartBear). 100/1000줄 기준은 [`07 overview`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) `review-needed` |
+| **테스트 동반** | **소스가 바뀌면 테스트도 바뀐다 — CI가 검사** | `04 foundation-floor` *"tests required on every PR (MUST)"* · `08` 4대 검사 |
+| **RED→GREEN** | 실패하는 테스트를 **먼저** — 단 **권고**(강제 아님) | `07` SWEBOK. ⚠️ 순서 자체의 효과는 불분명(`GAPS` R5-1) — 강제하지 않는 이유 |
 | CI 소요 | **10분 이내** | [`04 facts-cicd`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) `draft` — Fowler 1차 URL |
 | main 빨간불 | **다른 일보다 우선 수리** | *"깨지면 즉시 수리"* |
 | 리뷰 응답 | **자동 — 사람 대기 0** | ⚠️ *"50% 요인"은 코퍼스 미승계* — 코퍼스가 받치는 것은 "리뷰는 빨라야 한다"까지다. `@claude`의 이점(사람 대기 0)은 **프로젝트 판단** |

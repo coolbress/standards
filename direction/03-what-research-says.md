@@ -37,6 +37,39 @@
 >
 > 그리고 **다중 필수 승인자·형식적 체크리스트 채우기는 DORA가 명시한 안티패턴**이다 — 변경 배치를 키운다.
 
+## 테스트는 어디에 있어야 하나 — 에이전트 코딩에서 특히 강하다
+
+[`07 construction-code-review`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) `review-needed` ·
+[`08 software-testing`](../corpus/aspects/08-software-testing/08-software-testing--overview.md) `review-needed` ·
+[`28 implementation-process`](../corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md) `review-needed`
+
+**① 테스트는 코드와 같은 변경 단위로 온다** (07, SWEBOK KA4)
+
+> *"실패하는 테스트로 동작을 먼저 규정한다(RED→GREEN→REFACTOR). **테스트는 코드와 같은
+> change-unit으로 실린다.** 지속 통합이 trunk를 항상 초록으로 유지한다."*
+
+`04 foundation-floor`는 이를 **MUST**로 못 박는다 — *"tests required on **every PR**"*.
+그리고 `08`은 test를 **우회 불가 4대 CI 검사**(lint·typecheck·**test**·build) 중 하나로 둔다.
+
+**② ⭐ 에이전트에게는 이것이 자기평가의 대체물이다** (28)
+
+> *"**객관 신호로 검증하고 자기평가로 하지 않는다.** 검증은 컴파일러·테스트러너·린터·타입체커 —
+> **외부 진실**을 쓴다. **외부 피드백 없이 모델이 자기를 비판하는 내재적 자기교정은 신뢰할 수 없고
+> 출력을 악화시킬 수 있다.** 테스트 주도 에이전트 루프(RED→GREEN)가 코딩에서 가장 강한 패턴이다."*
+> — Reflexion(91% HumanEval · 테스트 신호 구동) · self-correction limits(arXiv 2406.01297)
+
+**이것이 `direction/02` 진단이 실측한 것과 같은 형태다** — 확증시험에서 하네스의 자기평가는
+*"항상 성공"* 을 보고했다. **테스트는 에이전트가 자기 작업에 대해 말하는 것을 기계 판정으로 바꾼다.**
+
+**③ ⚠️ 다만 "테스트 먼저"라는 **순서 자체**의 효과는 불분명하다**
+
+SUPERSEDED 문서(`legacy/judgments/research-interpretation/02-engineering-practices.md`)는
+*"TDD의 순서 자체는 실증 연구상 효과가 불분명하고 현업 준수율도 낮다 — 효과의 원천은
+**잘게 균일한 스텝 + 항상 테스트가 따라오는 것**"* 이라 적었다.
+**코퍼스에 미승계**이므로 결정 근거로 쓰지 않는다(`GAPS` R5-1).
+
+→ **하중을 받는 것은 "먼저"가 아니라 "함께"다.** 순서는 권고, **동반은 강제**로 나눈다.
+
 ## 게이트는 어디에 있어야 하나
 
 [`corpus/aspects/05-scm-workflow/`](../corpus/aspects/05-scm-workflow/) — tension T3:
