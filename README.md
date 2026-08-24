@@ -1,45 +1,67 @@
-# standards — 근거 코퍼스
+# standards
 
-소프트웨어를 **현업 팀처럼 만들기 위한 근거**를 모아 둔 저장소다. 28개 측면(aspect)에 걸쳐
-"현업 시니어는 실제로 무엇을 하는가"를 표준 문서·1차 출처·저장소 census로 정리했고,
-각 주장에는 **출처·범위·근거 등급·불확실성**이 붙어 있다.
+**소프트웨어를 현업 개발팀처럼 만들기 위한 근거·계보·방향 저장소.**
 
-원래 `goppi_final/.scratch/research/`에 있었다. 2026-08-24에 이곳으로 추출했다 —
-그 폴더는 `.gitignore` 대상이라 **509k 단어가 버전 관리 밖에 있었고**, 백업 경로가 로컬
-tar 스냅샷뿐이었기 때문이다.
+네 번의 실패한 하네스(claudeck → gingoa → goppi → goppi_final)에서 살아남은 것을 모았다.
+목적은 네 가지다:
+
+1. **모아둔 리서치를 한자리에** — 28측면 · SWEBOK/ISO 12207:2026/25010 앵커 · 6,582 저장소 census
+2. **과거 하네스의 계보** — 무엇을 어떻게 지었나
+3. **그때 알아낸 것과 왜 실패했나** — 실측과 진단
+4. **그 위에서 앞으로의 방향** — 리서치 + 실패 사례에서 도출한 것
 
 ## 어디서 시작하나
 
-| 목적 | 파일 |
+### 처음이면 → `direction/`
+
+| 순서 | 문서 | 답하는 질문 |
+|---|---|---|
+| 01 | [`direction/01-what-i-want.md`](direction/01-what-i-want.md) | 무엇을 원하는가 |
+| 02 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) | 왜 네 번 실패했는가 |
+| 03 | [`direction/03-what-research-says.md`](direction/03-what-research-says.md) | 리서치는 무엇을 말하는가 |
+| 04 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | 그래서 무엇을 만드는가 |
+
+### 계보가 궁금하면
+[`imported/LINEAGE.md`](imported/LINEAGE.md) — 네 하네스 · 결정 64건 제목 · 되살릴 수 없는 실측 10건
+
+### 근거를 파려면
+
+| 목적 | 문서 |
 |---|---|
 | 구조를 사람이 훑기 | [`MAP.md`](MAP.md) — 생성물. 등급별 문서 지도 |
 | 에이전트 진입점 | [`corpus/INDEX.md`](corpus/INDEX.md) |
-| 무엇을 믿을 수 있나 | [`corpus/methods/EVIDENCE-POLICY.md`](corpus/methods/EVIDENCE-POLICY.md) |
-| **무엇이 안 바뀌고 무엇이 썩나** | [`corpus/methods/evidence-durability--grading-model.md`](corpus/methods/evidence-durability--grading-model.md) — 🟢🟡🔴 수명 등급 |
-| **이 코퍼스의 유일한 1차 자료** | [`corpus/census-data/owner-problem-map/`](corpus/census-data/owner-problem-map/) — 소유자 문제 45개 |
+| 무엇을 근거로 인정하나 | [`corpus/methods/EVIDENCE-POLICY.md`](corpus/methods/EVIDENCE-POLICY.md) |
+| **무엇이 안 바뀌고 무엇이 썩나** | [`corpus/methods/evidence-durability--grading-model.md`](corpus/methods/evidence-durability--grading-model.md) — 🟢🟡🔴 |
+| **유일한 1차 사용자 자료** | [`corpus/census-data/owner-problem-map/`](corpus/census-data/owner-problem-map/) — 문제 45개 |
+| 하네스가 자기 실패를 증명한 시험 | [`corpus/census-data/harness-confirmation-trial/`](corpus/census-data/harness-confirmation-trial/) |
 | 아직 빈 곳 | [`audit/GAPS.ko.md`](audit/GAPS.ko.md) |
 
 ## 층위
 
 ```
-corpus/          근거 — aspect 종합 · claim register · census 원시 데이터
-  ├ aspects/     28개 측면 (SWEBOK v4 · ISO/IEC/IEEE 12207:2026 · ISO 25010 앵커)
-  ├ census-data/ 저장소 조사 원시 데이터 (append-only)
-  └ methods/     근거 정책 · 프레임워크 crosswalk
-interpretation/  판단 — 근거와 **분리**된 결정 기록
-imported/        과거 하네스(claudeck·gingoa·goppi) 원본 사본 — 계보용, 승인 아님
-audit/           감사 기록 · 공백 추적 · 무결성 대장 (append-only)
-archive/         활성 검색에서 뺐지만 복구 가능한 자료
-tools/           구조 검증 · 지도 생성 · 검색 계약 평가
+direction/        ⭐ 결론 — 앞으로 어디로 가는가. 주장에 근거를 건다
+corpus/              근거 — 판단이 들어가면 안 되는 층
+  ├ aspects/         28측면 종합 + claim register
+  ├ census-data/     원시 empirical 증거 (append-only)
+  └ methods/         연구·큐레이션 규칙
+interpretation/      판단 — 근거와 분리. foundation/은 폐기된 하네스의 판단이다
+imported/            계보 — 과거 하네스 원본 사본. provenance이지 승인이 아니다
+audit/               감사·공백·무결성 대장 (append-only)
+tools/               구조 검증 · 지도 생성 · 검색 계약 평가
+archive/             복구 가능한 스냅샷
 ```
+
+**`direction/`과 `interpretation/foundation/`이 충돌하면 `direction/`이 현행이다** —
+후자는 폐기된 goppi의 판단이고, 전자는 그 실패 이후의 방향이다.
 
 ## 절대 규칙
 
 1. census의 **보급률**과 좋은 practice를 동일시하지 않는다.
 2. 공식 제품 문서를 **제품 효과성**의 증거로 쓰지 않는다.
 3. `review-needed`나 `draft`를 검증된 결론으로 인용하지 않는다.
-4. 합성 판단은 `synthesis`, 프로젝트 선택은 `interpretation/`으로 표시한다.
+4. 합성 판단은 `synthesis`, 프로젝트 선택은 `direction/`·`interpretation/`으로 표시한다.
 5. 새 연구는 **질문·검색일·포함/제외·claim-source 관계·시효·종료 기준**을 갖는다.
+6. **새로 짓기 전에 [`MAP.md`](MAP.md)를 주제어로 훑는다** — 없는 것을 새로 만들었다고 착각한 사례가 3회 있다.
 
 ## 검사
 
@@ -49,11 +71,14 @@ node    tools/build-routes.mjs --check  # 라우팅 지도 최신 여부 (낡으
 python3 tools/external_url_audit.py     # 외부 URL 생사 (네트워크 · ~7분)
 ```
 
-CI가 앞의 둘을 매 push/PR에 돌린다. URL 감사는 월 1회.
+CI가 앞의 둘을 매 push/PR에 돌리고, `main`은 **룰셋으로 보호**된다 —
+직접 푸시·빨간불 머지·관리자 강제 머지 모두 거부됨을 실측으로 확인했다
+([GEB-005·006](corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md)).
 문서를 고쳤다면 `tools/rebuild_after_manifest.py`와 `build-routes.mjs`를 다시 돌려야 검증이 통과한다.
 
 ## 알려진 상태
 
-- 상속된 `verified` 50건은 2026-08-02 감사에서 `review-needed`로 내렸다. 원자 claim 승격 전이다.
-- 외부 URL 2건이 죽어 있다(ISO 25010 · tessl). 대체 URL 확정은 별도 유닛 — `audit/2026-08-24-host-and-github-delta.ko.md`.
+- 상속된 `verified` 50건은 2026-08-02 감사에서 `review-needed`로 내렸다.
+- 외부 URL 4건이 죽어 있고 1건은 응답이 없다 — 인용 문서가 각각 고지한다.
 - 28-aspect taxonomy는 provisional이다.
+- **호스트(Claude Code) 표면 문서는 🔴 등급이다** — 측정 시점 버전을 확인하고, 결정이 걸리면 다시 측정하라.

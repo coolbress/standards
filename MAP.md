@@ -12,7 +12,7 @@
 
 | 등급 | 개수 | 뜻 |
 |---|---|---|
-| `active` | 45 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
+| `active` | 51 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
 | `decision` | 10 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 109 | **물어봤을 때만** — 과거 하네스·원시 census |
@@ -69,6 +69,12 @@
 | evidence | `corpus/aspects/27-ai-harness-archetype/stop-event-rendering--measured-2026-08.md` | Stop 이벤트 렌더 관측 |
 | evidence | `corpus/aspects/27-ai-harness-archetype/user-channel-rendering--measured-2026-08.md` | 사용자 채널 렌더링 판정 — 사람 관측 |
 | aspect-overview | `corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md` | Implementation is driven by process tailored to each change's risk — light gates for trivi |
+| unlabeled | `direction/01-what-i-want.md` | 01-what-i-want |
+| unlabeled | `direction/02-why-past-attempts-failed.md` | 02-why-past-attempts-failed |
+| unlabeled | `direction/03-what-research-says.md` | 03-what-research-says |
+| unlabeled | `direction/04-the-plan.md` | 04-the-plan |
+| navigation | `direction/README.md` | README |
+| navigation | `interpretation/README.md` | README |
 
 ## decision — 프로젝트 판단 (근거가 아니다)
 
