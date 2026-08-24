@@ -104,3 +104,24 @@ This is the **meta-layer over aspect-07** (construction practices) and aspect-08
 - [`sdlc-models--facts-2026-08.md`](sdlc-models--facts-2026-08.md) — *research-log (ko)* — 2026-08 pass: what Royce-1970/V-model/Spiral/RUP/CMMI/CD prescribe; its ISO/IEC/IEEE 12207:2017 detail is retained as historical, review-needed evidence and separated from the 2026 public scope.
 - [`agile-adoption--facts-2026-08.md`](agile-adoption--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: Manifesto/Scrum-Guide/Kanban/XP/SAFe/Shape-Up prescriptions verbatim + adoption statistics (State of Agile, PMI 2024) + attributed Scrum critiques (Jeffries/Fowler/Holub/Basecamp).
 - [`agent-workflow-prescriptions--facts-2026-08.md`](agent-workflow-prescriptions--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: what agent-era workflows PRESCRIBE (Spec Kit spec→plan→tasks→implement + constitution · Kiro 3-file/EARS · Anthropic Explore→Plan→Implement→Commit + skip-planning rule · Codex guidance · Cursor/Windsurf splits) + attributed critiques (Scott Logic 10x overhead measurement); BMAD/OpenSpec 미확보 명시.
+
+## Claim table — 벽의 근거 (배치 1 · 1차 출처 직접 확인 2026-08-24)
+
+이 네 행은 [`direction/04`](../../../direction/04-the-plan.md) 설계 원칙 **01(집행은 에이전트 밖에서)** 과
+**03(집행은 벽으로)** 을 떠받친다. 무너지면 설계를 다시 봐야 하므로 1차 출처를 직접 열었다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **IPW-001** | empirical | **외부 피드백 없는 자기교정은 성공 사례가 없다.** 서베이 결론 (1): *"no prior work demonstrates successful self-correction with feedback from prompted LLMs, except for studies in tasks that are exceptionally suited for self-correction."* | `SELFCORRECT-SURVEY-2024` | high | 2026-08-24 |
+| **IPW-002** | empirical | ⭐ **그러나 신뢰할 만한 외부 피드백이 있으면 자기교정은 잘 작동한다.** 같은 서베이 결론 (2): *"self-correction works well in tasks that can use **reliable external feedback**."* **이것이 이 프로젝트 설계의 가장 직접적인 근거다** — 테스트·CI·타입체커가 곧 그 외부 피드백이다. ⚠️ 이전 판의 인용에서 **이 절반이 빠져 있었다** | `SELFCORRECT-SURVEY-2024` | high | 2026-08-24 **신규** |
+| **IPW-003** | empirical | **내재적 자기교정은 성능을 떨어뜨리기도 한다** — *"LLMs struggle to self-correct their responses without external feedback, and at times, their performance even degrades after self-correction."* ⚠️ **범위 한정: 추론 과제**(GSM8K·CommonSenseQA·HotpotQA, GPT-3.5/4)다. 코딩 일반이 아니다 | `NO-SELFCORRECT-REASONING-2023` | high | 2026-08-24 **출처 정정** |
+| **IPW-004** | empirical | **LLM 심판은 자기 출력을 알아보고 선호한다.** GPT-4·Llama-2 가 자기 생성물을 식별하는 정확도가 유의하고, 파인튜닝 실험에서 **자기인식 능력과 자기선호 강도가 선형으로 동행**했다. ⚠️ 저자 표현이 *"initial evidence"* 이므로 **개별 판단 수준의 인과로 확정하지 않는다** | `SELF-PREFERENCE-2024` | medium-high | 2026-08-24 |
+| **IPW-005** | vendor-behavior | **pre-commit 훅은 게이트가 될 수 없다.** git 자체 문서: `--no-verify` 는 *"bypasses the pre-commit and commit-msg hooks"*, `git push --no-verify` 는 *"the hook is bypassed completely"*. **로컬 훅은 커밋하는 사람이 끌 수 있다** | `GIT-COMMIT-DOC` | high | 2026-08-24 |
+
+> **배치 1 의 결론: 벽의 근거는 무너지지 않았다. 오히려 강해졌다.**
+> 다만 **인용 구조가 틀려 있었다** — ⓐ *"출력을 악화시킬 수 있다"* 의 출처가 서베이(`2406.01297`)로 적혀 있었으나
+> 실제로는 Huang et al.(`2310.01798`)이고 **추론 과제 한정**이다. ⓑ Reflexion 을 *"자기교정은 신뢰할 수 없다"* 의
+> 근거로 든 것은 **방향이 반대**다 — Reflexion 은 **피드백 기반 반복이 성공한다**는 논문이고, HumanEval 91% 는
+> **자체 생성 단위시험을 실제 실행한 신호**로 구동된다(`REFLEXION-2023`). ⓒ 그리고 **IPW-002 가 통째로 빠져 있었다.**
+
+**재검증 기록 (배치 1)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의, 결론 비공개) · **판정: 유지 3 · 출처 정정 1 · 신규 추가 1** · **불일치 없음**(4개 항목 전부 일치. Codex 가 IPW-003 의 과제 범위와 IPW-004 의 *"initial evidence"* 한정을 추가로 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)

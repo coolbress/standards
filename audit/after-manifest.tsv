@@ -4,7 +4,7 @@ corpus/INDEX.md	17533	1787558487	4cae532a39103051dde3163962113db218d9efe8e90803e
 corpus/PROVENANCE.md	4257	1787558487	57d5261483e148999971a7e5b303f455a189bd27ace042438198bc962064f1a6	active
 corpus/TAXONOMY.md	3617	1787558487	5fcec547367620ac8b3b306421cdd0df114069c9df57551435b4f0435b708f74	active
 corpus/_meta/README.md	462	1785659225	14813521bafff31c0a4ed18a1cfa477d6414cda2f191c0d5951544118efba09f	active
-corpus/_meta/sources.jsonl	16204	1787578456	f0719623d4c18df4fb046150c36817972360cb0ad7ce1020cc017949a8d82135	active
+corpus/_meta/sources.jsonl	18295	1787579992	bf3beac9a77f6bc0f9c6291377fe20e0d0c177ff6cc0756d57bd0ec5e513744e	active
 corpus/_schema.md	9064	1787558487	9354bc5fe27ef0cb3d465e046e2d1c385df8c3c1f5e27e14aa674f18a39b2c03	active
 corpus/aspects/01-requirements-planning/01-requirements-planning--overview.md	19766	1787558487	244b1ee4c2577181d5c31f788344e9bead458ec0eeb43d23b4ef1c55c83660d3	active
 corpus/aspects/01-requirements-planning/brownfield-planning-adoption.md	6824	1785658907	6d1d7002905f091848f65317b24020a22b5398436b88aa353a7d3879b50014ca	active
@@ -36,7 +36,7 @@ corpus/aspects/06-config-secrets/config-validation-secrets--facts-2026-08.md	195
 corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md	8498	1787558487	14a34f43471e7e95481636f00657934e5b5553399e26466416182ed54a664e0a	active
 corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md	13452	1787578154	71e6f5c2cf748e2a32bf6d7e037ee5c87918067cb7033da944b5dadd97336632	active
 corpus/aspects/08-software-testing/08-software-testing--overview.md	10171	1787558487	4c7f14f762b80095b90bdd59413bc2739d14700027d2ccbee22b7b27712abc81	active
-corpus/aspects/08-software-testing/testing--facts-2026-08.md	12412	1787578456	0c3d6cecd498f9f5414b3d52952bea902316af7a653669d825d3e445c9cca5f2	active
+corpus/aspects/08-software-testing/testing--facts-2026-08.md	12412	1787578680	0c3d6cecd498f9f5414b3d52952bea902316af7a653669d825d3e445c9cca5f2	active
 corpus/aspects/09-application-security/09-application-security--overview.md	12130	1787558487	b1171dff821c78c3c562e25fe271988644015636036d37c89f230ad409d48535	active
 corpus/aspects/09-application-security/security-sdlc--facts-2026-08.md	12560	1787558487	b0987aeb4d77ea7b729fe875efccb03e4ae144f2e450f99868fa578b5cce6453	active
 corpus/aspects/10-supply-chain-security/10-supply-chain-security--overview.md	15278	1787558487	3ca799609f46ea716e92c7ecd64552e65c275a92b04454885498dccc29fe1803	active
@@ -54,7 +54,7 @@ corpus/aspects/15-accessibility-ux/accessibility-legal-sources--facts-2026-08.md
 corpus/aspects/15-accessibility-ux/accessibility-obligations--facts-2026-08.md	15499	1787558487	7c742104bd7173013cb3e4e281ee1ab6fa330aa95ebaa379cbf6446f993d6fe2	active
 corpus/aspects/16-privacy-data-protection/16-privacy-data-protection--overview.md	9373	1787558487	b5dc2a6a823dde2585554e26485427f2449487727337fe0594f45d1bb6c9768c	active
 corpus/aspects/16-privacy-data-protection/privacy-statutory-duties--facts-2026-08.md	24931	1787558487	a56ba329ba60cd42995dcc99d52bd2380f77256d0a74ca545f3866cd92259f36	active
-corpus/aspects/17-release-engineering/17-release-engineering--overview.md	12853	1787578495	acc780887ee5e64d7edb2badf2ea97c069dcc24615a2916d54aed7ab7574128d	active
+corpus/aspects/17-release-engineering/17-release-engineering--overview.md	12853	1787578680	acc780887ee5e64d7edb2badf2ea97c069dcc24615a2916d54aed7ab7574128d	active
 corpus/aspects/17-release-engineering/last-mile-domain-hosting--facts-2026-08.md	19356	1787558487	bc5a4ac30fefe61c9a8d275fbd3ae18a5c43c76e3f6a2af27b4a38bff20f9384	active
 corpus/aspects/17-release-engineering/last-mile-payments-privacy--facts-2026-08.md	16044	1787558487	d677f2e7272c94df4abcc0f5432f709a634bc9bdf338802eaab1df4041ac83d7	active
 corpus/aspects/17-release-engineering/release-operate-artifact-checklist.md	7561	1786195652	0472c4ac86c6b62989a4b8d4e01cb9c60b965534bf930189a9492bfea68c8692	active
@@ -98,7 +98,7 @@ corpus/aspects/27-ai-harness-archetype/skill-authoring-standard.md	17635	1785658
 corpus/aspects/27-ai-harness-archetype/steering-mechanisms--facts-2026-08.md	10448	1787558487	3af7f1cadce7ec9fb29c16dec4a52cb22da67814c9f4071174213eed65169ad6	active
 corpus/aspects/27-ai-harness-archetype/stop-event-rendering--measured-2026-08.md	5024	1787560248	b6d7ac5a098329b84aaeff2121c2d047d5370901ae2c6a72d85bc6729b1d784d	active
 corpus/aspects/27-ai-harness-archetype/user-channel-rendering--measured-2026-08.md	10800	1787560248	887ad33776d804b95f94cc61f6ff028dcc7aae5e28c5e4e564f8a2e619b825c0	active
-corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md	16184	1787558487	f6b72237415c9603286d506e52e1e06401f3717b6a2acee6713ab49a46b3e137	active
+corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md	19807	1787580024	8baf5756f866cfb72dd54b725be14aec294eae279777ca3c53f4b99706bef643	active
 corpus/aspects/28-implementation-process-workflow/agent-workflow-prescriptions--facts-2026-08.md	9938	1787558487	1f005ad67e6b0076d5d5267487f5ced534f64f6eacd0bf6028dc4817a3c16d5d	active
 corpus/aspects/28-implementation-process-workflow/agile-adoption--facts-2026-08.md	12932	1787558487	d1b082920db01687680c06fca98893e6019ddd72920c6e91be3f7a04e96d4657	active
 corpus/aspects/28-implementation-process-workflow/research-log.md	13465	1785670723	b9755f51854e5f6afd69f4a94a926a16e0c740a116740f556a5cc4a0318add8f	active
