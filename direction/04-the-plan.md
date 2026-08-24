@@ -116,7 +116,8 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 | 만들 것 3 | ✅ **`coolbress/project-template` 공개 · `is_template`** — **도는 uv 프로젝트**(락파일·패키지·테스트 포함). 빈 껍데기면 `uv sync --locked` 가 실패해 인스턴스의 첫 PR 부터 막힌다 |
 | 만들 것 5 | ✅ **`new-project.sh` 로직 9줄** — 저장소 뜨기 · 룰셋 · 시크릿 탐지/푸시 보호. 실제 실행 검증됨 |
 | 만들 것 11 | ✅ Dependabot(`uv` + `github-actions`)을 템플릿에 |
-| 만들 것 4·6~10·12·13 | ⬜ 미착수 |
+| 만들 것 4 | ✅ **`/kickoff`** — `workflows/commands/kickoff.md`, `~/.claude/commands/` 에 심볼릭 링크. Mom Test · 턴당 2문항 · 깊이 8/12/18 · **흔한 실수 목록** · AC 검사 매핑 · 아키타입 2문항 |
+| 만들 것 6~10·12·13 | ⬜ 미착수 |
 
 > **루프 1회 통과 (2026-08-24)**: `new-project.sh` → 이슈(AC) → 브랜치 → PR → CI 4/4 → 머지 → 이슈 종료.
 > 새 저장소에서 **벽 4/4 재확증**(직접 푸시·빨간불·소유자 `--admin` 전부 거부).

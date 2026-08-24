@@ -6,7 +6,7 @@
 ## 이 세션에서 할 일
 
 **[`direction/04-the-plan.md`](direction/04-the-plan.md)의 만들 것 13개를 순서대로 만든다.**
-지금은 **④번(`/kickoff`)** 차례다 — ②③⑤가 끝났고, 남은 구간이 거기다.
+지금은 **진짜 아이디어 하나로 end-to-end 를 완주할** 차례다. ①~⑤가 다 있다.
 
 ## ⓪ 먼저 읽을 것 — 3개
 
@@ -25,7 +25,7 @@
 | 하네스 6세대 | **정리 끝** — 원격 3개 삭제(2026-08-24) · 로컬은 `~/Archive/` |
 | 이 저장소 | 공개 · 룰셋 `main protection` 활성 · CI 초록 · **PR로만 머지 가능** |
 | 벽 | **실물 확증 4/4** — 직접 푸시·빨간불 머지·`--admin` 강제 머지 전부 거부 |
-| 만들 것 | **4/13** — ①(벽) · ②(`workflows`) · ③(`project-template`) · ⑤(`new-project.sh`). 루프는 실제로 한 바퀴 돌았다. **다만 완료의 정의는 아직 미충족** — 아래 |
+| 만들 것 | **6/13** — ①(벽) · ②(`workflows`) · ③(`project-template`) · ④(`/kickoff`) · ⑤(`new-project.sh`) · ⑪(Dependabot). **완료의 정의는 여전히 미충족** — 진짜 아이디어로 완주한 적이 없다 |
 | 정리 | ✅ **완료 2026-08-24 (2차)** — 원격 3개 삭제 · 로컬 5개 `~/Archive/`(1.1GB) · 홈 8표면 0건. ⚠️ 1차의 *"0건"* 은 **틀렸었다** — [2차 기록](legacy/judgments/harness-removal-record-2026-08-24.md) |
 
 ## 🎯 완료의 정의 — 이걸 먼저 읽어라
@@ -136,7 +136,22 @@ new-project.sh → /kickoff → 이슈 → 브랜치 → PR → CI → 머지
 즉 **기계 구간은 검증됐고, *아이디어 → 과제 번역* 구간은 한 번도 시험되지 않았다.**
 그 구간이 정확히 가짜 프로젝트로는 시험되지 않는 곳이다.
 
-**남은 것: ④ `/kickoff` + 진짜 아이디어 하나.**
+**남은 것: 진짜 아이디어 하나.** ④는 만들어졌다(아래).
+
+## ✅ ④ 완료 (2026-08-24) — `/kickoff`
+
+`coolbress/workflows` 의 `commands/kickoff.md`. `~/.claude/commands/` 에는 **사본이 아니라
+심볼릭 링크**로 건다 — 본문이 벽 안에서 버전 관리되고 `git pull` 로 갱신이 전파된다.
+
+코퍼스의 [`elicitation-interview-build-standard`](corpus/aspects/01-requirements-planning/elicitation-interview-build-standard.md)에서
+도출했다: Mom Test 스타일 · 턴당 2문항 · 정보이득 질문 선택 · 위험 비례 깊이 8/12/18 ·
+8개 커버리지 · `[확인 필요]` 마커 · AC 안정 ID + 검사 매핑 + `UNVERIFIABLE` · 잠금 게이트.
+
+**핵심은 흔한 실수 목록이다.** 실증(RE'25 · arXiv 2507.02858)은 LLM 인터뷰어가
+**그 목록을 쥐고 있을 때만** 사람보다 나은 후속 질문을 한다는 것을 보였다 —
+있으면 좋은 게 아니라 이 커맨드가 값을 하는 이유다.
+
+0번 절은 **"이미 있는 것인지 먼저 확인"** 이다. 이 확인을 건너뛴 실수가 아홉 번 있었다.
 
 ## ✅ ② 완료 (2026-08-24) — `coolbress/workflows`
 
