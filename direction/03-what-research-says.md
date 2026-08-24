@@ -29,7 +29,7 @@
 6. Delivery ≠ Deployment. feature flag 는 **보유 비용(carrying cost)** 을 갖는다 — ⚠️ **2026-08-24 재검증**: 원문은 *"부채"* 가 아니라 *"inventory which comes with a carrying cost"* 라 하고, **토글 수명별로 구분**한다 (Permissioning 은 수년 존속이 설계 의도). *"feature flag = 부채"* 는 과일반화였다 (`17 overview` **REL-001·002**)
 7. 테스트 피라미드 — Google 실측 80/15/5
 8. **TDD 의 "테스트 먼저" 순서(sequencing)는 영향이 없었다** — ✅ **2026-08-24 1차 출처 확인**: *"Sequencing… had no important influence"*, 효과의 원천은 ***granularity 와 uniformity*** (잘게·균일한 사이클)다 (`testing--facts` **TDD-001**). ⚠️ 표본은 **전문 개발자 39명 · 82 데이터 포인트** — *"순서는 무의미하다"* 가 아니라 *"이 연구는 순서의 영향을 발견하지 못했다"* 로 쓴다 (**TDD-002**)
-9. **"Done" = 머지 전 CI 녹색 + 리뷰 승인**
+9. **"Done" = 머지 전 CI 녹색** ⚠️ **2026-08-24 재검증**(`28 overview` **IPW-011~013**): Scrum 은 DoD 의 **내용을 규정하지 않는다** — *"quality measures required for the product"* 까지다. 실증 근거는 따로 있다(DoD 24개·항목 143개 분석: **테스트 16/24 · 코드리뷰 13/24**, 단 편의표집). **그리고 이 저장소의 룰셋은 `required_approving_review_count: 0` 이라 "리뷰 승인" 이 요구되지 않는다** — 이전 판의 정의는 실제 룰셋과 어긋나 있었다
 10. Conventional Commits 같은 형식 규약은 **자동화가 소비할 때만** 가치 — 아니면 cargo cult
 
 ### 하중을 받는 것 vs 의식(ceremony)
@@ -113,10 +113,10 @@ census: 브랜치 보호가 강하게 걸린 저장소는 **10~13%**뿐이다 �
 [`corpus/aspects/24-governance-collaboration-compliance/issue-pr-writing-conventions.md`](../corpus/aspects/24-governance-collaboration-compliance/issue-pr-writing-conventions.md)
 (census N=6,582 저장소 · 20,837 템플릿 필드)
 
-- **이슈 우선은 크기 조건부다 — 보편 규칙이 아니다.** 사소한 변경은 바로 PR. 이슈 필수는 *방향이 불확실한* 작업에만
-- **이슈 제목에 커밋 규약을 걸지 마라** — 야생에서 CC 이슈 제목은 **≈1%**. PR 제목만
-- 이슈 폼: 도움말 **87%**(사실상 필수) · required는 **본문 필드에** 걸고 체크박스엔 안 건다
-- PR 템플릿: **빈 체크리스트**가 표준(62%) · 중앙값 3절 · "type of change"는 소수(11.5%)이고 **CC를 쓰면 뺀다**
+- **이슈 우선은 크기 조건부다 — 보편 규칙이 아니다.** 사소한 변경은 바로 PR. 이슈 필수는 *방향이 불확실한* 작업에만 ✅ **재검증** — `05 overview` 원문 그대로: *"Issue-before-PR is **size-conditional, NOT universal**"*
+- **이슈 제목에 커밋 규약을 걸지 마라** ✅ **2026-08-24 원자료 재계산** — 독립 표본 2개에서 재현됐다: 이슈 CC 비율 **top-2000 1% · top-500 2%**. 반면 **PR 은 33~45%**(≥70% 채택 저장소 21~34%). → *"이슈엔 안 쓰고 PR 엔 쓴다"* 는 대비가 핵심이다
+- 이슈 폼: 도움말 **87%**(사실상 필수) · required는 **본문 필드에** 걸고 체크박스엔 안 건다 ✅ **원자료 재계산** — 도움말 **87.2%**(1차 패스 87.1% 와 사실상 동일 → 코퍼스가 *"a genuine population-wide floor"* 라 부른다). required 비율: textarea **57.8%** vs 체크박스 **3.4%**
+- PR 템플릿: **빈 체크리스트**가 표준(62%) · 중앙값 3절 · "type of change"는 소수(11.5%)이고 **CC를 쓰면 뺀다** ✅ **원자료 재계산** — 1차 패스 62%/11.5%, **강건성 재확인 패스(N=6,582 풀)에서 63.2%/11.9%**. 중앙값 3절 동일. ⚠️ 이 절의 머리말이 *"N=6,582"* 와 1차 패스 퍼센트를 **같이 적어 패스를 섞고 있다** — 둘 다 코퍼스에 있으나 출처 패스가 다르다
 - ⚠️ **이슈 폼의 `required`는 REST/CLI 경로에 걸리지 않는다** — 에이전트는 `gh issue create`를 쓴다.
   **집행은 CI 가드가 정본이다** (GEB-003·004)
 

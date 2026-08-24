@@ -144,3 +144,13 @@ This is the **meta-layer over aspect-07** (construction practices) and aspect-08
 > 받칠 수 없다. 강한 근거와 약한 근거가 한 문장에 섞여 **약한 쪽이 하중을 지고 있었다.**
 
 **재검증 기록 (배치 2)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: 유지 2 · 한정 추가 1 · 수치 재해석 1 · 삭제 1** · **불일치 없음**(Codex 가 IPW-010 의 자기모순을 독립적으로 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
+## Claim table — "Done" 의 정의 (배치 3 · 1차 출처 직접 확인 2026-08-24)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **IPW-011** | normative | **Scrum 은 DoD 의 *내용*을 규정하지 않는다.** 규정하는 것은 *"formal description … when it meets the **quality measures required for the product**"* 와, 조직 표준이 없으면 팀이 *"create a Definition of Done appropriate for the product"* 하라는 것까지다. ⚠️ **따라서 *"CI 통과"* 나 *"리뷰 승인"* 은 Scrum 이 지정한 항목이 아니다** | `SCRUM-GUIDE-2020` | high | 2026-08-24 **출처 재지정** |
+| **IPW-012** | empirical | **실무 DoD 에 실제로 무엇이 들어가는지는 조사된 적이 있다.** 137명·45개국 설문 중 DoD 를 제공한 24명의 **DoD 24개·항목 143개** 분석: **테스트 29항목/16 DoD · 코드리뷰 15/13 · 인수기준 15/7 · 문서화 12/8**. → *"테스트 + 코드리뷰"* 가 가장 흔한 조합이라는 것은 **근거가 있다.** ⚠️ **편의표집이고 응답률 미산출** — 업계 비율로 일반화하지 않는다 | `DOD-CONTENTS-2022` | medium | 2026-08-24 **신규** |
+| **IPW-013** | synthesis | ⚠️ **이 저장소 안에서 *"Done = CI 녹색 + 리뷰 승인"* 은 절반만 참이다.** [`workflows/ruleset.json`](https://github.com/coolbress/workflows/blob/main/ruleset.json) 이 `required_approving_review_count: 0` 이므로 **리뷰 승인은 실제로 요구되지 않는다.** 솔로는 자기 PR 을 승인할 수 없어 CI 를 진짜 게이트로 쓰기로 한 결정([`direction/04`](../../../direction/04-the-plan.md))의 결과다. **`direction/03` 의 Done 정의와 실제 룰셋이 어긋나 있었다** | `SCRUM-GUIDE-2020`; `DOD-CONTENTS-2022` | high | 2026-08-24 **자기모순 발견** |
+
+**재검증 기록 (배치 3 · Done)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0` · **판정: 출처 재지정 1 · 신규 1 · 자기모순 표시 1** · **불일치 없음**(Codex 가 IPW-012 의 1차 출처를 추가로 찾았다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
