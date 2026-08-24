@@ -41,6 +41,11 @@
 [`sources/README.md`](sources/README.md)가 **이미 기록해 두고 있었다** — 실측하면 **190커밋 · 272파일 ·
 2026-06-05 ~ 2026-07-14**다.
 
+**그리고 그 실측은 이제 이 저장소에서 검증된다**:
+[`sources/claudeck-v1/GIT-HISTORY.tsv`](sources/claudeck-v1/GIT-HISTORY.tsv)(190행) ·
+[`FILE-MANIFEST.txt`](sources/claudeck-v1/FILE-MANIFEST.txt)(272행) ·
+[`ARCHIVE-RECORD.md`](sources/claudeck-v1/ARCHIVE-RECORD.md). 원본 아카이브가 사라져도 인용은 깨지지 않는다.
+
 **이 오류는 이 계보가 진단하는 실패 모드 그 자체다** — *"있는 것을 확인하지 않고 없다고 단정."*
 그것도 자기 저장소의 문서가 위치를 적어놓은 자료에 대해서. `direction/02` 진단의 *"진단의 진단"*
 절과 같은 형태이고, 그 절이 세는 재발 횟수에 **이 건이 포함된다.**

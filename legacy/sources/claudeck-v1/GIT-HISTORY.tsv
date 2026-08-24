@@ -1,0 +1,190 @@
+fd7cc9be11cf8f404100a297268473065192a503	2026-07-14	chore: final settings state before v1 retirement
+bfc83aab65662247d0c3a72d2c8870104bdf5d50	2026-06-21	feat(blueprint): Socratic project-inception skill + greenfield scaffolder
+dc007f480f38fe908c01a76a65b09b2760fbbea5	2026-06-19	docs(semaphore): fix stale 'other live sessions' in session_breakdown comment (label is 'other session')
+03987eff8f90d7d02603ef06406650201d468b8c	2026-06-19	polish(semaphore): block-message display honesty + crashed-session recovery path (3rd review)
+b569a3d8e744492da90197a6574ee3c059ab12be	2026-06-19	fix(semaphore): kill the rm-f-STATE cross-session footgun + per-session block view; activate F2
+caad87f96b6272d57f1e573674d84e69f7af3dfc	2026-06-19	fix(semaphore,mcp-reaper): bound the Codex external companion tree (memory-burst blind-spot audit)
+e6c5244d845c1f96e25561d6cc64083bcf74fec2	2026-06-19	fix(harness-doctor): Layer B fails CLOSED on ancestry uncertainty (3-party re-confirm)
+58bd9b483210eca163ff94a056a6ad3ce1e71935	2026-06-19	fix(harness-doctor): senior-grade defense-in-depth vs the L4-smoke fork-bomb (3-party review)
+32e7bdd3c65daa0215edd829282e9ae9ae710496	2026-06-19	fix(harness-doctor): re-entrancy guard — stop the L4-smoke fork-bomb (caused a live memory burst)
+fb10f64fea763bec4bee5f22b5927c512ff7d63c	2026-06-18	fix(harness): close the 2 follow-ups from the 3-party re-confirm (complete fixes #2/#3)
+8e5798df269ae797034f1b48510e35163144cf98	2026-06-18	fix(harness): close 3 items from the holistic 3-party completeness review
+27f54603ff9c45f3acbe67c96003d847dcb60c59	2026-06-18	fix(gitnexus): index lock — trap HUP/INT/TERM so catchable signals release the lock
+e5dd97dfde1cf91189b420de0d250834e3f16d6a	2026-06-18	fix(gitnexus): index lock v5 — drop the in-path steal entirely (mkdir-only, provably cap=1)
+cbe741eeda2d12f2d6a4cf7410e4fd258c6dfb4d	2026-06-18	fix(gitnexus): index lock v4 — close the init-window steal-stomp (4th GPT-5 pass)
+973b3913949c12d796ee007202fe6dfc31a7f7ff	2026-06-18	fix(gitnexus): index lock v3 — fix the fixes (3rd GPT-5 pass: 2 of my hardenings could themselves break cap=1)
+a349beb3e9451cabfc18a109734cdf172d77e283	2026-06-18	fix(gitnexus): harden the index lock — 5 cap-violation fixes from a GPT-5 concurrency review
+5066a8cf458064b6981faf1e2c32396cd4072982	2026-06-18	feat(gitnexus): host-global indexer lock — close the residual cross-worktree fan-out + crash wedge
+2e73691ccf881ba28a7219e3686e49ce8cfe9478	2026-06-18	docs(cleanup,gitnexus): regression-guard the disposal gate + correct the stripped-A scope
+5f2201a2500a801f9422e5800e729fe13ab08b03	2026-06-18	fix(cleanup): align Rules with direct-to-main design — drop stale PR-required gate
+9ae95ac412952063f6b913af48cd0d5ed08c1385	2026-06-18	fix(cleanup): derive $DEFAULT (portability) + warn on no-anchor plans
+7a6346e587c21b6987dd459d9a650cbdb7cc5beb	2026-06-18	feat(cleanup): discovery-notice hook + structured disposal-plan (STEPS)
+ced3ba62316c08839c53cf43a1fe73fe38fd3493	2026-06-18	fix(cleanup): strip inline frontmatter comments in the Step 1 plan enumerator
+676180357225132c8fd36b29a6a2d445b661bc2c	2026-06-18	feat(cleanup): durable-key landing predicate (plan-landed.sh) replaces the merged-PR gate
+21787464379d5a708d0a0296ff7b8388afeb0b50	2026-06-18	docs(codex): document the intentional cross-checker(pin)/codex-consult(config-inherit) model split
+aaf23e7d731d358a1de27d59f4c6ddae7b1e70b4	2026-06-18	docs(routing): clarify Tier 0 exempts ceremony, not landing (protected-remote docs still commit→push→PR)
+b54c2ff5aad7ad54066d9325f8d8c4330d7186e4	2026-06-18	docs(harness-notes): record the fixed-path Write-staging class invariant + its generalized lint
+8dd99b32e1570daba645ff62894849dc9aee440a	2026-06-18	test(staging): generalize the staging-clear guard into one class lint; dedup per-site checks
+39027add866f9aa400097791c999e8ac90409b3e	2026-06-18	fix(pr,github-workflow): clear fixed-path staging file before Write — close the class
+d9cc8c708f087e75bc27fbece77d903035850a2c	2026-06-18	fix(cross-checker): clear stale Codex staging file before Write (same class as codex-consult)
+f5109f1278d20e0b8ef9e581fdc3df863887e87e	2026-06-18	fix(codex-consult): clear stale staging file before Write — companion was answering the prior prompt
+fa00604d5bbc006bf370b1b46fc8d9e819c77957	2026-06-18	test(graph-reap): prove the viewer guard is path-agnostic (non-Homebrew installs)
+8d74ddaa8e25a29ad5a89c35cb6c4ba188c0b32e	2026-06-18	refactor(graph): single viewer engine + session-end reaper (review follow-up)
+442e5894be4095b83b6a9bc81c1644bdbd864d3a	2026-06-18	feat(graph): add /graph slash command — open the code-graph viewer for the current session state
+6e4ca910c2b8759ea6517d27f9faf2691afc177c	2026-06-18	docs(harness-notes): mark gitnexus stripped-A IMPL COMPLETE; retire stale markers
+054cbd35c060be9059a0a1db4ed5e060c9ad2181	2026-06-18	docs(routing): wire codex-consult into agent-selection — stop defaulting to heavy Codex
+b7c6406a9a91149a74207edc2508643d7451fd53	2026-06-18	feat(agents): add codex-consult — light read-only Codex for free-form deliberation
+8d49aa4ba58a0c8d3f767a204b9835d029f654d7	2026-06-18	perf(semaphore): loosen agent budget — HARNESS_AGENT_RESERVE_GB 5->4 (stripped-A L3)
+6b8ddc27550955975d6c760b08269ddca23814c5	2026-06-18	feat(gitnexus): index freshness (stale-check + single-flight) + graph viewer helper (stripped-A L2)
+8c17e34c038e7be3a9714ff5276a402a2ebc79df	2026-06-18	fix(gitnexus): remove auto-indexing to stop the reindex storm (stripped-A L1)
+c6aa003c8fcb30ad27a03c8677fba110c8faec84	2026-06-17	docs(architecture): add the tier-vs-location orthogonal model + by-situation ladder
+334ca4312a43ed4ceb81728de1d58d41ddbb9300	2026-06-17	feat(git-worktrees): Locate-ladder Option A — issueless branch names work normally
+61f51e4072ef3789750f1008cec18250bd91d323	2026-06-17	docs(review-round): document the inverse 529 degradation direction
+2151933988a2445030177980c740d170066af3da	2026-06-17	refactor(worktree): cut base_ref override; add tested base-effect check
+2d286660e2a2d416cace4e2deb574ce63082e6aa	2026-06-16	docs(dashboard): align tier-pipeline viz with the isolation-precondition reframe
+c581ccd04e0a3e849f23e3087251254c862ede7e	2026-06-16	feat(git-worktrees): extract Locate-ladder detection to a tracked, tested script
+17601f06cff4d9c95a9b0fdc5e38cd4b8149e358	2026-06-16	docs(harness-notes): record empirical ladder hardening + the zsh-Bash-tool gotcha
+9c1e6ea3370a6a740e94c49358d6c439aff43587	2026-06-16	docs(harness): close stale refs from the isolation-precondition reframe (audit sweep)
+01d32f5e47e15c5ecd45311a33403b815c457f5f	2026-06-16	fix(git-worktrees): 4 Locate-ladder detection bugs found by real-state testing
+3b866e6fc18545644abb910752998dca170b5b4b	2026-06-16	refactor(routing): isolation = tier-agnostic precondition (Rule 5a), tier = pure ceremony
+df5f143b160f60a8f46c88b371bc975eb62e32c9	2026-06-16	feat(worktrees): replace unconditional create-prompt with a deterministic pre-check ladder
+cc4c6e6e9cfa4c8ca032fe85d894d5cbc9343239	2026-06-16	feat(spec): add Step 4.5 — lightweight 2-vendor reasoning review for every Tier-3 spec
+a82bae79d10a57f6be4615e772532785d4fd4d72	2026-06-16	docs(spec): add supersession back-link convention (#1, cheap part only)
+e704ff0aa32b820ab1f10dda5b8dcb3753c86713	2026-06-16	docs(spec): define Withdrawn status + document the no-PR backfill limit
+0cb03584c88890095332a5d65e38e97076bf6e50	2026-06-16	fix(review-round): standardize review-history filename to <branch-slug> everywhere
+8505e0d0d52f8786f75c235b1362675568bc71e3	2026-06-16	chore(harness): spec-lifecycle B + dedup consolidation + drift/bug fixes (2-vendor converged)
+3d20391fffe81f226dbd66857aa7208ffc1c6d95	2026-06-15	feat(skills): spec lifecycle — born-lean template + kept-stamped post-ship
+1ceb025486ec15feb37a03b5f91a9150d2aa7552	2026-06-15	feat(review-round): canonical metric-flush helper + promote to atomic STEP 7
+a81de5d73e52ad3d05941b1a2582166d6d52020c	2026-06-14	docs(harness-notes): record the review-round <-> audit oscillation seam (un-built)
+dbe7e6286253dcb40ec2e1dc98b0952f3df06f8a	2026-06-14	docs(harness-notes): correct review-metrics accrual — 'automatic' to manual lead-practice
+9ee6df0ac019c200c68d074f317b28544d756d02	2026-06-14	fix(cleanup): also remove the volatile review-history file (sibling of pipeline-state)
+11eab256b46174bbf3d85e892b3bebef0da8373e	2026-06-14	fix(cherry-pick-cleanup): isolate test log from the production measurement log
+8f6797dd34facba881dd574bbe971b58d513341d	2026-06-14	docs(safety-model): scope the two git gates to the ~/.claude repo
+301ab08abecea2199f2233b7267b63f26af260c4	2026-06-14	fix(secret-leak-guard): emit block reason on stderr (Write-path swallow)
+b5cb89db7062aaede896ca816cacf82394a1cc59	2026-06-14	docs(handbook): balance the handbook across all six dimensions + goal-first index
+093b8c573d388aa4f0aa1515767334a8144eca66	2026-06-14	feat(readme): overhaul README + push-gated count drift-check
+b91a5369fffbf8bdeb07af245dc00cb010ae4bc0	2026-06-14	docs(review-ab): mark PARKED — not on any live path
+53538069ce7d4d9f5d9dd887b05510776a2b93a2	2026-06-14	docs(audit): record 2026-06-14 dogfood validation of new audit mechanisms
+10d90f02d1e4a3fb1c8bea58ef14bae3f1aac277	2026-06-14	fix(audit): correct "static" mislabel of Step 0.5 (it runs deterministic tests)
+45bca4051bc6bc57f4ccffead6457363f3a39bfe	2026-06-14	feat(audit): rubric self-review + grade honesty + NEEDS_EMPIRICAL carve-out
+5dc4de9f539add151453144b62237a5cbcdb8ca3	2026-06-14	chore: normalize script mode to +x (match repo 755 convention)
+7c2e043733afbb629ce5b6c9f240841bc415e009	2026-06-14	feat(audit): risk-tier gate + 3 rigor fixes (Anthropic+Codex methodology critique)
+dd3be5c448a0c8eb5686139ce437b601d65a80f1	2026-06-14	feat(review-brief): size-gate large diffs + self-terminating E-watch notice
+be06c8ab99a59d8803d146d4c4934ee438b3060f	2026-06-14	fix(review-ab): close best-of-K fail-unsafe pooling + harden input validation
+375c571b10f4d3b8c4b2b3bbb2f68b6220ef96ce	2026-06-13	docs(review): wire reviewer brief into R1 Pre-step (T5) + record E-watch
+ac61652fdeba1ce4f44ee2a6b20a3fc096acfa1a	2026-06-13	feat(review): add reviewer brief-compiler + A/B adoption gate (T1+T2)
+834333ea99590619c26bd5926215a482a3437c8d	2026-06-12	perf(hooks): gate session-start smoke on harness-surface change
+c27fdbf51a9dcfb53cf92fadaf3a3264dba31405	2026-06-12	docs(harness-notes): drop dangling research-file reference
+eb1ecd2dfff52eac488b4ce0b7afb2d18b83a88a	2026-06-12	feat(hooks): sweep dead-session .turns counters at Stop
+0039db7d9e2dccba5fdcc8e43b31bcc6cd3e7dd9	2026-06-12	feat(hooks): mcp-reaper — bound idle MCP-server accumulation (3rd OOM half)
+4f5de8a8a9866d172c24d742d2e91d1f336b9a82	2026-06-12	refactor(dashboard): Permissions card tag-only, drop prose + clarifier
+6334fad9aac4c9d21aebcecd341345eb468de60d	2026-06-12	fix(dashboard): Permissions = true global count (31), Snapshot-only
+b69c01ac8fb4f6b75f1c38971899e2ff38a76b62	2026-06-12	feat(dashboard): complete Commands + Hooks detail panels to match SSOT
+56ca5f65dc3f8e97d679b3df8db3522b50163ef2	2026-06-12	refactor(dashboard): Knowledge Base descriptor tiles + header badge version-only
+729f0f215469be1e6b6319bec7e270e230a45f6b	2026-06-12	refactor(dashboard): overhaul — Claudeck rebrand, tabbed panels, project-agnostic, +Scripts metric
+976a99221c73db882a2ba976f634aba587156a38	2026-06-11	refactor(dashboard): Hooks panel -> English + concise + accurate (final audit pass)
+976257f53d3c8863113dc593f52edc5f5b68db48	2026-06-11	refactor(dashboard): Knowledge + Permissions panels -> project-agnostic (drop project hardcoding)
+99217801d284b93791e7a4685243a46de0f9474f	2026-06-11	refactor(dashboard): refresh panel membership + accuracy + concise rewrite
+bf6d9bb6467375b184b396d643962e90a1007e76	2026-06-11	refactor(dashboard): de-dup Snapshot counts (#2) + self-healing agent-model tags (#3)
+ff9d8d103509473c46e36221d28ce7a22f28060e	2026-06-11	fix(dashboard): researcher panel model Opus 4.8 -> Sonnet 4.6 (drift correction)
+582e9532220535b4dd39b3e82d037640cbcd8f4d	2026-06-11	refactor(dashboard): footer = data-bound version+date only; drop the accreting changelog blob
+27ae708b101593fee8e63610ba4379020e791fa4	2026-06-11	docs(researcher): record terminology-ownership rationale for the academic-seed rule
+6ad1c1dcd53410a7188f9c73f3bc564adba800db	2026-06-11	feat(researcher): scope literature queries to academic domains (P1 validated->rejected)
+8094e34d177b411926a9ed9ba31ea00ddc0ea02e	2026-06-11	feat(researcher): search-discipline protocol + Sonnet downgrade (P0)
+25b0c954a4a46f869af65859a8561bffc85712dc	2026-06-11	feat(agents): surface out-of-worktree read blocks as a user notice (additionalDirectories hint)
+624ca97bf590b09af07204addfaf3cc7cd782ceb	2026-06-11	docs(harness-notes): record DIM-3 ALLOW-side closure + no-subagent-relay platform fact
+0ea447e97b4308aa3147b75542ca8751e40126af	2026-06-11	feat(permissions): allow WebSearch+WebFetch — DIM-3 ALLOW-side, Phase 1
+dde9cf08343e42475e2bbec1405a2dd8a8baa8ad	2026-06-11	docs(harness-notes): record gitnexus scaffold mechanism — only analyze injects, mcp/setup do not
+af60948b6e335d3ae9a951b33772a0d0fef61073	2026-06-11	feat(gitnexus-hook): relevance gate — inject graph context only for clean identifier lookups
+003fac2a50fdb607a53adb7ba3e94e55da822907	2026-06-11	fix(harness): R6 convergence adjudication — lint HIST nit + guard over-block disposition
+7a19a59f5aed90a32b85306cdf2b980e97a5cd3a	2026-06-11	fix(guard): xargs rm honors `--` end-of-options (R5 fail-safe LOW)
+59e392b32b1b6f6dbf29a1d9e6e2b70e4ef9fb08	2026-06-11	fix(harness): Official-LOCK R4 remediation — guard rm-substitute class + lint hardening + retirement cleanup
+bd51cd0473895c80d6351848a534983241136078	2026-06-11	refactor(harness-meta): remove project agent/model doc-sync entirely (was opt-out band-aid)
+c75fac5707c68dd2790b9d68ddfe61f6c27f00cc	2026-06-11	fix(harness-meta): support projects that ship NO agent/model table (opt-out)
+a6bac6e478cd23d2fd4f65e50b4239c8d0adfcb8	2026-06-11	feat(doctor): stale-term lint — catch retired-term doc drift on every push
+8da0efc3b2f3effa681a5a7d42e36a91279512b0	2026-06-11	docs(harness): staleness audit B-E — model/semaphore/matcher/role drift across docs+skills
+58db840077b69ad62e76266a804d769df3794dc1	2026-06-11	fix(agents): stale "forks from main" + cherry-pick boilerplate contradicted baseRef:head (staleness audit A)
+3a86bc2ac933a8aab3c4ed86b88f575a67a6846b	2026-06-11	docs(harness-notes): fix stale wt-create-lead-head note — hook required regardless of hub topology
+8457d546467f619270afd98447786930bf77489c	2026-06-11	docs(harness-notes): crystallize this session's reusable design principles
+1b144abbb536e89a952cd68013076775dd938a9c	2026-06-11	feat(harness): plan template — explicit task DAG, risks/undo, outcome-based sizing
+6ae15e6f7354a10d8374ab0d9a3075a86fa48e6b	2026-06-11	docs(harness): plan template is single canonical SSOT — drop the project-override branch
+bc4798a8aa47c9ec10904b5b6820a625f1310129	2026-06-11	docs(harness): lead code-nav = gitnexus + grep appropriately (not graph alone)
+8bd37dd0606e1eb53f37a24929f73051247e5da8	2026-06-11	docs(harness): own the "use gitnexus to navigate" guidance (was load-bearing in project CLAUDE.md)
+0987dddb1063357c013039bda57de10db3f318c6	2026-06-11	docs(harness): distinguish independent parallel panels from proposer→adjudicator chains
+9b71d226e05e1e36a27550ca640bb3a1edcccaba	2026-06-11	docs(harness): subagent guard-block guidance + correct stale semaphore wording
+da2a3fbcb24ac9b403f0d9c3bce1767e7d1a81ba	2026-06-11	fix(guard): destructive-verb class-sweep + verb-breadth boundary (audit R-cont4 Round 3)
+e4ed9f53c427ecb39483eb5221f146b214a38eb1	2026-06-11	fix(guard): destructive-verb siblings from official-LOCK Round 2 (audit R-cont4)
+689df2ed4d6ca6d832299c2d100a86f55ac2441a	2026-06-10	fix(guard): plausible-form gaps from the official-LOCK round 1 (audit R-cont4)
+f7304603fe75607f26b3b264b4ade6d9722122e8	2026-06-10	docs(guard): document the threat-model boundary; RE-LOCK the R-cont4 audit
+b055e3691792218d5c2f1c137b570a671de2bffc	2026-06-10	fix(guard): quoted global-opt normalization + func-name-split detection (R-cont4 V3)
+f2fe5370f7d87be6081da73326696d445d4f1e49	2026-06-10	fix(guard): normalize shell quoting before force-flag detection (R-cont4 V2)
+a7d33a014fdc121960787368c3d813bcdf563414	2026-06-10	fix(guard): close R-cont4 verification findings -- quoted/abbrev force flags + residuals
+a084f45629bc36e288b9383c9ceca1abe7674dbf	2026-06-10	fix(guard): close audit R-cont4 LOW residuals (F-NEW4 / F-NEW5 / F-NEW6)
+7354f5b69808903d4beed08c2d09390f1fb1805f	2026-06-10	fix(guard): close destructive-command flag-form bypasses (audit R-cont4 F-NEW1/F-NEW2)
+00f2eb5e50502111e78e2914312be66d41f61d58	2026-06-10	feat(observability): agent-model-check — surface Fable→Opus subagent reroutes
+424431e8429f4ab9adf45fef6d251a64cddd9f11	2026-06-10	docs(harness): correct R1 model labels (Opus→best) + Fable classifier wording (audit R-cont4)
+9ff1a3ea7c25ddcfa95f078e0b10bd7b2a56baf3	2026-06-10	docs(harness): generalize cost warning to Fable 5 + record `best` model decision
+933ac5b14405f4e6cb8e6735605147b32ac69fc4	2026-06-10	feat(agents): code-reviewer → `best` (Fable 5, else Opus) two-gate
+7c1410898021545ed4f8fc7245722266f54f843b	2026-06-10	docs(harness-notes): F17 RESOLVED — sync stale bg under-count references
+053eabdb3056a22c99ecf1cd3090c6dc7f53c89b	2026-06-10	feat(semaphore): background-agent reconciliation — close the bg under-count
+494d91368d6708a939b3e873e75355a3fe174bbe	2026-06-10	fix(semaphore): id-paired release closes the foreground under-count family (audit N6/F4-timeout/N4)
+84bf9f76a2389f2eef6fc9ef053c3f9302f45944	2026-06-09	fix(guard): force-delete lowercase forms + function-override scan; reaper path-boundary (audit R-cont)
+ee8b762f1b66e76f8d8f26fadda1112d838eeef6	2026-06-09	docs(audit): ledger-purity rule — routine follow-ups go in the plan, not the LOCK doc
+ad3aa01daf813a2ea76589f83d777f1777c387ec	2026-06-09	docs(concurrency): narrative for the machine-aware admission + cleanup pipeline
+08ec4e61810c33085ced6951fb5b5d9a2606e4e1	2026-06-09	feat(guard): block message teaches the file-pattern escape for inert-data literals
+4313b6764144bfc507a6ba72cbb52f7ab56367d1	2026-06-09	docs(harness-notes): record reap-session + worktree-reaper + cross-checker prompt-file
+4b7c9573d5a2d532b8fe545bce8a189a53a30bbd	2026-06-09	feat(reaper): reap agent worktrees abandoned by a denied/interrupted dispatch (Stop hook)
+49ab85eb53b0f1e7bc0369c9382a4c6a5e9b7fb3	2026-06-09	feat(semaphore): reap a session's own leaked slots at Stop (denied/interrupted dispatch)
+8b18539c542124cac93b9fe6e32037c00c6c2045	2026-06-09	fix(cross-checker): audit Codex prompt via --prompt-file (guard no longer blocks the node call)
+d1cdf0d59e29110c9bb2eb1122008cfaf60a99b3	2026-06-09	fix(hooks): dangerous-command-guard scans executable code, not literal text
+b372c836049152467c861115b500fafb60b97ad4	2026-06-09	feat(hooks): default-on diagnostics for cherry-pick-cleanup + guard blocks
+426d9fbc5275ca0c01d95f7112eaa9ef44a151c5	2026-06-09	feat(hooks): orphan-reaper SIGTERM→grace→SIGKILL + live-fire validation
+6e7762cf91ed61c60cff9836842a2fa3abc7710f	2026-06-09	feat(hooks): orphan-process reaping Stop hook — defuse subagent RAM creep
+c477c50f02cc6e8a76fb047f6b488648f44d17d2	2026-06-09	docs(harness-notes): record deferred memory-admission follow-ups (backlog)
+a582ab0195df1b0bd1c4486bf5ed1e447f5cdceb	2026-06-09	feat(hooks): weighted-budget agent admission — workload-aware concurrency
+564471ca47821409452b9148e6f6f50f2b6d36ec	2026-06-09	feat(hooks): pressure-aware adaptive cap — throttle agent concurrency under live memory pressure
+ab2c70cf3c4010dd3c9a61781509a398eba5739a	2026-06-08	refactor(audit): ignore quality-scope/ via global git excludes, not per-repo
+f9d78fcb548c72afb23acd058d2e33f8dcc8980c	2026-06-08	docs(audit): surface fresh-vs-continue as a dedicated handbook section
+5b06f20a5ba44794ccd7fc73c29f04c7a14cd8e8	2026-06-08	docs(harness-notes): record secret-leak-guard Bash-argv scanning gap
+723630cbc4d3fc6e91a13e0fe2419f1997841398	2026-06-08	docs(audit): restrict quality-scope/ to audit LOCK docs only
+0bfe10b74db9039a0ba7a874cd3d728141ed8d6f	2026-06-08	docs: onboarding narrative, adopt-in-place model, distribution-model + screencast
+b6311087e5534b985c03a70051c4ca49e5e2fa21	2026-06-08	chore(settings): enable agent push notifications
+25e9738c3a71a1a58a56faaecb995fc2f9093a11	2026-06-08	feat(doctor): detect secret-leak-guard matcher dropping a write tool
+bca6e5e84612ad19207cf1f89e00b6bae81128d1	2026-06-08	feat(onboarding): interactive per-project onboarding + self-healing machine setup
+22f63962cd4a7810ca6e47b5de157827a54098f5	2026-06-08	docs(harness-notes): record destructive-guard no-carve-out decision
+e627402d6b14cff6a60cdd870f51cb14905662d4	2026-06-08	fix(cleanup): integration-based agent-branch cleanup (ref-agnostic, loss-safe)
+5ec2d933e2c53957a927511ad00e0db8282e57cc	2026-06-08	fix(guard): strip shell redirections before the worktree-* exemption check
+258b57cc29eb4d9ae8592595d8285d2165997c69	2026-06-07	feat(harness): docs link-integrity check (harness-doctor L2) + MIT LICENSE
+cef037bafd23065b220c6c38d6649942fe2cf49f	2026-06-07	docs(harness): add README + docs/ handbook; relocate root docs; migrate explainers
+74f618dbbc96f214ec9bd9a00f4e30ada7851294	2026-06-07	chore(harness): bump VERSION 2.5.0 -> 2.6.0 + record versioning-model decision
+66c55d5a9adfdb435f0d2daf11aba7af1a27f221	2026-06-07	feat(harness): auto-derive freshness (git HEAD sha+date) so the version display can't rot
+ba656ae9882f8f23a1da3c24cd158d0ee87fee0a	2026-06-07	docs(harness-notes): correct gitnexus 7-skill KEEP rationale (Tier-4 #1)
+4cdf3d2d11204aed08ab6d36d454cadbb5574277	2026-06-07	feat(harness): add VERSION semver SSOT + expose via harness-meta/dashboard (Tier-4 #2)
+528773a10c5275c0d99690f744e7205dc61af558	2026-06-07	fix(dashboard): drop stale footer counts + close audit Group-3 polish (F7/INC1/INC2)
+a4d4521f14180dba971f148ced859907ff803f5a	2026-06-07	docs(harness-notes): record audit Tier-1/2/3 closure + F14/N6 platform gotchas
+4b04c0575803b3f288e727a573e1c56cd41abfea	2026-06-07	fix(harness): drift + path-containment hardening (F12/N2/F18/N5)
+ce6848f86b66ae384e700c20e51f81b87fb1596e	2026-06-07	fix(guards): harden secret + destructive-command guards (F9/N3/F10/G2)
+6bf669047fc7e064cbff32555601d9286789c60d	2026-06-07	fix(semaphore): close stale-lock steal over-admit race (N4)
+1469bc60e2780a44b5aad8c1725e1ad18cabc67b	2026-06-07	refactor(harness): retire commands/ into skills/ (F13)
+42c7e329f31d69b39acde138ac5e24bcd8a90411	2026-06-07	refactor(harness): de-Fyan the dashboard + memory-gate (F8, F6)
+77c4e3eb4c02d897c123f978679ca7956747a8b6	2026-06-07	fix(worktree): serialize base_ref dispatch + atomic sentinel claim (G1)
+227db37a31f8783b3fca55304c556033eb265f81	2026-06-07	fix(semaphore): lock-timeout must not enter the critical section lock-less (F4)
+24ef0e839a45c3fc82b35bd77cdef13de0da57cd	2026-06-07	fix(guard): re-anchor force-delete to `git\s+branch` (audit R6 P1-LOW-1) + complete the git global-opt set
+01e763bcbc426f07de64aea1e8a1d8710f101cc8	2026-06-07	fix(guard): generalize destructive-command guard over git global-opts (F3/N1) + ship `git reset --hard` deny (F1) + de-FYAN env docs (F5)
+b56e632d354f8c21fd69a8ce697154725c434328	2026-06-06	docs(harness): record audit-mode Codex task contract + doctor L5 typecheck
+21053be753a482e6b9da5345f62f501bd05fd774	2026-06-06	feat(audit): diff-free Codex P2 (task mode) + typecheck gate + zsh-safe pre-pass
+c937536445ae320f3d0760a6ae7ef6c8a7fe821b	2026-06-06	docs(harness-notes): sync /audit row — LOCK now requires Step 0.5 completeness signal
+c794117af29d54d47f906cd4cb08b9cf5dfa9be8	2026-06-06	feat(audit): add deterministic completeness pre-pass (Step 0.5); convergence != completeness
+44081ddaa602f588fd305e1c3fc5a4492273826b	2026-06-06	feat(harness): remove rtk proxy integration (silent-truncation risk > token savings)
+d5ef18b47ecb98253d3830cc0fa1223eb744d2c7	2026-06-06	fix(harness): generic quality-gate + portability/cleanup (F1·F3·F4·F5)
+be1e212cdca389478b119535445defb4d49d2c72	2026-06-06	feat(harness): label dashboard Live vs Snapshot zones
+189271cedd5c568b6a69ed57a113d5a53223088f	2026-06-06	feat(harness): built-in /dashboard, generate-on-read freshness
+2f3c4b4c8ee9f140c3f4b5a56ea2398386619e97	2026-06-06	feat(harness): bake in codex-rescue patch guard + rtk config restore
+8ffdadbefdba3ee39d0d531d24e82add826790a2	2026-06-05	docs(harness): sweep 18 build-out memories into HARNESS_NOTES
+f0de54c34cd2d1dec6156d4e47ef13228300b1a6	2026-06-05	docs(harness): graduate L2 dotfiles-repo decisions into tracked HARNESS_NOTES
+e66c119f71b5cf92ac730b21df488a96bdab8e7c	2026-06-05	feat(harness): add githooks/pre-push correctness gate (harness-doctor)
+205ca766a4a10396fa1c6cce8474e2ccb47abc55	2026-06-05	feat(harness): templates/github master + resolution-order + /harness-init (D6)
+45a97af323da717d76c94f3210fa60aca9424048	2026-06-05	feat(harness): declarative dependency subsystem (auto-install + pin-drift detection)
+5eadc93987143dc56722199dc97d0682a053a07b	2026-06-05	fix(harness): normalize exec bit on two bash-invoked hook scripts
+201ad45e4ff6b7c62bb16d835f7108e4856151fa	2026-06-05	feat(harness): add bootstrap.sh + BOOTSTRAP.md (per-machine onboarding)
+b469a0d57233160aa0db105b3199192d6e6a10dd	2026-06-05	chore(harness): genesis — version-control the global Claude Code harness as a portable dotfiles repo
