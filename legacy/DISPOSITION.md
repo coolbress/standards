@@ -27,6 +27,16 @@
 > claudeck-v1은 저장소가 아니라 bare 아카이브라 이 표 밖이다 —
 > [`sources/claudeck-v1/FILE-MANIFEST.txt`](sources/claudeck-v1/FILE-MANIFEST.txt)(272행)가 그 전수다.
 
+## md가 아닌 파일
+
+대장은 마크다운만 센다. 비-md 중 판단이 필요했던 것은 하나뿐이다:
+
+| 파일 | 무엇 | 처분 |
+|---|---|---|
+| `goppi_final/records/2026-08-08-the-frame.html` (19KB) | *"goppi가 지키게 하는 틀"* — 폐기된 하네스의 시각화 | **폐기** — `judgments/goppi/foundation/`에 같은 계열 HTML 2건(blueprint·workflow-map)이 이미 있고, 그것들도 파생물이다. 정본(설계 문서)은 승계됐다 |
+
+나머지 비-md(`.mjs` 하네스 구현 · `.json` 설정 · `.sh` 스크립트)는 전부 **폐기 · 구현**이다.
+
 ## 전수 목록
 
 | 저장소 | 경로 | 처분 |
