@@ -1,0 +1,11 @@
+name: probe
+# 임시 프로브 — 재사용 워크플로 호출 시 체크 이름이 무엇이 되는지 실측한다.
+# 측정 후 삭제한다. 머지하지 않는다.
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  ci:
+    uses: coolbress/workflows/.github/workflows/python-ci.yml@233a430195aa1be35f648e8fcd84e17bcebd3e2e
