@@ -32,3 +32,7 @@ directory diff로 대조했다. 결과는 `../audit/imported-integrity.tsv`에 �
 각 원본을 통째로 corpus에 복제하지 않는다. `../audit/GAPS.ko.md`의 research unit이 필요한 claim만
 현재 출처로 재검증해 claim register에 접목한다. 특히 goppi eval 결과는 R0-5 worth hypothesis의 가장
 직접적인 로컬 empirical evidence지만, task 설계와 grader 자체도 독립 검토해야 한다.
+
+## 계보
+
+**[`LINEAGE.md`](LINEAGE.md)** — claudeck → gingoa → goppi → goppi_final 네 하네스가 무엇을 하려 했고 왜 죽었는지. 원본 저장소(로컬·원격)는 2026-08-24에 삭제됐고, 이 문서가 그 자리를 대신한다. 결정 64건의 제목 목록과 되살릴 수 없는 실측 수치를 포함한다.
