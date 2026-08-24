@@ -13,9 +13,9 @@
 | 등급 | 개수 | 뜻 |
 |---|---|---|
 | `active` | 40 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
-| `decision` | 9 | 프로젝트 판단 — **권위로** 찾는다 |
+| `decision` | 10 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 8 | 코퍼스 사용법 — 이 지도가 대체한다 |
-| `reference` | 121 | **물어봤을 때만** — 과거 하네스·원시 census |
+| `reference` | 134 | **물어봤을 때만** — 과거 하네스·원시 census |
 | `archive` | 12 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
@@ -69,6 +69,7 @@
 
 | 종류 | 경로 | 내용 |
 |---|---|---|
+| method | `corpus/methods/evidence-durability--grading-model.md` | 근거 수명 등급 모델 — 무엇이 안 바뀌고, 무엇이 바뀌며, 바뀌면 어디까지 무너지는가 |
 | method | `corpus/methods/EVIDENCE-POLICY.md` | Evidence Review and AI-Readable Corpus Policy |
 | reference | `corpus/methods/framework-crosswalk-2026.md` | SWEBOK V4.0a × ISO/IEC/IEEE 12207:2026 × ISO/IEC 25010:2023 × goppi 28-Aspects |
 | reference | `corpus/methods/target-user-capability-model.md` | Target User Capability and Responsibility Model |
@@ -105,10 +106,10 @@
 - `interpretation/legacy/gingoa-taxonomy.md`
 - `interpretation/legacy/three-tier-ledger.md`
 
-## reference — 121개, 물어봤을 때만
+## reference — 134개, 물어봤을 때만
 
 전문은 `ROUTES.jsonl` 에서 `tier="reference"` 로 조회한다. 종류별 개수:
 
-- research-log: 50
+- research-log: 51
 - prior-art: 45
-- census: 26
+- census: 38

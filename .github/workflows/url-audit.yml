@@ -24,13 +24,14 @@ jobs:
         run: python3 tools/external_url_audit.py
 
       - name: 죽은 링크 기준선 대비 확인
-        # 기준선 2건은 2026-08-24 감사에서 확인된 기존 부패다
-        # (ISO 25010 · tessl — audit/2026-08-24-host-and-github-delta.ko.md 참조).
+        # 기준선 4건 + network-error 1건은 2026-08-24 감사에서 확인된 기존 부패다:
+        # ISO 25010 · tessl · dev.to 수기 · techtarget (+ vibeapprescue 응답없음).
+        # 뒤 3건은 owner-problem-map 흡수와 함께 들어왔고 해당 문서가 부패를 고지한다.
         # 이 수를 넘으면 새로 썩은 링크가 생긴 것이다.
         run: |
           DEAD=$(python3 -c "import json;print(sum(1 for l in open('audit/external-url-status.jsonl') if json.loads(l).get('status')=='dead'))")
-          echo "dead=$DEAD (기준선 2)"
-          if [ "$DEAD" -gt 2 ]; then echo "::error::새로 죽은 링크가 있다 (dead=$DEAD > 기준선 2)"; exit 1; fi
+          echo "dead=$DEAD (기준선 4)"
+          if [ "$DEAD" -gt 4 ]; then echo "::error::새로 죽은 링크가 있다 (dead=$DEAD > 기준선 4)"; exit 1; fi
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()

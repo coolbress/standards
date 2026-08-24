@@ -77,6 +77,7 @@ This aspect is **gated to `ai-harness`** — the 8th archetype, an L2′ capabil
 - gingoa ADR-0009 (AI-harness archetype), ADR-0010 (open marketplace), ADR-0011 (GUI over MCP) — `docs/adr/`
 
 ## Sub-documents
+- [`host-component-ecosystem--facts-2026-08.md`](host-component-ecosystem--facts-2026-08.md) — *research-log (ko)* — 2026-08-08 호스트 표면·플러그인 규격·Skills·마켓플레이스·생태계 보안 지형 최신화. `corpus/methods/evidence-durability--grading-model.md` §3의 🟡 항목이 인용하는 원문.
 - [`claude-code-agent-surface--facts-2026-08.md`](claude-code-agent-surface--facts-2026-08.md) — *research-log (ko)* — 2026-08 호스트 표면 갱신: 서브에이전트 중첩 **기본 3단**(기존 기술 "5단" 정정)·동시 최대 20·`initialPrompt`·컨텍스트 격리 포함/제외 전수·MCP 등록과 `.mcp.json` 승인 제약. 외부 모델 경로는 MCP 또는 셸아웃 둘뿐임을 확정. 2026-08 모델 지형은 2차 출처 부록으로 격리.
 - [`agent-threat-model.md`](agent-threat-model.md) — *reference* — **current verified integrated threat map**
   across prompt injection, authority, identity/credential, filesystem, egress, durable state, production,

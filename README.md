@@ -15,7 +15,8 @@ tar 스냅샷뿐이었기 때문이다.
 | 구조를 사람이 훑기 | [`MAP.md`](MAP.md) — 생성물. 등급별 문서 지도 |
 | 에이전트 진입점 | [`corpus/INDEX.md`](corpus/INDEX.md) |
 | 무엇을 믿을 수 있나 | [`corpus/methods/EVIDENCE-POLICY.md`](corpus/methods/EVIDENCE-POLICY.md) |
-| **무엇이 안 바뀌고 무엇이 썩나** | [`RESEARCH-LIFETIME.md`](RESEARCH-LIFETIME.md) — 🟢🟡🔴 수명 등급 |
+| **무엇이 안 바뀌고 무엇이 썩나** | [`corpus/methods/evidence-durability--grading-model.md`](corpus/methods/evidence-durability--grading-model.md) — 🟢🟡🔴 수명 등급 |
+| **이 코퍼스의 유일한 1차 자료** | [`corpus/census-data/owner-problem-map/`](corpus/census-data/owner-problem-map/) — 소유자 문제 45개 |
 | 아직 빈 곳 | [`audit/GAPS.ko.md`](audit/GAPS.ko.md) |
 
 ## 층위
