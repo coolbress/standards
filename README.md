@@ -17,12 +17,12 @@
 | 순서 | 문서 | 답하는 질문 |
 |---|---|---|
 | 01 | [`direction/01-what-i-want.md`](direction/01-what-i-want.md) | 무엇을 원하는가 — **요구 6가지**, 문제 45개로 추적 |
-| 02 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) | 왜 네 번 실패했는가 |
+| 02 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) | 왜 다섯 번 무너졌는가 |
 | 03 | [`direction/03-what-research-says.md`](direction/03-what-research-says.md) | 리서치는 무엇을 말하는가 |
 | 04 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | 그래서 무엇을 만드는가 |
 
 ### 계보가 궁금하면
-[`legacy/LINEAGE.md`](legacy/LINEAGE.md) — 네 하네스 · 결정 64건 제목 · 되살릴 수 없는 실측 10건
+[`legacy/LINEAGE.md`](legacy/LINEAGE.md) — 다섯 하네스 · 결정 64건 · 스펙 11종 제목 · 되살릴 수 없는 실측 12건
 
 ### 근거를 파려면
 
@@ -44,7 +44,7 @@ corpus/              근거 — 판단이 들어가면 안 되는 층
   ├ aspects/         28측면 종합 + claim register
   ├ census-data/     원시 empirical 증거 (append-only)
   └ methods/         연구·큐레이션 규칙
-legacy/           📜 과거 — 네 하네스가 남긴 전부. 진입점은 LINEAGE.md
+legacy/           📜 과거 — 다섯 하네스가 남긴 전부. 진입점은 LINEAGE.md
   ├ LINEAGE.md       계보 서사 — 무엇을 지었고 왜 죽었나
   ├ judgments/       그때의 판단 (goppi 워크플로 표준 · 가치가설 · gingoa 스키마)
   └ sources/         원본 사본 — provenance이지 승인이 아니다
@@ -59,7 +59,7 @@ archive/             복구 가능한 스냅샷
 
 1. census의 **보급률**과 좋은 practice를 동일시하지 않는다.
 2. 공식 제품 문서를 **제품 효과성**의 증거로 쓰지 않는다.
-3. `review-needed`·`draft` 문서를 인용할 때는 **인용 지점에 status를 병기한다.** *(2026-08-24 개정 — 원문은 "인용하지 않는다"였으나, 2026-08-02 감사에서 상속 `verified` 50건이 전부 강등돼 지키면 아무것도 인용할 수 없는 사문이 됐다. `audit/GAPS` R3-4.)* 하중이 큰 claim은 `verified` 승격을 먼저 한다.
+3. `review-needed`·`draft` 문서를 인용할 때는 **인용 지점에 status를 병기한다.** *(2026-08-24 개정 — 원문은 "인용하지 않는다"였으나, 2026-08-02 감사에서 상속 `verified` 50건이 전부 강등돼 지키면 아무것도 인용할 수 없는 사문이 됐다. `audit/GAPS` R5-4.)* 하중이 큰 claim은 `verified` 승격을 먼저 한다.
 4. 합성 판단은 `synthesis`, 프로젝트 선택은 `direction/`으로 표시한다.
 5. 새 연구는 **질문·검색일·포함/제외·claim-source 관계·시효·종료 기준**을 갖는다.
 6. **새로 짓기 전에 [`MAP.md`](MAP.md)를 주제어로 훑는다** — 없는 것을 새로 만들었다고 착각한 사례가 3회 있다.

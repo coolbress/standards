@@ -35,7 +35,7 @@ directory diff로 대조했다. 결과는 `../audit/imported-integrity.tsv`에 �
 
 ## 계보
 
-**[`LINEAGE.md`](LINEAGE.md)** — claudeck → gingoa → goppi → goppi_final 네 하네스가 무엇을 하려 했고 왜 죽었는지. 원본 저장소(로컬·원격)는 2026-08-24에 삭제됐고, 이 문서가 그 자리를 대신한다. 결정 64건의 제목 목록과 되살릴 수 없는 실측 수치를 포함한다.
+**[`LINEAGE.md`](LINEAGE.md)** — claudeck → gingoa → goppi → goppi_final 다섯 하네스가 무엇을 하려 했고 왜 죽었는지. 원본 저장소(로컬·원격)는 2026-08-24에 삭제됐고, 이 문서가 그 자리를 대신한다. 결정 64건 · 스펙 11종의 제목 목록과 되살릴 수 없는 실측 수치를 포함한다.
 
 
 ## 2026-08-24 가지치기 — 무엇이 남았고 왜인가
@@ -45,7 +45,7 @@ directory diff로 대조했다. 결과는 `../audit/imported-integrity.tsv`에 �
 
 | 남은 것 | 왜 |
 |---|---|
-| `LINEAGE.md` | 네 하네스의 계보. 삭제된 것들을 대신한다 |
+| `LINEAGE.md` | 다섯 하네스의 계보. 삭제된 것들을 대신한다 |
 | `claudeck/·claudeck-v1/` 3건 | 코퍼스가 `[census: claudeck v1]`로 인용하는 초기 관찰 (서브에이전트 권한 릴레이 부재 등) |
 | `goppi/` 5건 | `design.md`·`standards.md`·`what-is-a-harness.md`·`model-roster.md`·`review-precision.md` — 인용됨 |
 | `goppi-trial-web/` 전체 | G4 실물 확증의 **물증** — 세트로 의미가 있어 통째로 유지 |

@@ -6,8 +6,8 @@
 
 ## 먼저 읽을 것
 
-**[`LINEAGE.md`](LINEAGE.md)** — 네 하네스가 무엇을 하려 했고, 어떻게 지었고, 왜 죽었나.
-결정 64건의 제목과 되살릴 수 없는 실측 10건이 여기 있다. **나머지는 이 문서의 각주다.**
+**[`LINEAGE.md`](LINEAGE.md)** — 다섯 하네스가 무엇을 하려 했고, 어떻게 지었고, 왜 죽었나.
+결정 64건 · 스펙 11종의 제목과 되살릴 수 없는 실측 12건이 여기 있다. **나머지는 이 문서의 각주다.**
 
 ## 구성
 
@@ -15,7 +15,7 @@
 |---|---|---|
 | `LINEAGE.md` | 계보 서사 | **진입점** |
 | `judgments/` | 그때 내린 **판단** — goppi 워크플로 표준 rev4 · 가치가설 · 산출물 루브릭 · gingoa 스키마 | 역사 기록. 단 방법론 일부는 `direction/03`이 선별 인용한다 |
-| [`DISPOSITION.md`](DISPOSITION.md) | **처분 대장** — 5세대 문서 274건 전수와 각각의 처분. 미분류 0 | *"누락인가 의도인가"* 를 여기서 확인 |
+| [`DISPOSITION.md`](DISPOSITION.md) | **처분 대장** — 4세대 저장소의 마크다운 274건 전수와 각각의 처분. 미분류 0. (claudeck-v1은 bare 아카이브라 표 밖 — 전수는 `sources/claudeck-v1/FILE-MANIFEST.txt`) | *"누락인가 의도인가"* 를 여기서 확인 |
 | [`ARCHIVE-INDEX.md`](ARCHIVE-INDEX.md) | **이 저장소 밖의 로컬 아카이브 목록** — `~/Archive/`에만 있고 백업이 없는 것들 | 무엇이 승계됐고 무엇이 안 됐나 |
 | `sources/` | **원본 사본** — claudeck·goppi 관찰 노트, goppi-trial-web 물증 | provenance이지 승인이 아니다 |
 
