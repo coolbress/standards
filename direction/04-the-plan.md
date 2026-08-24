@@ -63,7 +63,7 @@ MUST 49개를 9묶음으로, 그리고 그중 무엇이 만들 것 2·3·5에서
 |---|---|---|
 | PR diff | **200줄 목표 · 400줄 상한** | ⚠️ **2026-08-24 재검증으로 정정.** 원문 결론은 *"LOC under review should be **under 200, not to exceed 400**"* — 400은 목표가 아니라 **상한**이다. 이전 판의 *"400 초과에서 급락"* 은 **원문에 없다**(`plummet` 은 LOC 가 아니라 **리뷰 시간 90분**에 대한 말). [`codereview--facts`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) **CR-001~003** `draft`. ⚠️ **CR-004**: 단일 조직(Cisco 1개 팀·50명) 케이스 스터디이므로 `operational-lesson` 이다 — *"일관된 연구 결과"* 로 쓰면 범주 오류다 |
 | **테스트 동반** | **소스가 바뀌면 테스트도 바뀐다 — CI가 검사** | `04 foundation-floor` *"tests required on every PR (MUST)"* · `08` 4대 검사 |
-| **RED→GREEN** | 실패하는 테스트를 **먼저** — 단 **권고**(강제 아님) | `07` SWEBOK. ⚠️ 순서 자체의 효과는 불분명(`GAPS` R5-1) — 강제하지 않는 이유 |
+| **RED→GREEN** | 실패하는 테스트를 **먼저** — 단 **권고**(강제 아님) | `07` SWEBOK. ✅ **2026-08-24 재검증**: Fucci et al. 은 *"Sequencing… **had no important influence**"* 를 보고했고 효과의 원천은 **granularity·uniformity** 였다 (`testing--facts` **TDD-001**, n=39 전문가·82 데이터). **강제하지 않는 이유가 이것이다** — 다만 표본이 작아 확정된 null 은 아니다(**TDD-002**) |
 | CI 소요 | **10분 이내** | [`04 facts-cicd`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) `draft` — Fowler 1차 URL |
 | main 빨간불 | **다른 일보다 우선 수리** | *"깨지면 즉시 수리"* |
 | 리뷰 응답 | **자동 — 사람 대기 0** | ⚠️ **2026-08-24 재검증**: *"50% 요인"* 은 **1차 출처에서 찾을 수 없어 삭제**했다(`codereview--facts` **CR-007**). 코퍼스가 받치는 것은 "리뷰는 빨라야 한다"까지다. `@claude`의 이점(사람 대기 0)은 **프로젝트 판단** |

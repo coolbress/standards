@@ -16,7 +16,7 @@
 > | [`cicd-release--facts-2026-08.md`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) | `draft` | **10분 빌드**(Fowler 1차 URL) · CI 실무 |
 > | ✅ **2026-08-24 재검증 완료(배치 A)** | `codereview--facts` **CR-005~008** | **중앙값 24줄**=유지 · **4시간**=수정(응답→전 과정 지연) · **DORA 50%**=삭제(출처 없음) · **"다중 승인자·체크리스트 DORA 안티패턴"**=삭제(오귀속) |
 > | ✅ **2026-08-24 재검증 완료(배치 B)** | `github-workflow-current` **GHW-008·009** | **Git Flow 2020 note**=출처 부착(미승계가 아니었다) · **"브랜치 다이어그램은 ceremony"**=프로젝트 판단으로 재분류(연구 결과 아님) |
-> | ⬜ **미검증** | — | TDD 순서 효과 · feature flag 부채 — 배치 C |
+> | ✅ **2026-08-24 재검증 완료(배치 C)** | `testing--facts` **TDD-001·002** · `17 overview` **REL-001·002** | **TDD 순서**=유지(1차 출처 부착 + 표본 한정) · **feature flag 부채**=한정 추가(*"carrying cost"* 이지 부채가 아니다) |
 >
 > **아직 안 옮긴 것**: Git Flow 창시자의 2020 note · 테스트 피라미드 80/15/5 · TDD 순서 효과 ·
 > feature flag 부채. `audit/GAPS.ko.md` R5-1에 등재했다.
@@ -26,9 +26,9 @@
 3. **리뷰는 빨라야 한다** — Google 응답 규범 1영업일. ⚠️ **2026-08-24 재검증**: *"빠른 팀이 배포 성과 50% 높음"* 은 **1차 출처에서 찾을 수 없어 삭제**했다(`codereview--facts` **CR-007**). 그리고 실측 *"중앙값 4시간"* 은 **응답 시간이 아니라 전체 리뷰 과정의 지연**이다 — 첫 피드백은 소형 1시간 미만·대형 약 5시간(**CR-006**)
 4. 리뷰의 전제는 **작은 변경** — Google 중앙값 **24줄**, 100줄 적정 / 1000줄 과대, **200줄 목표 · 400줄 상한**(⚠️ 2026-08-24 재검증 — *"급락"* 은 원문에 없다. `codereview--facts` CR-001~003)
 5. 진짜 CI = 메인라인 + 자동빌드 + 자기검증 테스트 + **10분 이내** + **깨지면 즉시 수리**. *"이것이 없으면 나머지는 장식이다"*
-6. Delivery ≠ Deployment. feature flag는 **부채**
+6. Delivery ≠ Deployment. feature flag 는 **보유 비용(carrying cost)** 을 갖는다 — ⚠️ **2026-08-24 재검증**: 원문은 *"부채"* 가 아니라 *"inventory which comes with a carrying cost"* 라 하고, **토글 수명별로 구분**한다 (Permissioning 은 수년 존속이 설계 의도). *"feature flag = 부채"* 는 과일반화였다 (`17 overview` **REL-001·002**)
 7. 테스트 피라미드 — Google 실측 80/15/5
-8. **TDD의 "테스트 먼저" 순서 자체는 효과 불분명** — 효과의 원천은 *잘게 균일한 스텝 + 항상 테스트가 따라오는 것*
+8. **TDD 의 "테스트 먼저" 순서(sequencing)는 영향이 없었다** — ✅ **2026-08-24 1차 출처 확인**: *"Sequencing… had no important influence"*, 효과의 원천은 ***granularity 와 uniformity*** (잘게·균일한 사이클)다 (`testing--facts` **TDD-001**). ⚠️ 표본은 **전문 개발자 39명 · 82 데이터 포인트** — *"순서는 무의미하다"* 가 아니라 *"이 연구는 순서의 영향을 발견하지 못했다"* 로 쓴다 (**TDD-002**)
 9. **"Done" = 머지 전 CI 녹색 + 리뷰 승인**
 10. Conventional Commits 같은 형식 규약은 **자동화가 소비할 때만** 가치 — 아니면 cargo cult
 
