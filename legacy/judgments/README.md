@@ -13,6 +13,7 @@
 | 경로 | 무엇 | 지위 |
 |---|---|---|
 | `00-overview.md` ~ `05-goppi-analysis.md` | SDLC · 엔지니어링 실무 · 기획 · 솔로/AI개발 해석 | 대부분 `SUPERSEDED` 표기됨 — 사실 부분은 `corpus/aspects/*/facts-2026-08-*.md`로 이관 |
+| `goppi-final-decisions.md` | **결정 로그** — 맥락·결정·**기각한 대안**·사유. §C(Rabbit holes)가 이 계보의 사인을 예언했다: *"메타 잠식 — 구 goppi의 사망 모드이자 이 프로젝트 최대 리스크"* | **여기부터 읽어라.** 기각의 이유는 재사용된다 |
 | `foundation/` | **goppi의 설계 결정** — 워크플로 표준 rev4 · 가치가설 · 산출물 루브릭 · 조향 설계 | **역사 기록.** 단, 방법론(6스테이션·AC 추적성·위험비례)은 `direction/03`이 선별 인용한다 |
 | `legacy/` | gingoa 전용 스키마·분류·생명주기 | 역사 기록 |
 
