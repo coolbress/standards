@@ -93,7 +93,7 @@ pilot은 내용+상태+구조의 합산 효용이며 다른 모델/언어 일반
 | 구 `lifecycle.md` | 일반 life cycle과 gingoa activation 결정이 혼합 | legacy로 이동하고 navigation crosswalk로 교체 |
 | 구 `_schema.md` | evidence/application 혼합을 허용하고 verified 의미가 약함 | legacy로 이동하고 claim 중심 schema로 교체 |
 | 구 `TAXONOMY.md` | 유용하지만 “LOCKED/definitive” 주장과 2017 ISO 앵커가 부정확 | legacy로 이동하고 provisional taxonomy로 교체 |
-| `Implications for gingoa` 등 33개 H2 | 일반 근거가 아니라 과거 제품 적용 판단 | verbatim으로 `legacy/judgments/gingoa-specific-sections.md`에 추출 |
+| `Implications for gingoa` 등 33개 H2 | 일반 근거가 아니라 과거 제품 적용 판단 | verbatim으로 `legacy/judgments/gingoa/specific-sections.md`에 추출 |
 | `gingoa_applied` frontmatter | corpus와 과거 제품 적용을 결합 | active corpus에서 제거, extraction 기록에 보존 |
 | inherited `verified` 50개 | 현재 claim-level 정책을 통과한 기록이 없음 | `review-needed`로 하향 |
 

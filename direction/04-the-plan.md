@@ -49,8 +49,8 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 
 | 항목 | 값 | 왜 |
 |---|---|---|
-| PR diff 상한 | **400줄** | 400 LOC 초과에서 결함 발견율 급락 — [`facts-2026-08-codereview.md`](../corpus/aspects/07-construction-code-review/facts-2026-08-codereview.md) `draft` (SmartBear). 100/1000줄 기준은 [`07 overview`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) `review-needed` |
-| CI 소요 | **10분 이내** | [`04 facts-cicd`](../corpus/aspects/04-build-ci-engineering/facts-2026-08-cicd-release.md) `draft` — Fowler 1차 URL |
+| PR diff 상한 | **400줄** | 400 LOC 초과에서 결함 발견율 급락 — [`codereview--facts-2026-08.md`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) `draft` (SmartBear). 100/1000줄 기준은 [`07 overview`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) `review-needed` |
+| CI 소요 | **10분 이내** | [`04 facts-cicd`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) `draft` — Fowler 1차 URL |
 | main 빨간불 | **다른 일보다 우선 수리** | *"깨지면 즉시 수리"* |
 | 리뷰 응답 | **자동 — 사람 대기 0** | ⚠️ *"50% 요인"은 코퍼스 미승계* — 코퍼스가 받치는 것은 "리뷰는 빨라야 한다"까지다. `@claude`의 이점(사람 대기 0)은 **프로젝트 판단** |
 | 이슈 필수 | **크기 조건부** — 사소한 변경은 바로 PR | [`05 overview`](../corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md) `review-needed` (census n=11 프로젝트) |

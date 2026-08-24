@@ -78,4 +78,4 @@ maps_from: ["census-data/census-dev-environment"]
 - https://editorconfig.org/ — EditorConfig
 
 ## Sub-documents
-- [`facts-2026-08-reproducible-environment.md`](facts-2026-08-reproducible-environment.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-1): devcontainer 스펙 · 런타임 버전 고정(mise/asdf) · lockfile · dev/prod 패리티. **12-Factor는 표준 기관 산출물이 아닌 저자의 방법론**임을 각 인용에 표기.
+- [`reproducible-environment--facts-2026-08.md`](reproducible-environment--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-1): devcontainer 스펙 · 런타임 버전 고정(mise/asdf) · lockfile · dev/prod 패리티. **12-Factor는 표준 기관 산출물이 아닌 저자의 방법론**임을 각 인용에 표기.

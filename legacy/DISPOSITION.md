@@ -250,7 +250,7 @@
 | goppi_final | `harness/goppi/L0.md` | 폐기 · 프로젝트 문서 |
 | goppi_final | `harness/probe/README.md` | 승계 |
 | goppi_final | `progress.md` | 폐기 · 프로젝트 문서 |
-| goppi_final | `records/2026-08-02-goppi-worth-hypothesis.md` | 폐기 · 프로젝트 문서 |
+| goppi_final | `records/2026-08-02-worth-hypothesis.md` | 폐기 · 프로젝트 문서 |
 | goppi_final | `records/2026-08-02-trustworthy-completion-evaluation-protocol.md` | 폐기 · 프로젝트 문서 |
 | goppi_final | `records/2026-08-06-empty-state-runtime-verification.md` | 폐기 · 프로젝트 문서 |
 | goppi_final | `records/2026-08-06-session1-prompt.md` | 폐기 · 세션 인계 |

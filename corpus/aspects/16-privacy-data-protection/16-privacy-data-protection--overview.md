@@ -70,4 +70,4 @@ This aspect is **gated** — it fires only for **`handles-user-data`** archetype
 - https://www.nist.gov/privacy-framework/privacy-framework — NIST Privacy Framework v1.0 (Core / Profiles)
 
 ## Sub-documents
-- [`facts-2026-08-privacy-statutory-duties.md`](facts-2026-08-privacy-statutory-duties.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-2): **개인정보 보호법 제30조 제1항 각 호 원문 확보**(처리방침 필수 기재 11항목, 시행일 2025-10-02, 법률 제20897호) + 제15·16·22조(만 14세 미만 포함) · GDPR Art.13 vs 14 차이표(**요약본 기반 — EUR-Lex 원문 미대조**) · 쿠키 동의의 근거 조문. R1-10b의 최대 미해결을 종결.
+- [`privacy-statutory-duties--facts-2026-08.md`](privacy-statutory-duties--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-2): **개인정보 보호법 제30조 제1항 각 호 원문 확보**(처리방침 필수 기재 11항목, 시행일 2025-10-02, 법률 제20897호) + 제15·16·22조(만 14세 미만 포함) · GDPR Art.13 vs 14 차이표(**요약본 기반 — EUR-Lex 원문 미대조**) · 쿠키 동의의 근거 조문. R1-10b의 최대 미해결을 종결.

@@ -52,9 +52,9 @@ sources: []
 |---|---|---|
 | 현업 개발 프로세스 표준 (SWEBOK · ISO/IEC/IEEE 12207:2026 구조 — 2017판은 폐기됨) | `corpus/methods/framework-crosswalk-2026.md` | ① 틀 |
 | git/GitHub **핵심 흐름** (브랜치·커밋·PR·리뷰·CI의 존재 이유) | `corpus/aspects/05-scm-workflow/` | ①④ |
-| 저장소 바닥 (README·`.env.example`·설정검증·린터·관측성·클린실행) | `corpus/aspects/04-…/facts-2026-08-web-scaffold-baseline.md` · 팩 ① | ③ |
+| 저장소 바닥 (README·`.env.example`·설정검증·린터·관측성·클린실행) | `corpus/aspects/04-…/web-scaffold-baseline--facts-2026-08.md` · 팩 ① | ③ |
 | 법·규제 (PIPA 제30조 원문 · GDPR · 라이선스 4종 원문) | `corpus/aspects/15·17/` | ③ |
-| 솔로 운영 최소셋 (책임분담·백업/복원·spend cap) | `corpus/aspects/20-…/facts-2026-08-solo-operations-minimum.md` | ③④ |
+| 솔로 운영 최소셋 (책임분담·백업/복원·spend cap) | `corpus/aspects/20-…/solo-operations-minimum--facts-2026-08.md` | ③④ |
 | 완료·증거의 인식론 (NIST assurance · 적정 의존 연구) | `corpus/methods/trustworthy-completion-evidence-model.md` | ②③ |
 ⚠️ **여기 있던 두 줄(Anthropic 2026-04 하네스 설계 3패턴 · 장기 실행 하네스 구조)을 🟡로 내렸다**
 (적대 감사 2026-08-08 F-8). **넉 달 된 벤더 블로그를 "수년~수십 년 안 바뀜"으로 분류한 근거가 없었고,

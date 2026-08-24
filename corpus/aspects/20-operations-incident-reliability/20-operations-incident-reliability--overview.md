@@ -77,5 +77,5 @@ maps_from: []
 - https://grafana.com/observability-survey/2024/
 
 ## Sub-documents
-- [`facts-2026-08-solo-operations-minimum.md`](facts-2026-08-solo-operations-minimum.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-9): managed 플랫폼(AWS·Vercel·Render·Fly.io·Supabase)의 shared-responsibility 서술에서 **1인 소유자에게 남는 운영 책임** — 알림 표면 · 백업/복원과 복원 책임 소재 · spend cap(hard vs alert-only) · 런타임 EOL과 인시던트 오너십. 미조사 플랫폼과 미명시 항목은 문서의 `미해결` 절에 명시.
-- [`facts-2026-08-operations-sre.md`](facts-2026-08-operations-sre.md) — *research-log (ko)* — 2026-08 facts-only pass: SLI/SLO/error-budget · toil · IMAG roles · blameless postmortem · on-call rules · golden signals · observability pillars · DevOps origins (telemetry content also serves aspect-19).
+- [`solo-operations-minimum--facts-2026-08.md`](solo-operations-minimum--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (GAPS R1-9): managed 플랫폼(AWS·Vercel·Render·Fly.io·Supabase)의 shared-responsibility 서술에서 **1인 소유자에게 남는 운영 책임** — 알림 표면 · 백업/복원과 복원 책임 소재 · spend cap(hard vs alert-only) · 런타임 EOL과 인시던트 오너십. 미조사 플랫폼과 미명시 항목은 문서의 `미해결` 절에 명시.
+- [`operations-sre--facts-2026-08.md`](operations-sre--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: SLI/SLO/error-budget · toil · IMAG roles · blameless postmortem · on-call rules · golden signals · observability pillars · DevOps origins (telemetry content also serves aspect-19).

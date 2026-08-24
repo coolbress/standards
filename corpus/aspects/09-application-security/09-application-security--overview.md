@@ -88,4 +88,4 @@ maps_from: []
 - OpenSSF Scorecard (~20 checks, incl. SBOM + Webhooks) — https://securityscorecards.dev/ · checks list https://github.com/ossf/scorecard/blob/main/docs/checks.md
 
 ## Sub-documents
-- [`facts-2026-08-security-sdlc.md`](facts-2026-08-security-sdlc.md) — *research-log (ko)* — 2026-08 facts-only pass: OWASP Top10:2025/ASVS/SAMM · MS SDL · STRIDE · SLSA · secrets management · DBIR-2026 data · CVE-2025-48757 (Lovable) facts (supply-chain content also serves aspect-10).
+- [`security-sdlc--facts-2026-08.md`](security-sdlc--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: OWASP Top10:2025/ASVS/SAMM · MS SDL · STRIDE · SLSA · secrets management · DBIR-2026 data · CVE-2025-48757 (Lovable) facts (supply-chain content also serves aspect-10).

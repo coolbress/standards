@@ -65,4 +65,4 @@ maps_from: []
 - https://itrevolution.com/product/accelerate/ (Forsgren/Humble/Kim, DORA)
 
 ## Sub-documents
-- [`facts-2026-08-codereview.md`](facts-2026-08-codereview.md) — *research-log (ko)* — 2026-08 facts-only pass: Google eng-practices review criteria · ICSE-2018/Microsoft/SmartBear review data · pair-programming data · git workflow prescriptions · Conventional Commits.
+- [`codereview--facts-2026-08.md`](codereview--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: Google eng-practices review criteria · ICSE-2018/Microsoft/SmartBear review data · pair-programming data · git workflow prescriptions · Conventional Commits.

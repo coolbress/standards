@@ -67,4 +67,4 @@ This aspect is **gated** — it activates only for `library`, `cli`, `backend`. 
 - https://www.rfc-editor.org/rfc/rfc9110.html
 
 ## Sub-documents
-- [`facts-2026-08-api-scope-boundary.md`](facts-2026-08-api-scope-boundary.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-4): **RFC 9110과 OpenAPI는 공개/내부 API를 구분하지 않는다**(명시 없음 — 모든 HTTP에 균등 적용) · SemVer가 스스로 규정하는 적용 대상. 표준 §6의 "내부 API만이라 해당 없음" 기각 사유가 약함을 드러낸 근거.
+- [`api-scope-boundary--facts-2026-08.md`](api-scope-boundary--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-4): **RFC 9110과 OpenAPI는 공개/내부 API를 구분하지 않는다**(명시 없음 — 모든 HTTP에 균등 적용) · SemVer가 스스로 규정하는 적용 대상. 표준 §6의 "내부 API만이라 해당 없음" 기각 사유가 약함을 드러낸 근거.

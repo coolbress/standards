@@ -29,10 +29,10 @@ maps_from: ["census-data/census-governance", "census-data/census-governance-floo
 **Seed sub-aspects:** `issue / triage` · `contribution policy / CoC` · `decision rights (RACI/ADR)` · `ethics / legal / IP / export` · `compliance / audit (SOC2/ISO27001)` · `Conway / team-topology (team-gated)` · `quality planning (KA12)` · `internal/published boundary — self-contained remote artifacts`
 
 ## Sub-documents
-- [`facts-2026-08-solo-governance-handover.md`](facts-2026-08-solo-governance-handover.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-4): **개발자 인계·온보딩에 공식 표준이 팀 규모와 무관하게 존재하지 않는다**(확인된 부정 결과) · ISO/IEC/IEEE 15289 정보 항목 · GitHub 커뮤니티 항목은 전부 "권장". "1인이라 기각"이 아니라 "규범 부재"가 정확한 진술임을 확인.
+- [`solo-governance-handover--facts-2026-08.md`](solo-governance-handover--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R3-4): **개발자 인계·온보딩에 공식 표준이 팀 규모와 무관하게 존재하지 않는다**(확인된 부정 결과) · ISO/IEC/IEEE 15289 정보 항목 · GitHub 커뮤니티 항목은 전부 "권장". "1인이라 기각"이 아니라 "규범 부재"가 정확한 진술임을 확인.
 
 - [issue-pr-writing-conventions.md](issue-pr-writing-conventions.md) — the **작성법 (how-written)** layer beneath the section/type censuses: field TYPE (textarea 54% dominant), required-by-type (dropdown 73 / input 65 / textarea 57 ↔ checkboxes 3.8), help-text near-universal (87%), preflight 22% / in-form CoC 6%, PR checklist **empty `- [ ]` 62%** + HTML-comment guidance 70% + **type-of-change minority 12% (85% checkbox when present, free-text 1.7%)**. The writing-method inputs to the tiered template standard.
-- [`facts-2026-08-roles-teams.md`](facts-2026-08-roles-teams.md) — *research-log (ko)* — 2026-08 facts-only pass: PM/PO/ProjM role definitions · public career ladders (Dropbox/GitLab) · Team Topologies · Conway 1968 · two-pizza · Spotify-model authors' caveat · QSM team-size data · dual-track (also serves aspect-23).
+- [`roles-teams--facts-2026-08.md`](roles-teams--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: PM/PO/ProjM role definitions · public career ladders (Dropbox/GitLab) · Team Topologies · Conway 1968 · two-pizza · Spotify-model authors' caveat · QSM team-size data · dual-track (also serves aspect-23).
 
 ## What professional engineers do
 

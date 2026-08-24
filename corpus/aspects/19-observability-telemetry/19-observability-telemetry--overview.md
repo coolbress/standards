@@ -78,4 +78,4 @@ maps_from: ["census-data/census-release-ops/stats.json"]
 - https://dora.dev/guides/dora-metrics-four-keys/
 
 ## Sub-documents
-- [`facts-2026-08-structured-logging-metrics.md`](facts-2026-08-structured-logging-metrics.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-2): OpenTelemetry 로그 규약과 HTTP 서버 메트릭 semantic conventions · 로그 레벨/상관 ID/민감정보. **RED·USE는 표준이 아니라 처방**임을 분류표로 분리.
+- [`structured-logging-metrics--facts-2026-08.md`](structured-logging-metrics--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-2): OpenTelemetry 로그 규약과 HTTP 서버 메트릭 semantic conventions · 로그 레벨/상관 ID/민감정보. **RED·USE는 표준이 아니라 처방**임을 분류표로 분리.

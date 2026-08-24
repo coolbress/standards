@@ -12,7 +12,7 @@ sources: [FAIR-2016, W3C-PROV-O, RO-CRATE-1.2]
 # Evidence Corpus Schema
 
 This schema governs the active corpus. The inherited gingoa schema is preserved at
-`../legacy/judgments/gingoa-schema.md`; it no longer governs because it mixed evidence, project
+`../legacy/judgments/gingoa/schema.md`; it no longer governs because it mixed evidence, project
 application, and retrieval rules.
 
 > ⚠️ **2026-08-24 층 개편**: `imported/` + `interpretation/` → **`legacy/`** 로 통합됐고,

@@ -86,4 +86,4 @@ census_todo: "RESOLVED offline (gh-API=0): the Scorecard supply-chain checks are
 - GitHub Actions security-hardening: https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
 
 ## Sub-documents
-- [`facts-2026-08-dependency-updates-scope.md`](facts-2026-08-dependency-updates-scope.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-3): Dependabot·Renovate가 **하는 것과 하지 않는 것** · **적용 범위 표 — SLSA·Scorecard·SBOM 어느 것도 자체 호스팅 웹 앱 적용을 명시하지 않음**(SBOM 의무는 정부/규제 산업 판매 기준). 표준 §6의 aspect 10 기각 판단을 근거로 뒷받침.
+- [`dependency-updates-scope--facts-2026-08.md`](dependency-updates-scope--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-3): Dependabot·Renovate가 **하는 것과 하지 않는 것** · **적용 범위 표 — SLSA·Scorecard·SBOM 어느 것도 자체 호스팅 웹 앱 적용을 명시하지 않음**(SBOM 의무는 정부/규제 산업 판매 기준). 표준 §6의 aspect 10 기각 판단을 근거로 뒷받침.

@@ -63,4 +63,4 @@ maps_from: []
 - https://openfeature.dev/specification/
 
 ## Sub-documents
-- [`facts-2026-08-config-validation-secrets.md`](facts-2026-08-config-validation-secrets.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-1): 환경변수 기반 설정 · **시작 시점 설정 검증은 국제 표준 부재, 프레임워크 기능으로만 존재**(확인된 결론) · 시크릿 저장/회전(AWS·GCP·Azure·HashiCorp — 회전 주기의 구체값은 어느 문서에도 없음) · GitHub secret scanning이 스스로 밝힌 탐지 한계.
+- [`config-validation-secrets--facts-2026-08.md`](config-validation-secrets--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass (R2-1): 환경변수 기반 설정 · **시작 시점 설정 검증은 국제 표준 부재, 프레임워크 기능으로만 존재**(확인된 결론) · 시크릿 저장/회전(AWS·GCP·Azure·HashiCorp — 회전 주기의 구체값은 어느 문서에도 없음) · GitHub secret scanning이 스스로 밝힌 탐지 한계.

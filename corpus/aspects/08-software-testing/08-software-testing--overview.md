@@ -78,4 +78,4 @@ maps_from: ["census-data/census-dev-environment"]
 - Mutation Testing — https://mutation-testing.org/
 
 ## Sub-documents
-- [`facts-2026-08-testing.md`](facts-2026-08-testing.md) — *research-log (ko)* — 2026-08 facts-only pass: pyramid/trophy originals · Google test sizes 80/15/5 + flakiness data · TDD meta-analyses · coverage guidance · mutation testing at Google · ISTQB levels.
+- [`testing--facts-2026-08.md`](testing--facts-2026-08.md) — *research-log (ko)* — 2026-08 facts-only pass: pyramid/trophy originals · Google test sizes 80/15/5 + flakiness data · TDD meta-analyses · coverage guidance · mutation testing at Google · ISTQB levels.

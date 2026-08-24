@@ -52,12 +52,12 @@ python3 .scratch/research/tools/validate_corpus.py
 | 파일 | 이전 문제 | 처분 |
 |---|---|---|
 | `corpus/PROVENANCE.md` | 승계 당시 generic/2017 anchor와 “2026 edition”만 병기 | 2017 withdrawn·2026 current를 공식 catalog URL과 함께 명시; 역사 기록으로 보존 |
-| `corpus/facts-2026-08-matrix.md` | generic ISO 12207이 방법론 중립·프로세스 분류를 함께 뒷받침하는 것처럼 보임 | 2026 공개 초록이 지지하는 방법론 중립 범위만 남기고 상세 분류 재귀속 금지 |
+| `corpus/matrix--facts-2026-08.md` | generic ISO 12207이 방법론 중립·프로세스 분류를 함께 뒷받침하는 것처럼 보임 | 2026 공개 초록이 지지하는 방법론 중립 범위만 남기고 상세 분류 재귀속 금지 |
 | `corpus/aspects/24-governance-collaboration-compliance/24-governance-collaboration-compliance--overview.md` | 2017 catalog와 상세 process 명칭을 current governance anchor로 사용 | current 2026 catalog로 교체; 상세 process/clause 대응은 `INCONCLUSIVE` |
 | `corpus/aspects/02-architecture-design/02-architecture-design--overview.md` | 판본 없는 metadata anchor | `ISO-12207-2026-catalog-scope`로 범위 고정 |
 | `corpus/aspects/14-data-management-migrations/14-data-management-migrations--overview.md` | Wikipedia/구판 process detail이 DB migration claim을 보조 | ISO/Wikipedia source와 anchor 제거; 구판 attribution 제거 이유를 명시하고 DB 공식 문서만 유지 |
 | `corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md` | ISO가 risk-tier classifier를 직접 지지하는 것처럼 표현 | risk-tier 근거에서 ISO 제거; 2026 공개 범위와 clause-level `INCONCLUSIVE`를 별도 기록 |
-| `corpus/aspects/28-implementation-process-workflow/facts-2026-08-sdlc-models.md` | 2017 상세·2차 자료와 2026 현행판을 혼합 | 2026 공개 범위와 역사적 2017 상세를 분리; PacificCert 제거·ISO 공식 catalog 추가 |
+| `corpus/aspects/28-implementation-process-workflow/sdlc-models--facts-2026-08.md` | 2017 상세·2차 자료와 2026 현행판을 혼합 | 2026 공개 범위와 역사적 2017 상세를 분리; PacificCert 제거·ISO 공식 catalog 추가 |
 | `corpus/aspects/28-implementation-process-workflow/research-log.md` | 2017 tailoring 상세를 현행 근거처럼 사용 | 2017을 withdrawn/historical로 표시; 2026 clause mapping을 `INCONCLUSIVE`로 제한 |
 
 ### 첫 실행에서 미해결된 18개 URL-shaped target의 정확한 처분
