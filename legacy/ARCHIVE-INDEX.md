@@ -14,7 +14,7 @@
 | `2026-08-24-harness-cleanup/goppi/` | 22MB | **원격 삭제됨** · 로컬 사본 | 결정 41 제목 §4 · references `sources/goppi/` · 5조 계약 `judgments/goppi/` |
 | `2026-08-24-harness-cleanup/goppi_test/` | 319MB | LedgerLens 레거시 (하네스 아님) | ❌ 승계 안 함 — 후속 저장소 `~/divtadel`이 운영판이다 |
 | `2026-08-24-harness-cleanup/goppi_final/` | 42MB | **마지막 세대** · 원격은 처음부터 없었다 | **이 저장소의 모체** — `corpus/`·`legacy/`·`direction/`이 전부 여기서 나왔다. 처분 전수는 [`DISPOSITION.md`](DISPOSITION.md) |
-| `harness-removal-2026-08-24/` | 560KB | **설정 제거 백업** — Claude·Codex 설정 7종 + SHA256 + 플러그인 캐시 | 절차는 [`judgments/harness-removal-record-2026-08-04.md`](judgments/harness-removal-record-2026-08-04.md)(선례) |
+| `harness-removal-2026-08-24/` | 3.1MB | **설정 제거 백업** — Claude·Codex 설정 7종 + SHA256 + 플러그인 캐시. **2차(하단)에서 추가**: `goppi-harness-runtime-state/`(런타임 집행 이벤트 대장 2.5MB) · `Agent-Harness-home-copy/` · `settings.json.bak-goppi11` | 절차는 [`judgments/harness-removal-record-2026-08-04.md`](judgments/harness-removal-record-2026-08-04.md)(선례) · 실행은 [`judgments/harness-removal-record-2026-08-24.md`](judgments/harness-removal-record-2026-08-24.md) |
 
 ## 2026-08-24 제거 실행 기록
 
@@ -22,10 +22,21 @@
 |---|---|
 | 실제 상태 조회 | 선례의 교훈대로 문서가 아니라 시스템에 물었다 — **Codex `config.toml`의 `trust_level` 4블록과 `writable_roots`의 `gingoa`** 를 그렇게 찾았다(문서만 봤으면 놓쳤다) |
 | 백업 + 해시 | `harness-removal-2026-08-24/` · 설정 7종 · SHA256 |
-| goppi 플러그인 제거 | 흔적 **0건** — 플러그인·pluginUsage·projects 4건·캐시·Codex 설정 |
+| goppi 플러그인 제거 | 흔적 0건 ⚠️ **이 주장은 틀렸다** — 플러그인·pluginUsage·projects·캐시·Codex 설정까지만 훑었다. 남은 잔재는 2차가 찾았다 |
 | 로컬 4개 → Archive | claudeck · gingoa · goppi · goppi_test |
 | **원격 3개 삭제** | ✅ **API 404로 확인** (claudeck · gingoa · goppi) |
-| `goppi_final` | ✅ **이동 완료 2026-08-24** — 홈에 하네스 0건 |
+| `goppi_final` | ✅ **이동 완료 2026-08-24** |
+| ~~홈에 하네스 0건~~ | ⚠️ **정정됨** — 같은 날 5종류가 더 발견됐다. [2차 기록](judgments/harness-removal-record-2026-08-24.md) 참조 |
+
+## 2026-08-24 제거 실행 기록 — 2차 (정정)
+
+위 표의 *"0건"* 은 **훑은 표면 안에서만** 참이었다. 종류로 다시 훑어 잔재 5종류를 더 찾았다:
+`~/.goppi-harness/`(2.5MB 런타임 대장) · `~/Agent Harness/` · `known_marketplaces.json`의 죽은
+마켓플레이스 정의 · `plugins/data/` 5개 · `settings.json.bak-goppi11`. 여기에 세션 대화 로그
+89개(244.9MB)를 문서화 후 삭제했다.
+
+**전문과 근거는 [`judgments/harness-removal-record-2026-08-24.md`](judgments/harness-removal-record-2026-08-24.md).**
+이것은 *"없다고 단정한 것이 틀린"* **9번째**이고, 선례(2026-08-04)가 남긴 교훈이 그대로 재발한 것이다.
 
 ## 원칙
 

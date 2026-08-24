@@ -16,7 +16,7 @@
 | `decision` | 5 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 7 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 101 | **물어봤을 때만** — 과거 하네스·원시 census |
-| `archive` | 52 | 검색 제외 (폐기·legacy) |
+| `archive` | 53 | 검색 제외 (폐기·legacy) |
 
 **질의는 `station + archetype` 2축이다.** `risk` 는 부결 — 문서 속성이 아니라 작업 속성이라서.
 
@@ -117,6 +117,7 @@
 - `legacy/judgments/goppi/foundation/worth-hypothesis.md`
 - `legacy/judgments/goppi/operating-contract.md`
 - `legacy/judgments/harness-removal-record-2026-08-04.md`
+- `legacy/judgments/harness-removal-record-2026-08-24.md`
 - `legacy/judgments/README.md`
 - `legacy/judgments/research-interpretation/00-overview.md`
 - `legacy/judgments/research-interpretation/01-sdlc-lifecycle.md`

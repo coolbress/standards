@@ -9,6 +9,7 @@
 | [`gingoa/`](gingoa/) | gingoa의 스키마·분류·생명주기·헌법 | [`constitution.md`](gingoa/constitution.md) — 상시 주입되던 계약 |
 | [`research-interpretation/`](research-interpretation/) | 리서치 **해석** 6건 (SDLC·실무·기획·솔로개발) | ⚠️ 대부분 `SUPERSEDED` — 사실 부분은 `corpus/aspects/*/*--facts-2026-08.md`로 이관됐다 |
 | [`harness-removal-record-2026-08-04.md`](harness-removal-record-2026-08-04.md) | 구 goppi 제거 기록 | **지금 예정된 제거의 선례** — *"문서 가정과 실제 설치 형태가 달랐다"* |
+| [`harness-removal-record-2026-08-24.md`](harness-removal-record-2026-08-24.md) | 6세대 제거 기록 (2차) | **선례의 교훈이 그대로 재발했다** — 1차의 *"홈에 하네스 0건"* 을 정정한다. 재발 9번 |
 
 ## 인용 규칙
 

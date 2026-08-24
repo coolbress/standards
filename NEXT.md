@@ -14,7 +14,7 @@
 |---|---|---|
 | 1 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | **만들 것 13개 · 원칙 4 · 리서치에서 나온 수치 · 판정 기준** |
 | 2 | [`direction/05-the-output-floor.md`](direction/05-the-output-floor.md) | **무엇이 저장소에 남아야 시니어급인가** (MUST 49) · 아키타입 판정 |
-| 3 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) §진단의 진단 | **같은 실수를 일곱 번 했다.** 여덟 번째를 하지 않기 위해 |
+| 3 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) §진단의 진단 | **같은 실수를 아홉 번 했다.** 열 번째를 하지 않기 위해 |
 
 나머지(`01`·`03`)는 **물어봤을 때만** 읽는다. `01`=요구 6가지의 근거, `03`=리서치 색인.
 
@@ -26,7 +26,7 @@
 | 이 저장소 | 공개 · 룰셋 `main protection` 활성 · CI 초록 · **PR로만 머지 가능** |
 | 벽 | **실물 확증 4/4** — 직접 푸시·빨간불 머지·`--admin` 강제 머지 전부 거부 |
 | 만들 것 | **1/13** (①이 이 저장소에서 검증됨 — 다만 **합성 시험**이다. 위 *완료의 정의* 참조) |
-| 정리 | ✅ **완료 2026-08-24** — 홈에 하네스 0건 · 원격 3개 삭제 · 로컬 5개 `~/Archive/`(1.1GB) |
+| 정리 | ✅ **완료 2026-08-24 (2차)** — 원격 3개 삭제 · 로컬 5개 `~/Archive/`(1.1GB) · 홈 8표면 0건. ⚠️ 1차의 *"0건"* 은 **틀렸었다** — [2차 기록](legacy/judgments/harness-removal-record-2026-08-24.md) |
 
 ## 🎯 완료의 정의 — 이걸 먼저 읽어라
 
@@ -86,7 +86,7 @@ gh api repos/coolbress/<repo>/rulesets -X POST --input ruleset.json
 2. **로직을 설정 층에 넣지 않는다.** `new-project.sh`가 20줄을 넘어가면 그게 신호다.
 3. **에이전트에게 규율을 프롬프트로 심지 않는다.** 벽은 GitHub에 있다.
 4. **새로 짓기 전에 [`MAP.md`](MAP.md)를 주제어로 훑는다** (README 절대규칙 6).
-   *"없다"* 고 단정하기 전에 확인한다 — 이 실수를 **일곱 번** 했다.
+   *"없다"* 고 단정하기 전에 확인한다 — 이 실수를 **아홉 번** 했다.
 5. **지적을 받으면 그 좌표가 아니라 그 종류를 전 저장소에 grep한다** (절대규칙 7).
 
 ## 이 저장소에서 작업할 때
