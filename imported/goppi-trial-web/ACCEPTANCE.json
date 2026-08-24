@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "owner": "coolbress",
+  "changePolicy": "이 파일의 변경은 소유자 승인(재봉인)을 요구한다. check_files 해시와 실제 파일이 다르면 해당 AC는 TAMPERED로 강등된다.",
+  "meanings": {
+    "PASS": "등록된 검사를 지금 코드 리비전에서 하네스가 직접 실행해 exit 0을 관측했다",
+    "FAIL": "등록된 검사를 실행했고 exit≠0이었다",
+    "아직 모름": "실행이 없거나 증거가 낡았거나 검사가 계약과 다르다 — 판정 불가"
+  },
+  "acs": {
+    "AC-1": {
+      "title": "루트 페이지가 200과 제목 <h1>goppi-trial-web</h1>을 반환한다",
+      "kind": "machine",
+      "check_id": "T-ROOT-200",
+      "command": "node check.mjs",
+      "evidence": ["revision", "exit_code", "cmd_sha256", "started", "finished"],
+      "check_files": {
+        "check.mjs": "fc777c543d1af9fa7fb311b2826cb6289533581ed9e11220dd3c5fe4cf7616b5"
+      }
+    }
+  }
+}

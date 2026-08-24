@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi/0.1.0/verify/approve-contract-request.mjs --cwd /Users/coolbress/goppi-trial-web)",
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi/0.1.0/verify/approve-contract-request.mjs)",
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi/0.1.0/verify/approve-contract-request.mjs:*)",
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi/0.1.0/verify/skip-request.mjs)",
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi/0.1.0/verify/skip-request.mjs:*)",
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi/0.1.0/verify/hold-transition.mjs)",
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi/0.1.0/verify/hold-transition.mjs:*)",
+      "Bash(node /Users/coolbress/goppi_final/harness/goppi/verify/approve-contract-request.mjs*)",
+      "Bash(node /Users/coolbress/goppi_final/harness/goppi/verify/skip-request.mjs*)",
+      "Bash(node /Users/coolbress/goppi_final/harness/goppi/verify/hold-transition.mjs*)",
+      "Bash(node /Users/coolbress/.claude/plugins/cache/goppi-local/goppi*)"
+    ]
+  },
+  "enabledPlugins": {
+    "goppi@goppi-local": true
+  }
+}
