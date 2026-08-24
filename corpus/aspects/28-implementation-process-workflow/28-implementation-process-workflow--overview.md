@@ -154,3 +154,15 @@ This is the **meta-layer over aspect-07** (construction practices) and aspect-08
 | **IPW-013** | synthesis | ⚠️ **이 저장소 안에서 *"Done = CI 녹색 + 리뷰 승인"* 은 절반만 참이다.** [`workflows/ruleset.json`](https://github.com/coolbress/workflows/blob/main/ruleset.json) 이 `required_approving_review_count: 0` 이므로 **리뷰 승인은 실제로 요구되지 않는다.** 솔로는 자기 PR 을 승인할 수 없어 CI 를 진짜 게이트로 쓰기로 한 결정([`direction/04`](../../../direction/04-the-plan.md))의 결과다. **`direction/03` 의 Done 정의와 실제 룰셋이 어긋나 있었다** | `SCRUM-GUIDE-2020`; `DOD-CONTENTS-2022` | high | 2026-08-24 **자기모순 발견** |
 
 **재검증 기록 (배치 3 · Done)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0` · **판정: 출처 재지정 1 · 신규 1 · 자기모순 표시 1** · **불일치 없음**(Codex 가 IPW-012 의 1차 출처를 추가로 찾았다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
+## Claim table — 라우팅·프로세스 (배치 4 · 1차 출처 직접 확인 2026-08-25)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| **IPW-014** | empirical | **위험 비례 게이팅은 대규모로 작동한다.** Meta RADAR: **535K+ diff 리뷰 · 331K+ 랜딩**, 위험점수 임계를 25→50 백분위로 완화 시 승인율 **60.31%**. revert 율은 비-RADAR 의 **1/3**, 프로덕션 사고율은 **1/50** | `META-RADAR-2026` | high (기술통계) | 2026-08-25 |
+| **IPW-015** | synthesis | 🔴 ***"사고율 1/50"* 을 *"자동 리뷰가 50배 안전하다"* 로 읽으면 안 된다.** RADAR 를 통과하는 diff 는 출처·작성자·범위 필터와 정적 검사·위험점수·LLM 리뷰를 **모두 통과한 저위험 집단**이다. **저자 스스로 *"diffs are not randomly assigned"* 이며 미관측 교란 가능성을 명시**한다. 설계는 무작위 실험이 아니라 **관찰 연구**(기술통계 + 전후 비교 + difference-in-differences)다 | `META-RADAR-2026` | high | 2026-08-25 **한정 추가** |
+| **IPW-016** | synthesis | ⚠️ ***"계획을 파일로 저장하라"* 는 리서치가 아니라 프로젝트 판단이다.** 근거로 인용돼 온 **Plan-and-Solve(ACL 2023)** 와 **ReAct(ICLR 2023)** 는 둘 다 **프롬프트 안에서** 계획을 세우는 기법이고 — Plan-and-Solve 는 *"devise a plan"* → *"carry out the plan"* 의 zero-shot 프롬프팅, ReAct 는 사고·행동·관찰의 *"interleaved"* 생성 — **외부 artifact 로의 영속화를 주장하지 않는다.** *"계획을 먼저 세운다"* 까지가 리서치가 받치는 범위다 | (인용 부적합 판정) | high | 2026-08-25 **출처 철회** |
+| **IPW-017** | synthesis | ⚠️ **재시도 상한·진동 감지는 구현 사례는 있으나 값이 확립되지 않았다.** 문제의 실재는 확인된다(IAL-Scan: 6,549 저장소에서 정지 경계 없는 반복 경로 68건). 구현도 있다(OpenAI Agents SDK 의 `max_turns` → `MaxTurnsExceeded`; A→B→A 실패 서명 감지 사례). **그러나 최적 상한값이나 보편적 진동 탐지법은 확립돼 있지 않다** — *"상한을 두라"* 까지가 근거이고 **얼마로 두는지는 판단이다** | (구현 사례 + IAL-Scan) | medium | 2026-08-25 **한정 추가** |
+| **IPW-018** | normative | **비가역 행위 전에 사람.** 자율성은 **역량과 분리된 의도적 설계 결정**이며 5단계로 구분된다(operator·collaborator·consultant·approver·observer). **write staging** 은 자율성/행위권 공간 내 위치를 조정하는 **6대 아키텍처 전술 중 하나**이고, 그 논문은 **reversibility 를 명시적 설계 고려사항**으로 다룬다 | `AUTONOMY-LEVELS-2025`; `AUTONOMY-AGENCY-TACTICS-2026` | high | 2026-08-25 |
+
+**재검증 기록 (배치 4)** — 검증일 `2026-08-25` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0` · **판정: 유지 2 · 한정 추가 2 · 출처 철회 1** · **불일치 없음**(Codex 가 IPW-015 의 저자 자기 고지와 IPW-017 의 IAL-Scan 을 추가로 찾았다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
