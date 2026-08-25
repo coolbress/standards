@@ -344,6 +344,12 @@ def claim_table_errors(text: str, registry_ids: set[str]) -> tuple[int, list[str
         if not line.lstrip().startswith("|"):
             continue
         cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        # R5-14: the ID cell is matched in full, so `**ABC-001**` used to miss the
+        # pattern and the row was skipped entirely — invisible, not merely unreported.
+        # Strip markdown emphasis first so a formatting choice cannot switch the
+        # check off. 42 rows in six documents were skipped that way until 2026-08-25.
+        if cells:
+            cells[0] = cells[0].strip("*").strip()
         if not cells or not CLAIM_ID_RE.fullmatch(cells[0]):
             continue
         count += 1
@@ -591,6 +597,23 @@ def main() -> int:
             errors.extend(f"{message}: {path.relative_to(ROOT)}" for message in claim_errors)
     metrics["verified_source_references"] = verified_source_refs
     metrics["verified_claim_rows"] = verified_claim_rows
+
+    # R5-12: claim tables are checked in EVERY document that has one, not only in
+    # `status: verified` ones. The verified-only pass above left 20 malformed rows
+    # green across three `draft` documents; the check that matters least is the one
+    # that never runs on the documents doing the most unreviewed work.
+    # Widened 2026-08-25 after counting the existing violations first (GAPS R5-12).
+    all_claim_rows = 0
+    for path in markdown:
+        if path in verified_documents:
+            continue  # already checked above
+        claim_count, claim_errors = claim_table_errors(
+            path.read_text(encoding="utf-8"), registry_ids
+        )
+        all_claim_rows += claim_count
+        errors.extend(f"{message}: {path.relative_to(ROOT)}" for message in claim_errors)
+    metrics["unverified_claim_rows"] = all_claim_rows
+    metrics["claim_rows_total"] = verified_claim_rows + all_claim_rows
 
     external_urls = extract_external_urls(CORPUS)
     broken_internal_count = 0

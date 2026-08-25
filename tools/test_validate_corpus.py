@@ -92,5 +92,40 @@ class AspectStructureTests(unittest.TestCase):
             self.assertEqual([stale / "03-stale--overview.md"], missing_aspect_files([stale]))
 
 
+class ClaimIdShapeTests(unittest.TestCase):
+    """R5-14: a bolded ID cell made the whole row invisible to the checker.
+
+    `CLAIM_ID_RE` matches the cell in full, so `**ABC-001**` never matched and the
+    row was skipped with `continue` — not reported, not counted, not checked.
+    42 rows across six documents sat like that; every one of them had been written
+    by the reverification program itself.
+    """
+
+    def test_bolded_claim_id_is_not_silently_skipped(self) -> None:
+        plain = "| ABC-001 | empirical | bounded claim | `SRC-ONE` | high | 2027-01-01 |"
+        bolded = "| **ABC-001** | empirical | bounded claim | `SRC-ONE` | high | 2027-01-01 |"
+        plain_count, _ = claim_table_errors(plain, {"SRC-ONE"})
+        bolded_count, _ = claim_table_errors(bolded, {"SRC-ONE"})
+        self.assertEqual(1, plain_count)
+        self.assertEqual(
+            plain_count,
+            bolded_count,
+            "a bolded claim ID must not make the row invisible to the checker",
+        )
+
+    def test_unescaped_pipe_in_a_cell_is_reported_not_ignored(self) -> None:
+        """R5-14 side finding: CAS-005 carried `http\|sse\|stdio` and split into 8 fields.
+
+        Markdown renders `\|` as a literal pipe, but the checker splits naively, so the
+        row silently gained two fields. It must surface as a field-count error.
+        """
+        row = "| ABC-002 | empirical | uses a\|b | `SRC-ONE` | high | 2027-01-01 |"
+        _, errors = claim_table_errors(row, {"SRC-ONE"})
+        self.assertTrue(
+            any("expected 6" in message for message in errors),
+            f"expected a field-count error, got {errors}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
