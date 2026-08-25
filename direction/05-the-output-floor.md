@@ -34,9 +34,10 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III, 하드코딩 금지) · **`.env.example` 커밋 + 실제 `.env`는 ignore** |
 | **개발환경·온보딩** | **README에 clone→install→test가 5명령 이내** · 통합 태스크 러너(Make/스크립트) |
 | **문서** | README · CONTRIBUTING · **CHANGELOG**(Keep a Changelog) · 공개 표면이 있으면 API 레퍼런스 |
+| **라이선스** 🆕 | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽을 수 있게 선언한다(측면 25). ⚠️ **라이선스가 없으면 기본값은 *전부 저작권 보유*** 이므로 공개 저장소에서는 *"재사용 가능"* 이 성립하지 않는다. **2026-08-26 추가** — 커버리지 조사([`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md))가 이 항목의 부재를 잡았고, **공개 저장소 3/3 이 실제로 위반 중이었다** |
 
 > 🔴 **2026-08-25 커버리지 조사 — 이 바닥에 빠진 것이 있다.** *항상 켜짐* 20측면 중 **10개만** 위 9묶음에 반영돼 있다.
-> 확증 공백 셋: **25 라이선스**(`LICENSE` 없음) · **02 아키텍처**(`ADR` 없음) · **24 거버넌스**(`CODEOWNERS` 없음).
+> 확증 공백 셋 중 **25 라이선스는 2026-08-26 에 바닥에 넣고 3저장소에 반영했다**(아래 *라이선스* 줄). 남은 둘: **02 아키텍처**(`ADR` 없음) · **24 거버넌스**(`CODEOWNERS` 없음).
 > **그리고 25 의 누락은 실물로 나타났다 — 공개 저장소 3/3 에 `LICENSE` 가 없다**(2026-08-25 `gh api` 확인).
 > 바닥에 없어서 → 템플릿에 안 들어갔고 → 인스턴스도 안 갖는다. `GAPS` **R5-17** · [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md)
 
@@ -46,7 +47,7 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 
 | 어디서 | 무엇 |
 |---|---|
-| `project-template` | `.gitignore` · `.env.example` · 린터·포매터 설정 · `SECURITY.md` · `CONTRIBUTING.md`(테스트 정책 포함) · `CHANGELOG.md` · README 골격 · `.editorconfig` |
+| `project-template` | `.gitignore` · `.env.example` · 린터·포매터 설정 · `SECURITY.md` · `CONTRIBUTING.md`(테스트 정책 포함) · `CHANGELOG.md` · README 골격 · `.editorconfig` · **`LICENSE`(MIT · 2026-08-26)** — 템플릿의 라이선스는 **뜨는 모든 프로젝트에 복사된다** |
 | `coolbress/workflows` (만들 것 2) | lint·typecheck·test·build 4검사 · **SAST** · **gitleaks** · `permissions:` 최소화 · **Actions SHA 핀** |
 | `new-project.sh` (만들 것 5) | 브랜치 보호 룰셋 · **Dependabot 설정** · secret-scanning·push-protection 켜기 |
 | GitHub 계정 설정 | **MFA**(1회) |
