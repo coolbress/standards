@@ -1,4 +1,18 @@
-"""Regression checks for the approved trustworthy-completion contract."""
+"""Regression checks on goppi's trustworthy-completion contract — now a historical record.
+
+These tests were written while goppi was alive and the contract was active; they locked
+its wording so it could not drift unnoticed. goppi is dead and both documents moved to
+`legacy/judgments/goppi/foundation/` in PR #12 (interpretation/ was folded into legacy/).
+
+**What these tests guard changed with that move.** They no longer protect an active
+contract — `legacy/README` 인용 규칙 2 says this layer is not current evidence. They now
+protect the *record*: that a historical judgment is not silently rewritten. That is worth
+keeping, because `LINEAGE.md` and `DISPOSITION.md` treat these files as provenance.
+
+The paths sat broken from PR #12 until 2026-08-25 and nobody noticed — CI ran no tests
+at all (GAPS R5-15). All thirteen section anchors survived the move intact, so the repair
+was a repoint, not a rewrite.
+"""
 
 from __future__ import annotations
 
@@ -7,13 +21,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-WORTH = ROOT / "interpretation" / "foundation" / "goppi-worth-hypothesis.md"
-PROTOCOL = (
-    ROOT
-    / "interpretation"
-    / "foundation"
-    / "trustworthy-completion-evaluation-protocol.md"
-)
+LEGACY_GOPPI = ROOT / "legacy" / "judgments" / "goppi" / "foundation"
+WORTH = LEGACY_GOPPI / "worth-hypothesis.md"
+PROTOCOL = LEGACY_GOPPI / "trustworthy-completion-evaluation-protocol.md"
 
 
 def section(text: str, start: str, end: str) -> str:
