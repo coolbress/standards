@@ -92,7 +92,7 @@ maps_from: ["census-data/census-release-ops"]
 
 | Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
 |---|---|---|---|---|---|
-| **REL-001** | definition | 원문은 feature toggle 을 **"technical debt(기술 부채)"** 라고 부르지 **않는다.** 쓰는 표현은 ***"inventory which comes with a carrying cost"*** 다: *"Savvy teams view their Feature Toggles as inventory which comes with a carrying cost, and work to keep that inventory as low as possible."* | `FOWLER-FEATURE-TOGGLES` | high | 2026-08-24 |
-| **REL-002** | synthesis | ⚠️ ***"feature flag 는 부채"* 는 과일반화다.** 원문은 토글을 **수명별로 구분**한다 — Release(며칠~주) · Experiment(시간~주) · Ops(가변) · **Permissioning(수년)**. Permissioning 토글은 *"multiple years"* 존속이 **설계 의도**이고 부채로 취급되지 않으며, 원문의 처방은 *"different toggles [should be] managed in different ways"* 다. **비용은 개수를 줄여 관리할 대상이지 토글 자체가 부채인 것이 아니다** | `FOWLER-FEATURE-TOGGLES` | high | 2026-08-24 |
+| REL-001 | definition | 원문은 feature toggle 을 **"technical debt(기술 부채)"** 라고 부르지 **않는다.** 쓰는 표현은 ***"inventory which comes with a carrying cost"*** 다: *"Savvy teams view their Feature Toggles as inventory which comes with a carrying cost, and work to keep that inventory as low as possible."* | `FOWLER-FEATURE-TOGGLES` | high | 2026-08-24 |
+| REL-002 | synthesis | ⚠️ ***"feature flag 는 부채"* 는 과일반화다.** 원문은 토글을 **수명별로 구분**한다 — Release(며칠~주) · Experiment(시간~주) · Ops(가변) · **Permissioning(수년)**. Permissioning 토글은 *"multiple years"* 존속이 **설계 의도**이고 부채로 취급되지 않으며, 원문의 처방은 *"different toggles [should be] managed in different ways"* 다. **비용은 개수를 줄여 관리할 대상이지 토글 자체가 부채인 것이 아니다** | `FOWLER-FEATURE-TOGGLES` | high | 2026-08-24 |
 
 **재검증 기록 (배치 C)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: 한정 추가** · **불일치 없음**(Codex 가 *"원문이 유형별 비용 차이를 명시적으로 단정하지는 않는다"* 를 더 정밀하게 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)

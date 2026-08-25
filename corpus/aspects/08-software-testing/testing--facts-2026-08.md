@@ -114,8 +114,8 @@ Fucci et al.(2018, 2021)의 종단 연구는 TDD가 외부 품질과 개발자 �
 
 | Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
 |---|---|---|---|---|---|
-| **TDD-001** | empirical | **테스트를 먼저 쓰는 "순서" 자체는 영향이 없었다.** 초록 그대로: *"Quality and productivity improvements were primarily positively associated with the **granularity and uniformity**. **Sequencing**, the order in which test and production code are written, **had no important influence**."* 저자 결론: *"claimed benefits of TDD may not be due to its distinctive test-first dynamic, but rather due to the fact that TDD-like processes encourage **fine-grained, steady steps**"* | `TDD-DISSECTION-2016` | medium-high | 2026-08-24 |
-| **TDD-002** | synthesis | ⚠️ **표본 한정.** TDD-001 은 **전문 개발자 39명에게서 얻은 82개 데이터 포인트**에 기반한다. 따라서 *"순서는 무의미하다"* 로 확정하지 말고 **이 연구는 순서의 영향을 발견하지 못했다** 로 쓴다. 저자도 refactoring effort 항목에서 *"unexpected negative correlation with quality"* 라는 설명되지 않은 결과를 남겼다 | `TDD-DISSECTION-2016` | medium | 2026-08-24 |
+| TDD-001 | empirical | **테스트를 먼저 쓰는 "순서" 자체는 영향이 없었다.** 초록 그대로: *"Quality and productivity improvements were primarily positively associated with the **granularity and uniformity**. **Sequencing**, the order in which test and production code are written, **had no important influence**."* 저자 결론: *"claimed benefits of TDD may not be due to its distinctive test-first dynamic, but rather due to the fact that TDD-like processes encourage **fine-grained, steady steps**"* | `TDD-DISSECTION-2016` | medium-high | 2026-08-24 |
+| TDD-002 | synthesis | ⚠️ **표본 한정.** TDD-001 은 **전문 개발자 39명에게서 얻은 82개 데이터 포인트**에 기반한다. 따라서 *"순서는 무의미하다"* 로 확정하지 말고 **이 연구는 순서의 영향을 발견하지 못했다** 로 쓴다. 저자도 refactoring effort 항목에서 *"unexpected negative correlation with quality"* 라는 설명되지 않은 결과를 남겼다 | `TDD-DISSECTION-2016` | medium | 2026-08-24 |
 
 **재검증 기록 (배치 C)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: 유지 + 1차 출처 부착 + 표본 한정 병기** · **불일치 없음** · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
 
