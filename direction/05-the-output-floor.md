@@ -34,9 +34,13 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III, 하드코딩 금지) · **`.env.example` 커밋 + 실제 `.env`는 ignore** |
 | **개발환경·온보딩** | **README에 clone→install→test가 5명령 이내** · 통합 태스크 러너(Make/스크립트) |
 | **문서** | README · CONTRIBUTING · **CHANGELOG**(Keep a Changelog) · 공개 표면이 있으면 API 레퍼런스 |
+| **거버넌스** 🆕 | **PR 템플릿** — 출처 체크리스트가 **조건 없는 MUST** 로 두는데 이 바닥이 빠뜨렸다(2026-08-26 대조). ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
+| **릴리스** 🆕 | 🟡 **조건부** — SemVer/CalVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 · (공개 릴리스면) 산출물 서명. **출처 체크리스트는 무조건 MUST 로 적었으나 측면 17 의 처분(C50-28)은 *"공개 API/versioned artifact 여부별 선택"*** 이라 조건부로 한정했다. **조건 판정은 미결** — 이 저장소들이 릴리스를 하는가 |
 | **라이선스** 🆕 | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽을 수 있게 선언한다(측면 25). ⚠️ **라이선스가 없으면 기본값은 *전부 저작권 보유*** 이므로 공개 저장소에서는 *"재사용 가능"* 이 성립하지 않는다. **2026-08-26 추가** — 커버리지 조사([`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md))가 이 항목의 부재를 잡았고, **공개 저장소 3/3 이 실제로 위반 중이었다** |
 
 > 🔴 **2026-08-25 커버리지 조사 — 이 바닥에 빠진 것이 있다.** *항상 켜짐* 20측면 중 **10개만** 위 9묶음에 반영돼 있다.
+> 🔴 **2026-08-26 배치 1 — 이 바닥은 자기 출처조차 온전히 옮기지 않았다.** 출처 체크리스트는 **10묶음·MUST 45항목**인데 이 문서는 9묶음이었고, **8항목이 전사에서 빠졌다**(두 묶음이 통째로: *Governance & community* · *Release/versioning*). **`LICENSE` 도 측면 누락이 아니라 전사 누락이었다** — 출처에 `OSI LICENSE (MUST)` 가 처음부터 있었다. 전수 대조는 [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md) §조사 5.
+>
 > 확증 공백 셋의 처분이 끝났다: **25 라이선스는 바닥에 넣었고**(아래 *라이선스* 줄 · 3저장소 반영), **02 ADR · 24 CODEOWNERS 는 넣지 않기로 판정했다**(아래 *판정* 절 — 근거는 코퍼스 자신의 census 와 1인 구조다).
 > **그리고 25 의 누락은 실물로 나타났다 — 공개 저장소 3/3 에 `LICENSE` 가 없다**(2026-08-25 `gh api` 확인).
 > 바닥에 없어서 → 템플릿에 안 들어갔고 → 인스턴스도 안 갖는다. `GAPS` **R5-17** · [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md)

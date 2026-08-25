@@ -81,6 +81,44 @@
 > 그 템플릿으로 뜬 저장소도 안 갖는다. **한 측면의 누락이 세 저장소로 전파됐다.**
 > 재검증 5배치는 이걸 못 잡는다 — **있는 인용을 검사할 뿐 빠진 주제를 찾지 않기 때문이다.**
 
+## 조사 5 (배치 1 · 2026-08-26) — 바닥은 **자기 출처조차 온전히 옮기지 않았다**
+
+R5-17 ③ 의 첫 배치. `direction/05` 의 바닥을 **출처 문서와 항목 단위로 대조**했다
+([`foundation-floor-artifact-checklist`](../corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md)).
+
+**원문은 10묶음 · MUST 45항목. `direction/05` 는 9묶음.** 대조 결과 **8항목이 전사에서 빠졌고,
+그중 두 묶음은 통째로 없다** — *Governance & community* 와 *Release/versioning hygiene*.
+
+| 빠진 항목 | 원문 태그 | 판정 |
+|---|---|---|
+| **PR 템플릿** | **MUST (무조건)** | 🔴 **진짜 누락 — 넣는다.** 조건이 붙지 않은 MUST 인데 빠졌다 |
+| **de-jargon / 금지 내부용어 게이트** | REC; **MUST for a public/internal doc split** | 🔴 **조건에 해당한다** — 이 저장소는 공개인데 하네스 세대명 같은 **내부 용어를 쓴다**. [`content-ci-linting-and-jargon-gate`](../corpus/aspects/22-documentation-knowledge/content-ci-linting-and-jargon-gate.md) 가 이미 규정한다 |
+| SemVer/CalVer 문서화 | MUST | 🟡 **조건부로 한정** — 아래 *출처 충돌* |
+| 릴리스마다 git 태그 | MUST | 🟡 〃 |
+| GitHub Release + 변경 요약 | MUST | 🟡 〃 |
+| 릴리스 산출물 서명 | MUST **for public release** | 🟡 원문이 이미 조건부 |
+| SBOM 파일 | REC→**MUST under EO 14028/CRA** | ✅ **부재가 맞다** — 이 프로젝트는 EO 14028·CRA 적용 대상이 아니다 |
+| `CODE_OF_CONDUCT.md` | REC; **MUST for public community** | 🟡 **조건 미충족** — 공개이지만 기여자가 없다. 기여를 받기 시작하면 켠다 |
+
+### ⚠️ 출처 충돌 — 릴리스 4항목
+
+체크리스트는 이 넷을 **무조건 MUST** 로 적었는데, **측면 17 의 재검증 처분은 조건부다**:
+
+> **C50-28** — *"SemVer+Conventional Commits+자동 changelog+DORA가 보편 release"* → `RETAIN-RN/SPLIT` ·
+> ***"공개 API/versioned artifact 여부와 조직 목적별 선택"***
+
+**체크리스트가 소유 측면보다 강하게 적었다.** 이 대조가 아니었으면 안 보였을 종류다 →
+**조건부로 한정하고, 조건 판정(*이 저장소들이 릴리스를 하는가*)은 소유자 결정으로 남긴다.**
+
+### 🔴 진단이 바뀐다 — `LICENSE` 는 측면 누락이 아니라 **전사 누락**이었다
+
+조사 3 은 *"바닥이 측면 25 를 반영하지 않았다"* 로 진단했다. **더 직접적인 원인이 있었다** —
+**출처 체크리스트의 *Governance & community* 묶음에 `OSI LICENSE (MUST)` 가 처음부터 있었다.**
+바닥은 그 묶음을 통째로 옮기지 않았을 뿐이다.
+
+> **고칠 곳이 달라진다.** *"측면 커버리지를 넓혀라"* 가 아니라 **먼저 *"출처를 온전히 옮겼는지 대조하라"*** 다.
+> 그리고 그 대조는 **기계로 가능하다** — 측면 커버리지 판단과 달리.
+
 ## 종합 — 답은 *"아직 아니다"* 이고, 이유는 셋이다
 
 1. **분류의 근거가 없다** — `gated_archetypes`는 스키마 미정의·미검사이고, `[]` 를 *"항상"* 으로 읽은 것은 세 측면의 claim과 모순된다.
