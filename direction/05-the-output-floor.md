@@ -35,6 +35,11 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 | **개발환경·온보딩** | **README에 clone→install→test가 5명령 이내** · 통합 태스크 러너(Make/스크립트) |
 | **문서** | README · CONTRIBUTING · **CHANGELOG**(Keep a Changelog) · 공개 표면이 있으면 API 레퍼런스 |
 
+> 🔴 **2026-08-25 커버리지 조사 — 이 바닥에 빠진 것이 있다.** *항상 켜짐* 20측면 중 **10개만** 위 9묶음에 반영돼 있다.
+> 확증 공백 셋: **25 라이선스**(`LICENSE` 없음) · **02 아키텍처**(`ADR` 없음) · **24 거버넌스**(`CODEOWNERS` 없음).
+> **그리고 25 의 누락은 실물로 나타났다 — 공개 저장소 3/3 에 `LICENSE` 가 없다**(2026-08-25 `gh api` 확인).
+> 바닥에 없어서 → 템플릿에 안 들어갔고 → 인스턴스도 안 갖는다. `GAPS` **R5-17** · [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md)
+
 ## 이 중 무엇이 **자동으로** 채워지나
 
 **대부분은 `project-template`(만들 것 3)에 한 번 넣으면 끝난다** — 파일이기 때문이다.
@@ -71,6 +76,15 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 ### 먼저: 대부분은 **항상 켜진다**
 
 코퍼스 28측면의 `gated_archetypes` frontmatter가 이미 이걸 규정한다:
+
+> 🔴 **2026-08-25 커버리지 조사 정정 — 이 문단은 필드를 과대해석했다.**
+> `gated_archetypes` 는 **`_schema.md` 에 정의가 없고 `validate_corpus.py` 가 검사하지도 않는다.**
+> 그리고 **`[]` 를 *"항상 켠다"* 로 읽을 근거가 없다** — `[]` 인 **19**(*"instrument **services**"*) ·
+> **20**(*"operate a **running service** against SLOs"*) · **18**(*"publishes to the canonical channel"*)
+> 의 claim 자체가 조건을 전제한다. `[]` 가 *"항상"* 이면 로컬 CLI 에도 SLO·on-call 이 요구된다.
+> **아래 20/7/1 집계는 맞지만, 그 20개가 *무조건 켜진다*는 해석은 아직 근거가 없다.**
+> [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md) · `GAPS` **R5-16**
+
 
 | 종류 | 개수 | 뜻 |
 |---|---|---|
