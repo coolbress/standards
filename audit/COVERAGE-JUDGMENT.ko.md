@@ -92,13 +92,33 @@ R5-17 ③ 의 첫 배치. `direction/05` 의 바닥을 **출처 문서와 항목
 | 빠진 항목 | 원문 태그 | 판정 |
 |---|---|---|
 | **PR 템플릿** | **MUST (무조건)** | 🔴 **진짜 누락 — 넣는다.** 조건이 붙지 않은 MUST 인데 빠졌다 |
-| **de-jargon / 금지 내부용어 게이트** | REC; **MUST for a public/internal doc split** | 🔴 **조건에 해당한다** — 이 저장소는 공개인데 하네스 세대명 같은 **내부 용어를 쓴다**. [`content-ci-linting-and-jargon-gate`](../corpus/aspects/22-documentation-knowledge/content-ci-linting-and-jargon-gate.md) 가 이미 규정한다 |
+| **de-jargon / 금지 내부용어 게이트** | REC; **MUST for a public/internal doc split** | 🟡 **조건 미충족 — 배치 2 에서 정정했다.** 아래 참조 |
 | SemVer/CalVer 문서화 | MUST | 🟡 **조건부로 한정** — 아래 *출처 충돌* |
 | 릴리스마다 git 태그 | MUST | 🟡 〃 |
 | GitHub Release + 변경 요약 | MUST | 🟡 〃 |
 | 릴리스 산출물 서명 | MUST **for public release** | 🟡 원문이 이미 조건부 |
 | SBOM 파일 | REC→**MUST under EO 14028/CRA** | ✅ **부재가 맞다** — 이 프로젝트는 EO 14028·CRA 적용 대상이 아니다 |
 | `CODE_OF_CONDUCT.md` | REC; **MUST for public community** | 🟡 **조건 미충족** — 공개이지만 기여자가 없다. 기여를 받기 시작하면 켠다 |
+
+### ⚠️ 배치 2 정정 (2026-08-26) — de-jargon 게이트는 **조건 미충족**이다
+
+배치 1 은 이 항목을 *"조건에 해당한다 — 공개인데 내부 용어를 쓴다"* 로 판정했다. **틀렸다.**
+[`content-ci-linting-and-jargon-gate`](../corpus/aspects/22-documentation-knowledge/content-ci-linting-and-jargon-gate.md) 원문을 열어 보니
+조건이 *"내부 용어를 쓰는가"* 가 아니라 ***"public/internal doc split 이 있는가"*** 다:
+
+> *"gingoa keeps **internal working-notes local + a clean public face** (a public/internal doc split)"* ·
+> 판정: *"table-stakes **for a public/internal doc split**"*
+
+**이 저장소에는 그 분리가 없다.** `.gitignore` 는 `__pycache__`·`*.pyc`·`.DS_Store` 뿐이고,
+*내부* 성격의 `legacy/`·`audit/`·`direction/` 이 **전부 커밋·공개돼 있다.** 로컬 전용 문서가 없으므로
+**샐 것이 없다.** 하네스 세대명(goppi·gingoa 등)은 이 저장소의 **주제 자체**이지 유출된 은어가 아니다.
+
+그리고 [`24 overview`](../corpus/aspects/24-governance-collaboration-compliance/24-governance-collaboration-compliance--overview.md)가 실제로 경계하는 것은
+*dangling reference* — 원격에서 **로컬 전용 문서**를 인용하는 것이다. 이 저장소는 `GAPS R5-17` 같은 참조가
+**원격에서 그대로 열린다.** → **구조적으로 충족돼 있다.**
+
+> **배치 1 이 조건문을 읽지 않고 제목만 보고 판정했다.** 배치 4(IPW-018)에서 *"제목만 보고 오귀속을 의심했다가
+> 초록을 열어 인용이 맞았음을 확인한"* 것과 **같은 실수의 반대 방향**이다.
 
 ### ⚠️ 출처 충돌 — 릴리스 4항목
 
