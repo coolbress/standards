@@ -33,8 +33,8 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 | **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 대응 SLA(medium+ ≤60일) |
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III, 하드코딩 금지) · **`.env.example` 커밋 + 실제 `.env`는 ignore** |
 | **개발환경·온보딩** | **README에 clone→install→test가 5명령 이내** · 통합 태스크 러너(Make/스크립트) |
-| **문서** | README · CONTRIBUTING · **CHANGELOG**(Keep a Changelog) · 공개 표면이 있으면 API 레퍼런스 |
-| **거버넌스** 🆕 | **PR 템플릿** — 출처 체크리스트가 **조건 없는 MUST** 로 두는데 이 바닥이 빠뜨렸다(2026-08-26 대조). ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
+| **문서** | README · CONTRIBUTING · **CHANGELOG**(Keep a Changelog) · 공개 표면이 있으면 API 레퍼런스. ⚠️ **de-jargon 게이트는 이 저장소에 해당하지 않는다**(2026-08-26 판정) — 조건이 *"public/internal doc split"* 인데 `legacy/`·`audit/`·`direction/` 이 **전부 커밋·공개**돼 로컬 전용 문서가 없다. **샐 것이 없다** |
+| **거버넌스** 🆕 | **PR 템플릿** — 출처 체크리스트가 **조건 없는 MUST** 로 두는데 이 바닥이 빠뜨렸다(2026-08-26 대조). **형태는 census 규격**: 중앙값 3절 · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%뿐). ✅ **2026-08-26 3저장소에 배선**. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
 | **릴리스** 🆕 | 🟡 **조건부** — SemVer/CalVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 · (공개 릴리스면) 산출물 서명. **출처 체크리스트는 무조건 MUST 로 적었으나 측면 17 의 처분(C50-28)은 *"공개 API/versioned artifact 여부별 선택"*** 이라 조건부로 한정했다. **조건 판정은 미결** — 이 저장소들이 릴리스를 하는가 |
 | **라이선스** 🆕 | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽을 수 있게 선언한다(측면 25). ⚠️ **라이선스가 없으면 기본값은 *전부 저작권 보유*** 이므로 공개 저장소에서는 *"재사용 가능"* 이 성립하지 않는다. **2026-08-26 추가** — 커버리지 조사([`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md))가 이 항목의 부재를 잡았고, **공개 저장소 3/3 이 실제로 위반 중이었다** |
 
