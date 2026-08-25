@@ -37,9 +37,53 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 | **라이선스** 🆕 | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽을 수 있게 선언한다(측면 25). ⚠️ **라이선스가 없으면 기본값은 *전부 저작권 보유*** 이므로 공개 저장소에서는 *"재사용 가능"* 이 성립하지 않는다. **2026-08-26 추가** — 커버리지 조사([`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md))가 이 항목의 부재를 잡았고, **공개 저장소 3/3 이 실제로 위반 중이었다** |
 
 > 🔴 **2026-08-25 커버리지 조사 — 이 바닥에 빠진 것이 있다.** *항상 켜짐* 20측면 중 **10개만** 위 9묶음에 반영돼 있다.
-> 확증 공백 셋 중 **25 라이선스는 2026-08-26 에 바닥에 넣고 3저장소에 반영했다**(아래 *라이선스* 줄). 남은 둘: **02 아키텍처**(`ADR` 없음) · **24 거버넌스**(`CODEOWNERS` 없음).
+> 확증 공백 셋의 처분이 끝났다: **25 라이선스는 바닥에 넣었고**(아래 *라이선스* 줄 · 3저장소 반영), **02 ADR · 24 CODEOWNERS 는 넣지 않기로 판정했다**(아래 *판정* 절 — 근거는 코퍼스 자신의 census 와 1인 구조다).
 > **그리고 25 의 누락은 실물로 나타났다 — 공개 저장소 3/3 에 `LICENSE` 가 없다**(2026-08-25 `gh api` 확인).
 > 바닥에 없어서 → 템플릿에 안 들어갔고 → 인스턴스도 안 갖는다. `GAPS` **R5-17** · [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md)
+
+### 판정 (2026-08-26) — **02 ADR · 24 CODEOWNERS 는 바닥에 넣지 않는다**
+
+커버리지 조사가 확증 공백 셋을 냈다(`GAPS` R5-17). **25 라이선스는 넣었다.** 나머지 둘은 조사해 보니
+**넣지 않는 것이 코퍼스 자신의 근거와 맞는다.** 판정을 남긴다 — 다음 사람이 *"빠졌네"* 하고 다시 넣지 않도록.
+
+#### 02 아키텍처 — ADR: **활동은 유지, 산출물 형식은 강제하지 않는다**
+
+`docs/adr/` 를 공개 저장소의 MUST 로 두는 것은 **코퍼스 자신의 census 와 어긋난다**:
+
+| 근거 | 수치 |
+|---|---|
+| 429-저장소 governance census | 형식 **ADR 디렉터리 2~4%** · planning/design 문서 **공개 13~19%** |
+| Buchgeher et al. (IEEE Access 2023, 900+ 저장소) | 채택은 낮으나 상승 중 · **ADR 보유 저장소의 약 50%가 레코드 1~5개** — *"tried, didn't stick"* |
+| [`02 overview`](../corpus/aspects/02-architecture-design/02-architecture-design--overview.md) 자신의 문장 | *"seniors **do** design …, but they rarely **publish** the artifacts to a public remote"* |
+
+그리고 [`24 overview`](../corpus/aspects/24-governance-collaboration-compliance/24-governance-collaboration-compliance--overview.md)가 **반대 방향으로 경고**한다 —
+원격 아티팩트가 `ADR-NNNN` 같은 로컬 전용 문서를 인용하면 **dangling reference** 이고 **내부 구조가 샌다.**
+
+> **활동 자체는 `[lit]` 로 받쳐진다** — *"real 결정을 기록한다"*. 그리고 **이 저장소는 이미 하고 있다**:
+> [`04 §범위 결정`](04-the-plan.md)(R5-11 Python 전용) · [`01`](01-what-i-want.md)의 두 경계 · [`GAPS`](../audit/GAPS.ko.md) 처분란 · PR 본문.
+> **형식이 없는 게 아니라 장소가 다를 뿐이다.** 빈 의식 스텁을 만드는 것은 `02` 자신이 금지한다(*"Never write empty ritual stubs"*).
+
+→ **산출물 바닥에는 넣지 않는다.** 결정 기록은 **워크플로 축**([`04`](04-the-plan.md))이 담당한다.
+C50-10 의 처분도 같다 — *"산출물과 시점은 risk/decision별 조건부"*.
+
+#### 24 거버넌스 — CODEOWNERS: **1인에서 기계적으로 무효다**
+
+CODEOWNERS 의 기능은 *"auto-requests the right reviewers"* 인데 —
+**GitHub 은 PR 작성자에게 리뷰를 요청하지 않는다.** 1인 저장소에서 `* @coolbress` 는 **아무 일도 하지 않는다.**
+
+**실측 2026-08-26** — 집행 경로 자체가 없다:
+
+```
+require_code_owner_review: false
+required_approving_review_count: 0
+```
+
+[`01`](01-what-i-want.md) 경계 ②가 *"사람 동료 리뷰를 시뮬레이션하는 것이 아니다"* 인데,
+**작동하지 않는 CODEOWNERS 를 두는 것이 정확히 그 시뮬레이션이다** — 파일은 있고 집행은 없다.
+`04`의 *"presence≠adequacy"* 가 이름 붙인 것과 같은 형태다.
+
+→ **바닥에 넣지 않는다.** 측면 24 의 나머지 절반(**브랜치 보호**)은 **이미 바닥에 있다**(VCS 위생).
+**다시 여는 조건**: 기여자가 **2인 이상**이 되거나 룰셋에서 `require_code_owner_review` 를 켤 때.
 
 ## 이 중 무엇이 **자동으로** 채워지나
 
