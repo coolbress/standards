@@ -69,7 +69,7 @@ MUST 49개를 9묶음으로, 그리고 그중 무엇이 만들 것 2·3·5에서
 | CI 소요 | **10분 이내** | [`04 facts-cicd`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) `draft` — Fowler 1차 URL |
 | main 빨간불 | **다른 일보다 우선 수리** | *"깨지면 즉시 수리"* |
 | 리뷰 응답 | **자동 — 사람 대기 0** | ⚠️ **2026-08-24 재검증**: *"50% 요인"* 은 **1차 출처에서 찾을 수 없어 삭제**했다(`codereview--facts` **CR-007**). 코퍼스가 받치는 것은 "리뷰는 빨라야 한다"까지다. `@claude`의 이점(사람 대기 0)은 **프로젝트 판단** |
-| 이슈 필수 | **크기 조건부** — 사소한 변경은 바로 PR | [`05 overview`](../corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md) `review-needed` (census n=11 프로젝트) |
+| 이슈 필수 | **크기 조건부** — 사소한 변경은 바로 PR. 기준은 줄 수가 아니라 *"non-trivial"* | 🟡 [`github-workflow-current`](../corpus/aspects/05-scm-workflow/github-workflow-current.md) **`GHW-012`** (n=11 문서 규범 census). ⚠️ **2026-08-26 출처 교체** — 이전 판은 **`SUPERSEDED` 문서**(`05 overview`)를 인용하고 있었다 |
 | Conventional Commits | **PR 제목만**, release-please가 소비할 때만 | [`24 issue-pr-conventions`](../corpus/aspects/24-governance-collaboration-compliance/issue-pr-writing-conventions.md) `review-needed` (N=6,582) |
 | PR 체크리스트 | **최소화** | ⚠️ **2026-08-24 재검증**: *"DORA 안티패턴"* 은 미승계가 아니라 **오귀속이었다** — DORA 는 **외부 승인 기구(CAB)** 를 비판했지 동료 리뷰의 체크리스트를 말한 적이 없다(**CR-008**). 근거는 census 의 "빈 체크리스트가 표준·중앙값 3절"뿐이다 |
 | 첫 조각 | **walking skeleton** — end-to-end 한 줄기 | 루프가 단위 |
