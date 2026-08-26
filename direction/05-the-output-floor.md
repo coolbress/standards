@@ -28,7 +28,7 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 | **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 |
 | **빌드·의존성** | **락파일 커밋** · 의존성 전부 버전 고정 · **GitHub Actions를 커밋 SHA로 핀**(태그는 가변 = 공급망 벡터) · **의존성 갱신 봇**(Dependabot/Renovate) · 재현 가능한 단일 빌드 진입점 · CI에서 warnings-as-errors |
 | **CI/CD** | 매 PR·push에 CI · **lint·typecheck·test·build를 각각 별도 required check로** · 워크플로마다 `permissions:` 최소화(기본 토큰은 write-broad) · `pull_request_target` + 신뢰 불가 checkout 금지 |
-| **코드 품질** | 린터 설정 커밋 · **포매터를 CI가 강제** · **SAST를 CI에**(CodeQL/Semgrep) · **시크릿 탐지**(gitleaks + push protection) |
+| **코드 품질** | 린터 설정 커밋 · **포매터를 CI가 강제** · **SAST를 CI에**(CodeQL/Semgrep — ⚠️ **표준이 요구해서가 아니라 이 프로젝트의 선택이다.** 출처가 *"a deliberate above-OSPS-L1 harness uplift … **not** because a leveled standard mandates it"* 라 명시한다. OSPS 는 L3, OpenSSF Best-Practices 는 릴리스 전 단계로 둔다) · **시크릿 탐지**(gitleaks + push protection) |
 | **테스트** | CI 초록 · **모든 PR에 테스트** · CONTRIBUTING에 테스트 정책 명문화 · **walking skeleton — 실제 end-to-end 한 줄기**(Cockburn) |
 | **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 대응 SLA(medium+ ≤60일) |
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III, 하드코딩 금지) · **`.env.example` 커밋 + 실제 `.env`는 ignore** |
@@ -88,6 +88,43 @@ required_approving_review_count: 0
 
 → **바닥에 넣지 않는다.** 측면 24 의 나머지 절반(**브랜치 보호**)은 **이미 바닥에 있다**(VCS 위생).
 **다시 여는 조건**: 기여자가 **2인 이상**이 되거나 룰셋에서 `require_code_owner_review` 를 켤 때.
+
+### 근거 대장 (배치 3 · 2026-08-26) — 각 묶음은 **어느 측면이 받치나**
+
+바닥의 MUST 는 전부 **출처 문서 하나**([`foundation-floor-artifact-checklist`](../corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md),
+`review-needed` · 처분 **C50-14 SYNTHESIS**)에서 나왔다. 그것을 **소유 측면으로 되짚는다** — 벽의 핵심 4묶음부터.
+
+| 묶음 | 소유 측면 | 그 측면의 재검증 처분 | 실제 강도 |
+|---|---|---|---|
+| **VCS 위생** | [`05 scm-workflow`](../corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md) | **C50-16 `SUPERSEDED`** — 현행 근거는 [`github-workflow-current`](../corpus/aspects/05-scm-workflow/github-workflow-current.md) | 🟢 **가장 강하다** — GHW-001~003 이 GitHub 1차 문서이고, **이 저장소에서 벽 4/4 실물 확증**(직접 푸시·빨간불·소유자 `--admin` 거부)까지 있다 |
+| **빌드·의존성** | [`03 dev-environment`](../corpus/aspects/03-dev-environment/03-dev-environment--overview.md) · [`10 supply-chain`](../corpus/aspects/10-supply-chain-security/10-supply-chain-security--overview.md) | **C50-11 · C50-21 둘 다 `RETAIN-RN/SPLIT`** | 🟡 **항목별로 갈린다** — **Actions SHA 핀은 강하다**(`GHW-005`: GitHub 자신이 *"only a full-length commit SHA is immutable"*). 락파일·버전 고정은 원칙은 서나 *"byte-identical toolchain 보장"* 은 처분이 기각했다 |
+| **CI/CD** | [`04 build-ci`](../corpus/aspects/04-build-ci-engineering/04-build-ci-engineering--overview.md) | **C50-12 `RETAIN-RN/SPLIT`** — *"lint/typecheck/test/build 4종의 unbypassable CI가 보편"* 이 기각됐다 | 🟡 ***우회 불가*는 강하고 *4종이 보편*은 아니다.** 훅 우회는 git 1차 문서로 확인됨(`IPW-005`) · 4종 분리는 **이 프로젝트의 선택** |
+| **코드 품질** | [`07 construction`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) · [`09 app-security`](../corpus/aspects/09-application-security/09-application-security--overview.md) | **C50-18 · C50-20 둘 다 `RETAIN-RN/SPLIT`** | 🟡 린터·포매터 강제는 원칙이 서고, **SAST 는 아래 참조** |
+
+#### 🔴 발견 1 — 바닥이 **소유 측면의 처분보다 강하게** 적었다
+
+네 묶음의 소유 측면이 **하나(SUPERSEDED)를 빼고 전부 `RETAIN-RN/SPLIT`** 이다. 그 처분의 뜻은
+***"복합 보편 주장을 원자 claim 으로 나누고 범위를 좁혀야 한다"*** — 즉 **보편 번들이 기각됐다는 것**이다.
+
+그런데 바닥은 그 항목들을 **조건 없는 MUST** 로 옮겼다. **개별 항목이 틀렸다는 뜻이 아니다** —
+*"이것들이 묶음째로 모든 프로젝트에 보편이다"* 라는 **지위**가 근거보다 세다는 뜻이다.
+배치 5 의 결론과 같은 형태다: **수치는 맞고 지위가 틀렸다.**
+
+#### 🔴 발견 2 — SAST 의 *"선택이다"* 한정이 전사에서 탈락했다
+
+출처는 SAST 를 MUST 로 두면서 **스스로 한정을 단다**:
+
+> *"MUST — **a deliberate above-OSPS-L1 harness uplift**: OSPS leans SAST at **L3**, and OpenSSF Best-Practices
+> treats it as pre-release, but gingoa keeps it in the floor **by choice** — … **not** because a leveled
+> standard mandates it there"*
+
+**이 바닥은 그 한정 없이 *"SAST를 CI에"* 만 옮겼다.** 표준이 그 자리에 요구한다고 읽히지만
+**출처가 명시적으로 아니라고 적어둔 것**이다. → **프로젝트 선택으로 표시한다.**
+
+> 배치 1 이 찾은 것이 *"항목이 통째로 빠졌다"* 였다면, 배치 3 이 찾은 것은 ***"항목은 옮겨졌는데 한정이 떨어졌다"*** 다.
+> 둘 다 같은 원인 — **출처를 요약하면서 조건절을 잃었다.**
+
+⬜ **남은 묶음**(테스트 · 보안·공급망 · 설정·시크릿 · 개발환경 · 문서 · 거버넌스 · 릴리스 · 라이선스)은 **배치 4**.
 
 ## 이 중 무엇이 **자동으로** 채워지나
 
