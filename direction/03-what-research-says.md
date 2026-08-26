@@ -1,6 +1,6 @@
 # 03 — 리서치는 무엇을 말하는가
 
-> 재도출 2026-08-26 · **rev3** · 프로그램 [#49](https://github.com/coolbress/standards/issues/49) **3단계**.
+> 재도출 2026-08-26 · **rev4**(같은 날 ⚪ 4건 해소) · 프로그램 [#49](https://github.com/coolbress/standards/issues/49) **3단계**.
 > 이전 판은 원문장 뒤에 재검증 결과를 덧붙여서, **읽는 사람이 무엇에 기대도 되는지 매번 판단해야 했다.**
 > 이 판은 **검증된 위치를 그대로 진술한다.** 교정의 내력은 여기 없다 — 코퍼스 claim table 과
 > [`audit/`](../audit/) 에 있다. 여기는 **방향에 걸리는 것만** 추린 색인이다.
@@ -25,12 +25,12 @@
 | 2 | Git Flow 는 **창시자가 2020년에 웹앱에 비추천**했다 | 🟢 원 글의 *"Note of reflection"* / 🟡 **전면 철회가 아니라 범위 한정** — 명시적 버전·다중버전 지원엔 *"may still be as good of a fit"* · `GHW-008` |
 | 3 | **리뷰는 빨라야 한다** — Google 응답 규범 1영업일 | 🟡 실측 *"4시간"* 은 **응답이 아니라 전 과정 지연**이고 첫 피드백은 소형 1시간 미만·대형 약 5시간 · `CR-006` |
 | 4 | 리뷰의 전제는 **작은 변경** — Google 중앙값 **24줄** · **200줄 목표 · 400줄 상한** | 🟢 중앙값 24줄 · 🟡 *"급락"* 은 **LOC 가 아니라 리뷰 시간**에 대한 서술이고, 표본은 **한 제품 그룹**이다 · `CR-001`~`005` |
-| 5 | 진짜 CI = 메인라인 + 자동빌드 + 자기검증 테스트 + **10분 이내** + 깨지면 즉시 수리 | ⚪ **미검증** — 출처는 `cicd-release--facts`(`draft`) |
+| 5 | 진짜 CI = 메인라인 + 자동빌드 + 자기검증 테스트 + **10분 이내** + 깨지면 즉시 수리 | 🟡 **원문에 있으나 실증이 아니라 가이드라인** — Fowler: *"the **XP guideline** of a ten minute build is perfectly within reason"* · *"nobody has a higher priority task than fixing the build"*(Beck). **측정된 임계가 아니다** · `CIB-001` |
 | 6 | Delivery ≠ Deployment. feature flag 는 **보유 비용(carrying cost)** 을 갖는다 | 🟡 원문은 *"부채"* 가 아니라 *"inventory which comes with a carrying cost"* 이고 **토글 수명별로 구분**한다 · `REL-001·002` |
-| 7 | 테스트 피라미드 비율 | ⚪ **충돌 등재** — Google 80/15/5 vs Fowler 계열 ~70/20/10 ([`matrix--facts`](../corpus/matrix--facts-2026-08.md)) |
+| 7 | 테스트 피라미드 **80/15/5**(unit/integration/e2e) | 🟡 **수치는 정확하고 *"실측"* 이 틀렸다** — 원문은 *"As a very rough guideline, **we tend to aim** to have a mix of around 80%…15%…5%"* 로 **목표**다. 그래서 *"Google vs Fowler ~70/20/10"* 도 **데이터 충돌이 아니라 두 실무 권고의 차이**이고, 어느 쪽을 따를지는 🔵 판단이다 · `PYR-001·002` |
 | 8 | **TDD 의 *"테스트 먼저"* 순서는 영향이 없었다** — 효과의 원천은 **granularity·uniformity** | 🟢 *"Sequencing… had no important influence"* / 🟡 표본 **전문 개발자 39명·82 데이터포인트** → *"순서는 무의미하다"* 가 아니라 *"이 연구는 영향을 발견하지 못했다"* · `TDD-001·002` |
 | 9 | **"Done" = 머지 전 CI 녹색** | 🟡 **Scrum 은 DoD 의 내용을 규정하지 않는다**(`IPW-011`) · 실증은 별도 연구(DoD 24개·항목 143개: 테스트 16/24 · 코드리뷰 13/24, **편의표집** · `IPW-012`) · 🔵 **이 저장소는 `required_approving_review_count: 0`** 이라 *"리뷰 승인"* 을 요구하지 않는다 · `IPW-013` |
-| 10 | Conventional Commits 같은 형식 규약은 **자동화가 소비할 때만** 가치 | ⚪ **미검증** |
+| 10 | Conventional Commits 같은 형식 규약은 **자동화가 소비할 때만** 가치 | **한 문장이 둘로 갈린다** — 🟢 앞: `semantic-release` 는 **CC 명세에 전적으로 의존**해 SemVer 를 매핑한다(도구 사실) · 🔵 뒤: *"아니면 cargo cult"* 는 **판단**이다 — 자동화 없이 CC 채택의 효과를 잰 실증을 찾지 못했다 · `REL-003·004` |
 
 ### 하중을 받는 것 vs 의식(ceremony)
 
@@ -101,10 +101,9 @@
 
 ## 생성 코드도 같은 게이트
 
-⚪ **미검증** — 코퍼스([`07`](../corpus/aspects/07-construction-code-review/))의 진술은 다음과 같고, 1차 출처를 아직 열지 않았다:
-
-> 생성된 코드는 **같은 게이트**를 지난다 — 리뷰·테스트·스타일. **신뢰로 머지되지 않는다.**
-> 작성자가 모든 줄을 소유하고 설명할 수 있어야 하며, **리뷰어는 프롬프트가 아니라 diff 를 리뷰한다.**
+- 🟢 ⭐ **규범이 아니라 관측된 현실이다.** 에이전트 PR **33,000건 · 에이전트 5종**: *"Not-merged PRs tend to involve **larger code changes, touch more files**, and **often do not pass the project's CI/CD pipeline validation**."* → **CI 통과 여부가 머지된 것과 안 된 것을 가른다** (`AGP-001`). 부수: 문서·CI·빌드 갱신이 머지율 최고, **성능·버그수정이 최저**.
+- 🟡 **그러나 사람 손이 절반 가까이 필요하다.** Claude Code PR **567건 · 157 프로젝트**: **83.8% 머지**되지만 **무수정 통합은 54.9%** 뿐이고 **45.1% 가 사람 수정**을 거친다 — 특히 **버그 수정 · 문서 · 프로젝트별 표준 준수**. → ***"작성자가 모든 줄을 소유하고 설명할 수 있어야 한다"* 를 이 수치가 받친다** (`AGP-002`).
+- ⚠️ 둘 다 **프리프린트**이고 `AGP-002` 는 **에이전트 1종·OSS 표본** 한정이다.
 
 ## 남은 공백
 
