@@ -4,7 +4,7 @@ corpus/INDEX.md	17533	1787558487	4cae532a39103051dde3163962113db218d9efe8e90803e
 corpus/PROVENANCE.md	4257	1787558487	57d5261483e148999971a7e5b303f455a189bd27ace042438198bc962064f1a6	active
 corpus/TAXONOMY.md	3617	1787558487	5fcec547367620ac8b3b306421cdd0df114069c9df57551435b4f0435b708f74	active
 corpus/_meta/README.md	462	1785659225	14813521bafff31c0a4ed18a1cfa477d6414cda2f191c0d5951544118efba09f	active
-corpus/_meta/sources.jsonl	35506	1787712351	f4b440867d481408e1e1335823b53dfcfeca4a688d18005eba56c3d097fa6895	active
+corpus/_meta/sources.jsonl	36360	1787714119	4a02d622149d016ca422b07b834acddc5b5b9d87358e44180dfed5018331c7f8	active
 corpus/_schema.md	9064	1787558487	9354bc5fe27ef0cb3d465e046e2d1c385df8c3c1f5e27e14aa674f18a39b2c03	active
 corpus/aspects/01-requirements-planning/01-requirements-planning--overview.md	19766	1787558487	244b1ee4c2577181d5c31f788344e9bead458ec0eeb43d23b4ef1c55c83660d3	active
 corpus/aspects/01-requirements-planning/brownfield-planning-adoption.md	6824	1785658907	6d1d7002905f091848f65317b24020a22b5398436b88aa353a7d3879b50014ca	active
@@ -25,7 +25,7 @@ corpus/aspects/04-build-ci-engineering/04-build-ci-engineering--overview.md	1342
 corpus/aspects/04-build-ci-engineering/brownfield-adoption-floor.md	8404	1785658908	1b9e5c4b648b97c54a051167336080903fd86905fb6691648f391327ce414ce6	active
 corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md	10086	1787558487	5cc0bb1713baa5c092ea9b3bbb4070f03c282561e1c59041f8f6d2d088edc950	active
 corpus/aspects/04-build-ci-engineering/cross-project-reuse--facts-2026-08.md	9194	1787664159	94f072738716856318f741dbfe6223c63fed13aa8be2ee2786cc609b55ea881b	active
-corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md	17491	1787712393	c2106fb94f2c5f4c0ca1a9faba2b861dea687ba1f8a59d2c89814be309fcb685	active
+corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md	19480	1787714234	4f888e408da51287cdec2c302da9661c7c88c38338717980917e99798e17eb5b	active
 corpus/aspects/04-build-ci-engineering/visibility-provision-matrix.md	7186	1785658908	15b50f355b4e57ac213aaab98faa56c0bc6875ae362db89fe27f23f0bbe4c645	active
 corpus/aspects/04-build-ci-engineering/web-scaffold-baseline--facts-2026-08.md	17510	1787558487	9851a482a44fa9890818f635e99efea0162efde77cd4830e26d6fb96260bc5e8	active
 corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md	14913	1787613158	0ac0a5f34b94fbcd350ffc02c5968b315add77f7750ad3598e3deb09f74e26c9	active

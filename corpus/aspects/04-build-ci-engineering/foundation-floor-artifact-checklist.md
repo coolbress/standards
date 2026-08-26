@@ -144,8 +144,8 @@ private-free-plan-gated — not misses.
 
 ## Sources
 OpenSSF Scorecard checks (~20, incl. SBOM + Webhooks) https://github.com/ossf/scorecard/blob/main/docs/checks.md ·
-OpenSSF Best Practices Badge https://www.bestpractices.dev/en/criteria/0 · OSPS Baseline (~41 controls × 3 levels;
-level map above) https://baseline.openssf.org/versions/2025-02-25.html ·
+OpenSSF Best Practices Badge https://www.bestpractices.dev/en/criteria/0 · OSPS Baseline (3 levels; 통제 수는 **FFA-005 충돌 등재** — `~41` 은 현행과 맞지 않는다;
+level map above) — **현행 핀**(2026-08-26 갱신 · 이전 핀 `2025-02-25` 는 두 판 뒤였다 · FFA-004): https://baseline.openssf.org/versions/2026-02-19.html ·
 SLSA v1.2 Build track https://slsa.dev/spec/v1.2/build-track-basics · SLSA v1.2 Source track (new in v1.2)
 https://slsa.dev/spec/v1.2/source-requirements · 12-Factor https://12factor.net/ · GitHub community health files
 https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file ·
@@ -170,6 +170,9 @@ ISO/IEC/IEEE 12207:2026 https://www.iso.org/standard/90219.html · Dev Container
 | FFA-005 | synthesis | ⚠️ **통제 수 *"~41 controls"* 는 현행과 맞지 않고, 검증자가 갈렸다.** 현행 판을 센 결과가 **64**(L1 24 + L2 19 + L3 21, `Controls Overview` 항목 계수) vs **80**(카테고리 9개에 걸친 requirement 계수)로 **둘이 어긋난다.** 절차 §5 대로 **결론을 내지 않고 충돌로 등재**한다. ⚠️ **다만 *"~41 이 아니다"* 는 두 검증자가 일치**한다 (parent control 과 numbered requirement 를 다르게 셌을 가능성이 남는다) | `OSPS-BASELINE-2026-02-19` | low (충돌) | 2026-08-26 **충돌 등재** |
 | FFA-006 | normative | 🔴 **SLSA Source L2 인용이 원문과 다르다.** 이 문서는 *"signed commits (REC; SLSA **Source L2 = signed**/protected history)"* 라 적어 **커밋 서명**을 정당화한다. 원문은 서명을 말하지 않는다 — *"Branch history is **continuous, immutable, and retained**, and the SCS issues **Source Provenance Attestations** for each new Source Revision."* **연속성·불변성·출처증명이지 서명이 아니다.** → 서명 권고의 근거로 Source L2 를 쓰지 않는다 | `SLSA-V12-SOURCE` | high | 2026-08-26 **인용 정정** |
 
+| FFA-007 | vendor-behavior | ✅ **Scorecard 인용은 맞다.** 체크 목록에 **`SBOM`** 과 **`Webhooks`** 가 실제로 있고(각각 SBOM 문서 보유 · 웹훅 토큰 인증 확인), 총 개수도 *"~20"* 수준이다(열거 20종: Binary-Artifacts · Branch-Protection · CI-Tests · CII-Best-Practices · Code-Review · Contributors · Dangerous-Workflow · Dependency-Update-Tool · Fuzzing · License · Maintained · Packaging · Pinned-Dependencies · SAST · SBOM · Security-Policy · Signed-Releases · Token-Permissions · Vulnerabilities · Webhooks) | `SCORECARD-CHECKS` | medium-high | 2026-08-26 |
+| FFA-008 | vendor-behavior | 🔴 ***"CodeQL on private repos needs GHAS"* — 사실은 맞고 제품명이 낡았다.** GitHub 현행 문서: *"If you want to use code scanning on private repositories, you need a **GitHub Code Security license**."* **GHAS 가 아니라 `GitHub Code Security`** 다(제품이 갈렸다). ⚠️ **함의**: 비공개 저장소에서는 **Pro 만으로 SAST MUST 를 CodeQL 로 채울 수 없다** — 별도 유료 제품이 필요하다. 대안은 이 문서가 이미 든 **Semgrep OSS** 다. 🟢 **다만 지금 깨진 것은 없다** — `ruleset.json` 이 요구하는 것은 `ci / lint`·`typecheck`·`test`·`build` **4개뿐**이고 **SAST 는 아직 벽에 없다**(만들 것 ⑫ 미착수). **⑫ 를 지을 때 지켜야 할 제약**으로 등재한다 | `GITHUB-CODE-SCANNING` | high | 2026-08-26 **신규** |
+
 > **배치 1 의 결론 — 레벨 주장은 살아남았고, 낡은 것은 핀과 인용이다.**
 > SAST L3 · SBOM L3 · MFA L1 **세 건 다 현행 표준에서 확인**됐고 두 검증자가 일치했다.
 > 무너진 것은 ⓐ **버전 핀**(두 판 뒤처짐) ⓑ **통제 수**(~41 은 아니다 · 정확한 값은 충돌)
@@ -178,5 +181,7 @@ ISO/IEC/IEEE 12207:2026 https://www.iso.org/standard/90219.html · Dev Container
 > **배치 1~5 와 같은 형태가 또 나왔다** — *결론은 맞고 인용이 틀렸다.* 다만 여기서는 **하나가 더 있다**:
 > **외부 표준은 갱신된다.** 리서치 인용은 논문이 안 변해서 한 번 맞으면 유지되지만,
 > **레벨 표준은 판이 바뀌므로 핀에 만료가 붙어야 한다.**
+
+**재검증 기록 (`05` 배치 2 · 나머지 인용)** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` · **판정: 유지 1(Scorecard) · 신규 1(CodeQL 제품명 변경 + ⑫ 제약)** · **OSPS 핀을 `2026-02-19` 로 올렸다**(FFA-004 처분) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
 
 **재검증 기록 (`05` 배치 1)** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의, 결론 비공개) · **판정: 유지 2 · 범위 정정 1 · 인용 정정 1 · 신규(핀 노후) 1 · 충돌 등재 1** · ⚠️ **불일치 1건**(통제 수 64 vs 80 — 결론 내지 않고 등재) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
