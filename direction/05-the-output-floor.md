@@ -18,6 +18,17 @@
 `review-needed` — OpenSSF Scorecard · Best-Practices Badge · OSPS Baseline · SLSA v1.2 · 12-Factor ·
 GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리스트. **MUST 49 · REC 22.**
 
+> ✅ **2026-08-26 `05` 재검증 배치 1 — 그 외부 표준 인용을 1차 출처로 확인했다**(claim table **FFA-001~006**).
+> **레벨 주장 3건은 현행 표준에서도 그대로다** — SAST **L3**(`OSPS-VM-06.02`) · SBOM-on-release **L3**(`OSPS-QA-02.02`) ·
+> MFA **L1**(`OSPS-AC-01.01`). 두 검증자 일치. **결론은 무너지지 않았다.**
+> 🔴 **낡은 것은 핀과 인용이다**: ⓐ OSPS Baseline 을 **`2025-02-25`** 로 핀했는데 현행은 **`v2026.02.19`**(두 판 뒤)이고
+> OSPS 자신이 *"only the **current** version should be used"* 라 한다 ⓑ *"~41 controls"* 는 현행과 안 맞는다(**충돌 등재** — 64 vs 80)
+> ⓒ 🔴 ***"SLSA Source L2 = signed history"* 는 원문과 다르다** — 원문은 *"continuous, immutable, and retained"* + **Source Provenance Attestations** 이고
+> **서명이 아니다.** → **커밋 서명 권고의 근거로 Source L2 를 쓰지 않는다.**
+>
+> ⚠️ **여기서 새로 배운 것**: 리서치 인용은 논문이 안 변해서 한 번 맞으면 유지되지만,
+> **레벨 표준은 판이 바뀐다 — 핀에 만료가 붙어야 한다.**
+
 > **이 문서의 핵심 규칙**: *"② 기초는 **가장 약한 바닥 항목**으로 점수가 매겨진다."*
 > 하나가 빠지면 나머지가 아무리 좋아도 그 수준이다.
 
