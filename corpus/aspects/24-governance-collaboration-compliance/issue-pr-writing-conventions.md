@@ -139,6 +139,9 @@ shipped section design rather than surfacing a gap.
 | IPC-002 | local-census | **PR 템플릿 규격.** 중앙값 **3절**(Summary/Description + Testing + Checklist 가 modal) · 체크리스트는 **빈 상태로 출하 62%**(pre-checked 0.2% · 중앙값 5항목) · 인라인 HTML 주석 가이드 **70%** · *"type of change"* 는 **11.5%** 뿐이고 있을 때 84.5%가 체크박스 → **CC 를 쓰는 저장소는 뺀다** | `ISSUE-PR-CENSUS-2026` | medium-high | 2026-08-26 **앵커 신설** |
 | IPC-003 | local-census | **이슈 폼: 도움말은 사실상 필수, required 는 본문 필드에.** input 성 필드의 **87%** 가 `description`/`placeholder` 를 갖는다. required 비율은 **textarea 57.8% vs 체크박스 3.4%** — **체크박스에는 required 를 걸지 않는다**가 야생의 규범이다 | `ISSUE-PR-CENSUS-2026` | medium-high | 2026-08-26 **앵커 신설** |
 
+| IPC-004 | empirical | 🔴 **제3자 대조 — 우리 수치는 *상위 저장소* 의 것이다.** Zhang et al.(IST 2021)이 **1.8M 저장소에서 뽑은 538,864 OSS** 를 재니 **PR 템플릿 채택은 1.2%** 였고, 채택자는 *"mostly **prevalent** open-source projects"* 였다. **우리 census 의 44~53% 와 모순이 아니다** — 우리 모집단이 **top-starred** 이기 때문이고, **그 논문이 편향의 방향을 직접 말해 준다.** → ***"PR 템플릿은 절반이 쓴다"* 로 쓰면 안 된다. *"상위 저장소에서 절반, 전체에서는 ~1%"* 다** | `PRT-ADOPTION-IST-2021`; IPC-002 | high | 2026-08-26 **신규(제3자)** |
+| IPC-005 | empirical | ✅ **이슈 폼 쪽은 제3자가 같은 방향을 준다.** Sülün et al.(TOSEM 2024)이 **100개 대규모 프로젝트의 템플릿 350개**와 **이슈 190만 건 이상**을 분석해 **100개 중 99개가 이슈 템플릿을 쓰고 YAML 폼 선호가 증가**한다고 보고한다. 우리 census 의 *"이슈 템플릿 68~78% · YAML 폼 54% > legacy .md 32%"* 와 **방향이 일치**한다(수치는 모집단이 달라 직접 비교 불가) | `ISSUE-TEMPLATES-TOSEM-2024`; IPC-003 | high | 2026-08-26 **신규(제3자)** |
+
 > ⚠️ **세 행 모두 `local-census` 다 — 강도를 🟢 로 올리지 않는다.**
 > 표본은 크고(N=1104~6,582 저장소 · 10,181~20,837 필드) 재현 가능하지만 **이 저장소가 직접 수행한 census** 이고
 > **제3자 검증이 없다.** 측정 대상이 외부 실물(공개 저장소)이라는 점에서 `LOCAL-PROBE-*`(소유자 자기 저장소 관측)보다는 강하다.
@@ -146,5 +149,7 @@ shipped section design rather than surfacing a gap.
 > 🔴 **왜 이 앵커가 필요했나**: `direction/03` 이 이 수치들을 **🟢 로 표시**하고 있었는데
 > **claim ID 가 하나도 없었다.** 근거 문서에 claim table 이 없으면 *"어디까지 확인된 것인지"* 를 기계로 물을 수 없고,
 > 그 상태가 정확히 **`GHW-012` 가 폐기 문서에 갇혀 있던 것과 같은 구조**다.
+
+**제3자 대조 기록 (2026-08-26)** — 소유자 요청으로 **자체 census 를 제3자 연구와 대조**했다. **모순은 없었다.** 🔴 **다만 모집단 한정이 드러났다** — PR 템플릿 채택은 **전체 1.8M 저장소에서 1.2%** 이고 우리 44~53% 는 **top-starred 표본의 것**이다. Zhang et al. 이 *"adopters are mostly **prevalent** open-source projects"* 라 편향의 방향을 직접 말해 준다. → **IPC-002 는 그대로 🟡 이되, *"상위 저장소 기준"* 이라는 한정을 반드시 붙여 쓴다.** 이슈 폼 쪽(TOSEM 2024)은 방향이 일치한다 · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
 
 **앵커 신설 기록** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` · **판정: 신규 3(수치는 배치 3 에서 원자료 재계산으로 이미 재현됨 · 여기서는 *앵커*를 만든다)** · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
