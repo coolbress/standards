@@ -153,3 +153,30 @@ GitHub protected branches https://docs.github.com/en/repositories/configuring-br
 CodeQL on private repos needs GHAS https://docs.github.com/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning ·
 Semgrep OSS https://semgrep.dev/docs/ · SWEBOK v4 https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf ·
 ISO/IEC/IEEE 12207:2026 https://www.iso.org/standard/90219.html · Dev Containers https://containers.dev/
+
+## Claim table — 외부 표준 인용 검증 (`05` 재검증 배치 1 · 1차 출처 직접 확인 2026-08-26)
+
+이 문서는 [`direction/05`](../../../direction/05-the-output-floor.md) 의 **MUST 45 전부**를 떠받친다
+(그 바닥이 인용하는 코퍼스 문서는 **이것 하나뿐**이다). 그런데 이 문서의 처분은
+[`CLAIM-REVALIDATION`](../../../audit/CLAIM-REVALIDATION.ko.md) **C50-14 `RETAIN-RN/SYNTHESIS` · *"파일 presence≠adequacy"*** 다.
+→ **여기가 인용한 외부 표준의 레벨 주장부터 1차 출처로 확인한다.** 반증 가능한 것이기 때문이다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| FFA-001 | normative | ✅ **SAST 가 OSPS L3 라는 것은 맞다.** `OSPS-VM-06.02`: *"While active, all changes to the project's codebase MUST be automatically evaluated against a documented policy for security weaknesses and blocked…"* · **Maturity Level 3 only**. → 이 바닥이 SAST 를 MUST 로 두는 것은 **표준보다 위**이고, 이 문서가 그것을 *"by choice"* 라 밝힌 것은 **정확하다** | `OSPS-BASELINE-2026-02-19` | high | 2026-08-26 |
+| FFA-002 | normative | ✅ **SBOM-on-release 가 L3 라는 것도 맞다.** `OSPS-QA-02.02`: *"When the project has made a release, all compiled released software assets MUST be delivered with a software bill of materials."* · **L3** | `OSPS-BASELINE-2026-02-19` | high | 2026-08-26 |
+| FFA-003 | normative | ⚠️ **MFA 는 L1 이 맞으나 범위가 다르다.** `OSPS-AC-01.01` 은 L1·2·3 전부에 적용되지만, 원문은 *"read or **modify** a **sensitive resource** in the project's **authoritative repository**"* 다. 이 문서가 적은 *"MFA for **write access**"* 는 **읽기를 빼고 대상을 넓힌** 표현이다 — 방향은 맞고 **경계가 다르다** | `OSPS-BASELINE-2026-02-19` | high | 2026-08-26 **범위 정정** |
+| FFA-004 | vendor-behavior | 🔴 **버전 핀이 낡았다 — 두 판 뒤처졌다.** 이 문서는 OSPS Baseline 을 **`2025-02-25`** 로 핀했는데 현행은 **`v2026.02.19`** 이고 그 사이 **`v2025.10.10`** 이 있었다. OSPS 사이트가 직접 *"Only the version labeled as **'current'** should be used for new compliance efforts"* 라 한다. ✅ **다만 위 세 레벨 배정은 현행에서도 그대로다** — **결론은 무너지지 않았고 핀만 낡았다** | `OSPS-BASELINE-2026-02-19` | high | 2026-08-26 **신규** |
+| FFA-005 | synthesis | ⚠️ **통제 수 *"~41 controls"* 는 현행과 맞지 않고, 검증자가 갈렸다.** 현행 판을 센 결과가 **64**(L1 24 + L2 19 + L3 21, `Controls Overview` 항목 계수) vs **80**(카테고리 9개에 걸친 requirement 계수)로 **둘이 어긋난다.** 절차 §5 대로 **결론을 내지 않고 충돌로 등재**한다. ⚠️ **다만 *"~41 이 아니다"* 는 두 검증자가 일치**한다 (parent control 과 numbered requirement 를 다르게 셌을 가능성이 남는다) | `OSPS-BASELINE-2026-02-19` | low (충돌) | 2026-08-26 **충돌 등재** |
+| FFA-006 | normative | 🔴 **SLSA Source L2 인용이 원문과 다르다.** 이 문서는 *"signed commits (REC; SLSA **Source L2 = signed**/protected history)"* 라 적어 **커밋 서명**을 정당화한다. 원문은 서명을 말하지 않는다 — *"Branch history is **continuous, immutable, and retained**, and the SCS issues **Source Provenance Attestations** for each new Source Revision."* **연속성·불변성·출처증명이지 서명이 아니다.** → 서명 권고의 근거로 Source L2 를 쓰지 않는다 | `SLSA-V12-SOURCE` | high | 2026-08-26 **인용 정정** |
+
+> **배치 1 의 결론 — 레벨 주장은 살아남았고, 낡은 것은 핀과 인용이다.**
+> SAST L3 · SBOM L3 · MFA L1 **세 건 다 현행 표준에서 확인**됐고 두 검증자가 일치했다.
+> 무너진 것은 ⓐ **버전 핀**(두 판 뒤처짐) ⓑ **통제 수**(~41 은 아니다 · 정확한 값은 충돌)
+> ⓒ **SLSA Source L2 를 서명으로 읽은 것**(원문은 연속성·불변성·출처증명이다).
+>
+> **배치 1~5 와 같은 형태가 또 나왔다** — *결론은 맞고 인용이 틀렸다.* 다만 여기서는 **하나가 더 있다**:
+> **외부 표준은 갱신된다.** 리서치 인용은 논문이 안 변해서 한 번 맞으면 유지되지만,
+> **레벨 표준은 판이 바뀌므로 핀에 만료가 붙어야 한다.**
+
+**재검증 기록 (`05` 배치 1)** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의, 결론 비공개) · **판정: 유지 2 · 범위 정정 1 · 인용 정정 1 · 신규(핀 노후) 1 · 충돌 등재 1** · ⚠️ **불일치 1건**(통제 수 64 vs 80 — 결론 내지 않고 등재) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
