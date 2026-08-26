@@ -29,6 +29,7 @@
 | 03 | [`direction/03-what-research-says.md`](direction/03-what-research-says.md) | 리서치는 무엇을 말하는가 |
 | 04 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | 그래서 무엇을 만드는가 — 만들 것 12 |
 | 05 | [`direction/05-the-output-floor.md`](direction/05-the-output-floor.md) | **무엇이 남아야 시니어급인가** — 산출물 바닥 |
+| 06 | [`direction/06-how-we-work.md`](direction/06-how-we-work.md) | 에이전트와 어떻게 일하는가 — 진입로·프로젝트 흐름·모델 라우팅 |
 
 ### 계보가 궁금하면
 [`legacy/LINEAGE.md`](legacy/LINEAGE.md) — 여섯 하네스 · 결정 64건 · 스펙 11종 제목 · 되살릴 수 없는 실측 12건
