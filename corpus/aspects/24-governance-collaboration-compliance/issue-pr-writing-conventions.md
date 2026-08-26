@@ -126,3 +126,25 @@ shipped section design rather than surfacing a gap.
 → feeds the 3-tier ledger and [[template-standard-dogfood-gap]]; grounded in `census-data/census-issue-pr/`
 (`conventions.py`, `conventions-records.json`, `conventions-stats.json`, `conventions-roster-records.json`,
 `conventions-roster.json`).
+
+## Claim table — `direction` 이 기대는 수치 (2026-08-26 앵커 신설)
+
+[`direction/03`](../../../direction/03-what-research-says.md) *"이슈·PR 은 어떻게 쓰나"* 절의 세 불릿이
+**이 문서를 근거로 하면서 앵커가 없었다** — 문서에 claim table 이 없어 **인용 사슬이 여기서 끊겼다.**
+`GHW-012` 와 **같은 자리의 문제**이고, 같은 방식으로 해소한다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| IPC-001 | local-census | **이슈 제목에 커밋 규약을 걸지 마라 — 대비가 핵심이다.** 독립 표본 2개에서 재현: **이슈 제목 CC 채택 1~2%**(top-2000 1% · top-500 2%) vs **PR 33~45%**(≥70% 채택 저장소 21~34%). → 규약을 **이슈에는 안 쓰고 PR 에는 쓴다**는 것이 야생의 실제 형태다 | `ISSUE-PR-CENSUS-2026` | medium-high | 2026-08-26 **앵커 신설** |
+| IPC-002 | local-census | **PR 템플릿 규격.** 중앙값 **3절**(Summary/Description + Testing + Checklist 가 modal) · 체크리스트는 **빈 상태로 출하 62%**(pre-checked 0.2% · 중앙값 5항목) · 인라인 HTML 주석 가이드 **70%** · *"type of change"* 는 **11.5%** 뿐이고 있을 때 84.5%가 체크박스 → **CC 를 쓰는 저장소는 뺀다** | `ISSUE-PR-CENSUS-2026` | medium-high | 2026-08-26 **앵커 신설** |
+| IPC-003 | local-census | **이슈 폼: 도움말은 사실상 필수, required 는 본문 필드에.** input 성 필드의 **87%** 가 `description`/`placeholder` 를 갖는다. required 비율은 **textarea 57.8% vs 체크박스 3.4%** — **체크박스에는 required 를 걸지 않는다**가 야생의 규범이다 | `ISSUE-PR-CENSUS-2026` | medium-high | 2026-08-26 **앵커 신설** |
+
+> ⚠️ **세 행 모두 `local-census` 다 — 강도를 🟢 로 올리지 않는다.**
+> 표본은 크고(N=1104~6,582 저장소 · 10,181~20,837 필드) 재현 가능하지만 **이 저장소가 직접 수행한 census** 이고
+> **제3자 검증이 없다.** 측정 대상이 외부 실물(공개 저장소)이라는 점에서 `LOCAL-PROBE-*`(소유자 자기 저장소 관측)보다는 강하다.
+>
+> 🔴 **왜 이 앵커가 필요했나**: `direction/03` 이 이 수치들을 **🟢 로 표시**하고 있었는데
+> **claim ID 가 하나도 없었다.** 근거 문서에 claim table 이 없으면 *"어디까지 확인된 것인지"* 를 기계로 물을 수 없고,
+> 그 상태가 정확히 **`GHW-012` 가 폐기 문서에 갇혀 있던 것과 같은 구조**다.
+
+**앵커 신설 기록** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` · **판정: 신규 3(수치는 배치 3 에서 원자료 재계산으로 이미 재현됨 · 여기서는 *앵커*를 만든다)** · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
