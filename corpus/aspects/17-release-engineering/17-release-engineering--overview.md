@@ -96,3 +96,13 @@ maps_from: ["census-data/census-release-ops"]
 | REL-002 | synthesis | ⚠️ ***"feature flag 는 부채"* 는 과일반화다.** 원문은 토글을 **수명별로 구분**한다 — Release(며칠~주) · Experiment(시간~주) · Ops(가변) · **Permissioning(수년)**. Permissioning 토글은 *"multiple years"* 존속이 **설계 의도**이고 부채로 취급되지 않으며, 원문의 처방은 *"different toggles [should be] managed in different ways"* 다. **비용은 개수를 줄여 관리할 대상이지 토글 자체가 부채인 것이 아니다** | `FOWLER-FEATURE-TOGGLES` | high | 2026-08-24 |
 
 **재검증 기록 (배치 C)** — 검증일 `2026-08-24` · 검증자 `Claude Opus 5` + `codex-cli 0.145.0`(독립 질의) · **판정: 한정 추가** · **불일치 없음**(Codex 가 *"원문이 유형별 비용 차이를 명시적으로 단정하지는 않는다"* 를 더 정밀하게 짚었다) · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
+
+
+## Claim table — Conventional Commits 의 가치 조건 (`03` 미검증 해소 · 2026-08-26)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| REL-003 | vendor-behavior | ✅ **자동화가 CC 에 의존하는 것은 도구 사실이다.** `semantic-release` 는 구조화된 커밋 메시지 없이 동작하지 않고 **Conventional Commits 명세에 전적으로 의존**해 변경을 SemVer 로 매핑한다. → *"자동화가 소비할 때 가치가 있다"* 의 **앞 절반은 사실**이다 | `SEMANTIC-RELEASE-DOC` | high | 2026-08-26 **신규** |
+| REL-004 | synthesis | 🔵 ***"아니면 cargo cult"* 는 판단이다.** CC 채택이 **자동화 없이도** 성과에 영향을 주는지 잰 실증 연구를 찾지 못했다 — 나온 것은 실무 문서와 도구 문서뿐이다. **탐색 범위**: CC 채택 효과 · semantic-release 영향 · 저장소 단위 실증. → **뒷 절반은 프로젝트 판단으로 표시**한다 | `SEMANTIC-RELEASE-DOC` (부재 확인 대상) | medium (공백 확인) | 2026-08-26 **판단으로 분류** |
+
+**재검증 기록 (`03` ⚪ 해소 · Conventional Commits)** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` · **판정: 사실 1 · 판단 1** · **한 문장을 둘로 갈랐다** — *"자동화가 소비할 때만 가치"* 에서 **앞은 도구 사실, 뒤는 판단**이다 · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)

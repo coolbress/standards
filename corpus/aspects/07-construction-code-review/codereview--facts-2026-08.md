@@ -124,3 +124,15 @@ method: "Haiku web-research agents, facts-only rules ([정의/규정]/[데이터
 - [2차] https://medium.com/@patibandha/gitflow-vs-github-flow-vs-trunk-based-development-dded3c8c7af1
 - [1차] https://trunkbaseddevelopment.com/
 - [1차] https://www.conventionalcommits.org/en/v1.0.0/
+
+
+## Claim table — 생성 코드도 같은 게이트인가 (`03` 미검증 해소 · 1차 출처 직접 확인 2026-08-26)
+
+`direction/03` 의 *"생성 코드도 같은 게이트"* 절은 **미검증**이었다. 이제 실증이 있다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| AGP-001 | empirical | ⭐ **CI 통과 여부가 머지된 에이전트 PR 과 안 된 것을 가른다.** **33,000 건 · 에이전트 5종** 대규모 분석: *"Not-merged PRs tend to involve **larger code changes, touch more files**, and **often do not pass the project's CI/CD pipeline validation**."* → ***"생성 코드가 같은 게이트를 지난다"* 는 규범이 아니라 관측된 현실**이다. 부수: 문서·CI·빌드 갱신 과제가 머지율이 가장 높고 **성능·버그수정이 가장 낮다** | `AGENTIC-PR-FAIL-2026` | high | 2026-08-26 **신규** |
+| AGP-002 | empirical | ⚠️ **그러나 사람 손이 절반 가까이 필요하다.** Claude Code PR **567건 · 157 프로젝트**: **83.8% 머지**되지만 무수정 통합은 **54.9%** 뿐이고 **45.1% 는 사람 수정을 거친다** — 특히 **버그 수정 · 문서 · 프로젝트별 표준 준수**에서. 저자 결론도 *"they still benefit from **human oversight and refinement**"* 다. → ***"작성자가 모든 줄을 소유하고 설명할 수 있어야 한다"* 를 이 수치가 받친다** | `AGENTIC-PR-USE-2025` | medium-high (단일 에이전트·OSS 표본) | 2026-08-26 **신규** |
+
+**재검증 기록 (`03` ⚪ 해소 · 생성 코드)** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` · **판정: 신규 2** · ⚠️ 둘 다 **프리프린트**이고 AGP-002 는 **에이전트 1종·OSS 표본** 한정 · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)

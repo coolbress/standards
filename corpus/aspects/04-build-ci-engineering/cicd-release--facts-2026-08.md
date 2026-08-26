@@ -184,3 +184,12 @@ Continuous Integration(CI)은 팀원 모두가 최소 일일 단위로 mainline�
 - [1차] https://www.uncommonengineer.com/docs/books/papers/Google3/
 - [2차] https://www.sonarsource.com/resources/library/monorepo/
 - [2차] https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment
+
+
+## Claim table — 10분 빌드 (`03` 미검증 해소 · 1차 출처 직접 확인 2026-08-26)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| CIB-001 | normative | ✅ **10분 빌드는 원문에 있다 — 단 실증이 아니라 가이드라인이다.** Fowler: *"the **XP guideline** of a **ten minute build** is perfectly within reason."* 출처가 XP(Beck)이고 Fowler 가 **합리적이라 승인**한 형태다 — **측정된 임계가 아니다.** 같은 글이 *"nobody has a higher priority task than **fixing the build**"*(Beck)로 *"깨지면 즉시 수리"* 도 받친다 | `FOWLER-CI` | high (인용) / **medium (규범 강도)** | 2026-08-26 **신규** |
+
+**재검증 기록 (`03` ⚪ 해소 · 10분 빌드)** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` · **판정: 신규 1(지위 = 실무 가이드라인)** · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)

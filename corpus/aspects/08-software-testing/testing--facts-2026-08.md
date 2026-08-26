@@ -192,3 +192,13 @@ ISTQB Foundation Level은 네 가지 테스트 레벨을 정의한다 [https://g
 - [1차] Rafique & Mišić, "The Effects of Test-Driven Development on External Quality and Productivity: A Meta-Analysis" – https://link.springer.com/article/10.1007/s10664-016-9490-0
 - [2차] Never Working In Theory, "Test-Driven Development" – https://neverworkintheory.org/2016/10/05/test-driven-development.html
 - [1차] ISTQB Glossary – https://glossary.istqb.org/
+
+
+## Claim table — 테스트 피라미드 비율 (`03` 미검증 해소 · 1차 출처 직접 확인 2026-08-26)
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| PYR-001 | normative | 🔴 **수치는 정확하고 *"실측"* 이 틀렸다.** 원문 그대로: *"As a very rough guideline, **we tend to aim** to have a mix of around **80%** of our tests being narrow-scoped **unit** tests…; **15%** medium-scoped **integration** tests…; and **5%** **end-to-end** tests."* 80/15/5 도 맞고 unit/integration/e2e 축인 것도 맞다. **그러나 *"we tend to aim"* — 목표이지 Google 테스트 스위트의 측정치가 아니다.** 코퍼스와 `direction/03` 이 *"Google **실측** 80/15/5"* 라 적어 왔다 | `SWE-AT-GOOGLE-CH11` | high | 2026-08-26 **지위 정정** |
+| PYR-002 | synthesis | ⚠️ **그래서 *"Google 80/15/5 vs Fowler ~70/20/10"* 은 데이터 충돌이 아니다.** [`matrix--facts`](../../matrix--facts-2026-08.md) 가 이 둘을 충돌로 등재했으나, **양쪽 다 실무 권고**다 — 측정치끼리 어긋나는 것이 아니라 **두 권고가 다른 것**이다. 충돌의 성격이 바뀐다: *"어느 데이터가 맞나"* 가 아니라 *"어느 권고를 따르나"* 이고 **후자는 프로젝트 판단**이다 | `SWE-AT-GOOGLE-CH11` | high | 2026-08-26 **충돌 재분류** |
+
+**재검증 기록 (`03` ⚪ 해소 · 피라미드)** — 검증일 `2026-08-26` · 검증자 `Claude Opus 5` · **판정: 지위 정정 1 · 충돌 재분류 1** · 절차 [`reverification-protocol`](../../methods/reverification-protocol.md)
