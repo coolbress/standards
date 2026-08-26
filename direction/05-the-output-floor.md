@@ -1,8 +1,11 @@
 # 05 — 산출물이 시니어급이려면 무엇이 저장소에 있어야 하나
 
-> 신설 2026-08-24 · rev1 · **소유자 지적으로 만들어졌다** — `01`~`04`가 *일하는 방식*만 다루고
-> *산출물의 품질*은 거의 다루지 않았다. 목적은 *"현업 워크플로를 따라 기획·빌드하고
-> **최종 산출물이 시니어 엔지니어급**이 되는 것"* 인데 뒤 절반이 비어 있었다.
+> 재도출 2026-08-26 · **rev2** · 프로그램 [#49](https://github.com/coolbress/standards/issues/49) **3단계 배치 2**.
+> 신설 2026-08-24 — 소유자 지적으로 만들어졌다: `01`~`04`가 *일하는 방식*만 다루고 *산출물의 품질*은 비어 있었다.
+> **이 판은 각 항목의 근거 강도를 본문에 넣는다.** 교정의 내력은 여기 없다 —
+> [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md) 와 코퍼스 claim table 에 있다.
+
+**강도 표시는 [`03`](03-what-research-says.md) 과 같다**: 🟢 1차 확인 · 🟡 한정 · 🔵 판단(근거로 인용하지 않는다) · ⚪ 미검증.
 
 ## 왜 별도 문서인가
 
@@ -12,156 +15,63 @@
 **둘은 다른 축이다.** 워크플로를 완벽히 따라도 `.gitignore`가 없고 락파일이 없고 시크릿이 커밋돼 있으면
 산출물은 시니어급이 아니다.
 
-## 근거
+## 근거 — 그리고 그 근거의 한계
 
-[`corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md`](../corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md)
-`review-needed` — OpenSSF Scorecard · Best-Practices Badge · OSPS Baseline · SLSA v1.2 · 12-Factor ·
-GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리스트. **MUST 49 · REC 22.**
+바닥의 출처는 [`foundation-floor-artifact-checklist`](../corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md)
+**하나**다(`review-needed` · **MUST 45 · 10묶음**). OpenSSF Scorecard · Best-Practices Badge · OSPS Baseline ·
+SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조해 만든 독립 체크리스트다.
 
-> ✅ **2026-08-26 `05` 재검증 배치 1 — 그 외부 표준 인용을 1차 출처로 확인했다**(claim table **FFA-001~006**).
-> **레벨 주장 3건은 현행 표준에서도 그대로다** — SAST **L3**(`OSPS-VM-06.02`) · SBOM-on-release **L3**(`OSPS-QA-02.02`) ·
-> MFA **L1**(`OSPS-AC-01.01`). 두 검증자 일치. **결론은 무너지지 않았다.**
-> 🔴 **낡은 것은 핀과 인용이다**: ⓐ OSPS Baseline 을 **`2025-02-25`** 로 핀했는데 현행은 **`v2026.02.19`**(두 판 뒤)이고
-> OSPS 자신이 *"only the **current** version should be used"* 라 한다 ⓑ *"~41 controls"* 는 현행과 안 맞는다(**충돌 등재** — 64 vs 80)
-> ⓒ 🔴 ***"SLSA Source L2 = signed history"* 는 원문과 다르다** — 원문은 *"continuous, immutable, and retained"* + **Source Provenance Attestations** 이고
-> **서명이 아니다.** → **커밋 서명 권고의 근거로 Source L2 를 쓰지 않는다.**
+🔴 **그 문서의 처분을 먼저 읽어야 한다** — **C50-14 `RETAIN-RN/SYNTHESIS` · *"파일 presence≠adequacy"***.
+**파일이 있다는 것이 적절하다는 뜻이 아니다.** 야생 실측이 그것을 잰다:
+**CONTRIBUTING 이 present 62% 인데 adequate 는 41%** — **있는 것 중 1/3 이 빌드·테스트 설명 없는 스텁**이다.
+
+> **템플릿이 파일을 넣어주는 것은 presence 만 해결한다.** 스텁을 모든 인스턴스에 복사하면
+> 이 프로젝트가 그 1/3 통계에 기여하는 쪽이 된다.
+
+✅ **외부 표준 인용은 1차 출처로 확인했다**(`FFA-001~008`): SAST **L3** · SBOM-on-release **L3** · MFA **L1** —
+**세 레벨 다 현행 표준에서 유지**된다. 🔴 다만 **OSPS 핀이 두 판 뒤처져 있었고**(2026-08-26 갱신),
+***"SLSA Source L2 = signed history"* 는 원문과 다르다** — 원문은 *"continuous, immutable, and retained"* +
+**Source Provenance Attestations** 이고 **서명이 아니다**(`FFA-006`).
+
+## 바닥 — 12묶음
+
+| 묶음 | 무엇이 있어야 하나 | 소유 측면 · 강도 |
+|---|---|---|
+| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 | 🟢 **가장 강하다** — `github-workflow-current`(GitHub 1차 문서 `GHW-001~003`) + **이 저장소 벽 4/4 실물 확증** |
+| **빌드·의존성** | **락파일 커밋** · 의존성 버전 고정 · **Actions 를 커밋 SHA 로 핀** · **의존성 갱신 봇** · 재현 가능한 단일 빌드 진입점 · CI 에서 warnings-as-errors | 🟢 SHA 핀(`GHW-005`: *"only a full-length commit SHA is immutable"*) / 🟡 나머지는 `03`·`10` 이 소유하고 **처분이 `SPLIT`**(보편 번들 기각) |
+| **CI/CD** | 매 PR·push 에 CI · **lint·typecheck·test·build 를 각각 별도 required check 로** · 워크플로마다 `permissions:` 최소화 · `pull_request_target` + 신뢰 불가 checkout 금지 | 🟢 **우회 불가**는 git 1차 문서가 받친다(`IPW-005`) / 🔵 **4종 분리는 이 프로젝트의 선택** — `04` 의 처분(`C50-12`)이 *"4종이 보편"* 을 기각했다 |
+| **코드 품질** | 린터 설정 커밋 · **포매터를 CI 가 강제** · **SAST** · **시크릿 탐지**(gitleaks + push protection) | 🟡 린터·포매터는 원칙이 선다 / 🔵 **SAST 는 표준이 요구해서가 아니라 선택이다** — 출처가 *"a deliberate above-OSPS-L1 harness uplift … **not** because a leveled standard mandates it"* 라 명시하고, **OSPS 는 L3 에 둔다**(`FFA-001`) |
+| **테스트** | CI 초록 · **모든 PR 에 테스트** · CONTRIBUTING 에 테스트 정책 · **walking skeleton — 실제 end-to-end 한 줄기**(Cockburn) | 🟢 **동반은 강하다**(`04 foundation-floor` MUST · `08` 이 4대 검사 중 하나로) / 🟡 피라미드 비율은 **권고이지 실측이 아니다**(`PYR-001`) |
+| **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 SLA(medium+ ≤60일) | 🟢 MFA 는 **OSPS L1**(`FFA-003` — 단 원문 범위는 *"read or modify a **sensitive resource**"*) / 🟡 나머지는 `09`·`10` 소유, 처분 `SPLIT` |
+| **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III) · **`.env.example` 커밋 + 실제 `.env` 는 ignore** | 🟡 `06` 소유 · 처분이 *"12-Factor 는 **service 맥락**"* 이라 **모든 아키타입 적용은 기각** |
+| **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
+| **문서** | README(**≈100% · 유일한 보편**) · CONTRIBUTING(75/70%) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · census 52/51%) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
+| **거버넌스** | **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟢 census · ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다(42/39%) |
+| **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **소유자 결정** — `coolbress/workflows` 만 릴리스한다(셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
+| **라이선스** | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽게 선언한다 | 🟢 **채택률과 무관하게 선다** — 법적 효과가 있고 **없으면 공개 저장소에서 *"재사용 가능"* 이 성립하지 않는다**. 🔴 다만 **per-file SPDX·scan·CLA 는 바닥이 아니다**(`C50-39` 가 *"모든 파일 SPDX"* 를 기각) |
+
+> 🔴 **이 표 전체에 걸리는 한정 하나** — 소유 측면 대부분의 재검증 처분이 **`RETAIN-RN/SPLIT`**, 즉
+> ***"복합 보편 주장을 원자 claim 으로 나누고 범위를 좁혀야 한다"*** 다. **개별 항목이 틀렸다는 게 아니라
+> *"묶음째로 모든 프로젝트에 보편"* 이라는 지위가 근거보다 세다.**
 >
-> ⚠️ **여기서 새로 배운 것**: 리서치 인용은 논문이 안 변해서 한 번 맞으면 유지되지만,
-> **레벨 표준은 판이 바뀐다 — 핀에 만료가 붙어야 한다.**
+> 🔴 **그리고 두 종류가 한 MUST 로 묶여 있다.** 코퍼스가 직접 논증한다 — *"브랜치 보호 13% … **바로 그것이
+> 비엔지니어가 요구할 생각을 못 하는 시니어 관행이다**"*. **보호 장치는 드문 것이 켜야 할 이유**이고,
+> **협업 문서는 드물면 그냥 안 쓰는 것**이다. 같은 기준으로 읽으면 안 된다.
 
-> **이 문서의 핵심 규칙**: *"② 기초는 **가장 약한 바닥 항목**으로 점수가 매겨진다."*
-> 하나가 빠지면 나머지가 아무리 좋아도 그 수준이다.
+### 바닥에 **넣지 않기로** 판정한 것
 
-## 바닥 — MUST 49개를 9묶음으로
+부재가 판정의 결과라는 것을 적어두지 않으면 **누락과 구별되지 않는다.**
 
-| 묶음 | 무엇이 있어야 하나 |
-|---|---|
-| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 |
-| **빌드·의존성** | **락파일 커밋** · 의존성 전부 버전 고정 · **GitHub Actions를 커밋 SHA로 핀**(태그는 가변 = 공급망 벡터) · **의존성 갱신 봇**(Dependabot/Renovate) · 재현 가능한 단일 빌드 진입점 · CI에서 warnings-as-errors |
-| **CI/CD** | 매 PR·push에 CI · **lint·typecheck·test·build를 각각 별도 required check로** · 워크플로마다 `permissions:` 최소화(기본 토큰은 write-broad) · `pull_request_target` + 신뢰 불가 checkout 금지 |
-| **코드 품질** | 린터 설정 커밋 · **포매터를 CI가 강제** · **SAST를 CI에**(CodeQL/Semgrep — ⚠️ **표준이 요구해서가 아니라 이 프로젝트의 선택이다.** 출처가 *"a deliberate above-OSPS-L1 harness uplift … **not** because a leveled standard mandates it"* 라 명시한다. OSPS 는 L3, OpenSSF Best-Practices 는 릴리스 전 단계로 둔다) · **시크릿 탐지**(gitleaks + push protection) |
-| **테스트** | CI 초록 · **모든 PR에 테스트** · CONTRIBUTING에 테스트 정책 명문화 · **walking skeleton — 실제 end-to-end 한 줄기**(Cockburn) |
-| **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 대응 SLA(medium+ ≤60일) |
-| **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III, 하드코딩 금지) · **`.env.example` 커밋 + 실제 `.env`는 ignore** |
-| **개발환경·온보딩** | **README에 clone→install→test가 5명령 이내** · 통합 태스크 러너(Make/스크립트) |
-| **문서** | README(**≈100% · 유일한 보편**) · CONTRIBUTING(75/70%) · 🟡 **CHANGELOG 는 릴리스 묶음과 함께 조건부다**(2026-08-26 · `GAPS` R5-19) — *Keep a Changelog* 는 **릴리스 단위로 항목을 쌓는 형식**이라 **릴리스를 하지 않는 저장소에는 채울 단위가 없다**. census 도 52/51% 로 동전 던지기다 · 공개 표면이 있으면 API 레퍼런스. ⚠️ **de-jargon 게이트는 이 저장소에 해당하지 않는다**(2026-08-26 판정) — 조건이 *"public/internal doc split"* 인데 `legacy/`·`audit/`·`direction/` 이 **전부 커밋·공개**돼 로컬 전용 문서가 없다. **샐 것이 없다** |
-| **거버넌스** 🆕 | **PR 템플릿** — 출처 체크리스트가 **조건 없는 MUST** 로 두는데 이 바닥이 빠뜨렸다(2026-08-26 대조). **형태는 census 규격**: 중앙값 3절 · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%뿐). ✅ **2026-08-26 3저장소에 배선**. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
-| **릴리스** 🆕 | 🔒 **조건 확정 2026-08-26 — 참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약. **소유자 결정: `coolbress/workflows` 만 릴리스를 한다** — 셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**이기 때문이다. `standards` 는 계속 변하는 문서이고, `project-template` 은 **`gh repo create --template` 이 기본 브랜치를 뜨지 태그를 참조하지 않아** 릴리스가 기능적으로 무의미하다. 🔴 **핀과 태그의 역할을 가른다** — **핀은 반드시 커밋 SHA**(태그는 가변 = 공급망 벡터 · `GHW-005`), **태그는 그 SHA 가 무엇인지 읽기 위한 것**이다: `@<SHA> # v1.0.0`. ⚠️ *산출물 서명*은 **배포 아티팩트가 있는 릴리스에만** 해당하고 재사용 워크플로에는 배포물이 없다. ✅ **실행됨**: [`workflows` v1.0.0](https://github.com/coolbress/workflows/releases/tag/v1.0.0) · 템플릿의 핀을 그 커밋으로 올리고 버전을 주석으로 달았다. 출처 체크리스트는 이 넷을 **무조건 MUST** 로 적었으나 측면 17 의 처분(**C50-28** *"공개 API/versioned artifact 여부별 선택"*)이 조건부이므로 **조건부가 맞다** |
-| **라이선스** 🆕 | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽을 수 있게 선언한다(측면 25). ⚠️ **라이선스가 없으면 기본값은 *전부 저작권 보유*** 이므로 공개 저장소에서는 *"재사용 가능"* 이 성립하지 않는다. **2026-08-26 추가** — 커버리지 조사([`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md))가 이 항목의 부재를 잡았고, **공개 저장소 3/3 이 실제로 위반 중이었다** |
-
-> 🔴 **2026-08-25 커버리지 조사 — 이 바닥에 빠진 것이 있다.** *항상 켜짐* 20측면 중 **10개만** 위 9묶음에 반영돼 있다.
-> 🔴 **2026-08-26 배치 1 — 이 바닥은 자기 출처조차 온전히 옮기지 않았다.** 출처 체크리스트는 **10묶음·MUST 45항목**인데 이 문서는 9묶음이었고, **8항목이 전사에서 빠졌다**(두 묶음이 통째로: *Governance & community* · *Release/versioning*). **`LICENSE` 도 측면 누락이 아니라 전사 누락이었다** — 출처에 `OSI LICENSE (MUST)` 가 처음부터 있었다. 전수 대조는 [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md) §조사 5.
->
-> 확증 공백 셋의 처분이 끝났다: **25 라이선스는 바닥에 넣었고**(아래 *라이선스* 줄 · 3저장소 반영), **02 ADR · 24 CODEOWNERS 는 넣지 않기로 판정했다**(아래 *판정* 절 — 근거는 코퍼스 자신의 census 와 1인 구조다).
-> **그리고 25 의 누락은 실물로 나타났다 — 공개 저장소 3/3 에 `LICENSE` 가 없다**(2026-08-25 `gh api` 확인).
-> 바닥에 없어서 → 템플릿에 안 들어갔고 → 인스턴스도 안 갖는다. `GAPS` **R5-17** · [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md)
-
-### 판정 (2026-08-26) — **02 ADR · 24 CODEOWNERS 는 바닥에 넣지 않는다**
-
-커버리지 조사가 확증 공백 셋을 냈다(`GAPS` R5-17). **25 라이선스는 넣었다.** 나머지 둘은 조사해 보니
-**넣지 않는 것이 코퍼스 자신의 근거와 맞는다.** 판정을 남긴다 — 다음 사람이 *"빠졌네"* 하고 다시 넣지 않도록.
-
-#### 02 아키텍처 — ADR: **활동은 유지, 산출물 형식은 강제하지 않는다**
-
-`docs/adr/` 를 공개 저장소의 MUST 로 두는 것은 **코퍼스 자신의 census 와 어긋난다**:
-
-| 근거 | 수치 |
-|---|---|
-| 429-저장소 governance census | 형식 **ADR 디렉터리 2~4%** · planning/design 문서 **공개 13~19%** |
-| Buchgeher et al. (IEEE Access 2023, 900+ 저장소) | 채택은 낮으나 상승 중 · **ADR 보유 저장소의 약 50%가 레코드 1~5개** — *"tried, didn't stick"* |
-| [`02 overview`](../corpus/aspects/02-architecture-design/02-architecture-design--overview.md) 자신의 문장 | *"seniors **do** design …, but they rarely **publish** the artifacts to a public remote"* |
-
-그리고 [`24 overview`](../corpus/aspects/24-governance-collaboration-compliance/24-governance-collaboration-compliance--overview.md)가 **반대 방향으로 경고**한다 —
-원격 아티팩트가 `ADR-NNNN` 같은 로컬 전용 문서를 인용하면 **dangling reference** 이고 **내부 구조가 샌다.**
-
-> **활동 자체는 `[lit]` 로 받쳐진다** — *"real 결정을 기록한다"*. 그리고 **이 저장소는 이미 하고 있다**:
-> [`04 §범위 결정`](04-the-plan.md)(R5-11 Python 전용) · [`01`](01-what-i-want.md)의 두 경계 · [`GAPS`](../audit/GAPS.ko.md) 처분란 · PR 본문.
-> **형식이 없는 게 아니라 장소가 다를 뿐이다.** 빈 의식 스텁을 만드는 것은 `02` 자신이 금지한다(*"Never write empty ritual stubs"*).
-
-→ **산출물 바닥에는 넣지 않는다.** 결정 기록은 **워크플로 축**([`04`](04-the-plan.md))이 담당한다.
-C50-10 의 처분도 같다 — *"산출물과 시점은 risk/decision별 조건부"*.
-
-#### 24 거버넌스 — CODEOWNERS: **1인에서 기계적으로 무효다**
-
-CODEOWNERS 의 기능은 *"auto-requests the right reviewers"* 인데 —
-**GitHub 은 PR 작성자에게 리뷰를 요청하지 않는다.** 1인 저장소에서 `* @coolbress` 는 **아무 일도 하지 않는다.**
-
-**실측 2026-08-26** — 집행 경로 자체가 없다:
-
-```
-require_code_owner_review: false
-required_approving_review_count: 0
-```
-
-[`01`](01-what-i-want.md) 경계 ②가 *"사람 동료 리뷰를 시뮬레이션하는 것이 아니다"* 인데,
-**작동하지 않는 CODEOWNERS 를 두는 것이 정확히 그 시뮬레이션이다** — 파일은 있고 집행은 없다.
-`04`의 *"presence≠adequacy"* 가 이름 붙인 것과 같은 형태다.
-
-→ **바닥에 넣지 않는다.** 측면 24 의 나머지 절반(**브랜치 보호**)은 **이미 바닥에 있다**(VCS 위생).
-**다시 여는 조건**: 기여자가 **2인 이상**이 되거나 룰셋에서 `require_code_owner_review` 를 켤 때.
-
-### 근거 대장 (배치 3 · 2026-08-26) — 각 묶음은 **어느 측면이 받치나**
-
-바닥의 MUST 는 전부 **출처 문서 하나**([`foundation-floor-artifact-checklist`](../corpus/aspects/04-build-ci-engineering/foundation-floor-artifact-checklist.md),
-`review-needed` · 처분 **C50-14 SYNTHESIS**)에서 나왔다. 그것을 **소유 측면으로 되짚는다** — 벽의 핵심 4묶음부터.
-
-| 묶음 | 소유 측면 | 그 측면의 재검증 처분 | 실제 강도 |
-|---|---|---|---|
-| **VCS 위생** | [`05 scm-workflow`](../corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md) | **C50-16 `SUPERSEDED`** — 현행 근거는 [`github-workflow-current`](../corpus/aspects/05-scm-workflow/github-workflow-current.md) | 🟢 **가장 강하다** — GHW-001~003 이 GitHub 1차 문서이고, **이 저장소에서 벽 4/4 실물 확증**(직접 푸시·빨간불·소유자 `--admin` 거부)까지 있다 |
-| **빌드·의존성** | [`03 dev-environment`](../corpus/aspects/03-dev-environment/03-dev-environment--overview.md) · [`10 supply-chain`](../corpus/aspects/10-supply-chain-security/10-supply-chain-security--overview.md) | **C50-11 · C50-21 둘 다 `RETAIN-RN/SPLIT`** | 🟡 **항목별로 갈린다** — **Actions SHA 핀은 강하다**(`GHW-005`: GitHub 자신이 *"only a full-length commit SHA is immutable"*). 락파일·버전 고정은 원칙은 서나 *"byte-identical toolchain 보장"* 은 처분이 기각했다 |
-| **CI/CD** | [`04 build-ci`](../corpus/aspects/04-build-ci-engineering/04-build-ci-engineering--overview.md) | **C50-12 `RETAIN-RN/SPLIT`** — *"lint/typecheck/test/build 4종의 unbypassable CI가 보편"* 이 기각됐다 | 🟡 ***우회 불가*는 강하고 *4종이 보편*은 아니다.** 훅 우회는 git 1차 문서로 확인됨(`IPW-005`) · 4종 분리는 **이 프로젝트의 선택** |
-| **코드 품질** | [`07 construction`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) · [`09 app-security`](../corpus/aspects/09-application-security/09-application-security--overview.md) | **C50-18 · C50-20 둘 다 `RETAIN-RN/SPLIT`** | 🟡 린터·포매터 강제는 원칙이 서고, **SAST 는 아래 참조** |
-
-#### 배치 4 (2026-08-26) — 남은 7묶음
-
-| 묶음 | 소유 측면 | 처분 | 실제 강도 |
-|---|---|---|---|
-| **테스트** | [`08 software-testing`](../corpus/aspects/08-software-testing/08-software-testing--overview.md) | **C50-19 `SPLIT`** — *"pyramid+coverage floor+contract+quarantine 가 모든 프로젝트의 표준"* 기각 · *"oracle·위험·아키타입별 전략이 먼저"* | 🟢 **테스트 동반은 강하다**(`04 foundation-floor` MUST · `08` 이 test 를 4대 CI 검사 중 하나로) · 🟡 **피라미드 비율·커버리지 문턱은 조건부** |
-| **보안·공급망** | [`09`](../corpus/aspects/09-application-security/09-application-security--overview.md) · [`10`](../corpus/aspects/10-supply-chain-security/10-supply-chain-security--overview.md) | **C50-20 · C50-21 `SPLIT`** | 🟢 시크릿 탐지·푸시 보호·Dependabot 은 **보호 장치**라 야생 채택률이 낮은 것이 **켜야 할 이유**다 · 🟡 *"전부를 CI 게이트로"* 는 오탐 고려 필요 |
-| **설정·시크릿** | [`06 config-secrets`](../corpus/aspects/06-config-secrets/06-config-secrets--overview.md) | **C50-17 `SPLIT`** — *"12-Factor 는 **service 맥락**"* | 🟡 `.env.example` + 하드코딩 금지는 서고, **12-Factor 전체를 모든 아키타입에 적용하는 것은 처분이 기각** |
-| **개발환경·온보딩** | [`03`](../corpus/aspects/03-dev-environment/03-dev-environment--overview.md) · [`23 DX`](../corpus/aspects/23-developer-experience/23-developer-experience--overview.md) | **C50-11 · C50-36 `SPLIT`** | 🟢 *README 5명령* 은 **onboarding 시간을 재는 것**이라 검사 가능 · 🟡 IDP·platform 문턱은 조직별 |
-| **문서** | [`22 documentation`](../corpus/aspects/22-documentation-knowledge/22-documentation-knowledge--overview.md) | **C50-34 `SPLIT`** — *"문서 목록보다 **audience/task** 가 기준"* | 📊 **census 가 갈라준다** — README **≈100%**(유일한 보편) · CONTRIBUTING **75/70%** · CHANGELOG **52/51%** |
-| **거버넌스** | [`24`](../corpus/aspects/24-governance-collaboration-compliance/24-governance-collaboration-compliance--overview.md) | **C50-37 `SPLIT`** — *"공개·기여·소유 구조별"* | 📊 PR 템플릿 **53/54%**, ⚠️ **N=2000 에서 44%** · CoC 42/39%(공개 OSS 조건부) · CODEOWNERS 26/30% |
-| **라이선스** | [`25`](../corpus/aspects/25-licensing-foss-compliance/25-licensing-foss-compliance--overview.md) | **C50-39 `SPLIT`** — *"단일 license+**모든 파일 SPDX**+scan+DCO/CLA 가 보편"* 기각 · *"법률 자문 대체 금지"* | 🟢 **루트 `LICENSE` 는 채택률과 무관하게 선다**(법적 효과 · 없으면 재사용 불가) · 🔴 **per-file SPDX·scan·CLA 는 바닥이 아니다** — 이 바닥은 루트 파일만 요구한다 |
-
-#### 🔴 발견 3 — 희소성의 의미가 **정반대인 두 종류**가 섞여 있다
-
-코퍼스가 이 논증을 직접 한다: *"Code-Review 와 Branch-Protection 은 야생에서 가장 약하게 집행되는 통제다*
-*(리뷰 41% · 브랜치 보호 **13%**) — **바로 그것이 비엔지니어가 요구할 생각을 못 하는 시니어 관행이다**"*.
-
-→ **보호 장치**는 드물다는 것이 **기본으로 켜야 할 이유**이고, **협업 문서**는 드물면 그냥 안 쓰는 것이다.
-**둘을 같은 MUST 로 묶으면 안 된다.** 이 바닥은 지금 묶어놨다.
-
-#### 🔴 발견 4 — 그리고 `presence ≠ adequacy` 가 이 바닥 전체의 처분이다
-
-census 가 직접 잰다: **CONTRIBUTING present 62% vs adequate 41%** — **있는 것 중 1/3 이 빌드·테스트 설명이 없는 스텁**이다.
-**템플릿이 파일을 넣어주는 것은 presence 만 해결한다.** 스텁을 모든 인스턴스에 복사하면 그 1/3 통계에 기여하는 쪽이 된다.
-이것이 **C50-14** 가 이 체크리스트 전체에 단 처분(*"파일 presence≠adequacy"*)의 실측 근거다.
-
-#### 🔴 발견 1 — 바닥이 **소유 측면의 처분보다 강하게** 적었다
-
-네 묶음의 소유 측면이 **하나(SUPERSEDED)를 빼고 전부 `RETAIN-RN/SPLIT`** 이다. 그 처분의 뜻은
-***"복합 보편 주장을 원자 claim 으로 나누고 범위를 좁혀야 한다"*** — 즉 **보편 번들이 기각됐다는 것**이다.
-
-그런데 바닥은 그 항목들을 **조건 없는 MUST** 로 옮겼다. **개별 항목이 틀렸다는 뜻이 아니다** —
-*"이것들이 묶음째로 모든 프로젝트에 보편이다"* 라는 **지위**가 근거보다 세다는 뜻이다.
-배치 5 의 결론과 같은 형태다: **수치는 맞고 지위가 틀렸다.**
-
-#### 🔴 발견 2 — SAST 의 *"선택이다"* 한정이 전사에서 탈락했다
-
-출처는 SAST 를 MUST 로 두면서 **스스로 한정을 단다**:
-
-> *"MUST — **a deliberate above-OSPS-L1 harness uplift**: OSPS leans SAST at **L3**, and OpenSSF Best-Practices
-> treats it as pre-release, but gingoa keeps it in the floor **by choice** — … **not** because a leveled
-> standard mandates it there"*
-
-**이 바닥은 그 한정 없이 *"SAST를 CI에"* 만 옮겼다.** 표준이 그 자리에 요구한다고 읽히지만
-**출처가 명시적으로 아니라고 적어둔 것**이다. → **프로젝트 선택으로 표시한다.**
-
-> 배치 1 이 찾은 것이 *"항목이 통째로 빠졌다"* 였다면, 배치 3 이 찾은 것은 ***"항목은 옮겨졌는데 한정이 떨어졌다"*** 다.
-> 둘 다 같은 원인 — **출처를 요약하면서 조건절을 잃었다.**
-
-⬜ **남은 묶음**(테스트 · 보안·공급망 · 설정·시크릿 · 개발환경 · 문서 · 거버넌스 · 릴리스 · 라이선스)은 **배치 4**.
+- **ADR(`docs/adr/`)** — 🔵 **활동은 유지, 형식은 강제하지 않는다.** census 가 반대 방향이다: 형식 ADR 디렉터리 **2~4%** ·
+  planning/design 문서 공개 **13~19%** · Buchgeher(900+ 저장소)에서 **채택 저장소의 약 50%가 레코드 1~5개**(*"tried, didn't stick"*).
+  `02` 자신이 *"seniors **do** design … but they rarely **publish**"* 라 쓰고, `24` 는 원격에서 `ADR-NNNN` 인용을
+  **dangling reference** 로 경고한다. **결정 기록은 이미 하고 있다** — `04 §범위 결정` · `01` 의 두 경계 · `GAPS` 처분란.
+  **형식이 없는 게 아니라 장소가 다르다.**
+- **CODEOWNERS** — 🔵 **1인에서 기계적으로 무효다.** 기능이 *"auto-requests the right reviewers"* 인데
+  **GitHub 은 PR 작성자에게 리뷰를 요청하지 않는다.** 실측으로 집행 경로도 없다(`require_code_owner_review: false` ·
+  `required_approving_review_count: 0`). [`01`](01-what-i-want.md) 경계 ②(*"동료 리뷰를 시뮬레이션하지 않는다"*)에 걸린다 —
+  **파일은 있고 집행은 없는 것이 `presence≠adequacy` 그 자체다.** 다시 여는 조건: **기여자 2인 이상** 또는 `require_code_owner_review` 활성화.
+- **SBOM** — ✅ **부재가 맞다.** 이 프로젝트는 **EO 14028·CRA 적용 대상이 아니고**, OSPS 도 **L3** 에 둔다(`FFA-002`).
 
 ## 이 중 무엇이 **자동으로** 채워지나
 
@@ -169,104 +79,60 @@ census 가 직접 잰다: **CONTRIBUTING present 62% vs adequate 41%** — **있
 
 | 어디서 | 무엇 |
 |---|---|
-| `project-template` | `.gitignore` · `.env.example` · 린터·포매터 설정 · `SECURITY.md` · `CONTRIBUTING.md`(테스트 정책 포함) · `CHANGELOG.md` · README 골격 · `.editorconfig` · **`LICENSE`(MIT · 2026-08-26)** — 템플릿의 라이선스는 **뜨는 모든 프로젝트에 복사된다** |
-| `coolbress/workflows` (만들 것 2) | lint·typecheck·test·build 4검사 · **SAST** · **gitleaks** · `permissions:` 최소화 · **Actions SHA 핀** |
-| `new-project.sh` (만들 것 5) | 브랜치 보호 룰셋 · **Dependabot 설정** · secret-scanning·push-protection 켜기 |
+| `project-template` | `.gitignore` · `.env.example` · 린터·포매터 설정 · `SECURITY.md` · `CONTRIBUTING.md` · `CHANGELOG.md`(릴리스 안 하면 지우라고 명시) · README 골격 · `.editorconfig` · **PR 템플릿** · **`LICENSE`** |
+| `coolbress/workflows` (만들 것 2) | lint·typecheck·test·build 4검사 · **SAST**(⑫ 미착수) · **gitleaks**(⑫) · `permissions:` 최소화 · Actions SHA 핀 |
+| `new-project.sh` (만들 것 5) | 브랜치 보호 룰셋 · secret-scanning·push-protection · **공개여부·라이선스를 인자로 받는다** · **벽을 못 걸면 저장소를 남기지 않는다** |
 | GitHub 계정 설정 | **MFA**(1회) |
-| 프로젝트마다 사람이 | **walking skeleton** — 첫 조각을 end-to-end 한 줄기로 (`/kickoff`가 유도) |
+| 프로젝트마다 사람이 | **walking skeleton** — 첫 조각을 end-to-end 한 줄기로 (`/kickoff` 가 유도) |
 
-**즉 바닥 49개 중 대부분이 만들 것 2·3·5에 이미 들어가야 했다.** 이 문서가 그 목록을 확정한다.
+🔴 **템플릿이 넣는 것은 `presence` 뿐이다** — 위 §근거의 *1/3 스텁* 을 만들지 않으려면 **내용이 실제로 있어야 한다.**
 
-## 🔴 새로 생기는 만들 것
+## 남은 만들 것
 
 | # | 무엇 | 왜 |
 |---|---|---|
-| **10** | **바닥 검사 CI 잡** (`floor-check`) — 락파일 있나 · `.env`가 커밋됐나 · Actions가 SHA 핀인가 · `.env.example` 있나 | 바닥은 **가장 약한 항목으로 점수가 매겨진다**. 사람이 매번 확인할 수 없다 |
-| **11** | **Dependabot/Renovate 설정을 템플릿에** | MUST인데 만들 것에 없었다 |
-| **12** | **SAST + gitleaks를 `coolbress/workflows`에** | MUST인데 `ci.yml` 4검사에만 있었다 |
+| **10** | **`floor-check` CI 잡** — 락파일 있나 · `.env` 가 커밋됐나 · Actions 가 SHA 핀인가 · `.env.example` 있나 | 바닥은 **가장 약한 항목으로 점수가 매겨진다.** 사람이 매번 확인할 수 없다 |
+| **12** | **SAST + gitleaks 를 `coolbress/workflows` 에** | ⚠️ **제약**: 비공개 저장소의 CodeQL 은 **`GitHub Code Security` 라이선스가 필요하다**(제품명이 GHAS 에서 바뀌었다 · `FFA-008`). **Pro 만으로는 안 된다** → 대안은 **Semgrep OSS** |
+| **13** | **공개 웹앱 층** — 접근성(axe) · 개인정보 체크리스트 · spend cap · 헬스체크 | **`/kickoff` 답이 "공개"일 때만.** 첫 아키타입 하나만 만든다 |
 
 ## 위험 비례 — 전부를 항상 켜지 않는다
 
-[`03`](03-what-research-says.md)의 *"깊이는 위험에 비례"* 와
-[`corpus/aspects/04/visibility-provision-matrix.md`](../corpus/aspects/04-build-ci-engineering/visibility-provision-matrix.md)를 따른다:
-
-- **비공개 + Free 플랜**: CodeQL·secret-scanning이 **막힌다** → Semgrep·gitleaks로 대체(matrix가 대체재를 규정)
-- **로컬 실험**: 바닥 전체가 과하다. `github-workflow-current.md`의 risk-scaled 표를 쓴다
-- **공개 웹앱**: 바닥 전부 + 접근성(WCAG 2.2 AA)·개인정보(GDPR/PIPA) — 아래
+- **비공개 + Free**: 룰셋 자체가 안 걸린다(`GEB-001·002`) → `new-project.sh` 가 **저장소를 남기지 않고 멈춘다.** CodeQL 도 별도 라이선스가 필요하다 → **Semgrep·gitleaks 로 대체**
+- **로컬 실험**: 바닥 전체가 과하다. `github-workflow-current` 의 risk-scaled 표를 쓴다
+- **공개 웹앱**: 바닥 전부 + 접근성 · 개인정보 — 아래
 
 ## 아키타입별 층 — 누가 판정하나
 
-### 먼저: 대부분은 **항상 켜진다**
+코퍼스 28측면의 `gated_archetypes` frontmatter가 **`[]` 20 · 게이트 8** 로 갈린다.
 
-코퍼스 28측면의 `gated_archetypes` frontmatter가 이미 이걸 규정한다:
-
-> 🔴 **2026-08-25 커버리지 조사 정정 — 이 문단은 필드를 과대해석했다.**
-> `gated_archetypes` 는 **`_schema.md` 에 정의가 없고 `validate_corpus.py` 가 검사하지도 않는다.**
-> 그리고 **`[]` 를 *"항상 켠다"* 로 읽을 근거가 없다** — `[]` 인 **19**(*"instrument **services**"*) ·
-> **20**(*"operate a **running service** against SLOs"*) · **18**(*"publishes to the canonical channel"*)
-> 의 claim 자체가 조건을 전제한다. `[]` 가 *"항상"* 이면 로컬 CLI 에도 SLO·on-call 이 요구된다.
-> **아래 20/7/1 집계는 맞지만, 그 20개가 *무조건 켜진다*는 해석은 아직 근거가 없다.**
-> [`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md) · `GAPS` **R5-16**
-
-
-| 종류 | 개수 | 뜻 |
-|---|---|---|
-| `universal` + `cross-cutting` | **20** | **무엇을 만들든 켠다** — 위 바닥 49개가 대부분 여기서 나온다 |
-| `gated` | **7** | 조건부 |
-| `internal` | 1 | 하네스 자신용(폐기) |
-
-**즉 아키타입 판정이 필요한 것은 7개뿐이다.** 나머지 20개는 판정 없이 항상이다 —
-그래서 이 문제는 처음 보였던 것보다 훨씬 작다.
-
-### gated 7개 — 판정 방식을 셋으로 가른다
+> 🔴 **다만 이 필드에는 근거가 없다**(`GAPS` R5-16) — [`_schema.md`](../corpus/_schema.md) 에 **정의가 없고**
+> [`validate_corpus.py`](../tools/validate_corpus.py) 가 **검사하지 않는다.** 그리고 **`[]` 를 *"항상 켠다"* 로 읽을 근거가 없다** —
+> `[]` 인 **19**(*"instrument **services**"*) · **20**(*"operate a **running service**"*) · **18**(*"publishes to the canonical channel"*)
+> 의 claim 자체가 조건을 전제한다. `[]` 가 *"항상"* 이면 **로컬 CLI 에도 SLO·on-call 이 요구된다.**
 
 **원칙: 선언을 만들지 말고, 가능하면 저장소가 스스로 드러내게 한다.**
-선언 파일을 두면 **선언과 실제가 어긋나는 드리프트**가 새 문제로 생긴다.
 
-| 측면 | 게이트 조건 | 판정 방식 |
-|---|---|---|
-| **13** API 설계 | library·cli·backend | 🟢 **존재로 판정** — `openapi.*`·`*.proto`·공개 export가 있으면 켠다 |
-| **14** 마이그레이션 | backend·data-ml | 🟢 **존재로 판정** — `migrations/`·ORM 스키마가 있으면 켠다 |
-| **26** MLOps | data-ml | 🟢 **존재로 판정** — 모델/데이터 파이프라인이 있으면 |
-| **12** 성능 | web·backend·data-ml·mobile·library | 🟡 **거의 전부 해당** → 사실상 universal로 취급하되 **예산 수치는 `/kickoff`가 받는다** |
-| **15** 접근성 | web·mobile | 🟡 프레임워크로 추정은 되나 **법적 의무 여부는 추정 불가** → `/kickoff` |
-| **16** 개인정보 | handles-user-data | 🔴 **파일로 판정 불가 — 의도다** → `/kickoff` |
-| **21** 비용·spend cap | cloud·published | 🔴 **배포 의도 — 파일로 판정 불가** → `/kickoff` |
-
-### 그래서 `/kickoff`가 물을 것은 **두 가지뿐**이다
-
-`/kickoff`에 아키타입 문진표를 만들지 않는다. **질문 2개면 된다:**
-
-1. **"사람들에게 공개할 건가요, 나 혼자 쓸 건가요?"**
-   → 공개면 **접근성(15) · 비용/spend cap(21) · 관측성 · SLO**가 켜진다.
-   `github-workflow-current.md`의 risk-scaled 표(*local-only / published / team / production*)와 같은 축이다.
-2. **"남의 개인정보를 다루나요?"** (이름·이메일·결제·위치 등)
-   → 그렇다면 **개인정보(16)** 가 켜진다 — GDPR Art.25 · PIPA 제30조.
-
-**나머지 5개는 묻지 않는다.** 저장소가 드러내거나(13·14·26), 항상 켠다(12).
-
-### 왜 이 분업인가
-
-- **묻는 것이 적을수록 좋다** — 문제 지도 **P40**(*"재량으로 될 일을 계속 물어 불필요하게 방해받는다"*)이
-  거짓 양성을 실패로 센다. 아키타입 문진 10문항은 그 자체가 P40 위반이다.
-- **존재로 판정하면 드리프트가 없다** — 선언 파일은 갱신을 잊으면 거짓말이 된다.
-  `migrations/`가 생겼는데 선언이 안 바뀌면 검사가 안 켜진다. **저장소가 진실이다.**
-- **의도는 물어야 한다** — 공개 여부와 개인정보는 파일에 안 적혀 있고, **둘 다 법적 의무를 부른다.**
-  틀리면 되돌릴 수 없는 종류다(문제 지도 P21a·P33·P35).
-
-### 만들 것에 미치는 영향
-
-| # | 조정 |
+| 측면 | 판정 방식 |
 |---|---|
-| **4** `/kickoff` | 질문 **2개 추가**(공개 여부 · 개인정보). 문진표가 아니다 |
-| **10** `floor-check` | **존재 기반 조건부 검사** — `migrations/` 있으면 마이그레이션 검사, `openapi.*` 있으면 계약 검사. 없으면 **skip**(FAIL 아님) |
-| **13** 🆕 **공개 웹앱 층** | 접근성(axe) · 개인정보 체크리스트 · spend cap · 헬스체크 — **`/kickoff` 답이 "공개"일 때만.** 첫 아키타입 하나만 만든다 |
+| **13** API · **14** 마이그레이션 · **26** MLOps | 🟢 **존재로 판정** — `openapi.*`·`migrations/`·모델 파이프라인이 있으면 켠다 |
+| **12** 성능 | 🟡 거의 전부 해당 → 사실상 universal, **예산 수치만 `/kickoff` 가 받는다** |
+| **15** 접근성 · **16** 개인정보 · **21** 비용 | 🔴 **파일로 판정 불가 — 의도다** → `/kickoff` |
 
-> ⚠️ **한 번에 다 만들지 않는다.** `03`의 *"깊이는 위험에 비례"* 와 이 저장소의 제외 항목
-> (*"세팅 자체에 시간 쓰기"*)을 따른다. **첫 프로젝트가 공개 웹앱일 때 13번을 만들고, 그 전에는 안 만든다.**
+### `/kickoff` 가 묻는 것은 **세 가지**다
+
+**기준은 하나다: 파일로 알 수 없고(의도) · 틀리면 되돌리기 어려운 것만 묻는다.**
+
+1. **"공개할 건가요, 혼자 쓸 건가요?"** → 접근성(15)·비용(21)·관측성이 켜진다.
+   🔴 **비공개면 벽 이야기가 먼저다** — Free 에서 룰셋이 안 걸린다.
+2. **"남의 개인정보를 다루나요?"** → 개인정보(16)가 켜진다 — GDPR Art.25 · PIPA 제30조.
+3. **"라이선스는 무엇으로?"** (2026-08-26 추가) → 기본 MIT · 특허 조항이 필요하면 Apache-2.0.
+
+**묻지 않는 것**: 릴리스 여부(**가역** — 나중에 태그 하나면 된다) · CODEOWNERS(**저장소가 기여자 수로 드러낸다**).
+**문진표를 만들지 않는다** — 문제 지도 **P40**(*재량으로 될 일을 물어 방해받는다*)이 거짓 양성을 실패로 센다.
 
 ## 한 줄
 
 > **`01`~`04`는 "일을 어떻게 하는가", 이 문서는 "무엇이 남는가"다.**
 > 워크플로를 완벽히 따라도 바닥이 비면 산출물은 시니어급이 아니다 —
 > **바닥은 가장 약한 항목으로 점수가 매겨지기 때문이다.**
+> 그리고 **파일이 있다는 것이 적절하다는 뜻은 아니다**(`presence≠adequacy`).
