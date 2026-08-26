@@ -127,5 +127,27 @@ class ClaimIdShapeTests(unittest.TestCase):
         )
 
 
+class DirectionCitationAnchorTests(unittest.TestCase):
+    """R5-22: `direction` 이 claim table 없는 코퍼스 문서를 근거로 인용하면 사슬이 거기서 끝난다.
+
+    2026-08-26 실측으로 두 건이 그 상태였다 — GHW-012(폐기 문서 인용)와
+    IPC-001~003(앵커 없는 🟢). 검사를 붙였고, 이 시험은 그 검사가 **실제로
+    빨간불이 될 수 있는지**를 잠근다. 초록인 검사가 초록인 이유가
+    "위반이 없어서" 인지 "검사가 안 돌아서" 인지는 구별되어야 한다.
+    """
+
+    def test_claimless_document_is_detected(self) -> None:
+        """claim 행이 없는 문서는 claim_table_errors 가 0 을 센다 — 검사의 판별 근거."""
+        text = "# 산문뿐인 문서\n\n- 주장처럼 보이지만 claim 행이 아니다.\n"
+        count, _ = claim_table_errors(text, {"SRC-ONE"})
+        self.assertEqual(0, count)
+
+    def test_claim_bearing_document_is_distinguished(self) -> None:
+        text = "| ABC-001 | empirical | bounded claim | `SRC-ONE` | high | 2027-01-01 |"
+        count, errors = claim_table_errors(text, {"SRC-ONE"})
+        self.assertEqual(1, count)
+        self.assertEqual([], errors)
+
+
 if __name__ == "__main__":
     unittest.main()

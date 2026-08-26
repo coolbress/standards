@@ -615,6 +615,29 @@ def main() -> int:
     metrics["unverified_claim_rows"] = all_claim_rows
     metrics["claim_rows_total"] = verified_claim_rows + all_claim_rows
 
+    # R5-22: `direction/` 이 근거로 인용하는 코퍼스 문서는 claim table 을 가져야 한다.
+    # 없으면 "어디까지 확인된 것인지" 를 기계로 물을 수 없고, 사슬이 그 문서에서 조용히 끝난다.
+    # 2026-08-26 실측: 그 상태로 GHW-012(폐기 문서 인용)와 IPC-001~003(앵커 없는 🟢)이 서 있었다.
+    # 아래 셋은 예외다 — 스키마·정책·역사 기록이라 claim 이 성립하지 않는다.
+    claimless_ok = {"_schema.md", "EVIDENCE-POLICY.md", "review--codex-rejection-1-2026-08-12.md"}
+    direction_dir = ROOT / "direction"
+    if direction_dir.is_dir():
+        for path in sorted(direction_dir.glob("*.md")):
+            text = path.read_text(encoding="utf-8")
+            for rel in set(re.findall(r"corpus/([A-Za-z0-9_./-]+\.md)", text)):
+                target = CORPUS / rel
+                if target.name in claimless_ok or not target.is_file():
+                    continue
+                # "절차 포인터" 로 표시된 인용은 근거 인용이 아니므로 면제한다.
+                if f"{rel.rsplit('/', 1)[-1]}" in text and "절차 포인터" in text:
+                    continue
+                count, _ = claim_table_errors(target.read_text(encoding="utf-8"), registry_ids)
+                if not count:
+                    errors.append(
+                        f"direction cites a claim-less corpus document: "
+                        f"{path.relative_to(ROOT)} -> corpus/{rel}"
+                    )
+
     external_urls = extract_external_urls(CORPUS)
     broken_internal_count = 0
     for path in markdown:
