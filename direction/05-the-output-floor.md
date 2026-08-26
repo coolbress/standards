@@ -33,7 +33,7 @@ GitHub community-health · SWEBOK/ISO-12207을 대조해 만든 독립 체크리
 | **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 대응 SLA(medium+ ≤60일) |
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III, 하드코딩 금지) · **`.env.example` 커밋 + 실제 `.env`는 ignore** |
 | **개발환경·온보딩** | **README에 clone→install→test가 5명령 이내** · 통합 태스크 러너(Make/스크립트) |
-| **문서** | README · CONTRIBUTING · **CHANGELOG**(Keep a Changelog) · 공개 표면이 있으면 API 레퍼런스. ⚠️ **de-jargon 게이트는 이 저장소에 해당하지 않는다**(2026-08-26 판정) — 조건이 *"public/internal doc split"* 인데 `legacy/`·`audit/`·`direction/` 이 **전부 커밋·공개**돼 로컬 전용 문서가 없다. **샐 것이 없다** |
+| **문서** | README(**≈100% · 유일한 보편**) · CONTRIBUTING(75/70%) · 🟡 **CHANGELOG 는 릴리스 묶음과 함께 조건부다**(2026-08-26 · `GAPS` R5-19) — *Keep a Changelog* 는 **릴리스 단위로 항목을 쌓는 형식**이라 **릴리스를 하지 않는 저장소에는 채울 단위가 없다**. census 도 52/51% 로 동전 던지기다 · 공개 표면이 있으면 API 레퍼런스. ⚠️ **de-jargon 게이트는 이 저장소에 해당하지 않는다**(2026-08-26 판정) — 조건이 *"public/internal doc split"* 인데 `legacy/`·`audit/`·`direction/` 이 **전부 커밋·공개**돼 로컬 전용 문서가 없다. **샐 것이 없다** |
 | **거버넌스** 🆕 | **PR 템플릿** — 출처 체크리스트가 **조건 없는 MUST** 로 두는데 이 바닥이 빠뜨렸다(2026-08-26 대조). **형태는 census 규격**: 중앙값 3절 · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%뿐). ✅ **2026-08-26 3저장소에 배선**. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
 | **릴리스** 🆕 | 🔒 **조건 확정 2026-08-26 — 참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약. **소유자 결정: `coolbress/workflows` 만 릴리스를 한다** — 셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**이기 때문이다. `standards` 는 계속 변하는 문서이고, `project-template` 은 **`gh repo create --template` 이 기본 브랜치를 뜨지 태그를 참조하지 않아** 릴리스가 기능적으로 무의미하다. 🔴 **핀과 태그의 역할을 가른다** — **핀은 반드시 커밋 SHA**(태그는 가변 = 공급망 벡터 · `GHW-005`), **태그는 그 SHA 가 무엇인지 읽기 위한 것**이다: `@<SHA> # v1.0.0`. ⚠️ *산출물 서명*은 **배포 아티팩트가 있는 릴리스에만** 해당하고 재사용 워크플로에는 배포물이 없다. ✅ **실행됨**: [`workflows` v1.0.0](https://github.com/coolbress/workflows/releases/tag/v1.0.0) · 템플릿의 핀을 그 커밋으로 올리고 버전을 주석으로 달았다. 출처 체크리스트는 이 넷을 **무조건 MUST** 로 적었으나 측면 17 의 처분(**C50-28** *"공개 API/versioned artifact 여부별 선택"*)이 조건부이므로 **조건부가 맞다** |
 | **라이선스** 🆕 | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽을 수 있게 선언한다(측면 25). ⚠️ **라이선스가 없으면 기본값은 *전부 저작권 보유*** 이므로 공개 저장소에서는 *"재사용 가능"* 이 성립하지 않는다. **2026-08-26 추가** — 커버리지 조사([`COVERAGE-JUDGMENT`](../audit/COVERAGE-JUDGMENT.ko.md))가 이 항목의 부재를 잡았고, **공개 저장소 3/3 이 실제로 위반 중이었다** |
@@ -100,6 +100,32 @@ required_approving_review_count: 0
 | **빌드·의존성** | [`03 dev-environment`](../corpus/aspects/03-dev-environment/03-dev-environment--overview.md) · [`10 supply-chain`](../corpus/aspects/10-supply-chain-security/10-supply-chain-security--overview.md) | **C50-11 · C50-21 둘 다 `RETAIN-RN/SPLIT`** | 🟡 **항목별로 갈린다** — **Actions SHA 핀은 강하다**(`GHW-005`: GitHub 자신이 *"only a full-length commit SHA is immutable"*). 락파일·버전 고정은 원칙은 서나 *"byte-identical toolchain 보장"* 은 처분이 기각했다 |
 | **CI/CD** | [`04 build-ci`](../corpus/aspects/04-build-ci-engineering/04-build-ci-engineering--overview.md) | **C50-12 `RETAIN-RN/SPLIT`** — *"lint/typecheck/test/build 4종의 unbypassable CI가 보편"* 이 기각됐다 | 🟡 ***우회 불가*는 강하고 *4종이 보편*은 아니다.** 훅 우회는 git 1차 문서로 확인됨(`IPW-005`) · 4종 분리는 **이 프로젝트의 선택** |
 | **코드 품질** | [`07 construction`](../corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md) · [`09 app-security`](../corpus/aspects/09-application-security/09-application-security--overview.md) | **C50-18 · C50-20 둘 다 `RETAIN-RN/SPLIT`** | 🟡 린터·포매터 강제는 원칙이 서고, **SAST 는 아래 참조** |
+
+#### 배치 4 (2026-08-26) — 남은 7묶음
+
+| 묶음 | 소유 측면 | 처분 | 실제 강도 |
+|---|---|---|---|
+| **테스트** | [`08 software-testing`](../corpus/aspects/08-software-testing/08-software-testing--overview.md) | **C50-19 `SPLIT`** — *"pyramid+coverage floor+contract+quarantine 가 모든 프로젝트의 표준"* 기각 · *"oracle·위험·아키타입별 전략이 먼저"* | 🟢 **테스트 동반은 강하다**(`04 foundation-floor` MUST · `08` 이 test 를 4대 CI 검사 중 하나로) · 🟡 **피라미드 비율·커버리지 문턱은 조건부** |
+| **보안·공급망** | [`09`](../corpus/aspects/09-application-security/09-application-security--overview.md) · [`10`](../corpus/aspects/10-supply-chain-security/10-supply-chain-security--overview.md) | **C50-20 · C50-21 `SPLIT`** | 🟢 시크릿 탐지·푸시 보호·Dependabot 은 **보호 장치**라 야생 채택률이 낮은 것이 **켜야 할 이유**다 · 🟡 *"전부를 CI 게이트로"* 는 오탐 고려 필요 |
+| **설정·시크릿** | [`06 config-secrets`](../corpus/aspects/06-config-secrets/06-config-secrets--overview.md) | **C50-17 `SPLIT`** — *"12-Factor 는 **service 맥락**"* | 🟡 `.env.example` + 하드코딩 금지는 서고, **12-Factor 전체를 모든 아키타입에 적용하는 것은 처분이 기각** |
+| **개발환경·온보딩** | [`03`](../corpus/aspects/03-dev-environment/03-dev-environment--overview.md) · [`23 DX`](../corpus/aspects/23-developer-experience/23-developer-experience--overview.md) | **C50-11 · C50-36 `SPLIT`** | 🟢 *README 5명령* 은 **onboarding 시간을 재는 것**이라 검사 가능 · 🟡 IDP·platform 문턱은 조직별 |
+| **문서** | [`22 documentation`](../corpus/aspects/22-documentation-knowledge/22-documentation-knowledge--overview.md) | **C50-34 `SPLIT`** — *"문서 목록보다 **audience/task** 가 기준"* | 📊 **census 가 갈라준다** — README **≈100%**(유일한 보편) · CONTRIBUTING **75/70%** · CHANGELOG **52/51%** |
+| **거버넌스** | [`24`](../corpus/aspects/24-governance-collaboration-compliance/24-governance-collaboration-compliance--overview.md) | **C50-37 `SPLIT`** — *"공개·기여·소유 구조별"* | 📊 PR 템플릿 **53/54%**, ⚠️ **N=2000 에서 44%** · CoC 42/39%(공개 OSS 조건부) · CODEOWNERS 26/30% |
+| **라이선스** | [`25`](../corpus/aspects/25-licensing-foss-compliance/25-licensing-foss-compliance--overview.md) | **C50-39 `SPLIT`** — *"단일 license+**모든 파일 SPDX**+scan+DCO/CLA 가 보편"* 기각 · *"법률 자문 대체 금지"* | 🟢 **루트 `LICENSE` 는 채택률과 무관하게 선다**(법적 효과 · 없으면 재사용 불가) · 🔴 **per-file SPDX·scan·CLA 는 바닥이 아니다** — 이 바닥은 루트 파일만 요구한다 |
+
+#### 🔴 발견 3 — 희소성의 의미가 **정반대인 두 종류**가 섞여 있다
+
+코퍼스가 이 논증을 직접 한다: *"Code-Review 와 Branch-Protection 은 야생에서 가장 약하게 집행되는 통제다*
+*(리뷰 41% · 브랜치 보호 **13%**) — **바로 그것이 비엔지니어가 요구할 생각을 못 하는 시니어 관행이다**"*.
+
+→ **보호 장치**는 드물다는 것이 **기본으로 켜야 할 이유**이고, **협업 문서**는 드물면 그냥 안 쓰는 것이다.
+**둘을 같은 MUST 로 묶으면 안 된다.** 이 바닥은 지금 묶어놨다.
+
+#### 🔴 발견 4 — 그리고 `presence ≠ adequacy` 가 이 바닥 전체의 처분이다
+
+census 가 직접 잰다: **CONTRIBUTING present 62% vs adequate 41%** — **있는 것 중 1/3 이 빌드·테스트 설명이 없는 스텁**이다.
+**템플릿이 파일을 넣어주는 것은 presence 만 해결한다.** 스텁을 모든 인스턴스에 복사하면 그 1/3 통계에 기여하는 쪽이 된다.
+이것이 **C50-14** 가 이 체크리스트 전체에 단 처분(*"파일 presence≠adequacy"*)의 실측 근거다.
 
 #### 🔴 발견 1 — 바닥이 **소유 측면의 처분보다 강하게** 적었다
 
