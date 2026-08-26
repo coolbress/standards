@@ -66,7 +66,7 @@ MUST 49개를 9묶음으로, 그리고 그중 무엇이 만들 것 2·3·5에서
 | PR diff | **200줄 목표 · 400줄 상한** | ⚠️ **2026-08-24 재검증으로 정정.** 원문 결론은 *"LOC under review should be **under 200, not to exceed 400**"* — 400은 목표가 아니라 **상한**이다. 이전 판의 *"400 초과에서 급락"* 은 **원문에 없다**(`plummet` 은 LOC 가 아니라 **리뷰 시간 90분**에 대한 말). [`codereview--facts`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) **CR-001~003** `draft`. ⚠️ **CR-004**: 단일 조직(Cisco 1개 팀·50명) 케이스 스터디이므로 `operational-lesson` 이다 — *"일관된 연구 결과"* 로 쓰면 범주 오류다 |
 | **테스트 동반** | **소스가 바뀌면 테스트도 바뀐다 — CI가 검사** | `04 foundation-floor` *"tests required on every PR (MUST)"* · `08` 4대 검사 |
 | **RED→GREEN** | 실패하는 테스트를 **먼저** — 단 **권고**(강제 아님) | `07` SWEBOK. ✅ **2026-08-24 재검증**: Fucci et al. 은 *"Sequencing… **had no important influence**"* 를 보고했고 효과의 원천은 **granularity·uniformity** 였다 (`testing--facts` **TDD-001**, n=39 전문가·82 데이터). **강제하지 않는 이유가 이것이다** — 다만 표본이 작아 확정된 null 은 아니다(**TDD-002**) |
-| CI 소요 | **10분 이내** | [`04 facts-cicd`](../corpus/aspects/04-build-ci-engineering/cicd-release--facts-2026-08.md) `draft` — Fowler 1차 URL |
+| CI 소요 | **10분 이내** | 🟡 **`CIB-001`** — Fowler 1차 확인. 단 *"the **XP guideline** of a ten minute build"* 라 **실무 가이드라인이지 측정된 임계가 아니다** |
 | main 빨간불 | **다른 일보다 우선 수리** | *"깨지면 즉시 수리"* |
 | 리뷰 응답 | **자동 — 사람 대기 0** | ⚠️ **2026-08-24 재검증**: *"50% 요인"* 은 **1차 출처에서 찾을 수 없어 삭제**했다(`codereview--facts` **CR-007**). 코퍼스가 받치는 것은 "리뷰는 빨라야 한다"까지다. `@claude`의 이점(사람 대기 0)은 **프로젝트 판단** |
 | 이슈 필수 | **크기 조건부** — 사소한 변경은 바로 PR. 기준은 줄 수가 아니라 *"non-trivial"* | 🟡 [`github-workflow-current`](../corpus/aspects/05-scm-workflow/github-workflow-current.md) **`GHW-012`** (n=11 문서 규범 census). ⚠️ **2026-08-26 출처 교체** — 이전 판은 **`SUPERSEDED` 문서**(`05 overview`)를 인용하고 있었다 |
@@ -147,7 +147,7 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 **다시 여는 조건**: `divtadel`(또는 다른 웹 프로젝트)이 **실제로 원격에 올라갈 때.**
 그때 열어야 할 질문은 *"web-ci.yml 을 만들까"* 가 아니라 순서대로 이 둘이다 —
 ① **그 프로젝트에 lint·test 를 먼저 넣는다**(없으면 4검사가 성립하지 않는다)
-② 브라운필드 도입 경로를 쓴다([`brownfield-adoption-floor`](../corpus/aspects/04-build-ci-engineering/brownfield-adoption-floor.md)) —
+② 브라운필드 도입 경로를 쓴다([`brownfield-adoption-floor`](../corpus/aspects/04-build-ci-engineering/brownfield-adoption-floor.md) — **절차 포인터이지 근거 인용이 아니다**) —
 `new-project.sh` 는 템플릿에서 **새로** 뜨는 도구라 기존 프로젝트에 쓸 수 없다.
 
 > **루프 1회 통과 (2026-08-24)**: `new-project.sh` → 이슈(AC) → 브랜치 → PR → CI 4/4 → 머지 → 이슈 종료.
