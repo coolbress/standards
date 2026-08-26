@@ -47,21 +47,32 @@
 `workflows` 는 `docker://rhysd/actionlint` 가 allowlist 패턴에 들어가지 않아 `startup_failure` 가 났고,
 **되돌려 SHA 강제만 유지**했다. 고치려면 actionlint 를 일반 Action 으로 바꿔야 한다.
 
+🔴 **그리고 같은 선택이 두 번째 값을 치른다** — `docker://` Action 은 **의존성 그래프에도 안 잡힌다**
+([`DEPENDENCY-GRAPH-SCOPE`](DEPENDENCY-GRAPH-SCOPE.ko.md)). 경보도 갱신 PR 도 오지 않는다.
+**핀이 되어 있다는 것과 지켜보고 있다는 것은 다른 문장이다.** 일반 Action 으로 바꾸면 두 구멍이 같이 닫힌다.
+
 ## 남은 것 — **종류를 먼저 가른다**
 
 *"남았다"* 를 전부 같은 칸에 넣으면 **실행을 미루는 핑계가 리서치가 된다.** 셋으로 가른다.
 
-### 🔧 실행 — 근거는 이미 있다. 하기만 하면 된다
+### 🔧 실행 — ✅ **일곱 건 전부 처리, 서버 초록만 남았다** (2026-08-26)
 
-| | 무엇 |
-|---|---|
-| **E-1** | `workflows` 자기 CI 가 `actionlint` 만 돈다 → **shellcheck · `bash -n` · 룰셋 JSON 불변식** 추가 |
-| **D-3** | Python 실행 버전 미고정 → `.python-version` + CI `python-version` |
-| **D-4** | 빌드만 하고 **설치를 시험하지 않는다** → wheel·sdist 설치 smoke |
-| **D-7** | 빈 파일이 *"준비 완료"* 로 보인다 → `presence≠adequacy` 실물 대응 |
-| **D-8** | 배포 메타데이터 부족 |
-| — | CI **timeout** · PR 의 오래된 실행 취소 |
-| **E-1b** | 중앙 workflow 배포 전 **consumer canary** |
+⚠️ **GitHub Actions major outage 중이라 서버 검증은 대기**다. 아래 실측은 **로컬**이다.
+
+| | 무엇 | 결과 |
+|---|---|---|
+| **E-1** | `workflows` 자기 CI 가 `actionlint` 만 돈다 | ✅ **다섯으로** — `bash -n` · `shellcheck` · **룰셋 불변식 10/10** · **실패 경로 10/10**([PR #10](https://github.com/coolbress/workflows/pull/10)) |
+| **E-1b** | 중앙 workflow 배포 전 **consumer canary** | ✅ **`canary/` 가 `python-ci.yml` 을 실제로 호출**한다. 선택 입력 `working-directory` 추가(기존 호출부 무변경) |
+| **D-3** | Python 실행 버전 미고정 | ✅ **`.python-version`(3.12) 하나** — uv 가 읽으므로 **워크플로에 또 적지 않는다**([PR #7](https://github.com/coolbress/project-template/pull/7)) |
+| **D-4** | 빌드만 하고 **설치를 시험하지 않는다** | ✅ wheel·sdist 를 **깨끗한 venv 에 설치하고 import 까지** |
+| **D-7** | 빈 파일이 *"준비 완료"* 로 보인다 | ✅ `SECURITY.md` 의 3일/60일을 **목표로 정정**(1인 대응 체계 명시) · `.env.example` 에 **검사를 붙였다**(`test_env_example.py` 가 소스의 `os.environ` 키를 전부 찾는다). ⚠️ **CHANGELOG 는 프로필 결정(D-2)에 걸린다** |
+| **D-8** | 배포 메타데이터 부족 | ✅ `readme`·`license`(SPDX)·`license-files`·`authors`·`urls` · **bootstrap 이 이름·라이선스를 치환**. ⚠️ public library 전용 항목은 **D-2** 에 걸린다 |
+| — | CI **timeout** · 오래된 실행 취소 | ✅ 잡마다 `timeout-minutes: 10` · PR 은 `cancel-in-progress` |
+
+> 🔴 **만들다가 진짜 결함을 하나 잡았다** — `bootstrap.sh` 가 이름을 바꾸면 **`uv.lock` 의 `name` 도 달라지는데
+> 다시 잠그지 않았다.** CI 첫 줄이 `uv sync --locked` 이므로 **새 저장소는 첫 PR 부터 실패**했을 것이고,
+> 벽이 서 있으니 **그대로 잠겼을 것**이다. 못 본 이유가 방법론이다 —
+> **이전 검증이 `--locked` 없이 `uv sync` 를 돌렸다. 검증 명령이 CI 와 달랐다.**
 
 ### 🔶 결정 — 소유자가 정해야 실행이 정해진다
 
@@ -82,7 +93,7 @@
 | **E-6** | **4잡(lint·typecheck·test·build) vs 1잡(`ci / verify`)** | 우리 4검사는 **`C50-12` 가 *"4종이 보편"* 을 기각**한 상태다(🔵 프로젝트 선택). 어느 쪽이 나은지는 **대표 작업 측정**으로만 답한다 — wall time · runner time · 실패 진단성 · 변경 비용 |
 | **C-2** | **CodeQL vs Semgrep** | 🟢 **제약은 이미 확인**됐다(`FFA-008` — 비공개는 `GitHub Code Security` 라이선스 필요). **탐지율·오탐 비교는 미조사** |
 | **C-3** | secret 도구를 **겹칠 것인가** | gitleaks + push protection 이 겹친다. **겹침이 값을 하는지** 재본 적 없다 |
-| **C-4** | 의존성 그래프의 **실제 인식 범위** | `uv.lock` 을 GitHub 이 어디까지 읽는지 **실측 필요** |
+| ~~**C-4**~~ | ✅ **종료 2026-08-26** — [`DEPENDENCY-GRAPH-SCOPE`](DEPENDENCY-GRAPH-SCOPE.ko.md) | `uv.lock` 은 **전이 의존성까지** 보인다(선언 3 → 그래프 15) · 재사용 워크플로 참조도 보인다. 🔴 **`docker://` Action 과 `[build-system] requires` 는 안 보인다** — actionlint 가 **allowlist(B-1)와 그래프 양쪽에서 구멍**을 낸다 |
 
 ⚠️ **나머지는 리서치 문제가 아니다.** *"근거가 없어서 못 한다"* 와 *"안 했다"* 를 구별한다 —
 [`evidence-holes-register`](../corpus/methods/evidence-holes-register.md) 가 같은 이유로 존재한다.
