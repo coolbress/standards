@@ -62,8 +62,8 @@ goppi가 정확히 이 함정에서 죽었다:
 > **자기가 만든 시험만 통과한 것이다.**
 
 도구를 만든 곳에서 그 도구를 시험하는 것은 같은 형태다.
-리서치의 처방도 같다 — **walking skeleton: 첫 조각은 end-to-end 한 줄기**
-([`direction/03`](direction/03-what-research-says.md)).
+리서치의 처방도 같다 — **walking skeleton: 첫 조각은 end-to-end 한 줄기**(Cockburn)
+([`direction/05`](direction/05-the-output-floor.md) 바닥의 *테스트* 묶음 · ⚠️ 2026-08-26 정정 — 이전 판은 `03` 을 가리켰으나 거기에 없다).
 
 ## 순서 — ⑤를 먼저 하면 막힌다
 
