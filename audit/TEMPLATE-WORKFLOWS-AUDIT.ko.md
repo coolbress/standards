@@ -88,7 +88,7 @@ CI 재실행 → **5잡 전부 success, `startup_failure` 없음.** 세 저장�
 
 | | 결정 | 근거 · 실측 |
 |---|---|---|
-| ~~**A-1**~~ | ✅ **권한 분리 완료** | fine-grained 토큰(**Contents·Issues·PRs·Workflows 만**)을 `GH_TOKEN` 으로 건다. **실측**: 룰셋 수정·삭제 **403** · Actions 정책 **403** · 시크릿 **403** · 저장소 설정 **403** · 환경 생성 **403** / 읽기·이슈·PR·git push **정상**. 🔴 **분리 직전 실측**: 이전 자격증명은 저장소 설정 PATCH 와 시크릿 읽기가 **성공했다** — *벽이 서 있던 게 아니라 안 지우기로 하고 있었을 뿐이다* |
+| ~~**A-1**~~ | ✅ **권한 분리 완료 · 읽기 보강 2026-08-27** | fine-grained 토큰: **쓰기는 Contents·Issues·PRs·Workflows**, **읽기는 + Administration·Code scanning**(아래 §읽기). **실측**: 룰셋 수정·삭제 **403** · Actions 정책 **403** · 시크릿 **403** · 저장소 설정 **403** · 환경 생성 **403** / 읽기·이슈·PR·git push **정상**. 🔴 **분리 직전 실측**: 이전 자격증명은 저장소 설정 PATCH 와 시크릿 읽기가 **성공했다** — *벽이 서 있던 게 아니라 안 지우기로 하고 있었을 뿐이다* |
 | ~~**A-2**~~ | ✅ **승인 0 유지** | 검사가 여섯(actionlint·`bash -n`·shellcheck·룰셋 불변식·실패 경로) + canary 다. 승인 1을 걸면 **솔로가 자기 PR 을 승인 못 해 머지가 막힌다** — 도장을 흉내내는 대신 **CI 를 진짜 게이트로** 쓴다 |
 | ~~**D-2**~~ | ✅ **패키지형 하나 유지** | 완주를 아직 한 번도 안 했다. 프로필을 둘로 가르는 것은 *"벽보다 도구를 먼저 늘리기 ✕"* 에 걸린다. **실제로 라이브러리를 낼 때 연다** |
 | ~~**E-4**~~ | ✅ **`workflows` 유지** | 저장소를 늘리는 것은 값이 확인된 뒤에. 심볼릭 링크로 `~/.claude/commands/` 에 걸려 벽 안에서 버전 관리된다 |
@@ -101,6 +101,35 @@ CI 재실행 → **5잡 전부 success, `startup_failure` 없음.** 세 저장�
 |---|---|
 | 코드 · 이슈 · PR · 워크플로 **파일** | 에이전트 |
 | 룰셋 · Actions 정책 · 시크릿 · Environments · **CodeQL default setup** · 저장소 생성 | **사람** (`env -u GH_TOKEN gh …`) |
+
+### 🔑 읽기는 열고 쓰기는 막는다 — **벽을 *읽되* 옮기지는 못한다**
+
+첫 판은 **읽기까지 막았다.** 그러자 `repo_audit` 이 **아무것도 확인하지 못했다**(`unknown=12`) —
+그리고 더 나쁘게, **고치기 전에는 그 사실조차 몰랐다**(감사기가 관리자 자격증명으로 돌고 있었다).
+
+**감사기가 눈을 뜨는 것과 벽이 무너지는 것은 다른 문장이다.** 그래서 **읽기만** 더했다:
+
+| 권한 | 값 |
+|---|---|
+| Contents · Issues · Pull requests · Workflows | Read **and write** |
+| **Administration** · **Code scanning alerts** | 🔑 **Read-only** |
+| Secrets · Environments · Variables · Webhooks · Pages | **No access** |
+
+**실측 — 읽기는 열렸고 쓰기는 그대로다**:
+
+| | 전 | 후 |
+|---|---|---|
+| `actions/permissions` · `vulnerability-alerts` · `code-scanning/default-setup` 읽기 | 🔒 403 | ✅ **200** |
+| 저장소 객체의 `security_and_analysis` | 🔴 안 실림 | ✅ **실림** |
+| **룰셋 수정 · 삭제** | 🔒 403 | 🔒 **403** |
+| **Actions 정책 · 저장소 설정 · 환경 생성 · CodeQL 켜기 · 시크릿 읽기** | 🔒 403 | 🔒 **403** |
+
+```
+RESULT CLEAN findings=0 unknown=0     ← unknown 12 → 0
+```
+
+🟢 **이 초록은 이제 *"관리자가 보니 괜찮더라"* 가 아니라 *"에이전트가 자기 눈으로 확인했다"* 다.**
+**제약된 쪽이 스스로 검증할 수 있는 경계** — 그게 신뢰 경계의 정의다.
 
 🔴 **에이전트는 `env -u GH_TOKEN` 을 쓰지 않는다.** 그 한 줄이 곧 우회다 —
 `NEXT.md` 에 있던 *"막히면 `env -u GITHUB_TOKEN -u GH_TOKEN`"* 안내를 **삭제했다.**

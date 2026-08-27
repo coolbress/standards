@@ -227,8 +227,12 @@ python3 tools/repo_audit.py             # 서버 설정 drift — 읽기만 한�
 
 | | 무엇 | 누가 |
 |---|---|---|
-| **`GH_TOKEN`**(기본) | fine-grained · **Contents · Issues · PRs · Workflows** 만 | **에이전트** |
+| **`GH_TOKEN`**(기본) | fine-grained — **쓰기**: Contents · Issues · PRs · Workflows / 🔑 **읽기**: + Administration · Code scanning | **에이전트** |
 | keyring(classic) | 관리자 전부 | **사람만** — `env -u GH_TOKEN gh …` |
+
+🔑 **읽기를 준 이유**: 안 주면 `repo_audit` 이 **아무것도 확인하지 못한다**(`unknown=12`).
+**감사기가 눈을 뜨는 것과 벽이 무너지는 것은 다른 문장이다.** 쓰기는 그대로 전부 403 이다 —
+룰셋 수정·삭제 · Actions 정책 · 저장소 설정 · 환경 생성 · CodeQL 켜기 · 시크릿.
 
 `~/.zshenv` 가 `~/.config/gh-agent-token`(0600)을 읽어 `GH_TOKEN` 에 건다.
 **`.zshrc` 가 아니라 `.zshenv` 인 이유**: `.zshrc` 는 **대화형 셸만** 읽어 도구 셸에 안 닿는다.

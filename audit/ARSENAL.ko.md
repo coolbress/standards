@@ -89,8 +89,17 @@
 
 > **에이전트가 못 끄는 벽**은 권한이 갈려야 성립한다 — [`AUDIT`](TEMPLATE-WORKFLOWS-AUDIT.ko.md) **A-1**.
 
-✅ **2026-08-27 시행됨.** 에이전트가 쥐는 것: **Contents · Issues · Pull requests · Workflows** 읽기/쓰기.
-쥐지 않는 것: **Administration · Actions 설정 · Secrets · Environments · Variables · Webhooks · Pages**.
+✅ **2026-08-27 시행됨.**
+
+| 권한 | 값 |
+|---|---|
+| Contents · Issues · Pull requests · Workflows | Read **and write** |
+| **Administration** · **Code scanning alerts** | 🔑 **Read-only** — 벽을 *읽되* 옮기지는 못한다 |
+| Secrets · Environments · Variables · Webhooks · Pages | **No access** |
+
+🔴 **읽기를 막았더니 감사기가 눈이 멀었다.** 첫 판은 Administration 도 `No access` 였고,
+그 결과 `repo_audit` 이 **아무것도 확인하지 못했다**(`unknown=12`).
+**감사기가 눈을 뜨는 것과 벽이 무너지는 것은 다른 문장이다.**
 
 **검증은 실패로 했다** — 성공이 아니라 **403 을 확인**했다:
 
@@ -99,7 +108,9 @@
 | 룰셋 수정 · 삭제 | 🔒 **403** |
 | Actions 정책 변경 · 시크릿 읽기 | 🔒 **403** |
 | 저장소 설정 변경 · 환경 생성 | 🔒 **403** |
-| **CodeQL default setup 켜기** | 🔒 **403** — *"Resource not accessible by personal access token"* |
+| **CodeQL default setup 켜기** | 🔒 **403** |
+| 시크릿 읽기 | 🔒 **403** |
+| 서버 설정 **읽기**(Actions 정책 · 보안 · CodeQL · 룰셋) | 🔑 **200** — 읽기 권한을 준 뒤 |
 | 읽기 · 이슈 · PR · `git push` | ✅ 정상 |
 
 🔴 **분리 직전에 이전 자격증명도 쟀다** — 저장소 설정 PATCH **성공**, 시크릿 목록 읽기 **성공**.
