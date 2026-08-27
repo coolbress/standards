@@ -16,6 +16,7 @@ import repo_audit
 
 CLEAN: dict[str, Any] = {
     "repos/x": {
+        "name": "x",
         "allow_merge_commit": False,
         "allow_rebase_merge": False,
         "delete_branch_on_merge": True,
@@ -79,6 +80,18 @@ class TestRepoAudit(unittest.TestCase):
         meta = {**CLEAN["repos/x"]}
         meta["security_and_analysis"] = {"secret_scanning": {"status": "disabled"}}
         self.assertEqual(len([g for g in _run({"repos/x": meta}) if g.startswith("보안:")]), 3)
+
+    def test_missing_security_block_is_unknown_not_disabled(self) -> None:
+        """🔴 A-1 이후 이 감사기가 두 번째로 거짓말할 뻔한 자리.
+
+        `security_and_analysis` 는 **관리자에게만** 실려 온다. 없다는 것은
+        "꺼짐" 이 아니라 "못 봤다" 다. 에이전트 토큰으로 돌렸더니 이걸
+        꺼짐으로 읽어 **거짓 결함 18건**이 났었다.
+        """
+        meta = {k: v for k, v in CLEAN["repos/x"].items() if k != "security_and_analysis"}
+        bad, unknown = _both({"repos/x": meta})
+        self.assertFalse([g for g in bad if g.startswith("보안: 시크릿")])
+        self.assertIn("읽을 권한이 없다", " ".join(unknown))
 
     def test_sha_pinning_off(self) -> None:
         got = _run({"repos/x/actions/permissions": {"sha_pinning_required": False,
