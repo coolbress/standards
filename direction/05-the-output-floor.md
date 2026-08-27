@@ -96,7 +96,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 | # | 무엇 | 왜 |
 |---|---|---|
 | **10** | **`floor-check` CI 잡** — 락파일 있나 · `.env` 가 커밋됐나 · Actions 가 SHA 핀인가 · `.env.example` 있나 | 바닥은 **가장 약한 항목으로 점수가 매겨진다.** 사람이 매번 확인할 수 없다 |
-| **12** | **SAST + 시크릿 탐지를 `coolbress/workflows` 에** — ✅ **엔진 결정 2026-08-27**: **공개→CodeQL default setup · 비공개→Semgrep OSS** | ✅ 제약(`FFA-008`)**과** 성능을 둘 다 쟀다 — [`SAST-CODEQL-VS-SEMGREP`](../audit/SAST-CODEQL-VS-SEMGREP.ko.md): 진입점이 있을 때 **CodeQL 8/8 · Semgrep 7/8**, **오탐 둘 다 0**. 🔴 **진입점이 없으면 둘 다 급락**(1/9 · 3/9) — *"SAST 를 켜 뒀으니 안전"* 은 **진입점이 모델링될 때만** 참이다. 🔴 **둘 다 하드코딩 자격증명을 놓쳤다** — **SAST 는 시크릿 층을 대체하지 않는다**. gitleaks 추가 여부는 **C-3** 에 남는다 |
+| ~~**12**~~ ✅ | **완료 2026-08-27** — SAST **CodeQL default setup 3/3** · 시크릿 **푸시 보호 + `ci / secrets`(gitleaks)** | ✅ 제약(`FFA-008`)**과** 성능을 둘 다 쟀다([`SAST-CODEQL-VS-SEMGREP`](../audit/SAST-CODEQL-VS-SEMGREP.ko.md)): 진입점이 있을 때 **CodeQL 8/8 · Semgrep 7/8**, 오탐 둘 다 0. 🔴 **진입점이 없으면 둘 다 급락**(1/9 · 3/9) — *"SAST 를 켜 뒀으니 안전"* 은 **진입점이 모델링될 때만** 참이다. 🔴 **둘 다 하드코딩 자격증명을 놓쳤다.** 그래서 시크릿은 **따로 두 층**이다([`SECRET-DETECTION-OVERLAP`](../audit/SECRET-DETECTION-OVERLAP.ko.md)): **푸시 보호=벽**(커밋 전 차단, 에이전트가 못 끈다) · **gitleaks=그물**(이미 올라간 뒤 머지를 막는다). 🔴 **푸시 보호가 개인키 PEM 을 통과시킨다** — 그 자리가 gitleaks 가 값을 하는 곳이다 |
 | **13** | **공개 웹앱 층** — 접근성(axe) · 개인정보 체크리스트 · spend cap · 헬스체크 | **`/kickoff` 답이 "공개"일 때만.** 첫 아키타입 하나만 만든다 |
 
 ## 위험 비례 — 전부를 항상 켜지 않는다
