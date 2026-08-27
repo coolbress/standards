@@ -34,6 +34,12 @@
 | **B-1** | **서버** SHA 강제 | `sha_pinning_required: true` 3/3 · CI 재실행으로 검증 |
 | **B-3** | 머지 방법 정합 | squash 전용 + 브랜치 자동 삭제 3/3 |
 | **B-4** | **drift 감사** — 읽기 전용, 대상 저장소 **밖**에서 돈다 | [`tools/repo_audit.py`](../tools/repo_audit.py). 🔴 **2026-08-27 정정**: `gh()` 가 토큰을 넘기지 않아 **keyring 관리자 자격증명으로 돌고 있었다** — `env -u GH_TOKEN` 을 코드로 한 셈이다(§A-1 이 금지하는 바로 그것). 고치자 **거짓 결함 18건**이 드러났다: 권한이 없어 안 보이는 것을 전부 *"꺼짐"* 으로 읽고 있었다. 이제 **못 본 것은 `unknown`**, 그리고 **못 본 것이 있으면 `CLEAN` 이라 하지 않는다**(`INCONCLUSIVE`).
+🔴 **3차 정정 (2026-08-27)**: 감사 범위를 넓히자 **즉시 진짜 결함을 잡았다** —
+`project-template` 의 Actions allowlist 에 **`coolbress/workflows/*`** 가 있는데
+`new-project.sh` 는 그걸 안 걸고 있었다. `uses:` 로 부르는 **재사용 워크플로도 allowlist 대상**이라,
+빠지면 새 저장소의 **첫 CI 가 `startup_failure` 로 죽고 검사가 아예 보고되지 않아 잠긴다** —
+`docker://` actionlint 로 이미 겪은 그 형태다. **완주에서 터졌을 결함이다.**
+이제 감사기가 **allowlist 패턴 · `verified_allowed` · squash 가능 여부 · 승인 수 · 룰셋 개수**까지 본다.
 🔴 **2차 정정**: ① **토큰이 없으면 그냥 멈춘다** — 주석만 *"물려준다"* 라고 써 뒀지 fail-closed 가 없어서
 여전히 keyring 으로 떨어졌다. ② **완전성을 안 봤다** — *"있는 검사의 출처가 맞나"* 만 봐서
 **누가 요구 검사를 지워도 초록**이었다. 이제 저장소별 기대 목록(`EXPECTED_CHECKS`)과
@@ -93,7 +99,7 @@ CI 재실행 → **5잡 전부 success, `startup_failure` 없음.** 세 저장�
 | | 결정 | 근거 · 실측 |
 |---|---|---|
 | ~~**A-1**~~ | ✅ **권한 분리 완료 · 읽기 보강 2026-08-27** | fine-grained 토큰: **쓰기는 Contents·Issues·PRs·Workflows**, **읽기는 + Administration·Code scanning**(아래 §읽기). **실측**: 룰셋 수정·삭제 **403** · Actions 정책 **403** · 시크릿 **403** · 저장소 설정 **403** · 환경 생성 **403** / 읽기·이슈·PR·git push **정상**. 🔴 **분리 직전 실측**: 이전 자격증명은 저장소 설정 PATCH 와 시크릿 읽기가 **성공했다** — *벽이 서 있던 게 아니라 안 지우기로 하고 있었을 뿐이다* |
-| ~~**A-2**~~ | ✅ **승인 0 유지** | 검사가 여섯(actionlint·`bash -n`·shellcheck·룰셋 불변식·실패 경로) + canary 다. 승인 1을 걸면 **솔로가 자기 PR 을 승인 못 해 머지가 막힌다** — 도장을 흉내내는 대신 **CI 를 진짜 게이트로** 쓴다 |
+| ~~**A-2**~~ | ✅ **승인 0 유지** | 검사가 늘었다(actionlint · `bash -n` · shellcheck · 룰셋 불변식 · 실패 경로) **+ canary**. 승인 1을 걸면 **솔로가 자기 PR 을 승인 못 해 머지가 막힌다** — 도장을 흉내내는 대신 **CI 를 진짜 게이트로** 쓴다 |
 | ~~**D-2**~~ | ✅ **패키지형 하나 유지** | 완주를 아직 한 번도 안 했다. 프로필을 둘로 가르는 것은 *"벽보다 도구를 먼저 늘리기 ✕"* 에 걸린다. **실제로 라이브러리를 낼 때 연다** |
 | ~~**E-4**~~ | ✅ **`workflows` 유지** | 저장소를 늘리는 것은 값이 확인된 뒤에. 심볼릭 링크로 `~/.claude/commands/` 에 걸려 벽 안에서 버전 관리된다 |
 | ~~**게이트**~~ | ✅ **검사가 머지를 막는다 2026-08-27** | 그동안 `canary`·`ci / secrets`·`CodeQL` 은 **초록이지만 머지를 안 막았다**. 세 저장소 룰셋에 올렸다 — `standards` **CodeQL+integrity** · `workflows` **CodeQL+canary×5+integrity** · `project-template` **CodeQL+ci×5**. 전부 **우회자 0 · active · strict**. 새 저장소는 `ruleset.json`(**v3.0.0**)이 같은 것을 건다 |

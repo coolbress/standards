@@ -31,6 +31,15 @@ EXPECTED_APP: dict[str, int] = {"CodeQL": CODE_SCANNING_APP_ID}
 # **누가 CodeQL·secrets·canary 를 룰셋에서 지워도 감사기가 초록을 말한다.**
 # drift 감사의 일이 정확히 그걸 잡는 것이다. 기대값을 적어 두지 않으면 비교할 것이 없다.
 # 검사를 늘리거나 줄이려면 **여기를 같이 고친다** — 그게 "의도한 변경" 의 증거다.
+# Actions allowlist 에 허용된 패턴. `selected` 인 것만 보면 **패턴이 넓어져도 모른다.**
+EXPECTED_ACTION_PATTERNS: dict[str, list[str]] = {
+    "coolbress/standards": [],
+    "coolbress/workflows": ["astral-sh/setup-uv@*"],
+    # 🔴 `coolbress/workflows/*` 가 필요하다 — `uses:` 로 부르는 재사용 워크플로도
+    # allowlist 대상이다. 빠지면 첫 CI 가 startup_failure 로 죽어 저장소가 잠긴다.
+    "coolbress/project-template": ["astral-sh/setup-uv@*", "coolbress/workflows/*"],
+}
+
 EXPECTED_CHECKS: dict[str, set[str]] = {
     "coolbress/standards": {"integrity", "CodeQL"},
     "coolbress/workflows": {
@@ -139,6 +148,9 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
     # 머지 방법 — 룰셋 의도(squash 전용)와 저장소 설정이 같은 말을 해야 한다 (B-3)
     if meta.get("allow_merge_commit") or meta.get("allow_rebase_merge"):
         bad.append("머지: squash 전용이 아니다")
+    # squash 까지 꺼지면 **머지 버튼이 하나도 없다** — 룰셋은 멀쩡한데 아무것도 못 들어간다.
+    if not meta.get("allow_squash_merge"):
+        bad.append("머지: squash 도 꺼져 있다 (머지할 방법이 없다)")
     if not meta.get("delete_branch_on_merge"):
         bad.append("머지: 브랜치 자동 삭제가 꺼짐")
 
@@ -169,6 +181,19 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
         # SHA 핀은 "무엇이 바뀌지 않는가", allowlist 는 "무엇이 돌 수 있는가" — 다른 문장이다.
         if perms.get("allowed_actions") != "selected":
             bad.append(f"Actions: allowlist 가 꺼짐 (allowed_actions={perms.get('allowed_actions')})")
+        else:
+            # 🔴 `selected` 인 것만 보면 **목록이 넓어져도 모른다.**
+            sel = gh(f"repos/{repo}/actions/permissions/selected-actions") or {}
+            if not sel.get("github_owned_allowed"):
+                bad.append("Actions: GitHub 소유 Action 이 막혀 있다 (checkout 이 안 돈다)")
+            if sel.get("verified_allowed"):
+                bad.append("Actions: verified_allowed 가 켜짐 — 검증 마켓플레이스 전체가 열린다")
+            want_pat = EXPECTED_ACTION_PATTERNS.get(repo)
+            got_pat = sorted(sel.get("patterns_allowed") or [])
+            if want_pat is None:
+                unknown.append("Actions: 이 저장소의 기대 패턴이 EXPECTED_ACTION_PATTERNS 에 없다")
+            elif got_pat != sorted(want_pat):
+                bad.append(f"Actions: allowlist 패턴이 다르다 (기대 {sorted(want_pat)}, 실제 {got_pat})")
 
     # SAST — 공개 저장소는 CodeQL default setup 이다 (소유자 결정 2026-08-27)
     if blocked(f"repos/{repo}/code-scanning/default-setup"):
@@ -187,6 +212,11 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
     if not rulesets:
         bad.append("벽: 룰셋이 없다")
         return bad, unknown
+    # 🔴 [0] 만 보면 **룰셋이 여러 개일 때 엉뚱한 것을 본다.**
+    # 하나만 있어야 한다 — 여러 개면 어느 것이 진짜 벽인지 사람이 정해야 한다.
+    if len(rulesets) > 1:
+        names = ", ".join(str(r.get("name")) for r in rulesets)
+        bad.append(f"벽: 룰셋이 {len(rulesets)}개다 ({names}) — 어느 것이 벽인지 불명확하다")
     rs = gh(f"repos/{repo}/rulesets/{rulesets[0]['id']}") or {}
     if rs.get("enforcement") != "active":
         bad.append(f"벽: enforcement={rs.get('enforcement')}")
@@ -207,8 +237,14 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
             bad.append(f"벽: '{label}' 규칙이 없다")
 
     pr_rule = next((r for r in rs.get("rules", []) if r["type"] == "pull_request"), None)
-    if pr_rule and (pr_rule["parameters"].get("allowed_merge_methods") or []) != ["squash"]:
-        bad.append("벽: 머지 방법이 squash 전용이 아니다")
+    if pr_rule:
+        if (pr_rule["parameters"].get("allowed_merge_methods") or []) != ["squash"]:
+            bad.append("벽: 머지 방법이 squash 전용이 아니다")
+        # 현행 정책은 0 이다 (A-2, 소유자 결정) — 솔로는 자기 PR 을 승인할 수 없다.
+        # 0 이 아니게 되면 **머지가 영원히 막힌다.** 정책을 바꿨다면 여기도 바꿔라.
+        approvals = pr_rule["parameters"].get("required_approving_review_count")
+        if approvals != 0:
+            bad.append(f"벽: 필수 승인 수가 {approvals} 다 — 솔로는 자기 PR 을 승인할 수 없어 머지가 막힌다")
 
     for rule in rs.get("rules", []):
         if rule["type"] != "required_status_checks":
