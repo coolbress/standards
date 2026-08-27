@@ -43,13 +43,23 @@
 🔴 **drift 감사가 첫 실행에서 진짜 결함을 잡았다** — `standards` 의 시크릿 탐지·푸시 보호가 꺼져 있었다
 (`new-project.sh` 가 **새 저장소에만** 켜주는데 `standards` 는 그걸로 만든 게 아니었다). 켰다.
 
-⚠️ **B-1 의 절반은 못 했다** — Actions **allowlist** 는 `standards`·`project-template` 만 걸었다.
-`workflows` 는 `docker://rhysd/actionlint` 가 allowlist 패턴에 들어가지 않아 `startup_failure` 가 났고,
-**되돌려 SHA 강제만 유지**했다. 고치려면 actionlint 를 일반 Action 으로 바꿔야 한다.
+✅ **B-1 완결 2026-08-27** — 남아 있던 절반(`workflows` 의 allowlist)을 닫았다.
+원인은 `docker://rhysd/actionlint` 였다. **그 형태가 두 번 값을 치렀다** — allowlist 패턴에 안 들어가
+`startup_failure` 를 냈고, **의존성 그래프에도 안 잡혔다**([`DEPENDENCY-GRAPH-SCOPE`](DEPENDENCY-GRAPH-SCOPE.ko.md)).
 
-🔴 **그리고 같은 선택이 두 번째 값을 치른다** — `docker://` Action 은 **의존성 그래프에도 안 잡힌다**
-([`DEPENDENCY-GRAPH-SCOPE`](DEPENDENCY-GRAPH-SCOPE.ko.md)). 경보도 갱신 PR 도 오지 않는다.
-**핀이 되어 있다는 것과 지켜보고 있다는 것은 다른 문장이다.** 일반 Action 으로 바꾸면 두 구멍이 같이 닫힌다.
+`rhysd/actionlint` 에는 **공식 Action 이 없다**(Docker 이미지뿐). 제3자 래퍼(⭐51)를 **중앙 저장소**에
+들이는 대신 **공식 릴리스 바이너리를 SHA256 으로 검증**해 쓴다 — 다이제스트 핀과 같은 보장을 주면서
+`uses:` 가 아니라 allowlist 를 막지 않는다.
+
+**실측**: `workflows` 를 `allowed_actions: selected`(+`astral-sh/setup-uv@*`) 로 바꾸고
+CI 재실행 → **5잡 전부 success, `startup_failure` 없음.** 세 저장소 3/3 이 이제 allowlist 아래에 있다.
+
+⚠️ **의존성 그래프 구멍은 남는다.** 감수한다 — 린터는 **CI 안에서만 돌고 산출물에 섞이지 않는다.**
+값이 큰 쪽(allowlist)이 닫혔다. 버전과 체크섬을 한 줄에 같이 둬서 올릴 때 함께 바꾸게 했다.
+
+🔴 **그리고 `repo_audit` 이 allowlist 를 안 보고 있었다** — SHA 핀만 봤다. **둘은 다른 문장이다**
+(*무엇이 바뀌지 않는가* vs *무엇이 돌 수 있는가*). 검사를 추가하고, **감사기 자신에 시험 10건을 붙였다**
+(`tools/test_repo_audit.py`) — 이 감사기는 **204 를 실패로 읽어 켜진 기능을 꺼졌다고 보고한 전력**이 있다.
 
 ## 남은 것 — **종류를 먼저 가른다**
 
