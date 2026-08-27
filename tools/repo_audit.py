@@ -15,7 +15,14 @@ import json
 import subprocess
 import sys
 
-REPOS = ["coolbress/standards", "coolbress/workflows", "coolbress/project-template"]
+# 감사 대상. **새 프로젝트를 만들면 여기에 한 줄 더한다** —
+# 템플릿에서 뜬 프로젝트는 기대값이 전부 같으므로(아래 PROJECT_*) 그 한 줄이면 끝난다.
+# 🔴 여기 없으면 감사되지 않는다. 만든 저장소가 감사 밖에 있으면 벽이 있는지 아무도 안 본다.
+REPOS = [
+    "coolbress/standards",
+    "coolbress/workflows",
+    "coolbress/project-template",
+]
 ACTIONS_APP_ID = 15368        # GitHub Actions
 CODE_SCANNING_APP_ID = 57789  # github-advanced-security (CodeQL 집계 검사)
 
@@ -31,7 +38,14 @@ EXPECTED_APP: dict[str, int] = {"CodeQL": CODE_SCANNING_APP_ID}
 # **누가 CodeQL·secrets·canary 를 룰셋에서 지워도 감사기가 초록을 말한다.**
 # drift 감사의 일이 정확히 그걸 잡는 것이다. 기대값을 적어 두지 않으면 비교할 것이 없다.
 # 검사를 늘리거나 줄이려면 **여기를 같이 고친다** — 그게 "의도한 변경" 의 증거다.
+# ── 템플릿에서 뜬 프로젝트의 기본 기대값 ─────────────────────────
+# `new-project.sh` 가 거는 것과 **같아야 한다.** 둘이 갈라지면 새 저장소가
+# 태어나자마자 drift 로 잡히거나(예전에 그랬다) 잡혀야 할 것이 안 잡힌다.
+PROJECT_CHECKS = {"CodeQL", "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets"}
+PROJECT_ACTION_PATTERNS = ["astral-sh/setup-uv@*", "coolbress/workflows/*"]
+
 # Actions allowlist 에 허용된 패턴. `selected` 인 것만 보면 **패턴이 넓어져도 모른다.**
+# 여기 없는 저장소는 위 PROJECT_* 를 기대값으로 쓴다.
 EXPECTED_ACTION_PATTERNS: dict[str, list[str]] = {
     "coolbress/standards": [],
     "coolbress/workflows": ["astral-sh/setup-uv@*"],
@@ -79,7 +93,8 @@ def _env() -> dict[str, str]:
             "🔴 GH_TOKEN(또는 GITHUB_TOKEN)이 없다. 이 감사기는 **에이전트와 같은 눈**으로\n"
             "   봐야 하므로 keyring 으로 떨어지지 않고 여기서 멈춘다.\n"
             "   사람이 관리자 눈으로 보려면 토큰을 명시적으로 넘겨라:\n"
-            "     GH_TOKEN=<관리자토큰> python3 tools/repo_audit.py\n"
+            "     ~/workflows/tools/with-admin-token.sh python3 tools/repo_audit.py\n"
+            "   🔴 `GH_TOKEN=<토큰> 명령` 형태로 쓰지 마라 — 셸 히스토리에 남는다.\n"
             "   ⚠️ 이건 **사고를 막는 장치**다. 같은 OS 사용자면 어떤 프로세스든 keyring 에\n"
             "      닿을 수 있으므로, 진짜 경계는 OS 수준 분리가 필요하다."
         )
@@ -188,11 +203,9 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
                 bad.append("Actions: GitHub 소유 Action 이 막혀 있다 (checkout 이 안 돈다)")
             if sel.get("verified_allowed"):
                 bad.append("Actions: verified_allowed 가 켜짐 — 검증 마켓플레이스 전체가 열린다")
-            want_pat = EXPECTED_ACTION_PATTERNS.get(repo)
+            want_pat = EXPECTED_ACTION_PATTERNS.get(repo, PROJECT_ACTION_PATTERNS)
             got_pat = sorted(sel.get("patterns_allowed") or [])
-            if want_pat is None:
-                unknown.append("Actions: 이 저장소의 기대 패턴이 EXPECTED_ACTION_PATTERNS 에 없다")
-            elif got_pat != sorted(want_pat):
+            if got_pat != sorted(want_pat):
                 bad.append(f"Actions: allowlist 패턴이 다르다 (기대 {sorted(want_pat)}, 실제 {got_pat})")
 
     # SAST — 공개 저장소는 CodeQL default setup 이다 (소유자 결정 2026-08-27)
@@ -254,14 +267,11 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
             bad.append("벽: strict 가 꺼짐 (낡은 main 위의 초록이 인정된다)")
         # 🔴 완전성 — 기대한 검사가 **전부 있는가**. 없으면 누가 지워도 초록이다.
         actual = {c["context"] for c in params["required_status_checks"]}
-        want = EXPECTED_CHECKS.get(repo)
-        if want is None:
-            unknown.append("벽: 이 저장소의 기대 검사 목록이 EXPECTED_CHECKS 에 없다")
-        else:
-            for miss in sorted(want - actual):
-                bad.append(f"벽: 요구 검사 '{miss}' 가 사라졌다")
-            for extra in sorted(actual - want):
-                bad.append(f"벽: 기대하지 않은 요구 검사 '{extra}' — 의도한 변경이면 EXPECTED_CHECKS 를 고쳐라")
+        want = EXPECTED_CHECKS.get(repo, PROJECT_CHECKS)
+        for miss in sorted(want - actual):
+            bad.append(f"벽: 요구 검사 '{miss}' 가 사라졌다")
+        for extra in sorted(actual - want):
+            bad.append(f"벽: 기대하지 않은 요구 검사 '{extra}' — 의도한 변경이면 EXPECTED_CHECKS 를 고쳐라")
         for check in rule["parameters"]["required_status_checks"]:
             ctx = check["context"]
             want = EXPECTED_APP.get(ctx, ACTIONS_APP_ID)
