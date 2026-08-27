@@ -26,6 +26,24 @@ CODE_SCANNING_APP_ID = 57789  # github-advanced-security (CodeQL 집계 검사)
 # 검사기의 '맞음' 모델이 현실을 못 따라가면 그때부터 검사기가 거짓말을 한다.
 EXPECTED_APP: dict[str, int] = {"CodeQL": CODE_SCANNING_APP_ID}
 
+# 🔴 저장소별로 **어떤 검사가 있어야 하는가.**
+# 왜 필요한가: 이전 판은 *"있는 검사의 출처가 맞는가"* 만 봤다. 그러면
+# **누가 CodeQL·secrets·canary 를 룰셋에서 지워도 감사기가 초록을 말한다.**
+# drift 감사의 일이 정확히 그걸 잡는 것이다. 기대값을 적어 두지 않으면 비교할 것이 없다.
+# 검사를 늘리거나 줄이려면 **여기를 같이 고친다** — 그게 "의도한 변경" 의 증거다.
+EXPECTED_CHECKS: dict[str, set[str]] = {
+    "coolbress/standards": {"integrity", "CodeQL"},
+    "coolbress/workflows": {
+        "integrity", "CodeQL",
+        "canary / lint", "canary / typecheck", "canary / test",
+        "canary / build", "canary / secrets",
+    },
+    "coolbress/project-template": {
+        "CodeQL",
+        "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
+    },
+}
+
 
 def _env() -> dict[str, str]:
     """`gh` 에 넘길 환경.
@@ -39,9 +57,23 @@ def _env() -> dict[str, str]:
     """
     env = {"PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin",
            "HOME": subprocess.os.environ.get("HOME", "")}
+    found = False
     for key in ("GH_TOKEN", "GITHUB_TOKEN"):
         if subprocess.os.environ.get(key):
             env[key] = subprocess.os.environ[key]
+            found = True
+    if not found:
+        # 🔴 fail-closed. 토큰이 없으면 `gh` 가 **keyring 의 관리자 자격증명**으로 떨어진다.
+        # 그러면 이 감사기가 *에이전트가 볼 수 있는 것*이 아니라 *관리자가 볼 수 있는 것*을
+        # 보고한다 — 조용히. 주석으로 "물려준다" 고 써 두는 것으로는 안 된다.
+        sys.exit(
+            "🔴 GH_TOKEN(또는 GITHUB_TOKEN)이 없다. 이 감사기는 **에이전트와 같은 눈**으로\n"
+            "   봐야 하므로 keyring 으로 떨어지지 않고 여기서 멈춘다.\n"
+            "   사람이 관리자 눈으로 보려면 토큰을 명시적으로 넘겨라:\n"
+            "     GH_TOKEN=<관리자토큰> python3 tools/repo_audit.py\n"
+            "   ⚠️ 이건 **사고를 막는 장치**다. 같은 OS 사용자면 어떤 프로세스든 keyring 에\n"
+            "      닿을 수 있으므로, 진짜 경계는 OS 수준 분리가 필요하다."
+        )
     return env
 
 
@@ -160,9 +192,40 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
         bad.append(f"벽: enforcement={rs.get('enforcement')}")
     if rs.get("bypass_actors"):
         bad.append(f"벽: bypass_actors 가 비어 있지 않다 ({len(rs['bypass_actors'])}건)")
+    # 어떤 브랜치를 지키는가 — 기본 브랜치가 아니면 벽이 엉뚱한 곳에 서 있는 것이다.
+    include = ((rs.get("conditions") or {}).get("ref_name") or {}).get("include")
+    if include != ["~DEFAULT_BRANCH"]:
+        bad.append(f"벽: 대상이 기본 브랜치가 아니다 (include={include})")
+
+    # 🔴 규칙 자체가 사라졌는지 본다. 출처만 보면 **규칙이 통째로 지워져도 초록**이다.
+    types = {r["type"] for r in rs.get("rules", [])}
+    for t, label in (("deletion", "기본 브랜치 삭제 금지"),
+                     ("non_fast_forward", "강제 푸시 금지"),
+                     ("pull_request", "PR 필수"),
+                     ("required_status_checks", "검사 필수")):
+        if t not in types:
+            bad.append(f"벽: '{label}' 규칙이 없다")
+
+    pr_rule = next((r for r in rs.get("rules", []) if r["type"] == "pull_request"), None)
+    if pr_rule and (pr_rule["parameters"].get("allowed_merge_methods") or []) != ["squash"]:
+        bad.append("벽: 머지 방법이 squash 전용이 아니다")
+
     for rule in rs.get("rules", []):
         if rule["type"] != "required_status_checks":
             continue
+        params = rule["parameters"]
+        if not params.get("strict_required_status_checks_policy"):
+            bad.append("벽: strict 가 꺼짐 (낡은 main 위의 초록이 인정된다)")
+        # 🔴 완전성 — 기대한 검사가 **전부 있는가**. 없으면 누가 지워도 초록이다.
+        actual = {c["context"] for c in params["required_status_checks"]}
+        want = EXPECTED_CHECKS.get(repo)
+        if want is None:
+            unknown.append("벽: 이 저장소의 기대 검사 목록이 EXPECTED_CHECKS 에 없다")
+        else:
+            for miss in sorted(want - actual):
+                bad.append(f"벽: 요구 검사 '{miss}' 가 사라졌다")
+            for extra in sorted(actual - want):
+                bad.append(f"벽: 기대하지 않은 요구 검사 '{extra}' — 의도한 변경이면 EXPECTED_CHECKS 를 고쳐라")
         for check in rule["parameters"]["required_status_checks"]:
             ctx = check["context"]
             want = EXPECTED_APP.get(ctx, ACTIONS_APP_ID)

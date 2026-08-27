@@ -33,19 +33,26 @@ CLEAN: dict[str, Any] = {
     "repos/x/rulesets/1": {
         "enforcement": "active",
         "bypass_actors": [],
+        "conditions": {"ref_name": {"include": ["~DEFAULT_BRANCH"], "exclude": []}},
         "rules": [
             {"type": "deletion"},
+            {"type": "non_fast_forward"},
+            {"type": "pull_request", "parameters": {"allowed_merge_methods": ["squash"]}},
             {
                 "type": "required_status_checks",
                 "parameters": {
+                    "strict_required_status_checks_policy": True,
                     "required_status_checks": [
                         {"context": "ci / lint", "integration_id": repo_audit.ACTIONS_APP_ID}
-                    ]
+                    ],
                 },
             },
         ],
     },
 }
+
+# 시험용 기대값 — 실제 저장소 표를 건드리지 않는다.
+repo_audit.EXPECTED_CHECKS["x"] = {"ci / lint"}
 
 
 def _both(overrides: dict[str, Any], status: int = 200) -> tuple[list[str], list[str]]:
@@ -61,6 +68,21 @@ def _both(overrides: dict[str, Any], status: int = 200) -> tuple[list[str], list
 
 def _run(overrides: dict[str, Any]) -> list[str]:
     return _both(overrides)[0]
+
+
+def _with_checks(checks: list[dict[str, Any]], expected: set[str]) -> list[str]:
+    """요구 검사 목록만 바꾼 룰셋으로 돌린다 (나머지 규칙은 정상 상태로 둔다)."""
+    rs = {**CLEAN["repos/x/rulesets/1"]}
+    rs["rules"] = [dict(r) for r in rs["rules"]]
+    rs["rules"][-1] = {"type": "required_status_checks",
+                       "parameters": {"strict_required_status_checks_policy": True,
+                                      "required_status_checks": checks}}
+    saved = repo_audit.EXPECTED_CHECKS["x"]
+    repo_audit.EXPECTED_CHECKS["x"] = expected
+    try:
+        return _run({"repos/x/rulesets/1": rs})
+    finally:
+        repo_audit.EXPECTED_CHECKS["x"] = saved
 
 
 class TestRepoAudit(unittest.TestCase):
@@ -118,46 +140,25 @@ class TestRepoAudit(unittest.TestCase):
         출처를 15368 하나로 하드코딩해 뒀더니, CodeQL 을 required 로 올리는 순간
         **정당하게 다른 앱에 묶인 것을 "안 묶임" 으로** 읽었다.
         """
-        rs = {
-            **CLEAN["repos/x/rulesets/1"],
-            "rules": [{"type": "required_status_checks",
-                       "parameters": {"required_status_checks": [
-                           {"context": "ci / lint", "integration_id": repo_audit.ACTIONS_APP_ID},
-                           {"context": "CodeQL", "integration_id": repo_audit.CODE_SCANNING_APP_ID},
-                       ]}}],
-        }
-        self.assertEqual(_run({"repos/x/rulesets/1": rs}), [])
+        self.assertEqual(_with_checks(
+            [{"context": "ci / lint", "integration_id": repo_audit.ACTIONS_APP_ID},
+             {"context": "CodeQL", "integration_id": repo_audit.CODE_SCANNING_APP_ID}],
+            {"ci / lint", "CodeQL"}), [])
 
     def test_codeql_from_the_wrong_app_is_a_finding(self) -> None:
-        rs = {
-            **CLEAN["repos/x/rulesets/1"],
-            "rules": [{"type": "required_status_checks",
-                       "parameters": {"required_status_checks": [
-                           {"context": "CodeQL", "integration_id": repo_audit.ACTIONS_APP_ID},
-                       ]}}],
-        }
-        self.assertIn("출처가 안 묶였거나 틀렸다", " ".join(_run({"repos/x/rulesets/1": rs})))
+        self.assertIn("출처가 안 묶였거나 틀렸다", " ".join(_with_checks(
+            [{"context": "CodeQL", "integration_id": repo_audit.ACTIONS_APP_ID}], {"CodeQL"})))
 
     def test_language_specific_analyze_job_must_not_be_required(self) -> None:
         """저장소마다 언어가 다르다. 없는 언어를 요구하면 저장소가 잠긴다."""
-        rs = {
-            **CLEAN["repos/x/rulesets/1"],
-            "rules": [{"type": "required_status_checks",
-                       "parameters": {"required_status_checks": [
-                           {"context": "Analyze (python)", "integration_id": repo_audit.ACTIONS_APP_ID},
-                       ]}}],
-        }
-        self.assertIn("저장소가 잠긴다", " ".join(_run({"repos/x/rulesets/1": rs})))
+        self.assertIn("저장소가 잠긴다", " ".join(_with_checks(
+            [{"context": "Analyze (python)", "integration_id": repo_audit.ACTIONS_APP_ID}],
+            {"Analyze (python)"})))
 
     def test_check_source_not_pinned_to_actions_app(self) -> None:
         """이름만 요구하면 아무나 그 이름으로 초록을 올릴 수 있다."""
-        rs = {
-            **CLEAN["repos/x/rulesets/1"],
-            "rules": [{"type": "required_status_checks",
-                       "parameters": {"required_status_checks": [{"context": "ci / lint",
-                                                                  "integration_id": 99999}]}}],
-        }
-        self.assertIn("출처가 안 묶였거나 틀렸다", " ".join(_run({"repos/x/rulesets/1": rs})))
+        self.assertIn("출처가 안 묶였거나 틀렸다", " ".join(_with_checks(
+            [{"context": "ci / lint", "integration_id": 99999}], {"ci / lint"})))
 
 
 class TestCodeQLAndUnknown(unittest.TestCase):
@@ -179,6 +180,68 @@ class TestCodeQLAndUnknown(unittest.TestCase):
         bad, unknown = _both({"repos/x/code-scanning/default-setup": None}, status=403)
         self.assertEqual(bad, [])
         self.assertIn("읽을 권한이 없다", " ".join(unknown))
+
+
+class TestWallCompleteness(unittest.TestCase):
+    """🔴 이전 판은 *"있는 검사의 출처가 맞는가"* 만 봤다.
+
+    그러면 **누가 CodeQL·secrets·canary 를 룰셋에서 지워도 감사기가 초록을 말한다.**
+    drift 감사의 일이 정확히 그걸 잡는 것이다.
+    """
+
+    def _rs(self, **over: Any) -> dict[str, Any]:
+        return {**CLEAN["repos/x/rulesets/1"], **over}
+
+    def test_missing_required_check_is_caught(self) -> None:
+        rs = self._rs(rules=[
+            {"type": "deletion"}, {"type": "non_fast_forward"},
+            {"type": "pull_request", "parameters": {"allowed_merge_methods": ["squash"]}},
+            {"type": "required_status_checks",
+             "parameters": {"strict_required_status_checks_policy": True,
+                            "required_status_checks": []}},
+        ])
+        self.assertIn("'ci / lint' 가 사라졌다", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+    def test_unexpected_required_check_is_reported(self) -> None:
+        rs = self._rs()
+        rs["rules"] = [dict(r) for r in rs["rules"]]
+        rs["rules"][-1] = {"type": "required_status_checks",
+                           "parameters": {"strict_required_status_checks_policy": True,
+                                          "required_status_checks": [
+                                              {"context": "ci / lint",
+                                               "integration_id": repo_audit.ACTIONS_APP_ID},
+                                              {"context": "surprise",
+                                               "integration_id": repo_audit.ACTIONS_APP_ID}]}}
+        self.assertIn("기대하지 않은 요구 검사 'surprise'", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+    def test_deleted_rule_is_caught(self) -> None:
+        """규칙이 통째로 지워지면 출처만 보는 검사로는 안 잡힌다."""
+        rs = self._rs(rules=[r for r in CLEAN["repos/x/rulesets/1"]["rules"]
+                             if r["type"] not in ("deletion", "non_fast_forward")])
+        got = " ".join(_run({"repos/x/rulesets/1": rs}))
+        self.assertIn("기본 브랜치 삭제 금지", got)
+        self.assertIn("강제 푸시 금지", got)
+
+    def test_strict_off_is_caught(self) -> None:
+        rs = self._rs()
+        rs["rules"] = [dict(r) for r in rs["rules"]]
+        rs["rules"][-1] = {"type": "required_status_checks",
+                           "parameters": {"strict_required_status_checks_policy": False,
+                                          "required_status_checks": [
+                                              {"context": "ci / lint",
+                                               "integration_id": repo_audit.ACTIONS_APP_ID}]}}
+        self.assertIn("strict 가 꺼짐", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+    def test_merge_method_widened_is_caught(self) -> None:
+        rs = self._rs()
+        rs["rules"] = [dict(r) for r in rs["rules"]]
+        rs["rules"][2] = {"type": "pull_request",
+                          "parameters": {"allowed_merge_methods": ["squash", "merge"]}}
+        self.assertIn("squash 전용이 아니다", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+    def test_wall_pointed_at_wrong_branch_is_caught(self) -> None:
+        rs = self._rs(conditions={"ref_name": {"include": ["refs/heads/dev"], "exclude": []}})
+        self.assertIn("기본 브랜치가 아니다", " ".join(_run({"repos/x/rulesets/1": rs})))
 
 
 if __name__ == "__main__":
