@@ -112,6 +112,43 @@ class TestRepoAudit(unittest.TestCase):
         rs = {**CLEAN["repos/x/rulesets/1"], "bypass_actors": [{"actor_id": 5}]}
         self.assertIn("bypass_actors", " ".join(_run({"repos/x/rulesets/1": rs})))
 
+    def test_codeql_may_come_from_the_code_scanning_app(self) -> None:
+        """🔴 감사기가 세 번째로 거짓말할 뻔한 자리.
+
+        출처를 15368 하나로 하드코딩해 뒀더니, CodeQL 을 required 로 올리는 순간
+        **정당하게 다른 앱에 묶인 것을 "안 묶임" 으로** 읽었다.
+        """
+        rs = {
+            **CLEAN["repos/x/rulesets/1"],
+            "rules": [{"type": "required_status_checks",
+                       "parameters": {"required_status_checks": [
+                           {"context": "ci / lint", "integration_id": repo_audit.ACTIONS_APP_ID},
+                           {"context": "CodeQL", "integration_id": repo_audit.CODE_SCANNING_APP_ID},
+                       ]}}],
+        }
+        self.assertEqual(_run({"repos/x/rulesets/1": rs}), [])
+
+    def test_codeql_from_the_wrong_app_is_a_finding(self) -> None:
+        rs = {
+            **CLEAN["repos/x/rulesets/1"],
+            "rules": [{"type": "required_status_checks",
+                       "parameters": {"required_status_checks": [
+                           {"context": "CodeQL", "integration_id": repo_audit.ACTIONS_APP_ID},
+                       ]}}],
+        }
+        self.assertIn("출처가 안 묶였거나 틀렸다", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+    def test_language_specific_analyze_job_must_not_be_required(self) -> None:
+        """저장소마다 언어가 다르다. 없는 언어를 요구하면 저장소가 잠긴다."""
+        rs = {
+            **CLEAN["repos/x/rulesets/1"],
+            "rules": [{"type": "required_status_checks",
+                       "parameters": {"required_status_checks": [
+                           {"context": "Analyze (python)", "integration_id": repo_audit.ACTIONS_APP_ID},
+                       ]}}],
+        }
+        self.assertIn("저장소가 잠긴다", " ".join(_run({"repos/x/rulesets/1": rs})))
+
     def test_check_source_not_pinned_to_actions_app(self) -> None:
         """이름만 요구하면 아무나 그 이름으로 초록을 올릴 수 있다."""
         rs = {
@@ -120,7 +157,7 @@ class TestRepoAudit(unittest.TestCase):
                        "parameters": {"required_status_checks": [{"context": "ci / lint",
                                                                   "integration_id": 99999}]}}],
         }
-        self.assertIn("출처가 안 묶임", " ".join(_run({"repos/x/rulesets/1": rs})))
+        self.assertIn("출처가 안 묶였거나 틀렸다", " ".join(_run({"repos/x/rulesets/1": rs})))
 
 
 class TestCodeQLAndUnknown(unittest.TestCase):
