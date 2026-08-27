@@ -28,6 +28,7 @@ CLEAN: dict[str, Any] = {
     "repos/x/vulnerability-alerts": True,  # 204 = 켜져 있다
     "repos/x/actions/permissions": {"sha_pinning_required": True, "allowed_actions": "selected"},
     "repos/x/rulesets": [{"id": 1}],
+    "repos/x/code-scanning/default-setup": {"state": "configured"},
     "repos/x/rulesets/1": {
         "enforcement": "active",
         "bypass_actors": [],
@@ -46,14 +47,19 @@ CLEAN: dict[str, Any] = {
 }
 
 
-def _run(overrides: dict[str, Any]) -> list[str]:
+def _both(overrides: dict[str, Any], status: int = 200) -> tuple[list[str], list[str]]:
     table = {**CLEAN, **overrides}
-    original = repo_audit.gh
+    orig_gh, orig_st = repo_audit.gh, repo_audit.gh_status
     repo_audit.gh = lambda path: table.get(path)  # type: ignore[assignment]
+    repo_audit.gh_status = lambda path: status  # type: ignore[assignment]
     try:
         return repo_audit.audit("x")
     finally:
-        repo_audit.gh = original  # type: ignore[assignment]
+        repo_audit.gh, repo_audit.gh_status = orig_gh, orig_st  # type: ignore[assignment]
+
+
+def _run(overrides: dict[str, Any]) -> list[str]:
+    return _both(overrides)[0]
 
 
 class TestRepoAudit(unittest.TestCase):
@@ -102,6 +108,27 @@ class TestRepoAudit(unittest.TestCase):
                                                                   "integration_id": 99999}]}}],
         }
         self.assertIn("출처가 안 묶임", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+
+class TestCodeQLAndUnknown(unittest.TestCase):
+    def test_codeql_configured_is_clean(self) -> None:
+        bad, unknown = _both({})
+        self.assertEqual((bad, unknown), ([], []))
+
+    def test_codeql_off_is_a_finding(self) -> None:
+        bad, unknown = _both({"repos/x/code-scanning/default-setup": {"state": "not-configured"}})
+        self.assertIn("CodeQL default setup 이 켜져 있지 않다", " ".join(bad))
+        self.assertEqual(unknown, [])
+
+    def test_403_is_unknown_not_a_finding(self) -> None:
+        """🔴 이 파일이 존재하는 이유. 못 본 것을 '꺼짐' 으로 보고하면 안 된다.
+
+        A-1 이후 에이전트 자격증명은 code-scanning 을 읽지 못한다(403).
+        그건 정상 상태이므로 **빨강이 아니고**, 확인한 것도 아니므로 **초록도 아니다**.
+        """
+        bad, unknown = _both({"repos/x/code-scanning/default-setup": None}, status=403)
+        self.assertEqual(bad, [])
+        self.assertIn("읽을 권한이 없다", " ".join(unknown))
 
 
 if __name__ == "__main__":
