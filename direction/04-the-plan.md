@@ -142,7 +142,7 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 | 만들 것 5 | ✅ **`new-project.sh`** — 책임은 둘이다: **저장소 생성**과 **서버 바닥 설치**(벽 · 시크릿 탐지 · Dependabot · SHA 강제 · 머지 설정). **전 단계 fail-closed** — 어디서 넘어져도 벽 없는 원격을 남기지 않는다 |
 | 만들 것 11 | ✅ Dependabot(`uv` + `github-actions`)을 템플릿에 |
 | 만들 것 6~10·13 | ⬜ 미착수 |
-| 만들 것 12 | ✅ **완료** — CodeQL default setup 3/3 · `ci / secrets`(gitleaks). ⚠️ **둘 다 required check 는 아니다** |
+| 만들 것 12 | ✅ **완료** — CodeQL default setup 3/3 · `ci / secrets`(gitleaks). ✅ **둘 다 required check 다**(2026-08-27) — 초록이 아니면 머지가 막힌다 |
 | 🎯 **완주** | 🔴 **아직 없다.** 실제 프로젝트 하나를 end-to-end 로 돌린 적이 없다 — 아래 §판정 기준의 선행 조건 |
 
 ### 🔒 범위 결정 (2026-08-25) — ②③ 는 **Python 전용이다**

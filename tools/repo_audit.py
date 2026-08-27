@@ -16,7 +16,15 @@ import subprocess
 import sys
 
 REPOS = ["coolbress/standards", "coolbress/workflows", "coolbress/project-template"]
-ACTIONS_APP_ID = 15368  # GitHub Actions — required check 의 유일한 인정 출처
+ACTIONS_APP_ID = 15368        # GitHub Actions
+CODE_SCANNING_APP_ID = 57789  # github-advanced-security (CodeQL 집계 검사)
+
+# 검사 이름 → 그 이름을 보고해도 되는 **유일한** 앱.
+# 🔴 여기 없는 이름은 GitHub Actions(15368) 여야 한다 — 기본을 느슨하게 두지 않는다.
+# 왜 지도가 필요한가: 처음엔 "출처는 전부 15368" 로 하드코딩돼 있었다.
+# CodeQL 을 required 로 올리자 **정당하게 다른 앱에 묶인 것을 "안 묶임" 으로** 읽었다.
+# 검사기의 '맞음' 모델이 현실을 못 따라가면 그때부터 검사기가 거짓말을 한다.
+EXPECTED_APP: dict[str, int] = {"CodeQL": CODE_SCANNING_APP_ID}
 
 
 def _env() -> dict[str, str]:
@@ -156,8 +164,17 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
         if rule["type"] != "required_status_checks":
             continue
         for check in rule["parameters"]["required_status_checks"]:
-            if check.get("integration_id") != ACTIONS_APP_ID:
-                bad.append(f"벽: '{check['context']}' 의 출처가 안 묶임 (다른 앱도 이 이름을 보고할 수 있다)")
+            ctx = check["context"]
+            want = EXPECTED_APP.get(ctx, ACTIONS_APP_ID)
+            got = check.get("integration_id")
+            if got != want:
+                bad.append(
+                    f"벽: '{ctx}' 의 출처가 안 묶였거나 틀렸다 (기대 app {want}, 실제 {got})"
+                )
+            # 🔴 언어별 CodeQL 잡을 요구하면 안 된다 — 저장소마다 언어가 다르다.
+            # 없는 언어를 요구하면 그 이름이 영원히 보고되지 않아 저장소가 잠긴다.
+            if ctx.startswith("Analyze ("):
+                bad.append(f"벽: '{ctx}' 는 언어별 잡이라 요구하면 안 된다 (저장소가 잠긴다)")
     return bad, unknown
 
 
