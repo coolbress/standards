@@ -65,6 +65,10 @@ def audit(repo: str) -> list[str]:
     perms = gh(f"repos/{repo}/actions/permissions") or {}
     if not perms.get("sha_pinning_required"):
         bad.append("Actions: 서버 SHA 강제가 꺼짐")
+    # SHA 핀은 "무엇을" 도는지는 안 정한다. 무엇이 돌 수 있는지는 allowlist 가 정한다.
+    # 둘은 다른 문장이라 따로 검사한다.
+    if perms.get("allowed_actions") != "selected":
+        bad.append(f"Actions: allowlist 가 꺼짐 (allowed_actions={perms.get('allowed_actions')})")
 
     # 벽 (B-2)
     rulesets = gh(f"repos/{repo}/rulesets") or []
