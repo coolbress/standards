@@ -55,7 +55,7 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 | 9 | (나중) 라우팅 표 + `consensus` MCP + `clink` | **⑤** | 속도 | ⚪ **`ask-matt` 은 스킬 라우팅이라 다르다.** 모델 라우팅의 현행 규정은 [`06`](06-how-we-work.md) §모델 |
 | **10** | **`floor-check` CI 잡** — 락파일·`.env` 커밋 여부·Actions SHA 핀·`.env.example` + **존재 기반 조건부 검사**(`migrations/` 있으면 · `openapi.*` 있으면) | 산출물 바닥 | 🔒 벽 | ✅ **직접 만든다** |
 | **11** | **Dependabot/Renovate 설정**을 템플릿에 | 산출물 바닥 (MUST) | 1회 복사 | ✅ 완료 |
-| **12** | **SAST + 시크릿 탐지**를 `coolbress/workflows` 에 | 산출물 바닥 | 🔒 벽 + 🕸 그물 | ✅ **완료 2026-08-27.** SAST: **공개→CodeQL default setup(3/3 켜짐) · 비공개→Semgrep OSS** ([근거](../audit/SAST-CODEQL-VS-SEMGREP.ko.md) — 진입점 있을 때 **8/8 vs 7/8**). 시크릿: **푸시 보호(벽) + gitleaks(`ci / secrets`, v2.1.0)** ([근거](../audit/SECRET-DETECTION-OVERLAP.ko.md) — 🔴 **푸시 보호가 개인키 PEM 을 통과시킨다**). **세 층이 서로 다른 것을 본다** |
+| **12** | **SAST + 시크릿 탐지**를 `coolbress/workflows` 에 | 산출물 바닥 | 🔒 벽 + 🕸 그물 | ✅ **공개 경로 완료 2026-08-27.** SAST: **공개→CodeQL default setup(3/3 켜짐)** ([근거](../audit/SAST-CODEQL-VS-SEMGREP.ko.md) — 진입점 있을 때 **8/8 vs 7/8**). 🔴 **비공개→Semgrep OSS 는 *결정*됐을 뿐 *미구현*이다** — `new-project.sh --private` 는 **시작 전에 거부한다**. 시크릿: **푸시 보호(벽) + gitleaks(`ci / secrets`, `workflows` v3.1.0)** ([근거](../audit/SECRET-DETECTION-OVERLAP.ko.md) — 🔴 **푸시 보호가 개인키 PEM 을 통과시킨다**). **세 층이 서로 다른 것을 본다** |
 | **13** | (첫 공개 웹앱 때) **공개 웹앱 층** — 접근성 · 개인정보 · spend cap · 헬스체크 | 아키타입 gated | 🔒 벽 · **조건부** | ✅ 직접 · **조건부** |
 
 > **10~12는 [`05`](05-the-output-floor.md)에서 나왔다** — `04`가 *일하는 방식*만 다루고
@@ -136,7 +136,7 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 | **서버 바닥** | ✅ 세 저장소 3/3 — required check 출처를 **GitHub Actions App(`15368`)** 에 고정 · **서버** SHA 강제(`sha_pinning_required`) · squash 전용 · Dependabot 경보/보안 업데이트 |
 | **drift 감사** | ✅ [`tools/repo_audit.py`](../tools/repo_audit.py) — 읽기 전용, **대상 저장소 밖**에서 돈다. 현재 `CLEAN findings=0`. 🔴 **첫 실행에서 진짜 결함을 잡았다**(이 저장소의 시크릿 탐지가 꺼져 있었다) |
 | 만들 것 1 | ✅ 세 저장소 전부 |
-| 만들 것 2 | ✅ **`coolbress/workflows`** — `python-ci.yml`(4잡 + `secrets`) · `ruleset.json`. **자기 CI 여섯 검사 + canary**(E-1·E-1b 완료). ⚠️ **pipeline-guard 미착수** |
+| 만들 것 2 | ✅ **`coolbress/workflows`** — `python-ci.yml`(4잡 + `secrets`) · `ruleset.json`. **자기 CI 확대 + canary**(E-1·E-1b 완료) — 검사 목록의 정본은 [`ruleset.json`](https://github.com/coolbress/workflows/blob/main/ruleset.json) 이다. ⚠️ **pipeline-guard 미착수** |
 | 만들 것 3 | ✅ **`coolbress/project-template`** — **도는 uv 프로젝트** · **`bootstrap.sh` 가 이름을 치환**(치환 후 `uv sync`+`pytest` 통과 실측) |
 | 만들 것 4 | ✅ **`/kickoff`** — Mom Test · 턴당 2문항 · 깊이 8/12/18 · 흔한 실수 목록 · AC↔검사 매핑 · **아키타입 3문항**(공개·개인정보·라이선스). ✅ **위치 결정(E-4)**: `workflows` 유지. 🔴 **인터뷰가 모으는 여덟 가지 중 Issue Form 은 셋만 받는다** — 실패 경로·제약·가정이 어디 남는지 미정 |
 | 만들 것 5 | ✅ **`new-project.sh`** — 책임은 둘이다: **저장소 생성**과 **서버 바닥 설치**(벽 · 시크릿 탐지 · Dependabot · SHA 강제 · 머지 설정). **전 단계 fail-closed** — 어디서 넘어져도 벽 없는 원격을 남기지 않는다 |

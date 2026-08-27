@@ -19,6 +19,7 @@ CLEAN: dict[str, Any] = {
         "name": "x",
         "allow_merge_commit": False,
         "allow_rebase_merge": False,
+        "allow_squash_merge": True,
         "delete_branch_on_merge": True,
         "security_and_analysis": {
             "secret_scanning": {"status": "enabled"},
@@ -28,6 +29,8 @@ CLEAN: dict[str, Any] = {
     },
     "repos/x/vulnerability-alerts": True,  # 204 = 켜져 있다
     "repos/x/actions/permissions": {"sha_pinning_required": True, "allowed_actions": "selected"},
+    "repos/x/actions/permissions/selected-actions": {
+        "github_owned_allowed": True, "verified_allowed": False, "patterns_allowed": []},
     "repos/x/rulesets": [{"id": 1}],
     "repos/x/code-scanning/default-setup": {"state": "configured"},
     "repos/x/rulesets/1": {
@@ -37,7 +40,8 @@ CLEAN: dict[str, Any] = {
         "rules": [
             {"type": "deletion"},
             {"type": "non_fast_forward"},
-            {"type": "pull_request", "parameters": {"allowed_merge_methods": ["squash"]}},
+            {"type": "pull_request", "parameters": {"allowed_merge_methods": ["squash"],
+                                                    "required_approving_review_count": 0}},
             {
                 "type": "required_status_checks",
                 "parameters": {
@@ -53,6 +57,7 @@ CLEAN: dict[str, Any] = {
 
 # 시험용 기대값 — 실제 저장소 표를 건드리지 않는다.
 repo_audit.EXPECTED_CHECKS["x"] = {"ci / lint"}
+repo_audit.EXPECTED_ACTION_PATTERNS["x"] = []
 
 
 def _both(overrides: dict[str, Any], status: int = 200) -> tuple[list[str], list[str]]:
@@ -182,6 +187,43 @@ class TestCodeQLAndUnknown(unittest.TestCase):
         self.assertIn("읽을 권한이 없다", " ".join(unknown))
 
 
+class TestFailClosed(unittest.TestCase):
+    """토큰이 없으면 keyring 으로 떨어지지 않고 **멈춘다.**
+
+    🔴 회귀 시험이 필요한 이유: 이 성질은 주석으로 두 판을 버텼는데
+    **구현이 안 돼 있었다.** 문서가 아니라 시험이 지켜야 한다.
+    """
+
+    def test_no_token_exits(self) -> None:
+        import os
+        from unittest import mock
+
+        with mock.patch.dict(os.environ, {"HOME": "/tmp"}, clear=True):
+            with self.assertRaises(SystemExit) as cm:
+                repo_audit._env()
+        self.assertIn("GH_TOKEN", str(cm.exception))
+
+    def test_token_is_passed_through(self) -> None:
+        import os
+        from unittest import mock
+
+        with mock.patch.dict(os.environ, {"HOME": "/tmp", "GH_TOKEN": "t"}, clear=True):
+            self.assertEqual(repo_audit._env().get("GH_TOKEN"), "t")
+
+
+class TestActionsAllowlist(unittest.TestCase):
+    def test_widened_patterns_are_caught(self) -> None:
+        sel = {"github_owned_allowed": True, "verified_allowed": False,
+               "patterns_allowed": ["*"]}
+        self.assertIn("allowlist 패턴이 다르다",
+                      " ".join(_run({"repos/x/actions/permissions/selected-actions": sel})))
+
+    def test_verified_allowed_is_caught(self) -> None:
+        sel = {"github_owned_allowed": True, "verified_allowed": True, "patterns_allowed": []}
+        self.assertIn("verified_allowed 가 켜짐",
+                      " ".join(_run({"repos/x/actions/permissions/selected-actions": sel})))
+
+
 class TestWallCompleteness(unittest.TestCase):
     """🔴 이전 판은 *"있는 검사의 출처가 맞는가"* 만 봤다.
 
@@ -238,6 +280,24 @@ class TestWallCompleteness(unittest.TestCase):
         rs["rules"][2] = {"type": "pull_request",
                           "parameters": {"allowed_merge_methods": ["squash", "merge"]}}
         self.assertIn("squash 전용이 아니다", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+    def test_multiple_rulesets_are_caught(self) -> None:
+        """[0] 만 보면 룰셋이 여럿일 때 엉뚱한 것을 본다."""
+        self.assertIn("룰셋이 2개다", " ".join(_run(
+            {"repos/x/rulesets": [{"id": 1, "name": "main protection"}, {"id": 2, "name": "몰래"}]})))
+
+    def test_approval_count_change_is_caught(self) -> None:
+        """승인 1을 걸면 솔로는 자기 PR 을 승인 못 해 머지가 영원히 막힌다."""
+        rs = self._rs()
+        rs["rules"] = [dict(r) for r in rs["rules"]]
+        rs["rules"][2] = {"type": "pull_request",
+                          "parameters": {"allowed_merge_methods": ["squash"],
+                                         "required_approving_review_count": 1}}
+        self.assertIn("머지가 막힌다", " ".join(_run({"repos/x/rulesets/1": rs})))
+
+    def test_squash_off_means_no_merge_button(self) -> None:
+        meta = {**CLEAN["repos/x"], "allow_squash_merge": False}
+        self.assertIn("머지할 방법이 없다", " ".join(_run({"repos/x": meta})))
 
     def test_wall_pointed_at_wrong_branch_is_caught(self) -> None:
         rs = self._rs(conditions={"ref_name": {"include": ["refs/heads/dev"], "exclude": []}})
