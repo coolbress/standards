@@ -48,5 +48,18 @@ gh api repos/coolbress/<repo>/dependency-graph/sbom \
   --jq '.sbom.packages[] | .name + "  " + ((.externalRefs//[])|map(.referenceLocator)|join(","))'
 ```
 
-⚠️ **SBOM 은 기본 브랜치 기준이다.** 브랜치의 변경은 머지 전에는 안 보인다 —
-그래서 *"canary 의 하위 디렉터리 `uv.lock` 도 읽는가"* 는 **머지 후에만 답할 수 있다**(열어 둔다).
+⚠️ **SBOM 은 기본 브랜치 기준이다.** 브랜치의 변경은 머지 전에는 안 보인다.
+
+## ✅ 후속 — **하위 디렉터리 `uv.lock` 도 읽는다** (2026-08-27)
+
+`canary/` 가 `workflows` 의 `main` 에 들어간 **직후** 다시 쟀다:
+
+| | 전 | 후 |
+|---|---:|---:|
+| `coolbress/workflows` 그래프 패키지 | **3** | **17** |
+
+새로 잡힌 것: `canary` · `pytest` · `mypy` · `ruff` · `mypy-extensions` … —
+**저장소 루트가 아니라 `canary/uv.lock` 에서 온 것들**이다.
+
+> **그래프는 파일 위치를 찾아다닌다. 루트만 보는 게 아니다.**
+> 모노레포·하위 프로젝트에서도 락파일만 커밋되어 있으면 경보 범위에 들어간다는 뜻이다.
