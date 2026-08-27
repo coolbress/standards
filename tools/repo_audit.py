@@ -40,9 +40,36 @@ def gh(path: str) -> object | None:
         return None
 
 
-def audit(repo: str) -> list[str]:
-    """기대값과 다른 것만 문자열로 돌려준다."""
+def gh_status(path: str) -> int:
+    """HTTP 상태 코드만 돌려준다. 0 = 알 수 없음.
+
+    🔴 왜 `gh()` 로는 부족한가: `gh()` 는 모든 실패를 None 으로 뭉갠다.
+    그러면 **"권한이 없어 못 봤다"(403)** 와 **"꺼져 있다"** 를 구별할 수 없다.
+    A-1(권한 분리) 이후 에이전트 자격증명은 code-scanning 을 **읽지도 못한다** —
+    그걸 "꺼짐" 으로 보고하면 이 감사기가 또 거짓말을 하는 것이다.
+    """
+    r = subprocess.run(
+        ["gh", "api", path, "-i"], capture_output=True, text=True,
+        env={"PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin",
+             "HOME": subprocess.os.environ.get("HOME", ""),
+             **{k: v for k, v in subprocess.os.environ.items() if k in ("GH_TOKEN", "GITHUB_TOKEN")}},
+    )
+    for line in (r.stdout or r.stderr).splitlines():
+        if line.startswith("HTTP/"):
+            parts = line.split()
+            if len(parts) > 1 and parts[1].isdigit():
+                return int(parts[1])
+    return 0
+
+
+def audit(repo: str) -> tuple[list[str], list[str]]:
+    """(어긋난 것, 확인하지 못한 것) 을 돌려준다.
+
+    🔴 둘을 가르는 이유: **"검사했는데 틀렸다"** 와 **"검사하지 못했다"** 는 다른 문장이다.
+    뭉치면 감사기가 초록/빨강을 잘못 말한다 — 이 파일이 이미 한 번 그랬다(204 를 실패로 읽었다).
+    """
     bad: list[str] = []
+    unknown: list[str] = []
     meta = gh(f"repos/{repo}") or {}
 
     # 머지 방법 — 룰셋 의도(squash 전용)와 저장소 설정이 같은 말을 해야 한다 (B-3)
@@ -70,11 +97,22 @@ def audit(repo: str) -> list[str]:
     if perms.get("allowed_actions") != "selected":
         bad.append(f"Actions: allowlist 가 꺼짐 (allowed_actions={perms.get('allowed_actions')})")
 
+    # SAST — 공개 저장소는 CodeQL default setup 이다 (소유자 결정 2026-08-27).
+    # ⚠️ 에이전트 자격증명으로는 **읽지도 못한다**(403). 그걸 "꺼짐" 으로 읽지 않는다.
+    # 벽 블록보다 위에 둔다 — 룰셋이 없어 조기 반환할 때도 이 검사는 돌아야 한다.
+    if gh_status(f"repos/{repo}/code-scanning/default-setup") == 403:
+        unknown.append("SAST: CodeQL 설정을 읽을 권한이 없다 (사람 자격증명으로 확인해야 한다)")
+    else:
+        setup = gh(f"repos/{repo}/code-scanning/default-setup")
+        state = setup.get("state") if isinstance(setup, dict) else None
+        if state != "configured":
+            bad.append(f"SAST: CodeQL default setup 이 켜져 있지 않다 (state={state})")
+
     # 벽 (B-2)
     rulesets = gh(f"repos/{repo}/rulesets") or []
     if not rulesets:
         bad.append("벽: 룰셋이 없다")
-        return bad
+        return bad, unknown
     rs = gh(f"repos/{repo}/rulesets/{rulesets[0]['id']}") or {}
     if rs.get("enforcement") != "active":
         bad.append(f"벽: enforcement={rs.get('enforcement')}")
@@ -86,18 +124,26 @@ def audit(repo: str) -> list[str]:
         for check in rule["parameters"]["required_status_checks"]:
             if check.get("integration_id") != ACTIONS_APP_ID:
                 bad.append(f"벽: '{check['context']}' 의 출처가 안 묶임 (다른 앱도 이 이름을 보고할 수 있다)")
-    return bad
+
+    return bad, unknown
 
 
 def main() -> int:
     drift = 0
+    unknowns = 0
     for repo in REPOS:
-        problems = audit(repo)
+        problems, unknown = audit(repo)
         drift += len(problems)
-        print(f"{'🔴' if problems else '✅'} {repo}")
+        unknowns += len(unknown)
+        mark = "🔴" if problems else ("🟡" if unknown else "✅")
+        print(f"{mark} {repo}")
         for p in problems:
             print(f"     {p}")
-    print(f"\nRESULT {'DRIFT' if drift else 'CLEAN'} findings={drift}")
+        for u in unknown:
+            print(f"     ⚪ {u}")
+    # 🔴 확인 못 한 것은 **초록도 빨강도 아니다.** 세어서 보여주되 종료 코드는 바꾸지 않는다 —
+    # 권한 분리는 정상 상태이므로 그것 때문에 감사가 매번 실패하면 아무도 안 본다.
+    print(f"\nRESULT {'DRIFT' if drift else 'CLEAN'} findings={drift} unknown={unknowns}")
     return 1 if drift else 0
 
 
