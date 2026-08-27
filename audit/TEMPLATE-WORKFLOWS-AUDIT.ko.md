@@ -33,7 +33,7 @@
 | **B-2** | required check 출처를 **GitHub Actions App(`15368`)** 에 고정 | 3/3 · PR 머지로 확인(`mergeStateStatus: CLEAN`) |
 | **B-1** | **서버** SHA 강제 | `sha_pinning_required: true` 3/3 · CI 재실행으로 검증 |
 | **B-3** | 머지 방법 정합 | squash 전용 + 브랜치 자동 삭제 3/3 |
-| **B-4** | **drift 감사** — 읽기 전용, 대상 저장소 **밖**에서 돈다 | [`tools/repo_audit.py`](../tools/repo_audit.py) · 현재 `CLEAN findings=0 unknown=3` · 시험 **13건** |
+| **B-4** | **drift 감사** — 읽기 전용, 대상 저장소 **밖**에서 돈다 | [`tools/repo_audit.py`](../tools/repo_audit.py) · 시험 **14건**. 🔴 **2026-08-27 정정**: `gh()` 가 토큰을 넘기지 않아 **keyring 관리자 자격증명으로 돌고 있었다** — `env -u GH_TOKEN` 을 코드로 한 셈이다(§A-1 이 금지하는 바로 그것). 고치자 **거짓 결함 18건**이 드러났다: 권한이 없어 안 보이는 것을 전부 *"꺼짐"* 으로 읽고 있었다. 이제 **못 본 것은 `unknown`**, 그리고 **못 본 것이 있으면 `CLEAN` 이라 하지 않는다**(`INCONCLUSIVE`) |
 | **C-1** | Dependabot 취약점 경보 + 보안 업데이트 | 404 → **204** · `enabled` 3/3 |
 | **E-2** | `new-project.sh` **전체 fail-closed** | `trap` 으로 전 단계 — 실패 시 원격을 남기지 않는다 |
 | **E-3** | 생성 시 **서버 바닥까지** 설치 | Dependabot · SHA 강제 · 머지 설정을 생성 직후 건다 |

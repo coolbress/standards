@@ -80,7 +80,7 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 | 항목 | 값 | 왜 |
 |---|---|---|
 | PR diff | **200줄 목표 · 400줄 상한** | ⚠️ **2026-08-24 재검증으로 정정.** 원문 결론은 *"LOC under review should be **under 200, not to exceed 400**"* — 400은 목표가 아니라 **상한**이다. 이전 판의 *"400 초과에서 급락"* 은 **원문에 없다**(`plummet` 은 LOC 가 아니라 **리뷰 시간 90분**에 대한 말). [`codereview--facts`](../corpus/aspects/07-construction-code-review/codereview--facts-2026-08.md) **CR-001~003** `draft`. ⚠️ **CR-004**: 단일 조직(Cisco 1개 팀·50명) 케이스 스터디이므로 `operational-lesson` 이다 — *"일관된 연구 결과"* 로 쓰면 범주 오류다 |
-| **테스트 동반** | **소스가 바뀌면 테스트도 바뀐다 — CI가 검사** | `04 foundation-floor` *"tests required on every PR (MUST)"* · `08` 4대 검사 |
+| **테스트 동반** | **동작이나 버그가 바뀌면 그 변화를 잡는 테스트를 같은 PR 에** — 해당 없으면 이유를 적는다 | `04 foundation-floor` *"tests required on every PR (MUST)"* · `08` 4대 검사. ⚠️ **2026-08-27 정정(D-5)**: 이전 판 *"소스가 바뀌면"* 은 기준이 **파일**이라 문서·설정 변경에도 의미 없는 테스트 수정을 유도했다. 기준은 **동작**이다 |
 | **RED→GREEN** | 실패하는 테스트를 **먼저** — 단 **권고**(강제 아님) | `07` SWEBOK. ✅ **2026-08-24 재검증**: Fucci et al. 은 *"Sequencing… **had no important influence**"* 를 보고했고 효과의 원천은 **granularity·uniformity** 였다 (`testing--facts` **TDD-001**, n=39 전문가·82 데이터). **강제하지 않는 이유가 이것이다** — 다만 표본이 작아 확정된 null 은 아니다(**TDD-002**) |
 | CI 소요 | **10분 이내** | 🟡 **`CIB-001`** — Fowler 1차 확인. 단 *"the **XP guideline** of a ten minute build"* 라 **실무 가이드라인이지 측정된 임계가 아니다** |
 | main 빨간불 | **다른 일보다 우선 수리** | *"깨지면 즉시 수리"* |
@@ -136,13 +136,13 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 | **서버 바닥** | ✅ 세 저장소 3/3 — required check 출처를 **GitHub Actions App(`15368`)** 에 고정 · **서버** SHA 강제(`sha_pinning_required`) · squash 전용 · Dependabot 경보/보안 업데이트 |
 | **drift 감사** | ✅ [`tools/repo_audit.py`](../tools/repo_audit.py) — 읽기 전용, **대상 저장소 밖**에서 돈다. 현재 `CLEAN findings=0`. 🔴 **첫 실행에서 진짜 결함을 잡았다**(이 저장소의 시크릿 탐지가 꺼져 있었다) |
 | 만들 것 1 | ✅ 세 저장소 전부 |
-| 만들 것 2 | ✅ **`coolbress/workflows`** — `python-ci.yml`(4잡) · `ruleset.json`. ⚠️ **pipeline-guard 미착수** · 자기 CI 확대는 진행 중(감사 **E-1**) |
+| 만들 것 2 | ✅ **`coolbress/workflows`** — `python-ci.yml`(4잡 + `secrets`) · `ruleset.json`. **자기 CI 여섯 검사 + canary**(E-1·E-1b 완료). ⚠️ **pipeline-guard 미착수** |
 | 만들 것 3 | ✅ **`coolbress/project-template`** — **도는 uv 프로젝트** · **`bootstrap.sh` 가 이름을 치환**(치환 후 `uv sync`+`pytest` 통과 실측) |
-| 만들 것 4 | ✅ **`/kickoff`** — Mom Test · 턴당 2문항 · 깊이 8/12/18 · 흔한 실수 목록 · AC↔검사 매핑 · **아키타입 3문항**(공개·개인정보·라이선스). 🔶 **저장소 위치는 미결**(감사 **E-4**) |
+| 만들 것 4 | ✅ **`/kickoff`** — Mom Test · 턴당 2문항 · 깊이 8/12/18 · 흔한 실수 목록 · AC↔검사 매핑 · **아키타입 3문항**(공개·개인정보·라이선스). ✅ **위치 결정(E-4)**: `workflows` 유지. 🔴 **인터뷰가 모으는 여덟 가지 중 Issue Form 은 셋만 받는다** — 실패 경로·제약·가정이 어디 남는지 미정 |
 | 만들 것 5 | ✅ **`new-project.sh`** — 책임은 둘이다: **저장소 생성**과 **서버 바닥 설치**(벽 · 시크릿 탐지 · Dependabot · SHA 강제 · 머지 설정). **전 단계 fail-closed** — 어디서 넘어져도 벽 없는 원격을 남기지 않는다 |
 | 만들 것 11 | ✅ Dependabot(`uv` + `github-actions`)을 템플릿에 |
 | 만들 것 6~10·13 | ⬜ 미착수 |
-| 만들 것 12 | 🔶 **엔진 미결** — 위 표 참조 |
+| 만들 것 12 | ✅ **완료** — CodeQL default setup 3/3 · `ci / secrets`(gitleaks). ⚠️ **둘 다 required check 는 아니다** |
 | 🎯 **완주** | 🔴 **아직 없다.** 실제 프로젝트 하나를 end-to-end 로 돌린 적이 없다 — 아래 §판정 기준의 선행 조건 |
 
 ### 🔒 범위 결정 (2026-08-25) — ②③ 는 **Python 전용이다**
