@@ -13,7 +13,7 @@
 | 순서 | 문서 | 왜 |
 |---|---|---|
 | 1 | [`direction/04-the-plan.md`](direction/04-the-plan.md) | **만들 것 13개 · 원칙 4 · 리서치에서 나온 수치 · 판정 기준** |
-| 2 | [`direction/05-the-output-floor.md`](direction/05-the-output-floor.md) | **무엇이 저장소에 남아야 시니어급인가** (MUST 49) · 아키타입 판정 |
+| 2 | [`direction/05-the-output-floor.md`](direction/05-the-output-floor.md) | **무엇이 저장소에 남아야 시니어급인가** (**12묶음**) · 아키타입 판정 |
 | 3 | [`direction/02-why-past-attempts-failed.md`](direction/02-why-past-attempts-failed.md) §진단의 진단 | **같은 실수를 열 번 했다.** 열한 번째를 하지 않기 위해 |
 
 나머지(`01`·`03`)는 **물어봤을 때만** 읽는다. `01`=요구 6가지의 근거, `03`=리서치 색인.
@@ -25,7 +25,8 @@
 | 하네스 6세대 | **정리 끝** — 원격 3개 삭제(2026-08-24) · 로컬은 `~/Archive/` |
 | 이 저장소 | 공개 · 룰셋 `main protection` 활성 · CI 초록 · **PR로만 머지 가능** |
 | 벽 | **실물 확증 4/4** — 직접 푸시·빨간불 머지·`--admin` 강제 머지 전부 거부 |
-| 만들 것 | **6/13** — ①(벽) · ②(`workflows`) · ③(`project-template`) · ④(`/kickoff`) · ⑤(`new-project.sh`) · ⑪(Dependabot). **완료의 정의는 여전히 미충족** — 진짜 아이디어로 완주한 적이 없다 |
+| 만들 것 | **6/13** — ①②③④⑤⑪. **완료의 정의는 여전히 미충족** — 진짜 아이디어로 완주한 적이 없다 |
+| 감사 (2026-08-27) | 🔧 실행 **0** · 🔬 리서치 **C-3 만** · 🔶 결정 **⑫ 하나**(소유자 명령 대기). 상세는 [`audit/TEMPLATE-WORKFLOWS-AUDIT`](audit/TEMPLATE-WORKFLOWS-AUDIT.ko.md) |
 | 정리 | ✅ **완료 2026-08-24 (2차)** — 원격 3개 삭제 · 로컬 5개 `~/Archive/`(1.1GB) · 홈 8표면 0건. ⚠️ 1차의 *"0건"* 은 **틀렸었다** — [2차 기록](legacy/judgments/harness-removal-record-2026-08-24.md) |
 
 ## 🎯 완료의 정의 — 이걸 먼저 읽어라
@@ -85,7 +86,7 @@ goppi가 정확히 이 함정에서 죽었다:
 | | |
 |---|---|
 | [`coolbress/project-template`](https://github.com/coolbress/project-template) | 공개 · `is_template` · **도는 uv 프로젝트**(빈 껍데기가 아니다) |
-| [`coolbress/workflows`](https://github.com/coolbress/workflows) `new-project.sh` | **로직 9줄** — 저장소 뜨기 · 룰셋 걸기 · 시크릿 탐지/푸시 보호 켜기 |
+| [`coolbress/workflows`](https://github.com/coolbress/workflows) `new-project.sh` | 저장소 생성 + **서버 바닥 설치** — 벽 · 시크릿 탐지 · Dependabot · SHA 강제 · 머지 설정. **전 단계 fail-closed** ⚠️ *줄 수로 적지 않는다* (감사 E-5) |
 
 ### 템플릿이 빈 껍데기면 안 되는 이유 — 설계 제약 하나
 
@@ -222,8 +223,22 @@ python3 tools/repo_audit.py             # 서버 설정 drift — 읽기만 한�
 문서를 고쳤으면 `tools/rebuild_after_manifest.py`와 `build-routes.mjs`를 **다시 돌려야** CI가 통과한다.
 `main`은 보호돼 있으므로 **브랜치 → PR → CI 초록 → 머지**로만 들어간다.
 
-⚠️ **`GITHUB_TOKEN` 환경변수가 keyring 자격증명을 덮는다.** `gh auth` 계열이 막히면:
-`env -u GITHUB_TOKEN -u GH_TOKEN gh <명령>`
+### 🔒 자격증명은 둘로 갈려 있다 (A-1 · 2026-08-27)
+
+| | 무엇 | 누가 |
+|---|---|---|
+| **`GH_TOKEN`**(기본) | fine-grained · **Contents · Issues · PRs · Workflows** 만 | **에이전트** |
+| keyring(classic) | 관리자 전부 | **사람만** — `env -u GH_TOKEN gh …` |
+
+`~/.zshenv` 가 `~/.config/gh-agent-token`(0600)을 읽어 `GH_TOKEN` 에 건다.
+**`.zshrc` 가 아니라 `.zshenv` 인 이유**: `.zshrc` 는 **대화형 셸만** 읽어 도구 셸에 안 닿는다.
+
+🔴 **에이전트는 `env -u GH_TOKEN` 을 쓰지 않는다. 그 한 줄이 곧 우회다.**
+이전 판에 있던 *"막히면 `env -u GITHUB_TOKEN -u GH_TOKEN`"* 안내는 **삭제했다** —
+벽을 세워놓고 열쇠를 옆에 두는 문장이었다.
+
+**403 이 나면 그것이 정상이다.** 관리자 작업(룰셋 · Actions 정책 · 시크릿 · Environments ·
+CodeQL default setup)은 **사람이 한다.** 에이전트는 명령을 만들어 넘긴다.
 
 ## 열린 공백 — [`audit/GAPS.ko.md`](audit/GAPS.ko.md) §R5
 
