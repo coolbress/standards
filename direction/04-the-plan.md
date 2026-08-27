@@ -55,7 +55,7 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 | 9 | (나중) 라우팅 표 + `consensus` MCP + `clink` | **⑤** | 속도 | ⚪ **`ask-matt` 은 스킬 라우팅이라 다르다.** 모델 라우팅의 현행 규정은 [`06`](06-how-we-work.md) §모델 |
 | **10** | **`floor-check` CI 잡** — 락파일·`.env` 커밋 여부·Actions SHA 핀·`.env.example` + **존재 기반 조건부 검사**(`migrations/` 있으면 · `openapi.*` 있으면) | 산출물 바닥 | 🔒 벽 | ✅ **직접 만든다** |
 | **11** | **Dependabot/Renovate 설정**을 템플릿에 | 산출물 바닥 (MUST) | 1회 복사 | ✅ 완료 |
-| **12** | **SAST + 시크릿 탐지**를 `coolbress/workflows` 에 | 산출물 바닥 | 🔒 벽 | 🔶 **엔진 미정.** *넣는다* 는 섰지만 **`Semgrep + gitleaks` 라는 조합을 근거 없이 확정**하고 있었다 — [`AUDIT`](../audit/TEMPLATE-WORKFLOWS-AUDIT.ko.md) **C-2**(CodeQL↔Semgrep 탐지율·오탐 미조사) · **C-3**(push protection 이 있는데 gitleaks 겹침이 값을 하나) |
+| **12** | **SAST + 시크릿 탐지**를 `coolbress/workflows` 에 | 산출물 바닥 | 🔒 벽 | ✅ **엔진 결정 2026-08-27** — **공개→CodeQL default setup · 비공개→Semgrep OSS**. 실측 근거 [`SAST-CODEQL-VS-SEMGREP`](../audit/SAST-CODEQL-VS-SEMGREP.ko.md)(진입점 있을 때 **8/8 vs 7/8**, 오탐 둘 다 0). 🔴 **둘 다 하드코딩 자격증명을 놓쳤다** — 시크릿 층은 따로 선다 |
 | **13** | (첫 공개 웹앱 때) **공개 웹앱 층** — 접근성 · 개인정보 · spend cap · 헬스체크 | 아키타입 gated | 🔒 벽 · **조건부** | ✅ 직접 · **조건부** |
 
 > **10~12는 [`05`](05-the-output-floor.md)에서 나왔다** — `04`가 *일하는 방식*만 다루고

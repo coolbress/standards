@@ -89,8 +89,25 @@
 
 > **에이전트가 못 끄는 벽**은 권한이 갈려야 성립한다 — [`AUDIT`](TEMPLATE-WORKFLOWS-AUDIT.ko.md) **A-1**.
 
-평소 에이전트가 쥐는 것: **Contents · Pull requests · Issues** 읽기/쓰기.
-쥐지 않는 것: **Administration · Actions 설정 · Secrets · Environments · Workflows 쓰기**.
+✅ **2026-08-27 시행됨.** 에이전트가 쥐는 것: **Contents · Issues · Pull requests · Workflows** 읽기/쓰기.
+쥐지 않는 것: **Administration · Actions 설정 · Secrets · Environments · Variables · Webhooks · Pages**.
 
-**검증은 실패로 한다** — 에이전트 자격증명으로 `gh api repos/…/rulesets --method PUT` 을 시도해
-**403 이 나야 갈린 것**이다. 성공하면 벽이 아니다.
+**검증은 실패로 했다** — 성공이 아니라 **403 을 확인**했다:
+
+| 시도 | 결과 |
+|---|---|
+| 룰셋 수정 · 삭제 | 🔒 **403** |
+| Actions 정책 변경 · 시크릿 읽기 | 🔒 **403** |
+| 저장소 설정 변경 · 환경 생성 | 🔒 **403** |
+| **CodeQL default setup 켜기** | 🔒 **403** — *"Resource not accessible by personal access token"* |
+| 읽기 · 이슈 · PR · `git push` | ✅ 정상 |
+
+🔴 **분리 직전에 이전 자격증명도 쟀다** — 저장소 설정 PATCH **성공**, 시크릿 목록 읽기 **성공**.
+***벽이 서 있던 게 아니라 내가 안 지우기로 하고 있었을 뿐이다.*** 그건 벽이 아니라 규율이다.
+
+**운용**: `~/.zshenv` 가 `~/.config/gh-agent-token`(0600)을 읽어 `GH_TOKEN` 에 건다 —
+`GH_TOKEN` 이 keyring 을 덮으므로 **에이전트의 기본이 제한 토큰**이 되고,
+사람은 `env -u GH_TOKEN gh …` 로 관리자 작업을 한다.
+⚠️ **`.zshrc` 가 아니라 `.zshenv` 인 이유**: `.zshrc` 는 **대화형 셸만** 읽어 도구 셸에 안 닿는다.
+
+🔴 **에이전트는 `env -u GH_TOKEN` 을 쓰지 않는다. 그 한 줄이 곧 우회다.**
