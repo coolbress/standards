@@ -81,8 +81,8 @@
 | 릴리스하지 않는 프로젝트의 **빈 CHANGELOG** | 🔶 **D-7** · 프로필 결정(**D-2**)에 걸린다 |
 | 실제 환경 변수가 없는 **빈 `.env.example`** | 🔶 **D-7** |
 | 사람 승인이 0인데 켜 둔 review 옵션 | 🔶 **A-2** — 솔로가 자기 PR 을 승인할 수 없다는 트레이드오프 |
-| CodeQL 과 Semgrep 을 **이유 없이 함께** | 🔬 **C-2** — 탐지율·오탐 비교가 미조사 |
-| push protection 이 있는데 **gitleaks 를 무조건 더하기** | 🔬 **C-3** — 겹침이 값을 하는지 미측정 |
+| ~~CodeQL 과 Semgrep 을 **이유 없이 함께**~~ | ✅ **덜어냈다** — [`C-2 실측`](SAST-CODEQL-VS-SEMGREP.ko.md): 잡는 것이 거의 겹친다. **공개는 CodeQL 하나, 비공개는 Semgrep 하나** |
+| ~~push protection 이 있는데 **gitleaks 를 무조건 더하기**~~ | ✅ **덜어내지 않는다** — [`C-3 실측`](SECRET-DETECTION-OVERLAP.ko.md): 겹치는 게 아니라 **다른 것을 잡는다**. 🔴 **푸시 보호가 개인키 PEM 을 통과시킨다** |
 | 모든 프로젝트에 coverage 숫자 · Docker · SBOM · 서명 강제 | ✅ **이미 반영** — [`05`](../direction/05-the-output-floor.md) 가 `RETAIN-RN/SPLIT` 로 *"묶음째 보편"* 지위를 낮췄다 |
 
 ## 6. 자격증명은 도구가 아니라 **문**이다
