@@ -22,6 +22,7 @@ REPOS = [
     "coolbress/standards",
     "coolbress/workflows",
     "coolbress/project-template",
+    "coolbress/divcal",  # 2026-08-27 · 첫 완주 프로젝트
 ]
 ACTIONS_APP_ID = 15368        # GitHub Actions
 CODE_SCANNING_APP_ID = 57789  # github-advanced-security (CodeQL 집계 검사)
