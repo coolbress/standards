@@ -124,8 +124,12 @@ security find-generic-password -s 'gh:github.com' -w
 그래서 **열쇠고리에서 빼버렸다**(`gh auth logout`). 관리자 작업은 이렇게 한다:
 
 ```bash
-GH_TOKEN='<비밀번호 관리자에서 복사>' ./new-project.sh myapp
+cd ~   # 🔴 저장소 밖에서 — 스크립트가 저장소 안이면 멈춘다
+~/workflows/tools/with-admin-token.sh ~/workflows/new-project.sh <이름>
 ```
+
+🔴 **토큰을 명령줄에 쓰지 마라.** `GH_TOKEN=... 명령` 은 **`~/.zsh_history` 에 그대로 남는다**
+(`histignorespace` 는 앞에 공백이 있을 때만 듣는다). 래퍼가 **물어본다.**
 
 토큰은 **그 프로세스가 사는 몇 초 동안만** 존재한다 — 열쇠고리에도 파일에도 `.zshenv` 에도 없다.
 관리자 토큰은 classic(`repo`·`workflow`·**`delete_repo`**·`security_events`) · **30일 만료**.
