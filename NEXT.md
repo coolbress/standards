@@ -228,7 +228,16 @@ python3 tools/repo_audit.py             # 서버 설정 drift — 읽기만 한�
 | | 무엇 | 누가 |
 |---|---|---|
 | **`GH_TOKEN`**(기본) | fine-grained — **쓰기**: Contents · Issues · PRs · Workflows / 🔑 **읽기**: + Administration · Code scanning | **에이전트** |
-| keyring(classic) | 관리자 전부 | **사람만** — `env -u GH_TOKEN gh …` |
+| 관리자 토큰 | classic(`repo`·`workflow`·`delete_repo`·`security_events`) · **30일 만료** | **사람만** — 이 컴퓨터에 **저장하지 않는다** |
+
+🔴 **관리자 열쇠는 방에 없다** (2026-08-27). `gh auth logout` 으로 열쇠고리에서 뺐다.
+관리자 작업은 **그때그때 붙여넣는다**:
+
+```bash
+GH_TOKEN='<비밀번호 관리자에서 복사>' ./new-project.sh myapp
+```
+
+**그 프로세스가 사는 몇 초 동안만 존재한다** — 열쇠고리에도 파일에도 안 남는다.
 
 🔑 **읽기를 준 이유**: 안 주면 `repo_audit` 이 **아무것도 확인하지 못한다**(`unknown=12`).
 **감사기가 눈을 뜨는 것과 벽이 무너지는 것은 다른 문장이다.** 쓰기는 그대로 전부 403 이다 —
@@ -237,9 +246,8 @@ python3 tools/repo_audit.py             # 서버 설정 drift — 읽기만 한�
 `~/.zshenv` 가 `~/.config/gh-agent-token`(0600)을 읽어 `GH_TOKEN` 에 건다.
 **`.zshrc` 가 아니라 `.zshenv` 인 이유**: `.zshrc` 는 **대화형 셸만** 읽어 도구 셸에 안 닿는다.
 
-🔴 **에이전트는 `env -u GH_TOKEN` 을 쓰지 않는다. 그 한 줄이 곧 우회다.**
-이전 판에 있던 *"막히면 `env -u GITHUB_TOKEN -u GH_TOKEN`"* 안내는 **삭제했다** —
-벽을 세워놓고 열쇠를 옆에 두는 문장이었다.
+🔴 **`env -u GH_TOKEN` 은 이제 아무것도 안 준다** — 실측: `You are not logged into any GitHub hosts`.
+규율이 아니라 **없는 것**이다. 이전 판의 *"막히면 토큰을 빼고 실행하라"* 안내는 삭제했다.
 
 **403 이 나면 그것이 정상이다.** 관리자 작업(룰셋 · Actions 정책 · 시크릿 · Environments ·
 CodeQL default setup)은 **사람이 한다.** 에이전트는 명령을 만들어 넘긴다.
