@@ -11,6 +11,44 @@
 
 **강도 표시는 [`03`](03-what-research-says.md) 과 같다**: 🟢 1차 확인 · 🟡 한정 · 🔵 판단(근거로 인용하지 않는다) · ⚪ 미검증.
 
+## 🧾 이슈 폼 · 머지 방법 — 실물이 하는데 바닥이 안 적던 둘 (2026-08-28)
+
+[`PURPOSE-DIRECTION-AUDIT`](../audit/PURPOSE-DIRECTION-AUDIT.ko.md) 가 `AGENTS.md` 와 **같은 종류**로 찾은 둘이다.
+소유 측면이 이미 답을 갖고 있었다.
+
+### 이슈 폼 — 근거가 이 바닥에서 가장 센 축에 든다
+
+측면 24 가 소유하고(`IPC-003`·`IPC-005`), **결과 근거**까지 있다 —
+Sülün et al. (**ACM TOSEM 2024** · 100 프로젝트 · 템플릿 350개 · 이슈 **190만 건 이상**):
+
+| | 템플릿 없음 | 있음 |
+|---|---|---|
+| 해결 시간 | **381.02일** | **103.18일** |
+| 댓글 수 | 4.95 | 4.32 |
+
+**YAML 폼은 해결 시간·재오픈·논의 길이를 더 줄인다.** 채택은 **100개 중 99개.**
+🟢 **대부분의 바닥 항목이 *채택률* 근거인데 이건 *결과* 근거다.**
+
+우리 census 도 같은 방향이다 — 이슈 템플릿 **78%**(n=500) → **68%**(N=2,000) → **47.9%**(N=6,582).
+⚠️ **YAML 폼은 최상위에서만 앞선다**(N=2,000 에서 폼 31% vs legacy `.md` 34%) — 그래도 GitHub 이
+권고하는 방향이고 위 결과 근거가 폼 쪽을 가리킨다.
+
+🔴 **폼의 *종류*는 별건이다.** 측면 24 가 census 표준을 **bug + feature 두 폼**으로 못박고
+*"`task` 는 census 표준이 아닌 의도적 add-on"* 이라고 명시하는데, **템플릿은 `task.yml` 하나만 준다.**
+바닥은 *"이슈 폼이 있을 것"* 까지만 요구하고 **폼 구성은 미결로 남긴다**(`GAPS` R5-28).
+
+### 머지 방법 — 고르는 것이 아니라 **하나로 강제하는 것**이 요구다
+
+측면 05 의 결론은 *"**no single winner; pick one and enforce consistency. 불일치가 진짜 결함이다**"* 다.
+그래서 바닥이 요구하는 것은 **squash 가 아니라 일관성**이고, squash 는 **우리의 선택**이다(🔵).
+
+census(N=6,582): squash **97% 허용** · merge-commit 74% · rebase 81%.
+실제 머지 행동(n=250 · squash 커밋 4,041건): **76% 가 squash-merge.**
+
+🔴 **census 는 *허용*을 재고 우리는 *전용*이다.** 우리 룰셋은 `allowed_merge_methods: ["squash"]` 로
+나머지를 **막는다** — 이건 **above-census 선택**이고 그렇게 적어야 한다. 근거는 측면 05 의 결합이다:
+squash 모델에서 **PR 제목이 곧 랜딩 커밋**이 되어 changelog·SemVer 자동화가 성립한다.
+
 ## 🤖 `AGENTS.md` — 바닥이 놓치고 있던 것 (2026-08-28)
 
 **코퍼스가 이미 답을 갖고 있었는데 바닥이 인용하지 않았다.** 측면 01 의 `planning-output-census`
@@ -105,7 +143,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 
 | 묶음 | 무엇이 있어야 하나 | 소유 측면 · 강도 |
 |---|---|---|
-| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 | 🟢 **가장 강하다** — `github-workflow-current`(GitHub 1차 문서 `GHW-001~003`) + **이 저장소 벽 4/4 실물 확증** |
+| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 · **머지 방법 하나를 골라 강제**(우리는 squash 전용 — 아래) | 🟢 **가장 강하다** — `github-workflow-current`(GitHub 1차 문서 `GHW-001~003`) + **이 저장소 벽 4/4 실물 확증** / 🔵 **머지 방법의 *선택*은 판단** — 측면 05 가 *"no single winner; pick one and enforce consistency"* 로 못박는다 |
 | **빌드·의존성** | **락파일 커밋** · 의존성 버전 고정 · **Actions 를 커밋 SHA 로 핀** · **의존성 갱신 봇** · 재현 가능한 단일 빌드 진입점 · CI 에서 warnings-as-errors | 🟢 SHA 핀(`GHW-005`: *"only a full-length commit SHA is immutable"*) / 🟡 나머지는 `03`·`10` 이 소유하고 **처분이 `SPLIT`**(보편 번들 기각) |
 | **CI/CD** | 매 PR·push 에 CI · **lint·typecheck·test·build 를 각각 별도 required check 로** · 워크플로마다 `permissions:` 최소화 · `pull_request_target` + 신뢰 불가 checkout 금지 | 🟢 **우회 불가**는 git 1차 문서가 받친다(`IPW-005`) / 🔵 **4종 분리는 이 프로젝트의 선택** — `04` 의 처분(`C50-12`)이 *"4종이 보편"* 을 기각했다 |
 | **코드 품질** | 린터 설정 커밋 · **포매터를 CI 가 강제** · **SAST** · **시크릿 탐지**(gitleaks + push protection) | 🟡 린터·포매터는 원칙이 선다 / 🔵 **SAST 는 표준이 요구해서가 아니라 선택이다** — 출처가 *"a deliberate above-OSPS-L1 harness uplift … **not** because a leveled standard mandates it"* 라 명시하고, **OSPS 는 L3 에 둔다**(`FFA-001`) |
@@ -114,7 +152,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III) · **`.env.example` 커밋 + 실제 `.env` 는 ignore** | 🟡 `06` 소유 · 처분이 *"12-Factor 는 **service 맥락**"* 이라 **모든 아키타입 적용은 기각** |
 | **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
 | **문서** | README(**≈100% uni / 100% wgt** · n=938 — **유일한 보편**) · **`AGENTS.md`**(에이전트 컨텍스트 · **35% all / 41% sw** · n=267 — **측정된 계획 산출물 중 채택률 1위**) · 🔴 **CONTRIBUTING 은 *내용*을 요구한다**(빌드·테스트 설명 **+** PR 흐름 — present 75% uni / 70% wgt · n=938 · 더 깊은 표본 48.2% · n=6,582 · **adequate 는 41.2%** · n=2,000) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · **present 52% uni / 51% wgt** · n=938) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
-| **거버넌스** | **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟡 자체 census(`IPC-002`) · 🔴 **모집단 한정을 지우지 않는다** — 제3자(Zhang et al., **1.8M 저장소**)가 재니 **PR 템플릿 채택은 전체의 1.2%** 이고 채택자는 *"mostly **prevalent** projects"* 다(`IPC-004`). **우리 44~53% 는 상위 저장소 기준**이다. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
+| **거버넌스** | **이슈 폼**(YAML) · **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟡 자체 census(`IPC-002`) · 🔴 **모집단 한정을 지우지 않는다** — 제3자(Zhang et al., **1.8M 저장소**)가 재니 **PR 템플릿 채택은 전체의 1.2%** 이고 채택자는 *"mostly **prevalent** projects"* 다(`IPC-004`). **우리 44~53% 는 상위 저장소 기준**이다. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
 | **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **소유자 결정** — `coolbress/workflows` 만 릴리스한다(셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
 | **라이선스** | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽게 선언한다 | 🟢 **채택률과 무관하게 선다** — 법적 효과가 있고 **없으면 공개 저장소에서 *"재사용 가능"* 이 성립하지 않는다**. 🔴 다만 **per-file SPDX·scan·CLA 는 바닥이 아니다**(`C50-39` 가 *"모든 파일 SPDX"* 를 기각) |
 
