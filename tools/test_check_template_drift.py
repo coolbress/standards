@@ -9,7 +9,11 @@ from __future__ import annotations
 
 import unittest
 
+import pathlib
+
 from check_template_drift import ANSWERS, GENERATOR_ONLY, shared
+
+SOURCE = pathlib.Path(__file__).resolve().parent / "check_template_drift.py"
 
 
 class GeneratorOnlyFilter(unittest.TestCase):
@@ -56,3 +60,36 @@ class GeneratorOnlyFilter(unittest.TestCase):
     def test_answers_file_name_is_the_copier_default(self) -> None:
         # 인스턴스 탐지가 이 이름에 걸려 있다. 바뀌면 인스턴스를 0개로 본다.
         self.assertEqual(ANSWERS, ".copier-answers.yml")
+
+
+class InstanceDetection(unittest.TestCase):
+    """인스턴스 탐지가 **404 를 통과시키지 않는가.**
+
+    🔴 실측 사고: `gh api …/contents/… --jq .content -H "Accept: …raw+json"` 로 존재를
+    확인했더니 **404 도 통과해 인스턴스가 9개**로 잡혔다(실제 1개). `--jq` 와 raw Accept 를
+    같이 쓰면 응답이 JSON 이 아니라 `--jq` 가 무의미해지고, `check=False` 라 오류도 안 난다.
+
+    네트워크를 타는 함수라 호출은 못 하지만, **알려진 나쁜 형태가 다시 들어오는 것**은 막는다.
+    `test_issue_forms` 의 YAML alias 함정 검사와 같은 부류다.
+    """
+
+    def test_detection_judges_by_exit_code_not_output(self) -> None:
+        src = SOURCE.read_text(encoding="utf-8")
+        body = src[src.index("def _has_answers") : src.index("def instances")]
+        self.assertIn("returncode == 0", body, "종료코드로 판정하지 않는다")
+
+        # 🔴 **주석·docstring 은 빼고 명령줄만 본다.** 처음엔 함수 전체를 훑었는데
+        # docstring 이 이 버그를 *설명하며* `--jq` 를 언급해 시험이 자기 오탐을 냈다.
+        command = [
+            ln for ln in body.splitlines()
+            if '"gh"' in ln or '"api"' in ln or ln.strip().startswith('f"repos/')
+        ]
+        self.assertTrue(command, "명령줄을 못 찾았다 — 시험이 아무것도 안 보고 있다")
+        self.assertNotIn(
+            "--jq", "\n".join(command),
+            "존재 확인에 `--jq` 를 쓰면 404 가 통과한다 — 실측으로 인스턴스가 9개로 잡혔다",
+        )
+
+    def test_the_template_itself_is_not_counted_as_an_instance(self) -> None:
+        src = SOURCE.read_text(encoding="utf-8")
+        self.assertIn("if n == TEMPLATE_NAME", src, "템플릿 자신을 인스턴스로 센다")
