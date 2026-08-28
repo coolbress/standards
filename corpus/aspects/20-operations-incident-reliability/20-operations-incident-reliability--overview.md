@@ -56,7 +56,7 @@ maps_from: []
 - **monorepo** — typically wraps services: container **68%**, IaC **48%**, observability **36%** (highest obs). Same full posture, often multi-service.
 - **web-app** — deploy + uptime/error monitoring (often a managed platform), lighter SLO/on-call than backend (observability **9%**).
 - **data-ml** — pipeline/job reliability (freshness/SLAs, retries, lineage) over request-latency SLOs; many are research repos (releases 65% only).
-- **library / cli** — **no live operations to run**; this aspect is largely **N/A** beyond release hygiene (observability 10% / 8%, mobile **0%**). Forcing SLOs/IaC/on-call here is cargo-cult. Operations scales with "is there a service that runs," not universally.
+- **library / cli** — **no live operations to run**; this aspect is largely **N/A** beyond release hygiene (observability **10% uniform / 8% weighted** · n=429, mobile **0%**). Forcing SLOs/IaC/on-call here is cargo-cult. Operations scales with "is there a service that runs," not universally.
 - **mobile** — crash reporting + staged rollout + remote config + app-store ops, not server SLOs (observability 0% in census).
 
 ## Tradeoffs / what's ruled out

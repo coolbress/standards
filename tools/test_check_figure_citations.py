@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import unittest
 
-from check_figure_citations import PAIR, missing_labels
+from check_figure_citations import N_DECL, PAIR, missing_labels
 
 
 class PairDetection(unittest.TestCase):
@@ -38,6 +38,25 @@ class LabelDetection(unittest.TestCase):
 
     def test_axis_without_n_is_still_incomplete(self) -> None:
         self.assertEqual(missing_labels("uni / wgt 로 75% / 70%"), ["n"])
+
+    def test_third_axis_all_vs_software_subset(self) -> None:
+        # 🔴 축은 둘이 아니다. `sw` 는 software 부분집합이라는 뜻이고
+        # uni/wgt 도 present/adequate 도 아니다 — 그래서 축을 적어야 한다.
+        self.assertEqual(missing_labels("AGENTS.md 35% all / 41% sw (n=267)"), [])
+
+
+class SampleDeclarationForms(unittest.TestCase):
+    """코퍼스가 실제로 쓰는 표본 표기를 다 받는가.
+
+    정보가 있는데 형태가 달라 못 잡으면 **검사가 문서를 고치게** 만든다. 그건 거꾸로다.
+    """
+
+    def test_accepts_every_form_the_corpus_uses(self) -> None:
+        for text in ("n=938", "N=6,582", "429-repo release-ops survey", "(2000 repos)"):
+            self.assertTrue(N_DECL.search(text), text)
+
+    def test_rejects_a_bare_number(self) -> None:
+        self.assertIsNone(N_DECL.search("median 7 days between releases"))
 
 
 if __name__ == "__main__":
