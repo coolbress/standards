@@ -61,18 +61,65 @@ mean 0.33. **census 다수가 아니다** — *"자동화 **enabler** 이지 업
 
 > 🔴 **강제로 전환하는 조건 (하나라도 참이면)**
 > ⓐ 릴리스 노트나 SemVer 를 **CC 에서 도출하기 시작**한다 ·
-> ⓑ 준수율이 **95% 아래**로 떨어진다 — **`tools/check_pr_title_conformance.py` 가 잰다**
->   (2026-08-28 실측 **98.7%** · n=153) ·
+> ⓑ 준수율이 **95% 아래**로 떨어진다 — **`tools/check_pr_title_conformance.py` 가 잰다** ·
 > ⓒ 기여자가 **2인 이상**이 된다.
-> 그때 만들 것은 **`ci / pr-title`** 이고, **반드시 아래 확장 어휘를 넣는다.**
+> 그때 만들 것은 **`ci / pr-title`** 이다.
+>
+> ✅ **ⓑ 가 2026-08-28 에 성립했다** — 어휘를 표준으로 접자 같은 174건이 **79.3%** 가 됐다(아래 정정).
 
-### 우리 타입 어휘 — **표준이 아니다. 그래서 적는다**
+### 🔴 정정 (2026-08-28, 같은 날) — **확장 어휘를 접는다. 표준만 쓴다**
+
+위 ③ 의 처방(*"확장 어휘를 적어두고 검사에 넣는다"*)이 **하루를 못 버텼다.**
+
+**실측**: 목록이 `direction/05` 에 적혀 있는 상태에서, 새 세션의 에이전트가
+**`record:` 와 `anchor:` 를 즉석에서 만들었다**(PR #123 · #125). 그리고 정직하게 보면
+**둘 다 `docs:` 였다** — 목록에 없는 걸 만든 게 아니라 **있는 걸 안 쓴 것**이다.
+이전에도 같은 일이 있었다: `decide`(3) · `decision`(4) · `decisions` 는 **한 개념의 여러 철자**다.
+
+**왜 그렇게 되나.** 모델이 커밋 타입을 고를 때 꺼내는 것은 **훈련에 있는 목록**이다.
+`docs:` 는 모든 모델의 가중치에 있고 `research:` 는 **이 저장소의 문서 한 줄에만** 있다.
+🔴 **커스텀 어휘는 그것을 읽어야만 성립하는데, 안 읽히는 것이 이 저장소의 반복 결함이다**
+(`CONTRIBUTING.md` 를 두 번 가리켰는데 두 번 다 안 읽혔다).
+
+**그리고 그게 이 하네스의 목적과 반대다** — 비엔지니어가 모르는 **현업 표준을 에이전트가 따르게**
+하는 것이 목적인데, 지역 방언을 만들면 에이전트가 **덜 아는 쪽**을 따르게 된다.
+
+### 지역 의미는 **scope** 로 옮긴다 — 그게 규격이 시키는 방식이다
+
+규격 원문은 타입을 **둘만** 필수로 둔다(`CONVENTIONAL-COMMITS-SPEC`):
+
+> *"The type `feat` MUST be used… The type `fix` MUST be used… **Additional types are not mandated
+> by the Conventional Commits specification.**"*
+> *"A scope MAY be provided after a type. A scope MUST consist of **a noun describing a section of
+> the codebase** surrounded by parenthesis"*
+
+**scope 는 자유형이다.** 그래서 우리가 잃는 것이 없다 — 타입은 표준으로 두고 **구분은 scope 가 진다**:
+
+| 접었다 | 앞으로 | 왜 |
+|---|---|---|
+| `research:` (21건) | **`docs(research):`** | 전부 코퍼스 문서 추가였다. 코드 변경 0 |
+| `audit:` · `decide:` · `decision:` · `record:` · `anchor:` · `floor:` | **`docs(decision):`** / `docs(audit):` | 전부 `direction/`·`audit/` 문서다 |
+| `move:` (3건) | **`refactor(layout):`** | 동작 불변 재배치 — 표준 `refactor` 의 정의 그대로 |
+| `deps:` (미사용) | **`build(deps):`** | dependabot 이 쓰는 형태 |
+| `security:` (미사용) | **`fix(security):`** | 고침이면 `fix`, 아니면 해당 타입 + `(security)` |
+
+**타입 목록은 이제 `@commitlint/config-conventional` 과 같다:**
 
 `feat` · `fix` · `docs` · `style` · `refactor` · `perf` · `test` · `build` · `ci` · `chore` · `revert`
-**＋ 우리 것:** `research` · `audit` · `decide`/`decision` · `move` · `deps` · `security`
 
-**안 적으면 다음 사람이 표준 설정을 넣고 30건을 막는다.** 실제로 이 문단을 쓰는 과정에서
-한 번 그랬다(위 ③).
+🔵 **이 줄이 정본이다.** `tools/check_pr_title_conformance.py` 가 **이 줄을 읽어 자기 목록과 대조**한다
+(①). 갈리면 `RESULT FAIL` 이다 — 목록이 세 곳에 흩어져 조용히 갈리는 것이 이번 정정을 부른 결함이다.
+
+### 그래서 전환 조건 ⓑ 가 **성립했다**
+
+같은 174건을 **표준 어휘로** 재면 **79.3%** 다 — 임계 95% 아래다.
+🔵 **규칙을 어겨서 만드는 게 아니라, 바닥이 적어둔 규칙이 발화한 것이다.**
+그래서 **`ci / pr-title` 을 만든다**(`workflows`).
+
+⚠️ **집행은 앞을 향한다.** 과거 PR 을 소급해 막지 않는다 — 그래서 위 ③ 의 *"정당한 30건을 막는다"*
+는 **더 이상 성립하지 않는다.** 그건 소급 적용을 가정한 계산이었다.
+
+⚠️ **여전히 이슈 제목에는 안 건다** — 야생 CC 채택 1~2%(`IPC-001`). 대비가 핵심이다.
 
 ### ⚠️ 자동화를 원하면 **CC 강제보다 이쪽이 먼저다**
 
