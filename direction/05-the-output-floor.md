@@ -27,7 +27,14 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 
 🔴 **그 문서의 처분을 먼저 읽어야 한다** — **C50-14 `RETAIN-RN/SYNTHESIS` · *"파일 presence≠adequacy"***.
 **파일이 있다는 것이 적절하다는 뜻이 아니다.** 야생 실측이 그것을 잰다:
-**CONTRIBUTING 이 present 62% 인데 adequate 는 41%** — **있는 것 중 1/3 이 빌드·테스트 설명 없는 스텁**이다.
+**CONTRIBUTING 이 present 61.5% 인데 adequate 는 41.2%** — **있는 것 중 1/3(67%)이 빌드·테스트 설명
+없는 스텁**이다 (`census-gov-adequacy` **n=2,000** · 내용 파싱 · `adequate = has_devflow AND has_prflow`).
+
+> 🔴 **표기 규약 — `X/Y` 를 축 없이 쓰지 않는다.**
+> 이 문서는 한때 `X/Y` 를 **두 가지 다른 뜻**으로 썼다: 위 줄은 `present/adequate`(n=2,000)인데
+> 아래 §바닥 표의 `75/70%` 는 `uni/wgt`(비가중 / 최근성가중 `w = 0.5^(age/2yr)` · n=938)였고
+> **어느 쪽도 그걸 밝히지 않았다.** 아래만 읽으면 *"adequate 70%"* 로 읽히는데 실제는 **41.2%** 다.
+> **수치는 소유 문서를 떠날 때 축과 n 을 데리고 가야 한다.**
 
 > **템플릿이 파일을 넣어주는 것은 presence 만 해결한다.** 스텁을 모든 인스턴스에 복사하면
 > 이 프로젝트가 그 1/3 통계에 기여하는 쪽이 된다.
@@ -49,7 +56,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 | **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 SLA(medium+ ≤60일) | 🟢 MFA 는 **OSPS L1**(`FFA-003` — 단 원문 범위는 *"read or modify a **sensitive resource**"*) / 🟡 나머지는 `09`·`10` 소유, 처분 `SPLIT` |
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III) · **`.env.example` 커밋 + 실제 `.env` 는 ignore** | 🟡 `06` 소유 · 처분이 *"12-Factor 는 **service 맥락**"* 이라 **모든 아키타입 적용은 기각** |
 | **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
-| **문서** | README(**≈100% · 유일한 보편**) · CONTRIBUTING(75/70%) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · census 52/51%) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
+| **문서** | README(**≈100% uni / 100% wgt** · n=938 — **유일한 보편**) · CONTRIBUTING(**present 75% uni / 70% wgt** · n=938 · 🔴 **더 깊은 표본에선 48.2%** · n=6,582 · **adequate 는 41.2%** · n=2,000) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · **present 52% uni / 51% wgt** · n=938) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
 | **거버넌스** | **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟡 자체 census(`IPC-002`) · 🔴 **모집단 한정을 지우지 않는다** — 제3자(Zhang et al., **1.8M 저장소**)가 재니 **PR 템플릿 채택은 전체의 1.2%** 이고 채택자는 *"mostly **prevalent** projects"* 다(`IPC-004`). **우리 44~53% 는 상위 저장소 기준**이다. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
 | **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **소유자 결정** — `coolbress/workflows` 만 릴리스한다(셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
 | **라이선스** | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽게 선언한다 | 🟢 **채택률과 무관하게 선다** — 법적 효과가 있고 **없으면 공개 저장소에서 *"재사용 가능"* 이 성립하지 않는다**. 🔴 다만 **per-file SPDX·scan·CLA 는 바닥이 아니다**(`C50-39` 가 *"모든 파일 SPDX"* 를 기각) |
