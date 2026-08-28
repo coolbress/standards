@@ -151,3 +151,48 @@ class DirectionCitationAnchorTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class GatedArchetypes(unittest.TestCase):
+    """`direction/05` 의 아키타입 층 전체가 이 필드 위에 선다.
+
+    🔴 그런데 2026-08-28 까지 **스키마에 정의가 없고 검사도 없었다**(`GAPS` R5-16) —
+    층이 필드 위에 서 있는데 **아무도 그 필드를 안 보고 있었다.**
+    """
+
+    def _errs(self, body: str) -> list[str]:
+        from pathlib import Path
+
+        import validate_corpus as vc
+
+        return vc.gated_archetype_errors(vc.ROOT / "corpus" / "x--overview.md", body)
+
+    def test_empty_list_is_universal_not_an_error(self) -> None:
+        """`[]` 는 *"모든 아키타입이 진다"* 라는 **주장**이지 미지정이 아니다."""
+        self.assertEqual(self._errs("gated_archetypes: []\n"), [])
+
+    def test_missing_key_is_an_error(self) -> None:
+        """키가 없는 것과 `[]` 는 다르다. 없으면 층이 무엇을 요구하는지 못 판다."""
+        self.assertTrue(any("lacks gated_archetypes" in e for e in self._errs("kind: aspect\n")))
+
+    def test_known_values_pass(self) -> None:
+        self.assertEqual(self._errs('gated_archetypes: ["backend", "data-ml"]\n'), [])
+        self.assertEqual(self._errs('gated_archetypes: ["handles-user-data"]\n'), [])
+
+    def test_unknown_value_is_caught(self) -> None:
+        """🔬 `service` 로 잡힌다 — **템플릿의 `copier.yml` 이 실제로 묻는 값**이다.
+
+        코퍼스 어휘에는 `service` 가 없다(`backend`/`cloud`/`web` 을 쓴다). 두 어휘가
+        갈려 있다는 것이 이 시험으로 드러난다.
+        """
+        found = self._errs('gated_archetypes: ["service"]\n')
+        self.assertTrue(any("unknown archetype 'service'" in e for e in found), found)
+
+    def test_non_list_is_caught(self) -> None:
+        self.assertTrue(any("must be a YAML list" in e for e in self._errs("gated_archetypes: cli\n")))
+
+    def test_the_two_axes_are_disjoint(self) -> None:
+        """종류와 조건이 겹치면 *"한 프로젝트가 여러 종류"* 가 되어 게이트가 흐려진다."""
+        import validate_corpus as vc
+
+        self.assertEqual(vc.ARCHETYPE_KINDS & vc.ARCHETYPE_CONDITIONS, frozenset())

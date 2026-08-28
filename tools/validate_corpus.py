@@ -405,6 +405,40 @@ def aspect_overview_path(aspect_dir: Path) -> Path:
     return aspect_dir / f"{aspect_dir.name}--overview.md"
 
 
+#: `gated_archetypes` 의 닫힌 어휘 (`corpus/_schema.md` §3.1).
+#: 🔴 두 축이 섞여 있는 것은 **의도**다 — 둘 다 게이트이지만 답하는 방식이 다르다.
+ARCHETYPE_KINDS = frozenset({"cli", "library", "web", "backend", "mobile", "data-ml"})
+ARCHETYPE_CONDITIONS = frozenset({"published", "cloud", "handles-user-data", "ai-harness"})
+ARCHETYPE_VALUES = ARCHETYPE_KINDS | ARCHETYPE_CONDITIONS
+
+GATED_RE = re.compile(r"^gated_archetypes:\s*(.*)$", re.M)
+
+
+def gated_archetype_errors(path: Path, text: str) -> list[str]:
+    """`direction/05` 의 아키타입 층 전체가 이 필드 위에 선다.
+
+    그런데 2026-08-28 까지 **스키마에 정의가 없고 검사도 없었다** — 필드가 이 파일에 0회,
+    `_schema.md` 에 0회 등장했다(`GAPS` R5-16). 층이 필드 위에 서 있는데 필드는
+    아무도 안 보고 있었다.
+    """
+    rel = path.relative_to(ROOT)
+    match = GATED_RE.search(text)
+    if match is None:
+        return [f"aspect overview lacks gated_archetypes: {rel}"]
+    raw = match.group(1).strip()
+    if not raw.startswith("[") or not raw.endswith("]"):
+        return [f"gated_archetypes must be a YAML list: {rel} -> {raw!r}"]
+    inner = raw[1:-1].strip()
+    if not inner:
+        return []          # `[]` = universal. 유효한 값이다 (`_schema.md` §3.1)
+    found: list[str] = []
+    for token in inner.split(","):
+        value = token.strip().strip('"').strip("'")
+        if value and value not in ARCHETYPE_VALUES:
+            found.append(f"unknown archetype {value!r} in {rel} (closed set: _schema.md §3.1)")
+    return found
+
+
 def is_aspect_overview(path: Path) -> bool:
     """True for the per-topic overview file (formerly `_aspect.md`)."""
     return path.name == f"{path.parent.name}--overview.md"
@@ -468,6 +502,16 @@ def main() -> int:
 
     aspect_dirs = sorted(path for path in ASPECTS.iterdir() if path.is_dir())
     metrics["aspect_directories"] = len(aspect_dirs)
+
+    # R5-16: `gated_archetypes` 는 있어야 하고 값은 닫힌 어휘여야 한다.
+    gated_seen = 0
+    for aspect_dir in aspect_dirs:
+        overview = aspect_overview_path(aspect_dir)
+        if not overview.is_file():
+            continue
+        gated_seen += 1
+        errors.extend(gated_archetype_errors(overview, overview.read_text(encoding="utf-8")))
+    metrics["aspects_with_gates_checked"] = gated_seen
     if len(aspect_dirs) != 28:
         errors.append(f"expected 28 aspect directories, found {len(aspect_dirs)}")
     expected_numbers = [f"{number:02d}" for number in range(1, 29)]

@@ -102,6 +102,37 @@ Aspect documents keep their stable `aspect-NN-slug` ID plus `group`, `kind` (app
 `lifecycle_stages`, `anchors`, and `claim`. During the 2026-08 audit, inherited documents use
 `status: review-needed` until their individual claims meet this schema.
 
+### 3.1 `gated_archetypes` — who owes this aspect (added 2026-08-28, `GAPS` R5-16)
+
+Every aspect overview carries `gated_archetypes`. `direction/05` builds its whole archetype layer on
+this field, **yet it had no definition here and no check** — the field appeared 0 times in this schema
+and 0 times in `validate_corpus.py`. This section is that definition.
+
+```yaml
+gated_archetypes: []                      # universal — every project owes this aspect
+gated_archetypes: ["backend", "data-ml"]  # gated — only these owe it
+```
+
+**`[]` means universal, not "unspecified".** A missing key is an error; an empty list is a claim.
+
+🔴 **The field carries two different things and that is deliberate.** Both are *gates*, but they are
+answered differently:
+
+| axis | values | answered by |
+|---|---|---|
+| **project kind** — what the thing is | `cli` `library` `web` `backend` `mobile` `data-ml` | one choice at creation |
+| **condition** — a property the project has | `published` `cloud` `handles-user-data` `ai-harness` | yes/no, can change later |
+
+A project matches an aspect if it matches **any** listed value. `handles-user-data` is one of the
+three questions `/kickoff` asks, so a condition gate is answerable without inventing a questionnaire.
+
+⚠️ **`[]` must not be used to mean "we did not decide."** If an aspect's own claim presupposes a
+condition — *"instrument **services**"*, *"operate a **running service** against SLOs"*,
+*"publishes to the **canonical channel**"* — then it is gated, and writing `[]` makes the floor
+demand SLOs and on-call from a local CLI script. `validate_corpus.py` cannot read intent, so this
+one stays a human rule; what it does check is that every aspect **has** the key and that every value
+is from the closed set above.
+
 ## 4. Claim record
 
 New or materially refreshed syntheses use a claim table:
