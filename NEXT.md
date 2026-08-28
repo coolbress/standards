@@ -354,7 +354,8 @@ gh api repos/coolbress/<repo>/rulesets -X POST --input ruleset.json
 ```bash
 python3 tools/validate_corpus.py        # 구조·프론트매터·매니페스트·URL 대장
 node    tools/build-routes.mjs --check  # 라우팅 지도 최신 여부
-python3 tools/repo_audit.py             # 서버 설정 drift — 읽기만 한다 (3저장소)
+python3 tools/repo_audit.py             # 서버 설정 drift — 읽기만 한다 (4저장소)
+python3 tools/check_pr_title_conformance.py   # PR 제목 규약 준수율 — 전환 조건 ⓑ (네트워크)
 ```
 
 문서를 고쳤으면 `tools/rebuild_after_manifest.py`와 `build-routes.mjs`를 **다시 돌려야** CI가 통과한다.
