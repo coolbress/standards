@@ -126,6 +126,15 @@ answered differently:
 A project matches an aspect if it matches **any** listed value. `handles-user-data` is one of the
 three questions `/kickoff` asks, so a condition gate is answerable without inventing a questionnaire.
 
+**`kind` and `gated_archetypes` say the same thing twice, so they must agree.** `validate_corpus.py`
+enforces it: `kind: gated` requires a non-empty list, and `kind: universal` / `cross-cutting` must
+carry `[]`. 🔵 **`internal` is exempt — it is a different axis** (*is this for us or for clients?*,
+not *who owes it?*); aspect 27 is `internal` **and** gated on `ai-harness`, and that is correct.
+
+**The kind axis is canonical for the whole system.** `project-template`'s `archetype` question must
+offer values from it — a project that answers outside this vocabulary matches **no gate at all**.
+`tools/repo_audit.py` compares the two across repositories.
+
 ⚠️ **`[]` must not be used to mean "we did not decide."** If an aspect's own claim presupposes a
 condition — *"instrument **services**"*, *"operate a **running service** against SLOs"*,
 *"publishes to the **canonical channel**"* — then it is gated, and writing `[]` makes the floor

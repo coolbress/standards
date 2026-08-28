@@ -11,6 +11,10 @@ workflow 하나만 믿지 않는다"* 고 규정한다. 감사 대상이 감사�
 
 from __future__ import annotations
 
+import re
+
+import base64
+
 import json
 import subprocess
 import sys
@@ -296,6 +300,36 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
     return bad, unknown
 
 
+def archetype_vocabulary_drift() -> list[str]:
+    """템플릿이 **묻는 아키타입**과 코퍼스가 **게이트에 쓰는 종류**가 같은가.
+
+    🔴 2026-08-28 실측: 갈려 있었다. 코퍼스는 10종을 쓰는데 `copier.yml` 은 4종을 묻고
+    **`service` 는 코퍼스에 아예 없었다** — `/kickoff` 에서 *service* 라고 답하면
+    **게이트 걸린 측면 어디에도 안 걸린다.** 층이 답 위에 서 있는데 답이 어휘 밖이었다.
+
+    정본은 코퍼스다. 그 값들은 리서치에서 나왔고, 템플릿 질문은 그 아래다.
+    """
+    from validate_corpus import ARCHETYPE_KINDS
+
+    raw = subprocess.run(
+        ["gh", "api", "repos/coolbress/project-template/contents/copier.yml",
+         "--jq", ".content"],
+        capture_output=True, text=True, check=False,
+    )
+    if raw.returncode != 0 or not raw.stdout.strip():
+        return ["⚪ 템플릿의 copier.yml 을 못 읽었다"]
+    body = base64.b64decode(raw.stdout.strip()).decode("utf-8")
+    block = body.split("\narchetype:", 1)
+    if len(block) < 2:
+        return ["템플릿에 archetype 질문이 없다"]
+    offered = set(re.findall(r"^\s{4}[^:\n]+:\s*([a-z][a-z0-9-]*)\s*$", block[1], re.M))
+    extra = sorted(offered - ARCHETYPE_KINDS)
+    if extra:
+        return [f"템플릿이 코퍼스에 없는 아키타입을 묻는다: {extra} "
+                f"(코퍼스 종류 축: {sorted(ARCHETYPE_KINDS)})"]
+    return []
+
+
 def main() -> int:
     drift = 0
     unknowns = 0
@@ -309,6 +343,20 @@ def main() -> int:
             print(f"     {p}")
         for u in unknown:
             print(f"     ⚪ {u}")
+    vocab = archetype_vocabulary_drift()
+    if vocab:
+        unknown_only = all(v.startswith("⚪") for v in vocab)
+        mark = "🟡" if unknown_only else "🔴"
+        print(f"{mark} 아키타입 어휘 — 템플릿 질문 vs 코퍼스 게이트")
+        for v in vocab:
+            print(f"     {v}")
+        if unknown_only:
+            unknowns += len(vocab)
+        else:
+            drift += len(vocab)
+    else:
+        print("✅ 아키타입 어휘 — 템플릿 질문이 코퍼스 종류 축 안에 있다")
+
     # 🔴 **눈 감은 감사기의 초록이 가장 나쁘다.** 확인하지 못한 것이 있으면 CLEAN 이라 하지 않는다.
     verdict = "DRIFT" if drift else ("INCONCLUSIVE" if unknowns else "CLEAN")
     print(f"\nRESULT {verdict} findings={drift} unknown={unknowns}")
