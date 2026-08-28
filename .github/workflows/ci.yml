@@ -52,6 +52,9 @@ jobs:
       - name: 바닥 커버리지 (센서스 대조)
         run: python3 tools/check_floor_coverage.py
 
+      - name: 코퍼스 근거는 경로로 인용됐나 (이름 인용은 claim 불변식을 우회한다)
+        run: python3 tools/check_name_only_citations.py
+
       # 2026-08-25 추가 (GAPS R5-15). tools/test_*.py 4개가 저장소에 있는데
       # 이 잡이 하나도 돌리지 않았다 — 그래서 7건이 PR #12 의 디렉터리 개편
       # 이후 계속 깨진 채로 초록이었다. 붙이기 전에 그 7건을 먼저 고쳤다.

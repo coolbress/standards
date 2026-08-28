@@ -54,6 +54,21 @@ every run. This is the *how-to-write* standard (the family doc says *what kind*;
   that age poorly. · Stray `AGENTS.override.md` silently suppressing the base.
 - *Upside, empirical:* a good AGENTS.md cut agent **runtime −28.6% / tokens −16.6%** (arXiv 2601.20404).
 
+## Claim table — `direction` 이 기대는 규칙 (2026-08-28 앵커 신설)
+
+[`direction/05`](../../../direction/05-the-output-floor.md) 이 `AGENTS.md` 를 **어떻게 쓰는지**의 근거로 이 문서를
+가리키면서 **이름으로만** 적었다 — claim table 이 없어 경로 인용이 `RESULT FAIL` 을 냈다(`GAPS` R5-29).
+보급률은 [`planning-output-census`](planning-output-census.md) 가 답하고(`POC-001`), **여기는 내용**을 답한다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| CAS-001 | normative | **하나만 정본이고 나머지는 거울이다.** 독립된 두 파일은 갈린다 — 심볼릭 링크(드리프트 0)거나 유지되는 축약본이거나 둘 중 하나이고, **둘 다 맨 위에 어느 쪽이 정본인지 적는다.** 우리 저장소들은 `AGENTS.md` 를 정본으로, `CLAUDE.md` 를 **링크**로 둔다 | `AGENTSMD-SPEC` · `CLAUDE-CODE-BEST-PRACTICES-DOC` | high | 2027-02-28 |
+| CAS-002 | empirical | 🔴 **저장소 개요 산문은 넣지 마라 — 값을 치르고 아무것도 안 산다.** ETH Zürich 가 여러 LLM·에이전트에 걸쳐 재니 컨텍스트 파일이 **과제 성공률을 일반적으로 올리지 않으면서 추론 비용을 평균 20% 넘게** 올렸고, *"repository overviews, although popular and **recommended by model providers**, are not helpful"* 로 못박았다. **다만 지시(instructions)는 따라진다** — 그래서 이 문서의 §절 골격이 명령형인 것이다 | `AGENTS-CONTEXT-EVAL-2026` | medium-high | 2027-02-28 |
+| CAS-003 | empirical | **좋은 파일은 효율을 올린다 — 성공률이 아니라.** 중앙값 **런타임 −28.64% · 출력 토큰 −16.58%**, 과제 완수는 비슷했다. 🔶 **표본이 작다: 저장소 10개 · PR 124건.** `CAS-002` 와 **모순이 아니다** — 저 쪽은 *개요를 넣으면* 손해라 하고 이 쪽은 *지시가 있으면* 싸진다 한다. 갈림길은 **무엇이 적혀 있는가**이지 파일의 유무가 아니다(`C50-14` *presence ≠ adequacy*) | `AGENTS-EFFICIENCY-2026` | medium | 2027-02-28 |
+| CAS-004 | vendor-behavior | **짧게 써라 — 벤더 권고는 200줄 미만이고 이유는 준수율이다**(*"performance degrades as context fills"*). 가지치기 시험: 한 줄씩 *"이걸 지우면 실수가 나나"* 를 묻고 아니면 자른다. ⚠️ **권고이지 측정이 아니다** — 200 이라는 수의 근거는 벤더가 제시하지 않는다. 측정 쪽은 `CAS-002` 다 | `CLAUDE-CODE-BEST-PRACTICES-DOC` | medium | 2027-02-28 |
+| CAS-005 | normative | **가장 많이 빠지는 두 절이 가장 값어치가 크다** — ① 플래그까지 붙은 **정확한 명령**(에이전트는 비표준 스크립트 이름을 추측할 수 없다) ② **경계** 3단(ALWAYS · ASK FIRST · NEVER). GitHub 이 약 2,500 저장소를 훑어 정리한 지침과 같은 방향이다. ⚠️ 벤더가 **자기 사용자**를 분석한 것이라 독립 재현이 안 된다 | `GITHUB-AGENTS-2500-REPOS` · `AGENTSMD-SPEC` | medium | 2027-02-28 |
+| CAS-006 | local-census | **양쪽 형식이 야생에 다 있다** — 공개 GitHub 에 `AGENTS.md` **129,696** · `CLAUDE.md` **40,200** 개. 🔴 **이건 파일 수이지 저장소 비율이 아니다** — 비율은 `POC-001`(34.8% / 28.8%)이 답한다. 두 수를 같은 문장에 섞어 쓰지 마라 | `DOC-CONVENTIONS-CENSUS-2026` | medium | 2026-12-28 |
+
 ## Sources
 agents.md spec https://agentsmd.net/ · OpenAI Codex AGENTS.md https://developers.openai.com/codex/guides/agents-md ·
 openai/codex AGENTS.md https://github.com/openai/codex/blob/main/AGENTS.md · Claude Code best practices

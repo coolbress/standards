@@ -180,7 +180,7 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 > **기계 구간만 검증됐고 *아이디어 → 과제 번역* 구간은 미시험이다.**
 
 > **②에서 나온 실측 하나가 ③·⑤를 구속한다**: 재사용 워크플로의 검사 이름은
-> `{호출잡}/{피호출잡}` 이다(코퍼스 `cross-project-reuse--facts-2026-08` CPR-007·008).
+> `{호출잡}/{피호출잡}` 이다([`cross-project-reuse--facts-2026-08`](../corpus/aspects/04-build-ci-engineering/cross-project-reuse--facts-2026-08.md) `CPR-007`·`CPR-008`).
 > 호출잡 이름이 required context 의 일부이므로 **템플릿과 룰셋이 그 이름으로 묶인다.**
 
 ## 판정 기준 — 사전 등록 (2026-08-24)

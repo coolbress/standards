@@ -56,6 +56,19 @@ How often do top-starred GitHub repos commit each planning/spec artifact. **n=26
 a structured-process artifact (rare in the broad aggregate by selection bias, standard in gingoa's cohort); the
 machine-SSOT `prd.yml` is a novel, defensible lead.
 
+## Claim table — `direction` 이 기대는 수치 (2026-08-28 앵커 신설)
+
+[`direction/05`](../../../direction/05-the-output-floor.md) 이 **바닥의 문서 묶음**을 정할 때 이 문서를
+근거로 삼으면서 **이름으로만** 적었다 — claim table 이 없어 경로로 인용하면 `validate_corpus` 가
+`RESULT FAIL` 을 냈기 때문이다(`GAPS` R5-29). `IPC-001`~`IPC-005` 와 **같은 자리의 문제**이고, 같은 방식으로 해소한다.
+
+| Claim ID | Class | Claim and scope | Evidence | Confidence | 재검증 |
+|---|---|---|---|---|---|
+| POC-001 | local-census | **에이전트 헌법이 측정된 계획 산출물 중 1위다.** `AGENTS.md` **34.8% all / 41.2% sw**, `CLAUDE.md` **28.8% / 33.9%** — `docs/`(64.4/72.9) 를 빼면 어떤 계획 산출물보다 높고, `CHANGELOG.md`(43.1/48.0) 와 같은 급이다. → 바닥이 `AGENTS.md` 를 **문서 묶음에 넣는 근거**가 이것이다 | `PLANNING-OUTPUT-CENSUS-2026` (n=267 all · 221 sw) | medium-high | 2026-12-28 |
+| POC-002 | local-census | 🔴 **이건 파일 존재율이지 품질이 아니다.** 탐지는 **파일·디렉터리 이름 존재**만 본다 — 내용을 안 읽는다. 그래서 이 표는 *"몇 %가 갖고 있나"* 에만 답하고 *"그게 쓸모 있나"* 에는 **답하지 않는다.** 후자는 `CAS-002`·`CAS-003` 이 맡는다(`C50-14` *presence ≠ adequacy* 와 같은 구분) | `PLANNING-OUTPUT-CENSUS-2026` | high | 2026-12-28 |
+| POC-003 | local-census | **PRD·ADR 은 상위 저장소에서도 희귀하다** — `PRD.md` 0.4% · `requirements.md` 0.7% · 커밋된 ADR 1.1%. 🔶 **이건 기각 근거가 아니라 선택 편향 신호다**: top-OSS 총합은 요구 절차가 없는 라이브러리·도구가 지배한다. 바닥이 이 셋을 **묶음에 안 넣는** 근거로만 쓰고, *"쓰면 안 된다"* 로는 쓰지 않는다 | `PLANNING-OUTPUT-CENSUS-2026` | medium | 2026-12-28 |
+| POC-004 | local-census | **모집단 한정.** 표본은 `stars>500` 상위 저장소 267개다 — **전체 GitHub 의 대표 표본이 아니다.** 게다가 계획 산출물은 위키·이슈·외부 트래커(Notion/Linear)에 사는 경우가 많아 파일트리 탐지는 **실제 계획 활동을 과소계수한다.** `IPC-004` 가 PR 템플릿에서 겪은 것과 **같은 한정**이다 | `PLANNING-OUTPUT-CENSUS-2026` | high | 2026-12-28 |
+
 ## Caveats (honest)
 - Sample = 267 top-star repos (general + a few language/category slices) — high-star ≠ representative of all repos,
   and ≠ gingoa's reference class (structured-process / spec-tool cohort), which the broad aggregate under-represents.
