@@ -209,8 +209,9 @@ squash 모델에서 **PR 제목이 곧 랜딩 커밋**이 되어 changelog·SemV
 
 ## 🤖 `AGENTS.md` — 바닥이 놓치고 있던 것 (2026-08-28)
 
-**코퍼스가 이미 답을 갖고 있었는데 바닥이 인용하지 않았다.** 측면 01 의 `planning-output-census`
-(**n=267** · software 221)가 이렇게 적는다:
+**코퍼스가 이미 답을 갖고 있었는데 바닥이 인용하지 않았다.** 측면 01 의
+[`planning-output-census`](../corpus/aspects/01-requirements-planning/planning-output-census.md)
+(`POC-001` · **n=267** · software 221)가 이렇게 적는다:
 
 > *"**CONFIRMS the constitution choice, strongly.** `AGENTS.md` (**35% all / 41% sw**) +
 > `CLAUDE.md` (29% / 34%) are the **most-adopted of any planning artifact measured** …
@@ -219,8 +220,17 @@ squash 모델에서 **PR 제목이 곧 랜딩 커밋**이 되어 changelog·SemV
 `ADR` 디렉터리는 **1.1%** 인데 `AGENTS.md` 는 **41%** 다. 그런데 바닥의 문서 묶음에는
 `CONTRIBUTING`·`CHANGELOG`·`SECURITY` 가 있고 **`AGENTS.md` 는 없었다.**
 
-그리고 측면 01 에는 작성 표준(`constitution-authoring-standard`)까지 **이미 있다** —
-절 골격 · **<200줄** · 이중 파일 규칙 · 안티패턴. **바닥이 그 문서군 전체를 안 쓰고 있었다.**
+그리고 측면 01 에는 작성 표준
+([`constitution-authoring-standard`](../corpus/aspects/01-requirements-planning/constitution-authoring-standard.md))까지
+**이미 있다** — 이중 파일 규칙(`CAS-001`) · 절 골격과 경계 3단(`CAS-005`) · **<200줄**(`CAS-004`) · 안티패턴.
+**바닥이 그 문서군 전체를 안 쓰고 있었다.**
+
+🔬 **그 둘을 경로로 인용하려고 claim 표를 붙이면서 실측 하나가 더 나왔다** (2026-08-28, `GAPS` R5-29):
+근거로 적혀 있던 arXiv 2건이 **서로 반대 방향으로 읽힌다.** 한쪽은 컨텍스트 파일이
+*성공률을 안 올리면서 추론 비용을 20% 넘게 올린다* 하고(`CAS-002`), 다른 쪽은 *런타임 −28.6% ·
+토큰 −16.6%* 를 잰다(`CAS-003`). **모순이 아니다** — 앞은 *개요 산문을 넣으면* 손해라 하고
+뒤는 *지시가 있으면* 싸진다 한다. 갈림길은 **무엇이 적혀 있는가**이지 파일의 유무가 아니다.
+바닥이 `AGENTS.md` 를 요구할 때 **개요를 요구하지 않는 이유**가 이것이다.
 
 ### 🔴 미해결 — 어느 쪽이 SSOT 인가
 
@@ -362,7 +372,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 ## 위험 비례 — 전부를 항상 켜지 않는다
 
 - **비공개 + Free**: 룰셋 자체가 안 걸린다(`GEB-001·002`) → `new-project.sh` 가 **저장소를 남기지 않고 멈춘다.** CodeQL 도 별도 라이선스가 필요하다 → **Semgrep·gitleaks 로 대체**
-- **로컬 실험**: 바닥 전체가 과하다. `github-workflow-current` 의 risk-scaled 표를 쓴다
+- **로컬 실험**: 바닥 전체가 과하다. [`github-workflow-current`](../corpus/aspects/05-scm-workflow/github-workflow-current.md) 의 risk-scaled 표를 쓴다
 - **공개 웹앱**: 바닥 전부 + 접근성 · 개인정보 — 아래
 
 ## 아키타입별 층 — 누가 판정하나
