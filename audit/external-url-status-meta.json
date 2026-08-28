@@ -6,7 +6,7 @@
     "access-blocked": 67,
     "dead": 4,
     "network-error": 1,
-    "reachable": 789,
+    "reachable": 791,
     "redirected": 103
   },
   "schema_version": 1,
@@ -17,6 +17,6 @@
     "reachable_or_redirected": "An endpoint returned 2xx/3xx; content support was not assessed."
   },
   "started_at": "2026-08-28T10:30:31.007713Z",
-  "url_count": 964,
-  "url_set_sha256": "80784cfedb72bcee9b3653db69ff5d74484b7a915fab1999b9f1b4928c1d5e25"
+  "url_count": 966,
+  "url_set_sha256": "0e814d28386b7769825c5058413ec382ebfaff51a04492b3b70582fec1a96ded"
 }
