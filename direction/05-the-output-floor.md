@@ -106,7 +106,18 @@ No git tags found in template; using HEAD as ref
 **`copier update` 는 기본으로 최신 *태그* 를 목표로 삼는다.** 태그가 없으면 `HEAD` 로 떨어지는데,
 그건 **아직 안 익은 커밋으로 인스턴스를 끌고 갈 수 있다는 뜻**이다.
 
-⬜ **미결** — `project-template` 도 태그를 달 것인가(`GAPS` R5-33).
+✅ **결정·실행 2026-08-28 — 태그를 단다** ([v1.0.0](https://github.com/coolbress/project-template/releases/tag/v1.0.0)).
+
+시중 관행이 명확하다 — *"Copier templates **should be versioned with Git tags**."*
+copier 는 모든 태그를 읽어 **PEP 440** 으로 비교하고 최신 것을 체크아웃한 뒤 갱신한다.
+⚠️ **SemVer 가 아니라 PEP 440 이다** — `v1.2.3` 표기는 양쪽 다 유효하지만 **정렬은 PEP 440 이 한다.**
+
+**MAJOR 의 정의는 인스턴스 기준이다** — *"`copier update` 를 돌린 인스턴스가 **손으로 뭔가
+해야 하는가**"*. copier 문서의 예시(`setup.cfg` → `pyproject.toml` 전환)와 같은 기준이고,
+`workflows` 의 *"잡 이름 변경은 언제나 MAJOR"* 와 같은 형태다(소비자가 고쳐야 하는가).
+
+🔬 **실측**: 태그 전 `_commit: a21d142` + *"No git tags found"* → 태그 후 **`_commit: v1.0.0`**,
+경고 없음, 내용 변경 없음.
 
 ### 🔑 아키타입은 `/kickoff` 4번째 문항이 준다 (2026-08-28)
 
@@ -300,7 +311,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 | **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 · 🟡 **`Dockerfile` 은 아키타입 조건부**(아래) | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
 | **문서** | README(**≈100% uni / 100% wgt** · n=938 — **유일한 보편**) · **`AGENTS.md`**(에이전트 컨텍스트 · **35% all / 41% sw** · n=267 — **측정된 계획 산출물 중 채택률 1위**) · 🔴 **CONTRIBUTING 은 *내용*을 요구한다**(빌드·테스트 설명 **+** PR 흐름 — present 75% uni / 70% wgt · n=938 · 더 깊은 표본 48.2% · n=6,582 · **adequate 는 41.2%** · n=2,000) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · **present 52% uni / 51% wgt** · n=938) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
 | **거버넌스** | **이슈 폼**(YAML) · **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟡 자체 census(`IPC-002`) · 🔴 **모집단 한정을 지우지 않는다** — 제3자(Zhang et al., **1.8M 저장소**)가 재니 **PR 템플릿 채택은 전체의 1.2%** 이고 채택자는 *"mostly **prevalent** projects"* 다(`IPC-004`). **우리 44~53% 는 상위 저장소 기준**이다. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
-| **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **소유자 결정** — `coolbress/workflows` 만 릴리스한다(셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
+| **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **갱신 2026-08-28 — 이제 둘이다**(`workflows` · `project-template`). **규칙은 안 바뀌었고 사실이 바뀌었다**: copier 전환으로 모든 인스턴스의 `.copier-answers.yml` 이 `_src_path: gh:coolbress/project-template` 로 **템플릿을 참조한다.** (이전 판: *"`workflows` 만 — 남이 `uses:` 로 참조하는 쪽이 거기뿐"*). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
 | **라이선스** | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽게 선언한다 | 🟢 **채택률과 무관하게 선다** — 법적 효과가 있고 **없으면 공개 저장소에서 *"재사용 가능"* 이 성립하지 않는다**. 🔴 다만 **per-file SPDX·scan·CLA 는 바닥이 아니다**(`C50-39` 가 *"모든 파일 SPDX"* 를 기각) |
 
 > 🔴 **이 표 전체에 걸리는 한정 하나** — 소유 측면 대부분의 재검증 처분이 **`RETAIN-RN/SPLIT`**, 즉
