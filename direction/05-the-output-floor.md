@@ -90,6 +90,24 @@ GitHub 의 **`generate_release_notes`**(Releases API 의 불린 하나)는 **CC 
 
 ⬜ **미착수** — `GAPS` R5-31.
 
+### 🔴 copier 가 `project-template` 의 릴리스 결정을 뒤집는다 (2026-08-28)
+
+**소유자 결정 2026-08-26 은 *"`coolbress/workflows` 만 릴리스한다"*** 였고 이유가
+*"`project-template` 은 **`gh repo create --template` 이 태그를 참조하지 않아** 릴리스가
+기능적으로 무의미하다"* 였다.
+
+🔴 **그 전제가 깨졌다.** copier 로 전환하면서 실측했다:
+
+```
+$ uvx copier update
+No git tags found in template; using HEAD as ref
+```
+
+**`copier update` 는 기본으로 최신 *태그* 를 목표로 삼는다.** 태그가 없으면 `HEAD` 로 떨어지는데,
+그건 **아직 안 익은 커밋으로 인스턴스를 끌고 갈 수 있다는 뜻**이다.
+
+⬜ **미결** — `project-template` 도 태그를 달 것인가(`GAPS` R5-33).
+
 ### 🔑 아키타입은 `/kickoff` 4번째 문항이 준다 (2026-08-28)
 
 **바닥이 아키타입으로 조건을 걸어놓고 그 입력이 없었다.** `/kickoff` 은 공개·개인정보·라이선스
