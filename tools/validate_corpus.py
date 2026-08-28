@@ -422,6 +422,12 @@ CLAIMLESS_OK = frozenset({
 })
 
 GATED_RE = re.compile(r"^gated_archetypes:\s*(.*)$", re.M)
+KIND_RE = re.compile(r"^kind:\s*(\S+)", re.M)
+
+#: 이 `kind` 는 **게이트와 모순된다** — *모두가 진다* 와 *일부만 진다* 를 동시에 말할 수 없다.
+#: 🔵 `internal` 은 뺀다. 그건 다른 축이다 — *이 프로젝트 내부용인가* 이지 *누가 지는가* 가 아니다
+#: (측면 27 은 `internal` 이면서 `["ai-harness"]` 로 게이트돼 있고, 그게 맞다).
+KIND_CONTRADICTS_GATES = frozenset({"universal", "cross-cutting"})
 
 
 def gated_archetype_errors(path: Path, text: str) -> list[str]:
@@ -439,6 +445,14 @@ def gated_archetype_errors(path: Path, text: str) -> list[str]:
     if not raw.startswith("[") or not raw.endswith("]"):
         return [f"gated_archetypes must be a YAML list: {rel} -> {raw!r}"]
     inner = raw[1:-1].strip()
+    # 🔵 `kind` 와 `gated_archetypes` 는 **같은 말을 두 번** 한다. 갈리면 하나가 거짓말이다.
+    # 2026-08-28 실측: 7:7 로 정확히 일치하고 있었다 — 규율이 지켜지는 동안 잠근다.
+    kind = KIND_RE.search(text)
+    kind_value = kind.group(1) if kind else ""
+    if kind_value == "gated" and not inner:
+        return [f"kind: gated 인데 gated_archetypes 가 비어 있다: {rel}"]
+    if kind_value in KIND_CONTRADICTS_GATES and inner:
+        return [f"kind: {kind_value} 인데 gated_archetypes 가 차 있다: {rel}"]
     if not inner:
         return []          # `[]` = universal. 유효한 값이다 (`_schema.md` §3.1)
     found: list[str] = []

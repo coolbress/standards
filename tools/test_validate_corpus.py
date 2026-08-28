@@ -196,3 +196,33 @@ class GatedArchetypes(unittest.TestCase):
         import validate_corpus as vc
 
         self.assertEqual(vc.ARCHETYPE_KINDS & vc.ARCHETYPE_CONDITIONS, frozenset())
+
+
+class KindAndGatesAgree(unittest.TestCase):
+    """`kind` 와 `gated_archetypes` 는 같은 말을 두 번 한다. 갈리면 하나가 거짓말이다.
+
+    🔬 이 불변식이 붙자마자 **18·19·20 이 `kind: universal` 인데 claim 은 서비스를 전제**한다는
+    것이 드러났고, 동시에 **측면 27(`internal` + 게이트)** 이 정당한 제3의 경우임도 드러났다.
+    """
+
+    def _errs(self, body: str) -> list[str]:
+        import validate_corpus as vc
+
+        return vc.gated_archetype_errors(vc.ROOT / "corpus" / "x--overview.md", body)
+
+    def test_gated_kind_requires_gates(self) -> None:
+        found = self._errs("kind: gated\ngated_archetypes: []\n")
+        self.assertTrue(any("비어 있다" in e for e in found), found)
+
+    def test_universal_kind_forbids_gates(self) -> None:
+        """🔴 18·19·20 이 이 모양이었다 — `[]` 가 *universal* 인데 claim 은 서비스를 전제했다."""
+        found = self._errs('kind: universal\ngated_archetypes: ["web"]\n')
+        self.assertTrue(any("차 있다" in e for e in found), found)
+
+    def test_internal_kind_may_carry_gates(self) -> None:
+        """측면 27 은 `internal` 이면서 `["ai-harness"]` 다 — 다른 축이라 모순이 아니다."""
+        self.assertEqual(self._errs('kind: internal\ngated_archetypes: ["ai-harness"]\n'), [])
+
+    def test_matching_pairs_pass(self) -> None:
+        self.assertEqual(self._errs('kind: gated\ngated_archetypes: ["web", "backend"]\n'), [])
+        self.assertEqual(self._errs("kind: universal\ngated_archetypes: []\n"), [])

@@ -2,8 +2,8 @@
 id: aspect-20-operations-incident-reliability
 title: "Operations, Incident & Reliability"
 group: "R — Release & Operate"
-kind: universal
-gated_archetypes: []
+kind: gated
+gated_archetypes: ["web", "backend", "data-ml"]
 cross_cutting: false
 lifecycle_stages: ["④"]
 anchors: ["Google-SRE", "ITIL-4", "DORA", "NIST-SP-800-34"]
@@ -22,6 +22,10 @@ sources:
 claim: "Senior teams operate a running service against explicit SLOs with an error-budget policy, escalate via on-call to a defined incident-response flow, learn through blameless postmortems and problem-management RCA, and prove resilience with tested DR (RTO/RPO) — measuring delivery health by the DORA four keys; these live outside the repo (Grafana/PagerDuty/runbooks), so they are a [lit] posture, not a file census."
 maps_from: []
 ---
+
+> 🔄 **분류 정정 2026-08-28** (`GAPS` R5-16 ②ⓐ): `kind: universal` · `gated_archetypes: []` → **`kind: gated` · `["web", "backend", "data-ml"]`**. claim 이 *"operate a **running service** against explicit SLOs"* + on-call 이다. 돌고 있는 것이 없으면 error budget 도 incident 도 성립하지 않는다.
+>
+> `[]` 는 *universal* 을 뜻하므로(`_schema.md` §3.1) 그대로 두면 **바닥이 로컬 CLI 스크립트에도 이걸 요구한다.** claim 본문과 분류가 어긋나 있었다.
 
 > **Standard (claim):** Senior teams run a service against explicit **SLOs + error-budget policy**, route alerts through **on-call → incident response → blameless postmortem → problem RCA**, prove recovery with tested **DR (RTO/RPO)**, and gauge delivery by the **DORA four keys** — an operational posture that lives outside the repo, hence [lit], not file-censusable.
 > **Evidence:** lit (Google SRE · ITIL-4 · DORA · NIST 800-34) + the 429-repo release-ops census tier-C frame · **Confidence:** high · **Kind:** universal · **Stage:** ④

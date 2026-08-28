@@ -2,8 +2,8 @@
 id: aspect-19-observability-telemetry
 title: "Observability & Telemetry"
 group: "R — Release & Operate"
-kind: universal
-gated_archetypes: []
+kind: gated
+gated_archetypes: ["web", "backend", "data-ml"]
 cross_cutting: false
 lifecycle_stages: ["③", "④"]
 anchors: ["OpenTelemetry", "SRE-golden-signals"]
@@ -21,6 +21,10 @@ sources:
 claim: "Senior engineers instrument services for the three pillars (structured logs, RED/USE metrics, distributed traces) on OpenTelemetry, derive SLO-driven alerts from the SRE golden signals, and treat live monitoring/SLO targets as out-of-repo posture — but real-repo adoption is a sparse, archetype-driven tail (~17% have observability-as-code; SLOs in production ~26%)."
 maps_from: ["census-data/census-release-ops/stats.json"]
 ---
+
+> 🔄 **분류 정정 2026-08-28** (`GAPS` R5-16 ②ⓐ): `kind: universal` · `gated_archetypes: []` → **`kind: gated` · `["web", "backend", "data-ml"]`**. claim 이 *"instrument **services**"* 로 시작하고 SLO·golden signals 를 요구한다. 서비스가 아닌 것에는 계측할 런타임이 없다.
+>
+> `[]` 는 *universal* 을 뜻하므로(`_schema.md` §3.1) 그대로 두면 **바닥이 로컬 CLI 스크립트에도 이걸 요구한다.** claim 본문과 분류가 어긋나 있었다.
 
 > **Standard (claim):** Instrument services for the three pillars (structured logs · RED/USE metrics · distributed traces) on a vendor-neutral OpenTelemetry pipeline, alert on SLO burn against the four golden signals, and keep live-monitoring/SLO targets as out-of-repo operational posture.
 > **Evidence:** census+lit — obs-as-code 18→17% weighted, archetype-split backend 31% / monorepo 36% / library 10% / mobile 0%; SLO-in-prod 26% (survey) · **Confidence:** high (lit), medium (census — sparse tail, real monitoring lives off-repo) · **Kind:** universal · **Stage:** ③, ④

@@ -2,8 +2,8 @@
 id: aspect-18-packaging-distribution
 title: "Packaging & Distribution"
 group: "R — Release & Operate"
-kind: universal
-gated_archetypes: []
+kind: gated
+gated_archetypes: ["published"]
 cross_cutting: false
 lifecycle_stages: ["④"]
 anchors: ["npm-provenance", "SLSA", "Homebrew", "winget", "App-Store-guidelines"]
@@ -22,6 +22,10 @@ claim: "Senior engineers ship from a tagged, SemVer'd CI release that publishes 
 maps_from: ["census-data/census-release-ops"]
 census_todo: "Signing now census-backed offline (gh-API=0) from the Scorecard `sc` field — Signed-Releases strong 15% / present 17% (census-governance n=103). Still deferred (low priority): publish-CHANNEL share (npm vs PyPI vs Homebrew vs winget vs goreleaser) is not offline-derivable — the census records hold derived flags only, not workflow/tree contents; converting channel mix to [census] adoption % needs a targeted workflow-content survey."
 ---
+
+> 🔄 **분류 정정 2026-08-28** (`GAPS` R5-16 ②ⓐ): `kind: universal` · `gated_archetypes: []` → **`kind: gated` · `["published"]`**. claim 이 *"publishes to the archetype's **canonical channel**"* 을 전제한다. 안 배포하는 로컬 스크립트에 registry·app store 를 요구할 수 없다. `published` 는 측면 21 이 이미 쓰는 **조건 축** 값이다.
+>
+> `[]` 는 *universal* 을 뜻하므로(`_schema.md` §3.1) 그대로 두면 **바닥이 로컬 CLI 스크립트에도 이걸 요구한다.** claim 본문과 분류가 어긋나 있었다.
 
 > **Standard (claim):** Ship from a tagged, SemVer'd CI release that publishes to the archetype's canonical channel (registry / binary tap / container / app store) with build provenance — the artifact is a reproducible CI output, never a hand-uploaded local build.
 > **Evidence:** 429-repo release-ops census + named standards (SemVer, npm provenance, SLSA, Homebrew/winget) · **Confidence:** High (release-half is hard census data; provenance/signing is `[lit]`-led, near-absent in the wild) · **Kind:** universal · **Stage:** ④
