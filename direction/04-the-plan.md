@@ -171,7 +171,7 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 **다시 여는 조건**: `divtadel`(또는 다른 웹 프로젝트)이 **실제로 원격에 올라갈 때.**
 그때 열어야 할 질문은 *"web-ci.yml 을 만들까"* 가 아니라 순서대로 이 둘이다 —
 ① **그 프로젝트에 lint·test 를 먼저 넣는다**(없으면 4검사가 성립하지 않는다)
-② 브라운필드 도입 경로를 쓴다([`brownfield-adoption-floor`](../corpus/aspects/04-build-ci-engineering/brownfield-adoption-floor.md) — **절차 포인터이지 근거 인용이 아니다**) —
+② 브라운필드 도입 경로를 쓴다([`brownfield-adoption-floor`](../corpus/aspects/04-build-ci-engineering/brownfield-adoption-floor.md) *(review-needed)* — **절차 포인터이지 근거 인용이 아니다**) —
 `new-project.sh` 는 템플릿에서 **새로** 뜨는 도구라 기존 프로젝트에 쓸 수 없다.
 
 > **루프 1회 통과 (2026-08-24)**: `new-project.sh` → 이슈(AC) → 브랜치 → PR → CI 4/4 → 머지 → 이슈 종료.
@@ -180,7 +180,7 @@ S0에서 사람이 해야 하는 단계를 미리 묻고, 배포는 **Environmen
 > **기계 구간만 검증됐고 *아이디어 → 과제 번역* 구간은 미시험이다.**
 
 > **②에서 나온 실측 하나가 ③·⑤를 구속한다**: 재사용 워크플로의 검사 이름은
-> `{호출잡}/{피호출잡}` 이다([`cross-project-reuse--facts-2026-08`](../corpus/aspects/04-build-ci-engineering/cross-project-reuse--facts-2026-08.md) `CPR-007`·`CPR-008`).
+> `{호출잡}/{피호출잡}` 이다([`cross-project-reuse--facts-2026-08`](../corpus/aspects/04-build-ci-engineering/cross-project-reuse--facts-2026-08.md) *(draft)* `CPR-007`·`CPR-008`).
 > 호출잡 이름이 required context 의 일부이므로 **템플릿과 룰셋이 그 이름으로 묶인다.**
 
 ## 판정 기준 — 사전 등록 (2026-08-24)
