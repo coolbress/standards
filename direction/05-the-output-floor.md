@@ -11,6 +11,63 @@
 
 **강도 표시는 [`03`](03-what-research-says.md) 과 같다**: 🟢 1차 확인 · 🟡 한정 · 🔵 판단(근거로 인용하지 않는다) · ⚪ 미검증.
 
+## 🤖 `AGENTS.md` — 바닥이 놓치고 있던 것 (2026-08-28)
+
+**코퍼스가 이미 답을 갖고 있었는데 바닥이 인용하지 않았다.** 측면 01 의 `planning-output-census`
+(**n=267** · software 221)가 이렇게 적는다:
+
+> *"**CONFIRMS the constitution choice, strongly.** `AGENTS.md` (**35% all / 41% sw**) +
+> `CLAUDE.md` (29% / 34%) are the **most-adopted of any planning artifact measured** …
+> shipping `AGENTS.md`+`CLAUDE.md` as a ① artifact is **squarely the de-facto standard**."*
+
+`ADR` 디렉터리는 **1.1%** 인데 `AGENTS.md` 는 **41%** 다. 그런데 바닥의 문서 묶음에는
+`CONTRIBUTING`·`CHANGELOG`·`SECURITY` 가 있고 **`AGENTS.md` 는 없었다.**
+
+그리고 측면 01 에는 작성 표준(`constitution-authoring-standard`)까지 **이미 있다** —
+절 골격 · **<200줄** · 이중 파일 규칙 · 안티패턴. **바닥이 그 문서군 전체를 안 쓰고 있었다.**
+
+### 🔴 미해결 — 어느 쪽이 SSOT 인가
+
+| | |
+|---|---|
+| 코퍼스 (2026-06-27 · `review-needed`) | **`CLAUDE.md` 가 SSOT**, `AGENTS.md` 는 유지되는 축약 미러. 이유: *"두 호스트의 읽기 한도가 달라서"* |
+| `divcal` 실물 (2026-08-28) | **`AGENTS.md` 가 파일**, `CLAUDE.md` 는 심볼릭 링크 |
+
+**심볼릭 링크면 두 경로가 같은 바이트라 드리프트가 0 이다** — 코퍼스 자신이 *"symlink for zero drift"*
+를 더 나은 선택지로 적어놓고 한도 차이 때문에 미러를 골랐다. 그런데 44줄짜리 파일은 **양쪽 한도
+(32 KiB · 150줄) 아래**라 그 이유가 물리지 않는다. 그리고 그 사이 `AGENTS.md` 가 **AAIF/Linux
+Foundation 표준**이 됐다(20개 이상 에이전트).
+
+🔶 **바닥은 방향을 고정하지 않는다.** 요구하는 것은 **둘 다 있을 것 · 드리프트가 없을 것**이다.
+코퍼스 문서는 `review-needed` 이고 재검증 대상으로 남긴다.
+
+### ⚠️ 길이가 내용만큼 중요하다
+
+ETH Zurich(**138 repos · 5,694 PR**): LLM 이 생성한 컨텍스트 파일은 성공률 **−3%**,
+사람이 쓴 것도 **+4% 에 비용 +20~159%**. **150줄을 넘기지 않는다**(코퍼스의 <200줄과 같은 방향).
+*"비관련 내용은 선택적 무시가 아니라 **지시 전체의 무시**를 부른다."*
+
+🔴 **상태(*"지금 어디까지"*)를 넣지 않는다.** 가변 상태는 파일이 아니라 **열린 이슈**가 갖는다 —
+`divcal` 완주 회고에서 차가운 세션이 시작 30초에 `gh issue list` 를 돌렸다.
+
+## 🔴 `CONTRIBUTING` 은 파일이 아니라 **내용**을 요구한다 (2026-08-28)
+
+소유 측면의 처분이 **C50-14 `presence≠adequacy`** 인데 바닥은 파일만 요구하고 있었다.
+`census-gov-adequacy`(n=2,000 · 내용 파싱): present **61.5%** · adequate **41.2%** —
+**있는 것 중 1/3 이 빌드·테스트 설명 없는 스텁**이다.
+
+`adequate = has_devflow AND has_prflow`. 템플릿이 **그 두 표지를 담은 파일**을 주고,
+**인스턴스의 `ci / test` 가 그걸 지킨다**(`tests/test_contributing.py`).
+
+> 🔬 **왜 중앙 검사(⑩)가 아니라 템플릿 시험인가.** 템플릿에 그 패턴이 **이미 있었다** —
+> `tests/test_env_example.py` 가 *"`presence ≠ adequacy` … CONTRIBUTING 은 present 62% 인데
+> adequate 는 41%"* 를 **근거로 인용해놓고 정작 CONTRIBUTING 검사는 안 썼다.**
+> 새 만들 것을 짓는 대신 **있는 패턴을 한 번 더 쓴다.**
+
+⚠️ **`CONTRIBUTING` 을 바닥에서 빼는 안은 기각됐다.** `census-governance-floor`(**n=6,582**)에서
+별 구간을 고정해도 **`AGENTS.md` 채택 저장소가 CONTRIBUTING 을 더 갖는다**
+(`<1k` 63.3% 대 18.0% · `10k+` 83.9% 대 63.3%). **대체 신호가 없다.**
+
 ## 왜 별도 문서인가
 
 [`04`](04-the-plan.md)는 **"어떻게 일하는가"** 다 — 이슈·PR·CI·리뷰·머지.
@@ -56,7 +113,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 | **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 SLA(medium+ ≤60일) | 🟢 MFA 는 **OSPS L1**(`FFA-003` — 단 원문 범위는 *"read or modify a **sensitive resource**"*) / 🟡 나머지는 `09`·`10` 소유, 처분 `SPLIT` |
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III) · **`.env.example` 커밋 + 실제 `.env` 는 ignore** | 🟡 `06` 소유 · 처분이 *"12-Factor 는 **service 맥락**"* 이라 **모든 아키타입 적용은 기각** |
 | **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
-| **문서** | README(**≈100% uni / 100% wgt** · n=938 — **유일한 보편**) · CONTRIBUTING(**present 75% uni / 70% wgt** · n=938 · 🔴 **더 깊은 표본에선 48.2%** · n=6,582 · **adequate 는 41.2%** · n=2,000) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · **present 52% uni / 51% wgt** · n=938) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
+| **문서** | README(**≈100% uni / 100% wgt** · n=938 — **유일한 보편**) · **`AGENTS.md`**(에이전트 컨텍스트 · **35% all / 41% sw** · n=267 — **측정된 계획 산출물 중 채택률 1위**) · 🔴 **CONTRIBUTING 은 *내용*을 요구한다**(빌드·테스트 설명 **+** PR 흐름 — present 75% uni / 70% wgt · n=938 · 더 깊은 표본 48.2% · n=6,582 · **adequate 는 41.2%** · n=2,000) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · **present 52% uni / 51% wgt** · n=938) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
 | **거버넌스** | **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟡 자체 census(`IPC-002`) · 🔴 **모집단 한정을 지우지 않는다** — 제3자(Zhang et al., **1.8M 저장소**)가 재니 **PR 템플릿 채택은 전체의 1.2%** 이고 채택자는 *"mostly **prevalent** projects"* 다(`IPC-004`). **우리 44~53% 는 상위 저장소 기준**이다. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
 | **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **소유자 결정** — `coolbress/workflows` 만 릴리스한다(셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
 | **라이선스** | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽게 선언한다 | 🟢 **채택률과 무관하게 선다** — 법적 효과가 있고 **없으면 공개 저장소에서 *"재사용 가능"* 이 성립하지 않는다**. 🔴 다만 **per-file SPDX·scan·CLA 는 바닥이 아니다**(`C50-39` 가 *"모든 파일 SPDX"* 를 기각) |
@@ -90,7 +147,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 
 | 어디서 | 무엇 |
 |---|---|
-| `project-template` | `.gitignore` · `.env.example` · 린터·포매터 설정 · `SECURITY.md` · `CONTRIBUTING.md` · `CHANGELOG.md`(릴리스 안 하면 지우라고 명시) · README 골격 · `.editorconfig` · **PR 템플릿** · **`LICENSE`** |
+| `project-template` | `.gitignore` · `.env.example` · 린터·포매터 설정 · **`AGENTS.md`**(+ `CLAUDE.md` 심볼릭 링크) · `SECURITY.md` · **내용이 있는 `CONTRIBUTING.md`**(검사로 지킨다) · `CHANGELOG.md`(릴리스 안 하면 지우라고 명시) · README 골격 · `.editorconfig` · **PR 템플릿** · **`LICENSE`** |
 | `coolbress/workflows` (만들 것 2) | lint·typecheck·test·build 4검사 · **SAST**(⑫ 미착수) · **gitleaks**(⑫) · `permissions:` 최소화 · Actions SHA 핀 |
 | `new-project.sh` (만들 것 5) | 브랜치 보호 룰셋 · secret-scanning·push-protection · **공개여부·라이선스를 인자로 받는다** · **벽을 못 걸면 저장소를 남기지 않는다** |
 | GitHub 계정 설정 | **MFA**(1회) |
