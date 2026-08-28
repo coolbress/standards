@@ -42,7 +42,11 @@ EXPECTED_APP: dict[str, int] = {"CodeQL": CODE_SCANNING_APP_ID}
 # ── 템플릿에서 뜬 프로젝트의 기본 기대값 ─────────────────────────
 # `new-project.sh` 가 거는 것과 **같아야 한다.** 둘이 갈라지면 새 저장소가
 # 태어나자마자 drift 로 잡히거나(예전에 그랬다) 잡혀야 할 것이 안 잡힌다.
-PROJECT_CHECKS = {"CodeQL", "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets"}
+PROJECT_CHECKS = {
+    "CodeQL",
+    "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
+    "ci / diff-size",
+}
 PROJECT_ACTION_PATTERNS = ["astral-sh/setup-uv@*", "coolbress/workflows/*"]
 
 # Actions allowlist 에 허용된 패턴. `selected` 인 것만 보면 **패턴이 넓어져도 모른다.**
@@ -57,14 +61,18 @@ EXPECTED_ACTION_PATTERNS: dict[str, list[str]] = {
 
 EXPECTED_CHECKS: dict[str, set[str]] = {
     "coolbress/standards": {"integrity", "CodeQL"},
+    # 🔴 여기만 `canary / *` 다 — 이 저장소의 호출잡 이름이 `ci` 가 아니라 `canary` 라서다.
+    # 검사 이름은 {호출잡}/{피호출잡} 이므로 `ci / diff-size` 를 걸면 그 이름이
+    # 영원히 보고되지 않아 자기잠금이 된다 (workflows v3.3.0 노트).
     "coolbress/workflows": {
         "integrity", "CodeQL",
         "canary / lint", "canary / typecheck", "canary / test",
-        "canary / build", "canary / secrets",
+        "canary / build", "canary / secrets", "canary / diff-size",
     },
     "coolbress/project-template": {
         "CodeQL",
         "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
+        "ci / diff-size",
     },
 }
 
