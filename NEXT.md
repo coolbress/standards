@@ -1,12 +1,21 @@
 # 다음 세션 인계 — 만들기 시작
 
-> 작성 2026-08-24 · 갱신 2026-08-25 · **이 문서는 낡는다.** 만들 것이 하나씩 끝나면 갱신하고,
+> 작성 2026-08-24 · 갱신 **2026-08-28** · **이 문서는 낡는다.** 만들 것이 하나씩 끝나면 갱신하고,
 > 전부 끝나면 지운다. 정본은 [`direction/`](direction/)이고 이 문서는 **작업 지시서**다.
 
 ## 이 세션에서 할 일
 
-**[`direction/04-the-plan.md`](direction/04-the-plan.md)의 만들 것 13개를 순서대로 만든다.**
-지금은 **진짜 아이디어 하나로 end-to-end 를 완주할** 차례다. ①~⑤가 다 있다.
+🎉 **완료의 정의가 충족됐다 (2026-08-28).**
+
+```
+new-project.sh → /kickoff → 이슈 → 브랜치 → PR → CI → 머지
+```
+
+**진짜 프로젝트(`coolbress/divcal`)에서 두 번 돌았고, 두 번째는 차가운 세션이 자율로** 돌았다.
+`~~~~~~~~` 로 표시해두었던 `/kickoff` 구간이 실제로 채워졌다. 기록은 §첫 완주 완료.
+
+**다음은 남은 만들 것**이다 — [`direction/04`](direction/04-the-plan.md) 의 ⑥~⑩·⑬.
+🔶 그 전에 **소유자 결정 하나**가 걸려 있다(§남은 것).
 
 ## ⓪ 먼저 읽을 것 — 3개
 
@@ -25,8 +34,9 @@
 | 하네스 6세대 | **정리 끝** — 원격 3개 삭제(2026-08-24) · 로컬은 `~/Archive/` |
 | 이 저장소 | 공개 · 룰셋 `main protection` 활성 · CI 초록 · **PR로만 머지 가능** |
 | 벽 | **실물 확증 4/4** — 직접 푸시·빨간불 머지·`--admin` 강제 머지 전부 거부 |
-| 만들 것 | **6/13** — ①②③④⑤⑪. **완료의 정의는 여전히 미충족** — 진짜 아이디어로 완주한 적이 없다 |
-| 감사 (2026-08-27) | 🔧 실행 **0** · 🔬 리서치 **C-3 만** · 🔶 결정 **⑫ 하나**(소유자 명령 대기). 상세는 [`audit/TEMPLATE-WORKFLOWS-AUDIT`](audit/TEMPLATE-WORKFLOWS-AUDIT.ko.md) |
+| 만들 것 | **7/13** — ①②③④⑤⑪⑫. 🎉 **완료의 정의 충족 2026-08-28** — `divcal` 로 완주했다 |
+| 완주 | ✅ **2회** — #1→#2(따뜻한 세션) · **#4→#5(차가운 세션 자율)**. 9·10 회고까지 받았다 |
+| 감사 (2026-08-28) | `repo_audit` **4저장소 `RESULT CLEAN findings=0`**. 새 검사 `check_figure_citations` 기준선 16 |
 | 정리 | ✅ **완료 2026-08-24 (2차)** — 원격 3개 삭제 · 로컬 5개 `~/Archive/`(1.1GB) · 홈 8표면 0건. ⚠️ 1차의 *"0건"* 은 **틀렸었다** — [2차 기록](legacy/judgments/harness-removal-record-2026-08-24.md) |
 
 ## 🎯 완료의 정의 — 이걸 먼저 읽어라
@@ -124,7 +134,9 @@ ci / build       pass
 
 `loop-probe` 는 확인 후 **삭제했다** — 임시 프로브였다.
 
-## 🔬 첫 완주 기록 — `divcal` (2026-08-27, 진행 중)
+## ✅ 첫 완주 완료 — `divcal` (2026-08-27 착수 · **2026-08-28 완료**)
+
+### 저장소를 만드는 데까지 나온 결함 넷 (2026-08-27)
 
 **저장소를 하나 만드는 데까지 실제 결함 넷이 나왔다.** 전부 *"돌려보니 달랐다"* 에서 나왔다.
 
@@ -143,8 +155,15 @@ ci / build       pass
 | # | | 결과 |
 |---|---|---|
 | 1 | 저장소 생성 | ✅ (3번째 시도 — 위 결함 2·3 때문) |
-| 2 | **서버 설정 확인** | ✅ squash 전용·자동삭제 · 시크릿탐지·푸시보호·Dependabot 전부 `enabled` · Actions `selected`+SHA강제+**패턴 2개** · CodeQL `configured [actions, python]` · 룰셋 1개·우회자 0·strict·**검사 6개** |
-| 3~10 | `/kickoff` 부터 | ⬜ `~/divcal` 새 세션에서 |
+| 2 | **서버 설정 확인** | ✅ squash 전용·자동삭제 · 시크릿탐지·푸시보호·Dependabot 전부 `enabled` · Actions `selected`+SHA강제+**패턴 2개** · CodeQL `configured` · 룰셋 1개·우회자 0·strict |
+| 3 | `/kickoff` 인터뷰 | ✅ 4문항 · `[확인 필요]` 0개 |
+| 4 | 여덟 답을 이슈 본문에 | ✅ [#1](https://github.com/coolbress/divcal/issues/1) — Issue Form 3칸 + 추가 5절 |
+| 5 | 작은 실제 기능 + 테스트 | ✅ src 205줄 · 테스트 15개 |
+| 6 | 브랜치 → PR | ✅ [#2](https://github.com/coolbress/divcal/pull/2) |
+| 7 | required check 전부 보고·통과 | ✅ 6/6 |
+| 8 | squash 머지 · `main` | ✅ 이슈 자동 종료 · 브랜치 자동 삭제 |
+| 9 | 🔴 세션을 닫았다 다시 연다 | ✅ 2026-08-28 |
+| 10 | 🔴 무엇을 못 찾는지 기록 | ✅ **아래 회고** |
 
 ⚠️ **`divcal` 을 `REPOS` 에 넣었다.** 기본 기대값(`PROJECT_CHECKS`·`PROJECT_ACTION_PATTERNS`)만으로
 **그대로 통과**했다 — 오늘 *"새 프로젝트는 한 줄이면 끝나게"* 만든 설계가 실물에서 맞았다.
@@ -166,8 +185,41 @@ ci / build       pass
 | 9 | 🔴 **세션을 닫았다 다시 연다** |
 | 10 | 🔴 *"이 프로젝트 계속 진행해줘"* 만 말하고 **무엇을 못 찾는지 기록** |
 
-9·10 이 핵심이다 — [`06`](direction/06-how-we-work.md) 의 **상태 probe 는 아직 실물이 없다.**
-**상상으로 설계하지 않고 거기서 나온 통증으로 최소 구현을 만든다.**
+### 🔬 9·10 결과 — **상태를 못 찾은 게 아니었다**
+
+차가운 세션은 *"이 프로젝트 계속 진행해줘"* 한 줄만 받고 **7단계 만에 정확히 파악했다**:
+
+```
+README → git log → find → gh issue list → 소스 4파일 → gh issue view 1 → 로컬 검사
+```
+
+그 세션이 **혼자 이슈 [#4](https://github.com/coolbress/divcal/issues/4) 를 내고 PR [#5](https://github.com/coolbress/divcal/pull/5) 로 머지했다.** 회고가 남긴 것:
+
+| | 못 찾은 것 | 회고 원문 |
+|---|---|---|
+| **①** | **다음 할 일의 순서** | *"백로그가 **부정형 목록**으로만 존재했다. 순위도 이유도 없어서 결국 임의로 추려 물어야 했다. **그 한 번의 질문이 저장소가 답해주지 못한 유일한 것**"* |
+| **②** | `pyproject.toml` | 권한 거부 후 재시도 안 함 → *"줄길이 100 을 E501 에러에서 역산했다 — **설정을 읽어서가 아니라 깨져서**"* |
+| **③** | `CONTRIBUTING.md` | README 와 PR 템플릿이 **두 번** 가리켰는데 **두 번 다 안 읽힘** |
+
+🔴 **가장 중요한 관측 — 산문 속 포인터는 안 따라간다.** `CLAUDE.md` 가 `coolbress/workflows` 를
+**명시**했고 *바닥·정본·생성기* 라는 단어를 다 봤는데 **하나도 안 열었다.** `~/standards` 는
+존재조차 몰랐다. → **`NEXT.md` 를 아무리 잘 써도 `divcal` 세션에 안 닿는다**(훅 없음 · 링크 없음).
+[`06`](direction/06-how-we-work.md) 의 **상태 probe 를 상상으로 설계하지 않아도 되게 됐다.**
+
+🔴 **③ 이 제일 아프다.** `CONTRIBUTING.md`(57줄, 스텁 아님)가 이미 *"200줄 목표·400줄 상한"* 과
+*"세는 건 사람이 읽을 diff 다 — 락파일·생성물은 따로 센다"* 를 적고 있었다. **그날 만든
+`ci / diff-size` 의 설계가 거기 이미 있었는데 아무도 안 읽었다.**
+
+### 그래서 고친 것 (2026-08-28)
+
+| | 무엇 | 어디 |
+|---|---|---|
+| ① | 백로그 **9개를 열린 이슈로** + [#15 추적](https://github.com/coolbress/divcal/issues/15) 이 순서와 근거를 갖는다 | `divcal` |
+| ②③ | `CLAUDE.md` → **`AGENTS.md`**(36줄) + 심볼릭 링크. 못 찾은 셋만 적었다 | `divcal` [#16](https://github.com/coolbress/divcal/pull/16) |
+
+**AGENTS.md 에 상태 절은 안 넣었다.** 가변 상태는 `gh issue list` 가 갖는다 — 회고 세션이
+시작 30초에 이미 그걸 돌렸다. ETH Zurich(138 repos·5,694 PR): **150줄 초과는 효용 체감**이고
+*"비관련 내용은 선택적 무시가 아니라 **지시 전체의 무시**를 부른다."*
 
 ### 2번 — `divcal` 은 아직 자동 감사 밖이다
 
@@ -177,28 +229,46 @@ ci / build       pass
 Actions allowlist **두 패턴** · required check **전부** · CodeQL · secret scanning + push protection ·
 Dependabot · 룰셋 **1개** · bypass **없음** · strict · squash 전용 · **실제 PR 의 모든 검사 보고**
 
-## 🎯 그래서 완료의 정의는 아직 **미충족**이다
-
-통과한 것은 `이슈 → 브랜치 → PR → CI → 머지` 다. 정의가 요구하는 것은:
+## ✅ 그래서 완료의 정의는 **충족됐다** (2026-08-28)
 
 ```
 new-project.sh → /kickoff → 이슈 → 브랜치 → PR → CI → 머지
-                 ~~~~~~~~
+                 ~~~~~~~~  ← 이 구간이 채워졌다
 ```
 
-⚠️ **`/kickoff`(④)는 있다** — [`workflows/commands/kickoff.md`](https://github.com/coolbress/workflows/blob/main/commands/kickoff.md).
-없는 것은 **실제 프로젝트에서의 완주 검증**이다. 그때 시험 저장소는 *작고 진짜인 것*이 아니라
-**임시 프로브**였고, `/kickoff` 를 태우지 않았다.
+*아이디어 → 과제 번역* 구간이 **진짜 프로젝트에서 두 번** 돌았다. 두 번째는 차가운 세션이
+**자율로** 했고, 그 세션이 낸 이슈 #4 에는 `/kickoff` 0절이 요구한 **시중 확인 절**이 들어 있다 —
+Snowball Analytics · Sharesight(서비스)와 [`jhauberg/dledger`](https://github.com/jhauberg/dledger)(CLI)를 찾아 job 이 다른 이유 셋을 적었다.
 
-즉 **기계 구간은 검증됐고, *아이디어 → 과제 번역* 구간은 한 번도 시험되지 않았다.**
-그 구간이 정확히 가짜 프로젝트로는 시험되지 않는 곳이다.
+### 오늘 들어간 것 (2026-08-28) — PR 9개 · 릴리스 2개 · 4저장소
 
-**남은 것: 완주.** ④는 만들어졌고 **4종으로 채점까지 끝났다**(R5-10 종료) —
-다만 그 채점은 **인터뷰 품질**을 본 것이지 *완주 안에서 도는지*를 본 게 아니다.
+| 저장소 | 무엇 |
+|---|---|
+| `workflows` | [#24](https://github.com/coolbress/workflows/pull/24) `ci / diff-size` 잡 · [#25](https://github.com/coolbress/workflows/pull/25) `/kickoff` 0절을 **시중 확인**으로 · [#26](https://github.com/coolbress/workflows/pull/26) 룰셋에 등재 · [#27](https://github.com/coolbress/workflows/pull/27) 멈춤 게이트 → **3갈래 판정** · **v3.2.0 · v3.3.0** |
+| `project-template` | [#13](https://github.com/coolbress/project-template/pull/13) 핀 v3.2.0 |
+| `divcal` | [#2](https://github.com/coolbress/divcal/pull/2) 첫 기능 · [#3](https://github.com/coolbress/divcal/pull/3) 핀 v3.2.0 · **[#5](https://github.com/coolbress/divcal/pull/5) 차가운 세션이 자율로** · [#16](https://github.com/coolbress/divcal/pull/16) `AGENTS.md` |
+| `standards` | [#105](https://github.com/coolbress/standards/pull/105) 감사 기대값 · [#106](https://github.com/coolbress/standards/pull/106) 파이썬 버전 고정 · [#107](https://github.com/coolbress/standards/pull/107) 수치 축·표본 + 새 검사 |
 
-⚠️ **다만 지금 도는 것은 완주가 아니라 리서치 검증 프로그램(#49)이다.** 소유자 결정 2026-08-24 — *"근거가 온전하지 않으면 계속 틀어진 방향으로 만들 테니, 뭘 더 하기 전에 리서치부터"*. **1단계(하중 18건)는 2026-08-25 배치 5 로 끝났다.** 남은 것은 프로그램의 **2단계(확장·제거)·3단계(방향 재도출)** 이고, 그 다음이 ①②③⑤ 완주다.
+🔴 **그날 배운 것 하나가 세 저장소를 관통한다 — *문서에만 있는 규칙은 발화하지 않는다*.**
+`divcal` #1 이 이슈 본문에 *"400줄 이하"* 를 써놓고 436줄을 냈는데 **아무것도 막지 않았다.**
+그래서 문장을 검사로 바꿨고(`ci / diff-size`), 같은 형태를 `standards` 에서도 찾아
+(`X/Y` 표기를 축 없이 씀) **검사로 바꿨다**(`check_figure_citations`).
 
-`/kickoff` 가 산출한 첫 과제가 이슈 **#40·#41·#42** 로 서 있다 — 리서치 교차검증. ⚠️ 다만 이건 `standards` 안의 문서 작업이라 **①②③⑤ 완주 시험은 아니다**(새 저장소·템플릿·Python CI 를 안 탄다).
+⚠️ **다만 계량기가 규칙만큼 중요했다.** 그 PR 을 새 계량기로 다시 재면 **385줄로 통과**한다 —
+**규칙이 틀린 게 아니라 계량기가 틀렸었다**(README 산문이 코드와 같은 무게로 세어졌다).
+
+### 🔶 남은 것 — 소유자 결정 하나
+
+**바닥의 `CONTRIBUTING` 요구를 `present` → `adequate` 로 올릴 것인가.**
+`census-gov-adequacy`(n=2,000·내용 파싱): present **61.5%** · adequate **41.2%** — **있는 것 중 1/3 이 스텁**이다.
+
+🔴 **문서 한 줄이 아니다.** 진짜로 하려면 **검사가 따라오고**, 그게 **만들 것 ⑩ `floor-check`** 의
+첫 조각이다. 안 붙이면 오늘 고친 그 병을 새로 만드는 것이다.
+
+⚠️ **`CONTRIBUTING` 자체는 바닥에서 빼지 않기로 확정했다** — 근거는 두 갈래다.
+`census-governance-floor`(**n=6,582**)에서 별 구간을 고정해도 **`AGENTS.md` 채택 저장소가
+CONTRIBUTING 을 더 갖는다**(`<1k` 63.3% 대 18.0% · `10k+` 83.9% 대 63.3%). 대체 신호가 없다.
+시중 조사(30일)도 같은 방향이었다 — 대체 담론 자체가 없고, 오히려 **AGENTS.md 쪽이 역풍**을 맞는다.
 
 ## ✅ ④ 완료 (2026-08-24) — `/kickoff`
 
@@ -240,11 +310,21 @@ ci / lint     ci / typecheck     ci / test     ci / build
 `ruleset.json` 이 요구하는 것도 이 네 이름이다. **템플릿의 호출잡 이름을 바꾸면 룰셋이
 요구하는 이름이 영원히 보고되지 않아 저장소가 조용히 머지 불가로 잠긴다.**
 
-### ②에 아직 없는 것
+### ② 에 그 뒤 들어간 것 · 아직 없는 것
 
-pipeline-guard(테스트 동반 검사) · ⑫ SAST·gitleaks · ⑩ floor-check.
-**루프가 한 번 초록으로 돈 뒤에** 붙인다 — *walking skeleton* 과 *"벽보다 도구를 먼저 늘리기 ✕"*.
-그리고 `python-ci.yml` 의 **내용은 아직 한 번도 실제 프로젝트에서 돌지 않았다.**
+*"루프가 한 번 초록으로 돈 뒤에 붙인다"* 는 규칙(walking skeleton · *벽보다 도구를 먼저 늘리기 ✕*)을
+지켰고, 루프가 돌자 순서대로 붙였다:
+
+| | 무엇 | 언제 |
+|---|---|---|
+| ✅ | **`ci / secrets`**(gitleaks) — 푸시 보호가 통과시키는 **개인키 PEM** 을 잡는다 | v3.1.0 |
+| ✅ | ⑫ **SAST** — 공개는 CodeQL default setup ([근거](audit/SAST-CODEQL-VS-SEMGREP.ko.md)) | 2026-08-27 |
+| ✅ | **`ci / diff-size`** — 리뷰 가능성 게이트. 룰셋 등재까지 | v3.2.0 · v3.3.0 |
+| ⬜ | pipeline-guard (테스트 동반 검사) | — |
+| ⬜ | ⑩ `floor-check` | 위 §남은 것의 결정에 걸려 있다 |
+| 🔴 | **비공개 → Semgrep OSS** — *결정됐고 미구현*. `--private` 는 시작 전에 거부한다 | 측정 장비는 `workflows` 의 `research/c2-sast` 브랜치에 **주차돼 있다** |
+
+✅ **`python-ci.yml` 의 내용은 이제 실제 프로젝트에서 돈다** — `divcal` 이 PR 4개를 그걸로 태웠다.
 
 ### ⑤의 실물 (참고 — 이 저장소에 걸린 것)
 
