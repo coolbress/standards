@@ -13,6 +13,15 @@
 `CODEOWNERS` 가 이미 기각을 적어뒀고, 그게 이 검사가 요구하는 형태다.
 
 ⚠️ 이 검사는 **입장이 있는지**만 본다. 그 입장이 옳은지는 못 본다.
+
+🔴 **산문 `[census]` 줄은 일부러 안 훑는다.** 2026-08-28 에 해 봤다 — 측면 문서의
+`[census]` 줄에서 백틱 토큰을 뽑으니 후보 **62개**가 나왔는데 거의 전부 오탐이었다:
+센서스 경로(`census-data/...`) · 내부 칼럼명(`semver_ratio`·`cc_adopted`) ·
+다른 생태계 도구(`Cargo.lock`·`pnpm-lock.yaml`·`vitest` — 바닥은 **의도적 Python 전용**이다) ·
+잡음(`undefined`). **오탐이 신호를 묻으면 검사가 무시된다.**
+
+대신 **구조화된 센서스 둘**을 본다. 같은 방식으로 재고 잡음이 없다 — 실측으로
+`census-expanded` 확장이 후보 **1건**만 냈다(`dockerfile`).
 """
 
 from __future__ import annotations
@@ -23,7 +32,6 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-CENSUS = ROOT / "corpus/census-data/census-governance-floor/records.json"
 FLOOR = ROOT / "direction/05-the-output-floor.md"
 
 #: 이 채택률 아래는 묻지 않는다. 야생에서 드문 것을 전부 해명하게 하면
@@ -66,37 +74,68 @@ ROLLUP = {
     "issue_config": "has_issue_tmpl",
 }
 
+#: `census-expanded` 만 쓰는 이름. 위 NAMES 와 합쳐 쓴다.
+NAMES_EXPANDED: dict[str, str] = {
+    "ci": r"\bCI\b",
+    "issue_template": r"이슈 폼|ISSUE_TEMPLATE",
+    "security_md": r"SECURITY",
+    "code_of_conduct": r"CODE_OF_CONDUCT|CoC|행동강령",
+    "lockfile": r"락파일|lockfile",
+    "runtime_pin": r"런타임 핀|python-version|버전 고정",
+    "linter": r"린터|ruff",
+    "formatter": r"포매터|format",
+    "typechecker": r"타입|mypy",
+    "test_framework": r"테스트|pytest",
+    "precommit_hooks": r"pre-commit",
+    "task_runner": r"태스크 러너",
+    "supply_chain": r"공급망",
+    "has_releases": r"릴리스",
+    "has_release_notes": r"릴리스 노트|변경 요약",
+    "semver_any": r"SemVer",
+    "cc_adopted": r"Conventional Commits",
+    "dockerfile": r"Dockerfile|컨테이너",
+    "devcontainer": r"devcontainer|개발 컨테이너",
+}
+
 SKIP = {"repo", "stars", "eco", "mono", "cli", "lib", "app", "primary_lang",
         "topics", "n_workflows", "issue_forms", "issue_md",
-        "license_recognized", "license_spdx"}
+        "license_recognized", "license_spdx",
+        # census-expanded 전용 메타
+        "created", "source", "manifest", "sc_overall", "sc"}
+
+#: 재는 센서스들. **구조화된 것만** 넣는다 (위 산문 주석 참조).
+CENSUSES = (
+    ("census-governance-floor", ROOT / "corpus/census-data/census-governance-floor/records.json"),
+    ("census-expanded", ROOT / "corpus/census-data/census-expanded/records.json"),
+)
 
 
-def unaccounted() -> list[tuple[str, float]]:
-    records = json.loads(CENSUS.read_text(encoding="utf-8"))
+def unaccounted() -> list[tuple[str, str, float]]:
+    """입장이 없는 (센서스, 칼럼, 채택률) 을 돌려준다."""
     floor = FLOOR.read_text(encoding="utf-8")
-    total = len(records)
-    out: list[tuple[str, float]] = []
-    for col in records[0]:
-        if col in SKIP:
-            continue
-        rate = 100 * sum(1 for r in records if r.get(col)) / total
-        if rate < THRESHOLD:
-            continue
-        target = ROLLUP.get(col, col)
-        pattern = NAMES.get(target)
-        if pattern is None:
-            out.append((col, rate))
-            continue
-        if not re.search(pattern, floor, re.IGNORECASE):
-            out.append((col, rate))
-    return sorted(out, key=lambda x: -x[1])
+    lookup = {**NAMES, **NAMES_EXPANDED}
+    out: list[tuple[str, str, float]] = []
+    for census, path in CENSUSES:
+        records = json.loads(path.read_text(encoding="utf-8"))
+        total = len(records)
+        for col in records[0]:
+            if col in SKIP:
+                continue
+            rate = 100 * sum(1 for r in records if r.get(col)) / total
+            if rate < THRESHOLD:
+                continue
+            pattern = lookup.get(ROLLUP.get(col, col))
+            if pattern is None or not re.search(pattern, floor, re.IGNORECASE):
+                out.append((census, col, rate))
+    return sorted(out, key=lambda x: -x[2])
 
 
 def main() -> int:
     missing = unaccounted()
-    print(f"바닥 커버리지 — 센서스가 재는 산출물에 입장이 있는가 (임계 {THRESHOLD:.0f}%)")
-    for col, rate in missing:
-        print(f"  🔴 {col:22s} {rate:5.1f}%  바닥에 요구도 기각도 없다")
+    names = " · ".join(c for c, _ in CENSUSES)
+    print(f"바닥 커버리지 — {names} 가 재는 산출물에 입장이 있는가 (임계 {THRESHOLD:.0f}%)")
+    for census, col, rate in missing:
+        print(f"  🔴 {census:24s} {col:20s} {rate:5.1f}%  바닥에 요구도 기각도 없다")
     print(f"\nMETRIC unaccounted={len(missing)}")
     if missing:
         print("RESULT FAIL — 요구하거나, 왜 안 쓰는지 적어라. 침묵은 안 된다")

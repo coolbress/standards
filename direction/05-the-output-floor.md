@@ -11,6 +11,36 @@
 
 **강도 표시는 [`03`](03-what-research-says.md) 과 같다**: 🟢 1차 확인 · 🟡 한정 · 🔵 판단(근거로 인용하지 않는다) · ⚪ 미검증.
 
+## 📝 PR 제목 규약 · `Dockerfile` — 두 번째 센서스가 잡은 둘 (2026-08-28)
+
+`check_floor_coverage` 를 **`census-expanded`(n=938)까지** 넓히자 둘이 더 나왔다.
+🔴 **둘 다 실물이 하고 있는데 바닥이 침묵이었다** — `AGENTS.md`·이슈 폼·머지 방법과 같은 종류다.
+
+### PR 제목 = Conventional Commits — **squash 와 묶여 있다**
+
+**우리가 실제로 하고 있다**(PR 템플릿이 *"제목은 `type(scope): 요약`"* 을 요구한다). 근거는 결합이다:
+**squash 모델에서 PR 제목이 곧 랜딩 커밋**이 되므로, 거기에 규약을 걸면 changelog·SemVer 가
+기계적으로 도출된다. 머지 방법과 따로 정할 수 없다.
+
+🔵 **다만 above-census 다.** 측면 05 의 실측(N=2,000): CC PR 제목 strict **21%** · partial 41% ·
+mean 0.33. **census 다수가 아니다** — *"자동화 **enabler** 이지 업계 기준선이 아니다"*(tension T1).
+`cc_adopted` 는 n=938 에서 **39.4%**.
+
+🔴 **이슈 제목에는 걸지 않는다.** 야생에서 이슈 제목 CC 는 **1~2%** 다 — 대비가 핵심이고,
+강제하면 야생 규범과 정면으로 어긋난다(`IPC-001`).
+
+⚠️ **집행은 아직 사람이다.** PR 템플릿이 문장으로 요구할 뿐 `pr-title` 검사가 없다.
+측면 05 는 *"`pr-title` CI 검사로 강제"* 를 적어놨다 — **문서에만 있는 규칙** 상태다(`GAPS` R5-30).
+
+### `Dockerfile` — 아키타입 조건부
+
+n=938 에서 **48.0%**. 요구가 아니라 **조건**이다: 측면 03 이 *"backend-service / data-ml /
+web-app 은 `Dockerfile` + `docker-compose`"* 로 아키타입을 명시한다.
+
+**지금 우리 아키타입(CLI · 라이브러리)에는 해당 없다** — `divcal` 은 런타임 의존성 0 이고
+`uv run` 하나로 돈다. **서비스 아키타입이 생기면 요구가 된다.**
+`devcontainer` 는 **15.6%** 로 임계 아래라 묻지 않는다.
+
 ## 🚫 적힌 기각 — 안 쓰는 것도 입장이다 (2026-08-28)
 
 **침묵과 기각은 다르다.** 침묵은 다음 사람이 *"빠뜨린 건가"* 를 매번 다시 묻게 만든다.
@@ -163,14 +193,14 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 
 | 묶음 | 무엇이 있어야 하나 | 소유 측면 · 강도 |
 |---|---|---|
-| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 · **머지 방법 하나를 골라 강제**(우리는 squash 전용 — 아래) | 🟢 **가장 강하다** — `github-workflow-current`(GitHub 1차 문서 `GHW-001~003`) + **이 저장소 벽 4/4 실물 확증** / 🔵 **머지 방법의 *선택*은 판단** — 측면 05 가 *"no single winner; pick one and enforce consistency"* 로 못박는다 |
+| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 · **머지 방법 하나를 골라 강제**(우리는 squash 전용) · **PR 제목은 Conventional Commits**(둘은 묶여 있다 — 아래) | 🟢 **가장 강하다** — `github-workflow-current`(GitHub 1차 문서 `GHW-001~003`) + **이 저장소 벽 4/4 실물 확증** / 🔵 **머지 방법의 *선택*은 판단** — 측면 05 가 *"no single winner; pick one and enforce consistency"* 로 못박는다 |
 | **빌드·의존성** | **락파일 커밋** · 의존성 버전 고정 · **Actions 를 커밋 SHA 로 핀** · **의존성 갱신 봇** · 재현 가능한 단일 빌드 진입점 · CI 에서 warnings-as-errors | 🟢 SHA 핀(`GHW-005`: *"only a full-length commit SHA is immutable"*) / 🟡 나머지는 `03`·`10` 이 소유하고 **처분이 `SPLIT`**(보편 번들 기각) |
 | **CI/CD** | 매 PR·push 에 CI · **lint·typecheck·test·build 를 각각 별도 required check 로** · 워크플로마다 `permissions:` 최소화 · `pull_request_target` + 신뢰 불가 checkout 금지 | 🟢 **우회 불가**는 git 1차 문서가 받친다(`IPW-005`) / 🔵 **4종 분리는 이 프로젝트의 선택** — `04` 의 처분(`C50-12`)이 *"4종이 보편"* 을 기각했다 |
 | **코드 품질** | 린터 설정 커밋 · **포매터를 CI 가 강제** · **SAST** · **시크릿 탐지**(gitleaks + push protection) | 🟡 린터·포매터는 원칙이 선다 / 🔵 **SAST 는 표준이 요구해서가 아니라 선택이다** — 출처가 *"a deliberate above-OSPS-L1 harness uplift … **not** because a leveled standard mandates it"* 라 명시하고, **OSPS 는 L3 에 둔다**(`FFA-001`) |
 | **테스트** | CI 초록 · **모든 PR 에 테스트** · CONTRIBUTING 에 테스트 정책 · **walking skeleton — 실제 end-to-end 한 줄기**(Cockburn) | 🟢 **동반은 강하다**(`04 foundation-floor` MUST · `08` 이 4대 검사 중 하나로) / 🟡 피라미드 비율은 **권고이지 실측이 아니다**(`PYR-001`) |
 | **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 SLA(medium+ ≤60일) | 🟢 MFA 는 **OSPS L1**(`FFA-003` — 단 원문 범위는 *"read or modify a **sensitive resource**"*) / 🟡 나머지는 `09`·`10` 소유, 처분 `SPLIT` |
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III) · **`.env.example` 커밋 + 실제 `.env` 는 ignore** | 🟡 `06` 소유 · 처분이 *"12-Factor 는 **service 맥락**"* 이라 **모든 아키타입 적용은 기각** |
-| **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
+| **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 · 🟡 **`Dockerfile` 은 아키타입 조건부**(아래) | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
 | **문서** | README(**≈100% uni / 100% wgt** · n=938 — **유일한 보편**) · **`AGENTS.md`**(에이전트 컨텍스트 · **35% all / 41% sw** · n=267 — **측정된 계획 산출물 중 채택률 1위**) · 🔴 **CONTRIBUTING 은 *내용*을 요구한다**(빌드·테스트 설명 **+** PR 흐름 — present 75% uni / 70% wgt · n=938 · 더 깊은 표본 48.2% · n=6,582 · **adequate 는 41.2%** · n=2,000) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · **present 52% uni / 51% wgt** · n=938) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
 | **거버넌스** | **이슈 폼**(YAML) · **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟡 자체 census(`IPC-002`) · 🔴 **모집단 한정을 지우지 않는다** — 제3자(Zhang et al., **1.8M 저장소**)가 재니 **PR 템플릿 채택은 전체의 1.2%** 이고 채택자는 *"mostly **prevalent** projects"* 다(`IPC-004`). **우리 44~53% 는 상위 저장소 기준**이다. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
 | **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **소유자 결정** — `coolbress/workflows` 만 릴리스한다(셋 중 **남이 `uses: …@<ref>` 로 참조하는 쪽이 거기뿐**). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
