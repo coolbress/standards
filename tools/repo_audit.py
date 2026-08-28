@@ -44,7 +44,7 @@ EXPECTED_APP: dict[str, int] = {"CodeQL": CODE_SCANNING_APP_ID}
 # 태어나자마자 drift 로 잡히거나(예전에 그랬다) 잡혀야 할 것이 안 잡힌다.
 PROJECT_CHECKS = {
     "CodeQL",
-    "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
+    "ci / pr-title", "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
     "ci / diff-size",
 }
 PROJECT_ACTION_PATTERNS = ["astral-sh/setup-uv@*", "coolbress/workflows/*"]
@@ -66,12 +66,12 @@ EXPECTED_CHECKS: dict[str, set[str]] = {
     # 영원히 보고되지 않아 자기잠금이 된다 (workflows v3.3.0 노트).
     "coolbress/workflows": {
         "integrity", "CodeQL",
-        "canary / lint", "canary / typecheck", "canary / test",
+        "canary / pr-title", "canary / lint", "canary / typecheck", "canary / test",
         "canary / build", "canary / secrets", "canary / diff-size",
     },
     "coolbress/project-template": {
         "CodeQL",
-        "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
+        "ci / pr-title", "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
         "ci / diff-size",
     },
 }
