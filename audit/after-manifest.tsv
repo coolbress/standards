@@ -5,7 +5,7 @@ corpus/PROVENANCE.md	4257	1787558487	57d5261483e148999971a7e5b303f455a189bd27ace
 corpus/TAXONOMY.md	3617	1787558487	5fcec547367620ac8b3b306421cdd0df114069c9df57551435b4f0435b708f74	active
 corpus/_meta/README.md	462	1785659225	14813521bafff31c0a4ed18a1cfa477d6414cda2f191c0d5951544118efba09f	active
 corpus/_meta/sources.jsonl	46254	1787922565	a699f7075bcdeadc5bf79e8a08fb24f5b52432ef1107321ffd09184934e38814	active
-corpus/_schema.md	11509	1787936839	1d7f564411fb790d30b8a543e9f499b7ae214f066bce1efc8490956cc9093d13	active
+corpus/_schema.md	11509	1787937206	1d7f564411fb790d30b8a543e9f499b7ae214f066bce1efc8490956cc9093d13	active
 corpus/aspects/01-requirements-planning/01-requirements-planning--overview.md	19766	1787558487	244b1ee4c2577181d5c31f788344e9bead458ec0eeb43d23b4ef1c55c83660d3	active
 corpus/aspects/01-requirements-planning/brownfield-planning-adoption.md	6824	1785658907	6d1d7002905f091848f65317b24020a22b5398436b88aa353a7d3879b50014ca	active
 corpus/aspects/01-requirements-planning/constitution-authoring-standard.md	8796	1787915931	8270b8b7b4001424cf3baac9190353fbf3ddaa70dade491a117509014230ed7c	active
@@ -58,10 +58,10 @@ corpus/aspects/17-release-engineering/17-release-engineering--overview.md	14392	
 corpus/aspects/17-release-engineering/last-mile-domain-hosting--facts-2026-08.md	19356	1787558487	bc5a4ac30fefe61c9a8d275fbd3ae18a5c43c76e3f6a2af27b4a38bff20f9384	active
 corpus/aspects/17-release-engineering/last-mile-payments-privacy--facts-2026-08.md	16044	1787558487	d677f2e7272c94df4abcc0f5432f709a634bc9bdf338802eaab1df4041ac83d7	active
 corpus/aspects/17-release-engineering/release-operate-artifact-checklist.md	7561	1786195652	0472c4ac86c6b62989a4b8d4e01cb9c60b965534bf930189a9492bfea68c8692	active
-corpus/aspects/18-packaging-distribution/18-packaging-distribution--overview.md	10329	1787936695	a2ae107fef99a49e9c46f57765354d58e5c4e9c7b40baeeccacb8f97ad9d11ac	active
-corpus/aspects/19-observability-telemetry/19-observability-telemetry--overview.md	10048	1787936758	9569870cd44212fae926a44d22e290c86074c1fe4b52130955581a858b3123c8	active
+corpus/aspects/18-packaging-distribution/18-packaging-distribution--overview.md	10329	1787937206	a2ae107fef99a49e9c46f57765354d58e5c4e9c7b40baeeccacb8f97ad9d11ac	active
+corpus/aspects/19-observability-telemetry/19-observability-telemetry--overview.md	10048	1787937206	9569870cd44212fae926a44d22e290c86074c1fe4b52130955581a858b3123c8	active
 corpus/aspects/19-observability-telemetry/structured-logging-metrics--facts-2026-08.md	7946	1787558487	a0547e79143c2e2cd712f31d6622f573c747ed9294114b113c325f013db1c4a5	active
-corpus/aspects/20-operations-incident-reliability/20-operations-incident-reliability--overview.md	11317	1787936695	380b777d69078cea356c4a59235b3e6de3386cbef326c98d36f17e0a9fd3e7ad	active
+corpus/aspects/20-operations-incident-reliability/20-operations-incident-reliability--overview.md	11317	1787937206	380b777d69078cea356c4a59235b3e6de3386cbef326c98d36f17e0a9fd3e7ad	active
 corpus/aspects/20-operations-incident-reliability/operations-sre--facts-2026-08.md	12556	1787558487	b28c5d79a47a3bd0511db0e09452705d0486df9bc2f3ec6dc64e99ec6999b0d1	active
 corpus/aspects/20-operations-incident-reliability/solo-operations-minimum--facts-2026-08.md	24841	1787558487	dffd8e4f5cba8075233f24c2ba083d1a857f4d9125265fdcbe78783860b48bf2	active
 corpus/aspects/21-economics-cost-sustainability/21-economics-cost-sustainability--overview.md	9963	1787558487	c0919f203a0d6839f2c209acafe786b2bd349f0088056fe21a34dcc8feda50ad	active
