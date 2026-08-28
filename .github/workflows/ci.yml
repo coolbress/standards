@@ -39,6 +39,13 @@ jobs:
       - name: 검색 계약 (30/30)
         run: python3 tools/evaluate_retrieval_contract.py
 
+      # 수치 인용에 축(uni/wgt · present/adequate)과 n 이 붙어 있는가.
+      # `direction/05` 가 한때 같은 `X/Y` 표기를 두 뜻으로 써서 adequate 41.2% 가
+      # 70% 로 읽혔다. 규약을 문장으로 두면 발화하지 않으므로 검사로 둔다.
+      # 기준선 대비다 — 기존 후보는 막지 않고 **새 위반만** 막는다.
+      - name: 수치 인용 표기 (기준선 대비)
+        run: python3 tools/check_figure_citations.py
+
       # 2026-08-25 추가 (GAPS R5-15). tools/test_*.py 4개가 저장소에 있는데
       # 이 잡이 하나도 돌리지 않았다 — 그래서 7건이 PR #12 의 디렉터리 개편
       # 이후 계속 깨진 채로 초록이었다. 붙이기 전에 그 7건을 먼저 고쳤다.
