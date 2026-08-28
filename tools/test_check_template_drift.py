@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import unittest
 
-from check_template_drift import GENERATOR_ONLY, shared
+from check_template_drift import ANSWERS, GENERATOR_ONLY, shared
 
 
 class GeneratorOnlyFilter(unittest.TestCase):
@@ -40,3 +40,19 @@ class GeneratorOnlyFilter(unittest.TestCase):
     def test_filter_list_is_not_empty(self) -> None:
         # 비면 필터가 아무것도 안 하고 모든 인스턴스가 드리프트로 보인다.
         self.assertTrue(GENERATOR_ONLY)
+
+    def test_template_only_copier_files_are_filtered(self) -> None:
+        # `copier.yml` 과 답 파일의 **템플릿**은 인스턴스로 안 간다.
+        # 안 빼면 모든 인스턴스가 영원히 "3개 부족" 으로 보인다.
+        self.assertEqual(
+            shared({
+                "copier.yml",
+                "{{ _copier_conf.answers_file }}.jinja",
+                "tests/test_copier_template.py",
+            }),
+            set(),
+        )
+
+    def test_answers_file_name_is_the_copier_default(self) -> None:
+        # 인스턴스 탐지가 이 이름에 걸려 있다. 바뀌면 인스턴스를 0개로 본다.
+        self.assertEqual(ANSWERS, ".copier-answers.yml")

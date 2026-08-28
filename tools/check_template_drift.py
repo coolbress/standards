@@ -6,12 +6,16 @@
 안 바뀐다"* 를 **세 번** 적었다(`AGENTS.md` · CONTRIBUTING 시험 · 이슈 폼).
 **세 번 같은 문장을 쓰면 그건 결함이다.**
 
-🔵 **`copier` 를 쓰지 않기로 했다**(`GAPS` R5-32). `copier update` 가 이 문제를 정확히
-풀지만, 도입하려면 템플릿을 jinja 로 바꾸고 **`new-project.sh` 의 생성 경로를 재작성**해야 한다 —
-그 경로의 **fail-closed 보증은 실사용 중 두 번 발화한 하드윈**이고 시험 14개가 지킨다.
-인스턴스 **1개 · 드리프트 4파일** 에서 그걸 흔드는 것은 손해다.
+✅ **2026-08-28 — `copier` 로 전환했다**(R5-32 정정). 처음엔 *"생성 경로를 흔든다"* 며 안 하기로
+했는데 **그 비용 추정이 틀렸다** — fail-closed 보증은 `trap cleanup EXIT` 하나이고 **콘텐츠가
+어떻게 들어오는지와 무관**하다. 실패경로 시험은 목 하나(30줄)와 케이스 하나로 **15/15** 가 됐다.
 
-대신 **드리프트를 보이게** 만든다. 따라잡는 것은 사람이 하되 **모르고 지나치지는 않게.**
+그래도 이 검사는 남는다. `copier update` 는 **사람이 돌려야** 하고, **안 돌리면 드리프트는 그대로**다.
+이 검사가 *"지금 돌릴 때다"* 를 알려준다.
+
+인스턴스 탐지도 바뀌었다 — `templateRepository`(GitHub 의 *generated from*)는 `--template` 경로에서만
+붙는다. 이제 **`.copier-answers.yml` 이 있는 저장소**가 인스턴스다. **그게 더 낫다** — 어느 판에서
+태어났는지(`_commit`)까지 알려준다.
 
 읽기 전용이다.
 """
@@ -33,6 +37,9 @@ GENERATOR_ONLY = (
     "src/app/",                  # `src/<프로젝트이름>/` 으로 이름이 바뀐다
     "tests/test_app.py",         # `tests/test_<프로젝트이름>.py` 로 이름이 바뀐다
     "dist/",                     # 빌드 산출물
+    "{{ _copier_conf.answers_file }}.jinja",  # 답 파일의 **템플릿** — 인스턴스엔 렌더된 판이 간다
+    "copier.yml",                # 템플릿 설정 — 인스턴스로 안 간다
+    "tests/test_copier_template.py",  # 그 설정의 시험 — 같이 안 간다
 )
 
 
@@ -45,16 +52,39 @@ def _files(repo: str) -> set[str]:
     return {ln for ln in out.splitlines() if ln}
 
 
-def instances() -> list[str]:
-    out = subprocess.run(
-        ["gh", "repo", "list", "coolbress", "--limit", "100",
-         "--json", "name,templateRepository",
-         # 🔴 `templateRepository` 에 `nameWithOwner` 는 없다 — `name` + `owner.login` 이다.
-         "--jq", f'.[] | select(.templateRepository.name=="{TEMPLATE_NAME}" '
-                 f'and .templateRepository.owner.login=="{TEMPLATE_OWNER}") | .name'],
+ANSWERS = ".copier-answers.yml"
+
+
+def _has_answers(repo: str) -> bool:
+    """답 파일이 있나. **종료코드로 판정한다** — 404 는 non-zero 다.
+
+    🔴 `--jq` 와 raw Accept 헤더를 같이 쓰면 404 도 통과한다(실측: 인스턴스가 9개로 잡혔다).
+    """
+    return subprocess.run(
+        ["gh", "api", f"repos/{repo}/contents/{ANSWERS}", "--silent"],
         capture_output=True, text=True, check=False,
-    ).stdout
-    return [f"coolbress/{n}" for n in out.splitlines() if n]
+    ).returncode == 0
+
+
+def instances() -> list[str]:
+    """`.copier-answers.yml` 을 가진 저장소가 인스턴스다.
+
+    🔴 `templateRepository`(GitHub 의 *generated from*)로 찾지 않는다 — 그건 `--template`
+    경로에서만 붙고, copier 로 만든 저장소에는 **없다.** 답 파일이 더 정확하고,
+    `_commit` 까지 알려준다.
+    """
+    names = subprocess.run(
+        ["gh", "repo", "list", TEMPLATE_OWNER, "--limit", "100", "--no-archived",
+         "--json", "name", "--jq", ".[].name"],
+        capture_output=True, text=True, check=False,
+    ).stdout.split()
+    found = []
+    for n in names:
+        if n == TEMPLATE_NAME:
+            continue
+        if _has_answers(f"{TEMPLATE_OWNER}/{n}"):
+            found.append(f"{TEMPLATE_OWNER}/{n}")
+    return found
 
 
 def shared(paths: set[str]) -> set[str]:
