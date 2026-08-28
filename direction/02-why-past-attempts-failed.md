@@ -64,7 +64,7 @@ Required status check "integrity" is failing.
 ```
 
 소유자 + 관리자 권한 + 강제 플래그로도 거부됐다
-([`corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md`](../corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md) GEB-005·006).
+([`corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md`](../corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md) *(draft)* GEB-005·006).
 
 ⚠️ **과잉 일반화 금지**: n=1이고, **룰셋을 삭제한 뒤 머지하는 경로는 측정하지 않았다.**
 벽은 **표류(drift)를 막지, 결심(intent)을 막지 않는다.**

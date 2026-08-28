@@ -411,6 +411,16 @@ ARCHETYPE_KINDS = frozenset({"cli", "library", "web", "backend", "mobile", "data
 ARCHETYPE_CONDITIONS = frozenset({"published", "cloud", "handles-user-data", "ai-harness"})
 ARCHETYPE_VALUES = ARCHETYPE_KINDS | ARCHETYPE_CONDITIONS
 
+#: claim 이 성립하지 않는 문서 — 규범·절차·역사 기록.
+#: 🔵 **모듈 상수다.** `check_citation_status.py` 가 **이 목록을 그대로 끌어쓴다** —
+#: 복제하면 두 곳이 되고, 두 곳이 되면 갈린다(2026-08-28 어휘 사건과 같은 형태).
+CLAIMLESS_OK = frozenset({
+    "_schema.md",                               # 스키마 규정
+    "EVIDENCE-POLICY.md",                       # 증거 정책 (규범)
+    "reverification-protocol.md",               # 재검증 절차 (규범)
+    "review--codex-rejection-1-2026-08-12.md",  # 역사 기록 (frontmatter 자체가 없다)
+})
+
 GATED_RE = re.compile(r"^gated_archetypes:\s*(.*)$", re.M)
 
 
@@ -663,12 +673,7 @@ def main() -> int:
     # 없으면 "어디까지 확인된 것인지" 를 기계로 물을 수 없고, 사슬이 그 문서에서 조용히 끝난다.
     # 2026-08-26 실측: 그 상태로 GHW-012(폐기 문서 인용)와 IPC-001~003(앵커 없는 🟢)이 서 있었다.
     # 아래 셋은 예외다 — 스키마·정책·역사 기록이라 claim 이 성립하지 않는다.
-    claimless_ok = {
-        "_schema.md",                               # 스키마 규정
-        "EVIDENCE-POLICY.md",                       # 증거 정책 (규범)
-        "reverification-protocol.md",               # 재검증 절차 (규범)
-        "review--codex-rejection-1-2026-08-12.md",  # 역사 기록
-    }
+    claimless_ok = CLAIMLESS_OK
     direction_dir = ROOT / "direction"
     if direction_dir.is_dir():
         for path in sorted(direction_dir.glob("*.md")):

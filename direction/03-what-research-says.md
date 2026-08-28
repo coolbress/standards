@@ -108,5 +108,5 @@
 
 ## 남은 공백
 
-여기서 🔵·⚪ 로 표시된 것 중 **찾아봤고 없는 것**은 [`evidence-holes-register`](../corpus/methods/evidence-holes-register.md)
+여기서 🔵·⚪ 로 표시된 것 중 **찾아봤고 없는 것**은 [`evidence-holes-register`](../corpus/methods/evidence-holes-register.md) *(draft)*
 에 **탐색 범위와 함께** 등재돼 있다(EVH-001~006). ***"못 찾았다"* 와 *"없다"* 는 다르다** — 그 구별이 그 대장의 존재 이유다.

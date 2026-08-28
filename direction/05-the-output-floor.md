@@ -313,7 +313,7 @@ jinja 는 **만들기 전에** 정한다.
 ## 🤖 `AGENTS.md` — 바닥이 놓치고 있던 것 (2026-08-28)
 
 **코퍼스가 이미 답을 갖고 있었는데 바닥이 인용하지 않았다.** 측면 01 의
-[`planning-output-census`](../corpus/aspects/01-requirements-planning/planning-output-census.md)
+[`planning-output-census`](../corpus/aspects/01-requirements-planning/planning-output-census.md) *(review-needed)*
 (`POC-001` · **n=267** · software 221)가 이렇게 적는다:
 
 > *"**CONFIRMS the constitution choice, strongly.** `AGENTS.md` (**35% all / 41% sw**) +
@@ -324,7 +324,7 @@ jinja 는 **만들기 전에** 정한다.
 `CONTRIBUTING`·`CHANGELOG`·`SECURITY` 가 있고 **`AGENTS.md` 는 없었다.**
 
 그리고 측면 01 에는 작성 표준
-([`constitution-authoring-standard`](../corpus/aspects/01-requirements-planning/constitution-authoring-standard.md))까지
+([`constitution-authoring-standard`](../corpus/aspects/01-requirements-planning/constitution-authoring-standard.md) *(review-needed)*)까지
 **이미 있다** — 이중 파일 규칙(`CAS-001`) · 절 골격과 경계 3단(`CAS-005`) · **<200줄**(`CAS-004`) · 안티패턴.
 **바닥이 그 문서군 전체를 안 쓰고 있었다.**
 

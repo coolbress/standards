@@ -59,6 +59,10 @@ jobs:
       - name: GAPS 대장의 종료 표기가 하나인가
         run: python3 tools/check_gaps_ledger.py
 
+      # 덜 익은 근거가 익은 척하면 방향이 실제보다 단단해 보인다 (README 절대규칙 3).
+      - name: 덜 익은 코퍼스 인용에 status 가 병기됐나
+        run: python3 tools/check_citation_status.py
+
       # 2026-08-25 추가 (GAPS R5-15). tools/test_*.py 4개가 저장소에 있는데
       # 이 잡이 하나도 돌리지 않았다 — 그래서 7건이 PR #12 의 디렉터리 개편
       # 이후 계속 깨진 채로 초록이었다. 붙이기 전에 그 7건을 먼저 고쳤다.
