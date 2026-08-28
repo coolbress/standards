@@ -207,6 +207,62 @@ census(N=6,582): squash **97% 허용** · merge-commit 74% · rebase 81%.
 나머지를 **막는다** — 이건 **above-census 선택**이고 그렇게 적어야 한다. 근거는 측면 05 의 결합이다:
 squash 모델에서 **PR 제목이 곧 랜딩 커밋**이 되어 changelog·SemVer 자동화가 성립한다.
 
+## 📦 릴리스 노트 — **대체가 아니라 겹쳐 쓰기** (2026-08-28)
+
+`GAPS` R5-31 은 *"릴리스 노트가 손으로 만들어진다"* 를 격차로 적고 `generate_release_notes` 로
+**대체**하자고 했다. **그 전제 두 개가 틀렸다.**
+
+### ① 대체가 아니다 — 실측
+
+`workflows` v3.2.0 → v3.3.0 에 API 를 돌린 결과는 이게 전부다:
+
+```
+## What's Changed
+* feat(ruleset): ci / diff-size 를 요구 검사로 만든다 by @coolbress in .../pull/26
+**Full Changelog**: .../compare/v3.2.0...v3.3.0
+```
+
+손으로 쓴 **같은 릴리스**의 노트에는 *"빨간 X 가 보이는 것과 머지가 막히는 것은 다른 문장이다"* 와
+*"`uses:` 로 부르는 쪽은 핀을 올릴 이유가 없다"* 가 있다.
+🔴 **소비자가 뭘 해야 하는가는 커밋 로그에 없다.** 생성기는 우리 노트의 열등한 판이 아니라
+**다른 물건**이다 — 설명이 아니라 **색인**이다.
+
+### ② *"우리는 이미 라벨을 쓴다"* 가 사실이 아니었다
+
+`.github/release.yml` 의 분류는 **라벨로** 한다. 실측: `workflows` **0/30** · `standards` **0/30** ·
+`divcal` **0/8** — **머지된 PR 68건 중 라벨이 붙은 것 0건.** 넣어도 전부 한 덩어리로 떨어진다.
+
+### 그래서
+
+`gh` 문서가 겹쳐 쓰기를 지원한다 — *"Additional release notes can be **prepended** to the automatically
+generated notes."* `tools/make-release.sh` 가 그걸 강제한다: **빈 노트파일은 거부**한다(받아주면
+`--generate-notes` 의 별칭이 되고 릴리스마다 *왜* 가 사라진다) · `--verify-tag`(`gh` 는 없는 태그를
+**조용히 만든다**) · 중복 릴리스 거부.
+
+⬜ **라벨은 아직 안 붙인다.** 분류를 원하면 그게 먼저다. 지금은 색인으로만 쓴다.
+
+## 🧩 copier 2단계 — `bootstrap.sh` 가 없다 (2026-08-28)
+
+`GAPS` R5-32 종료. 이름 치환이 `copier.yml` 의 jinja 로 들어왔다.
+
+**핵심은 순서다.** `bootstrap.sh` 는 파일을 **만든 뒤에** 고쳤다 — 그래서 상태 검사가 필요했고,
+한 번 돌리면 되돌릴 수 없었고, 무엇보다 **틀린 이름을 받아 트리를 반쯤 바꿔놓은 뒤에야 멈출 수 있었다.**
+jinja 는 **만들기 전에** 정한다.
+
+`_subdirectory: template` 이 그 전제조건이었다 — 파일 이름이 `src/{{ package_name }}/` 이 되면
+그게 저장소 루트에 있는 한 템플릿 **자신의** `uv sync`·`pytest`·`mypy` 가 전부 깨진다.
+
+🔬 **이 조각이 가르친 것 — 렌더를 시험에 넣으면 환경이 시험의 일부가 된다.** 두 번 다 로컬은 초록이고 CI 만 빨갰다:
+
+| 무엇 | 왜 |
+|---|---|
+| `ShallowCloneWarning` | `actions/checkout` 기본이 `fetch-depth: 1` · `filterwarnings=["error"]` 가 경고를 에러로 올린다 |
+| `tr '.- '` | **BSD 는 받아주고 GNU 는 범위로 읽어 거부한다** — 옛 `bootstrap.sh` 주석에 적혀 있던 사건을 **그걸 없애는 PR 의 목에서 다시 냈다** |
+
+그리고 계량기도 한 번 틀렸다 — `uv.lock` → `uv.lock.jinja` 로 이름을 바꾸자 diff 가 258줄에서
+**676줄**로 뛰었다. git 은 pathspec 이 옛 경로를 가리면 그 짝을 **이름 변경으로 못 보고 순수 추가로 센다.**
+**`.jinja` 는 렌더 지시이지 새 종류의 파일이 아니다** — 제외 패턴에 그 판을 더했다.
+
 ## 🤖 `AGENTS.md` — 바닥이 놓치고 있던 것 (2026-08-28)
 
 **코퍼스가 이미 답을 갖고 있었는데 바닥이 인용하지 않았다.** 측면 01 의
@@ -311,7 +367,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 
 | 묶음 | 무엇이 있어야 하나 | 소유 측면 · 강도 |
 |---|---|---|
-| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 · **머지 방법 하나를 골라 강제**(우리는 squash 전용) · **PR 제목은 Conventional Commits**(둘은 묶여 있다 — 아래) | 🟢 **가장 강하다** — `github-workflow-current`(GitHub 1차 문서 `GHW-001~003`) + **이 저장소 벽 4/4 실물 확증** / 🔵 **머지 방법의 *선택*은 판단** — 측면 05 가 *"no single winner; pick one and enforce consistency"* 로 못박는다 |
+| **VCS 위생** | `.gitignore` · **`main` 브랜치 보호**(PR 필수·검사 필수·force-push 금지) · 트리에 바이너리 산출물 없음 · **머지 방법 하나를 골라 강제**(우리는 squash 전용) · **PR 제목은 Conventional Commits**(둘은 묶여 있다 — 아래) · **PR diff 상한을 검사로 건다**(우리는 400줄 · 문서·락파일 제외) | 🟢 **가장 강하다** — `github-workflow-current`(GitHub 1차 문서 `GHW-001~003`) + **이 저장소 벽 4/4 실물 확증** / 🔵 **머지 방법의 *선택*은 판단** — 측면 05 가 *"no single winner; pick one and enforce consistency"* 로 못박는다. 🆕 **diff 상한은 2026-08-28 에 여기 적혔다**(`GAPS` R5-34) — 검사(`workflows` `ci / diff-size`)와 룰셋과 `CONTRIBUTING.md` 에는 **이미 있었는데 바닥에만 없었다.** 그래서 `check_floor_coverage` 가 이 항목을 못 보고 있었다. ⚠️ **`standards` 는 면제다** — 코퍼스·생성물 diff 가 리뷰 부담과 비례하지 않는다(URL 원장 재감사 한 번이 964줄이다). 면제의 근거가 어디에도 안 적혀 있던 것이 R5-34 의 내용이고, 이 줄이 그 기록이다 |
 | **빌드·의존성** | **락파일 커밋** · 의존성 버전 고정 · **Actions 를 커밋 SHA 로 핀** · **의존성 갱신 봇** · 재현 가능한 단일 빌드 진입점 · CI 에서 warnings-as-errors | 🟢 SHA 핀(`GHW-005`: *"only a full-length commit SHA is immutable"*) / 🟡 나머지는 `03`·`10` 이 소유하고 **처분이 `SPLIT`**(보편 번들 기각) |
 | **CI/CD** | 매 PR·push 에 CI · **lint·typecheck·test·build 를 각각 별도 required check 로** · 워크플로마다 `permissions:` 최소화 · `pull_request_target` + 신뢰 불가 checkout 금지 | 🟢 **우회 불가**는 git 1차 문서가 받친다(`IPW-005`) / 🔵 **4종 분리는 이 프로젝트의 선택** — `04` 의 처분(`C50-12`)이 *"4종이 보편"* 을 기각했다 |
 | **코드 품질** | 린터 설정 커밋 · **포매터를 CI 가 강제** · **SAST** · **시크릿 탐지**(gitleaks + push protection) | 🟡 린터·포매터는 원칙이 선다 / 🔵 **SAST 는 표준이 요구해서가 아니라 선택이다** — 출처가 *"a deliberate above-OSPS-L1 harness uplift … **not** because a leveled standard mandates it"* 라 명시하고, **OSPS 는 L3 에 둔다**(`FFA-001`) |
@@ -321,7 +377,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 | **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 · 🟡 **`Dockerfile` 은 아키타입 조건부**(아래) | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
 | **문서** | README(**≈100% uni / 100% wgt** · n=938 — **유일한 보편**) · **`AGENTS.md`**(에이전트 컨텍스트 · **35% all / 41% sw** · n=267 — **측정된 계획 산출물 중 채택률 1위**) · 🔴 **CONTRIBUTING 은 *내용*을 요구한다**(빌드·테스트 설명 **+** PR 흐름 — present 75% uni / 70% wgt · n=938 · 더 깊은 표본 48.2% · n=6,582 · **adequate 는 41.2%** · n=2,000) · 🟡 **CHANGELOG 는 릴리스와 함께 조건부**(*Keep a Changelog* 는 **릴리스 단위로 쌓는 형식** — 릴리스가 없으면 채울 단위가 없다 · **present 52% uni / 51% wgt** · n=938) · 공개 표면이 있으면 API 레퍼런스 | 📊 census 로 강도가 갈린다 · `22` 소유 · ⚠️ **de-jargon 게이트는 해당 없음** — 조건이 *"public/internal doc split"* 인데 이 저장소는 `legacy/`·`audit/`·`direction/` 이 **전부 공개**라 샐 것이 없다 |
 | **거버넌스** | **이슈 폼**(YAML) · **PR 템플릿** — 형태는 census 규격: 중앙값 **3절** · **빈** 체크리스트(62% · 중앙값 5항목) · 인라인 HTML 주석(70%) · *"type of change"* 는 **CC 를 쓰면 뺀다**(11.5%) | 🟡 자체 census(`IPC-002`) · 🔴 **모집단 한정을 지우지 않는다** — 제3자(Zhang et al., **1.8M 저장소**)가 재니 **PR 템플릿 채택은 전체의 1.2%** 이고 채택자는 *"mostly **prevalent** projects"* 다(`IPC-004`). **우리 44~53% 는 상위 저장소 기준**이다. ⚠️ `CODE_OF_CONDUCT.md` 는 *"MUST for public community"* 라 **기여를 받기 시작하면** 켠다 |
-| **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **갱신 2026-08-28 — 이제 둘이다**(`workflows` · `project-template`). **규칙은 안 바뀌었고 사실이 바뀌었다**: copier 전환으로 모든 인스턴스의 `.copier-answers.yml` 이 `_src_path: gh:coolbress/project-template` 로 **템플릿을 참조한다.** (이전 판: *"`workflows` 만 — 남이 `uses:` 로 참조하는 쪽이 거기뿐"*). 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
+| **릴리스** 🔒 | **참조되는 저장소만 해당한다.** SemVer 문서화 · 릴리스마다 git 태그 · GitHub Release + 변경 요약 | 🔵 **갱신 2026-08-28 — 이제 둘이다**(`workflows` · `project-template`). **규칙은 안 바뀌었고 사실이 바뀌었다**: copier 전환으로 모든 인스턴스의 `.copier-answers.yml` 이 `_src_path: gh:coolbress/project-template` 로 **템플릿을 참조한다.** (이전 판: *"`workflows` 만 — 남이 `uses:` 로 참조하는 쪽이 거기뿐"*). 🆕 **변경 요약은 겹쳐 쓴다**(2026-08-28 · `GAPS` R5-31) — 손으로 쓴 **왜** 위에 `--generate-notes` 의 **무엇**이 붙는다(`workflows` `tools/make-release.sh`) | 🟢 **핀은 커밋 SHA, 태그는 그 SHA 를 읽기 위한 것**: `@<SHA> # v1.0.0` |
 | **라이선스** | **루트 `LICENSE`** — 의도적으로 고른 아웃바운드 라이선스 하나를 기계가 읽게 선언한다 | 🟢 **채택률과 무관하게 선다** — 법적 효과가 있고 **없으면 공개 저장소에서 *"재사용 가능"* 이 성립하지 않는다**. 🔴 다만 **per-file SPDX·scan·CLA 는 바닥이 아니다**(`C50-39` 가 *"모든 파일 SPDX"* 를 기각) |
 
 > 🔴 **이 표 전체에 걸리는 한정 하나** — 소유 측면 대부분의 재검증 처분이 **`RETAIN-RN/SPLIT`**, 즉
