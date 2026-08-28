@@ -29,10 +29,18 @@ GLOBS = ("*.md", "direction/*.md", "audit/*.md", "corpus/aspects/*/*.md")
 PAIR = re.compile(r"\d{1,3}\s*%?\s*(?:uni)?\s*/\s*\d{1,3}\s*%")
 #: 축을 밝히는 어휘. 하나라도 있으면 읽는 사람이 두 수를 구분할 수 있다.
 AXIS = re.compile(r"uni\b|wgt|weighted|가중|present\s*/|adequa|sw\b", re.IGNORECASE)
-N_DECL = re.compile(r"\b[nN]\s*=\s*[\d,]+")
+#: 표본 선언. 코퍼스가 실제로 쓰는 표기를 다 받는다 — `n=938` · `N=6,582` ·
+#: `429-repo survey` · `(2000 repos)`. 정보가 있는데 형태가 달라 못 잡으면
+#: 검사가 문서를 고치게 만든다. 그건 거꾸로다.
+N_DECL = re.compile(r"\b[nN]\s*=\s*[\d,]+|\b[\d,]{3,}[- ]repos?\b")
 
-#: 앞 몇 줄까지를 같은 문맥으로 볼 것인가. 절 머리글에 축을 선언하는 관례를 인정한다.
-CONTEXT_LINES = 8
+#: 문맥의 경계 — **직전 머리글까지, 최소 8줄은 보장.** 둘의 합집합이다.
+#: 절 머리글에 축을 선언하는 관례(`aspect 22`)를 인정하려면 경계가 **절**이어야 하고,
+#: 짧은 절에서 바로 앞 블록의 선언을 놓치지 않으려면 **최소 줄 수**도 있어야 한다.
+#: 🔴 선언이 인용보다 **아래**에 있으면 위에서부터 읽는 사람은 맨몸으로 숫자를 만난다 —
+#: 그건 여전히 결함으로 잡힌다. 실제로 `aspect 17·18` 이 그 모양이었다.
+HEADING = re.compile(r"^#{1,6}\s")
+MIN_LOOKBACK = 8
 
 
 def missing_labels(context: str) -> list[str]:
@@ -54,7 +62,13 @@ def findings() -> list[tuple[str, int, str]]:
             for i, line in enumerate(lines):
                 if not PAIR.search(line):
                     continue
-                ctx = "\n".join(lines[max(0, i - CONTEXT_LINES) : i + 1])
+                section = 0
+                for j in range(i - 1, -1, -1):
+                    if HEADING.match(lines[j]):
+                        section = j
+                        break
+                start = min(section, max(0, i - MIN_LOOKBACK))
+                ctx = "\n".join(lines[start : i + 1])
                 missing = missing_labels(ctx)
                 if missing:
                     rel = path.relative_to(ROOT).as_posix()

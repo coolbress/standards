@@ -31,7 +31,7 @@ How often do top-starred GitHub repos commit each planning/spec artifact. **n=26
 
 ## What it confirms / challenges for gingoa's ① output set
 
-- **CONFIRMS the constitution choice, strongly.** `AGENTS.md` (35% / 41% sw) + `CLAUDE.md` (29% / 34% sw) are the
+- **CONFIRMS the constitution choice, strongly.** `AGENTS.md` (**35% all / 41% sw** — n=267 all, n=221 software) + `CLAUDE.md` (**29% all / 34% sw**) are the
   **most-adopted of any planning artifact measured** — the agent constitution is now mainstream in top repos.
   gingoa shipping `AGENTS.md`+`CLAUDE.md` as a ① artifact is squarely the de-facto standard (validates
   [`constitution-authoring-standard.md`](constitution-authoring-standard.md)). `docs/` (64%) + `CHANGELOG.md`
