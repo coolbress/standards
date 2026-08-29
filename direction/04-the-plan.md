@@ -155,6 +155,7 @@ Ghostty → Herdr ············ 눈. 에이전트마다 판(pane), �
 | 이슈 필수 | **크기 조건부** — 사소한 변경은 바로 PR. 기준은 줄 수가 아니라 *"non-trivial"* | 🟡 [`github-workflow-current`](../corpus/aspects/05-scm-workflow/github-workflow-current.md) **`GHW-012`** (n=11 문서 규범 census). ⚠️ **2026-08-26 출처 교체** — 이전 판은 **`SUPERSEDED` 문서**(`05 overview`)를 인용하고 있었다 |
 | Conventional Commits | **PR 제목만**, release-please가 소비할 때만 | [`24 issue-pr-conventions`](../corpus/aspects/24-governance-collaboration-compliance/issue-pr-writing-conventions.md) `review-needed` (N=6,582) |
 | PR 체크리스트 | **최소화** | ⚠️ **2026-08-24 재검증**: *"DORA 안티패턴"* 은 미승계가 아니라 **오귀속이었다** — DORA 는 **외부 승인 기구(CAB)** 를 비판했지 동료 리뷰의 체크리스트를 말한 적이 없다(**CR-008**). 근거는 census 의 "빈 체크리스트가 표준·중앙값 3절"뿐이다 |
+| 🆕 **리팩터링 분리** | **행동을 바꾸는 커밋과 구조만 바꾸는 커밋을 나눈다** | 🟢 **1차 둘.** Fowler(공식): 리팩터링은 *"관찰 가능한 행동을 바꾸지 않으면서 내부 구조를 변경"* 이고 ***"두 활동을 의식적으로 번갈아 수행한다"*** · Google(공식 eng-practices): *"일반적으로 리팩터링을 **별도 CL 로** 분리"*. ⚠️ **Google 쪽은 권장이지 의무가 아니고 소규모 정리는 예외**다 — *"모든 리팩터링을 쪼개라"* 로 읽으면 범주 오류다. 🔵 **왜 이것이 지금 승격되나**: 2026 실증이 에이전트 리팩터링에서 **MI 하락 56.1% · CC 증가 42.7%** 를 보고했다([`CODE-QUALITY-JUDGMENT`](../audit/CODE-QUALITY-JUDGMENT.ko.md)). **섞여 있으면 어느 쪽이 악화시켰는지 사후에 못 가른다.** 근거는 [`refactoring-debt-discipline--facts-2026-08`](../corpus/aspects/11-maintainability-techdebt-refactoring/refactoring-debt-discipline--facts-2026-08.md) `draft` |
 | 첫 조각 | **walking skeleton** — end-to-end 한 줄기 | 루프가 단위 |
 | 가드 깊이 | **위험 비례** — 모든 PR에 같은 가드를 걸지 않는다 | 깊이는 위험에 비례 |
 
