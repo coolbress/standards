@@ -97,6 +97,12 @@ jobs:
       - name: 코퍼스 정체성 — 옛 이름이 주어로 늘지 않았나
         run: python3 tools/check_corpus_identity.py
 
+      # 🔴 `direction/` 이 안 가리키는 감사 문서는 다음 세션이 못 찾는다.
+      # divcal 회고가 실측으로 보인 그 병이다 — 산문 속 포인터는 안 따라가고,
+      # 가리키지도 않으면 존재 자체를 모른다. 기준선 대비 — 새 고아만 막는다.
+      - name: 감사 문서가 정본에서 도달 가능한가
+        run: python3 tools/check_audit_reachability.py
+
       # 2026-08-25 추가 (GAPS R5-15). tools/test_*.py 4개가 저장소에 있는데
       # 이 잡이 하나도 돌리지 않았다 — 그래서 7건이 PR #12 의 디렉터리 개편
       # 이후 계속 깨진 채로 초록이었다. 붙이기 전에 그 7건을 먼저 고쳤다.

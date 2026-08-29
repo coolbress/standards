@@ -1,0 +1,10 @@
+{
+  "_why": "정본에서 안 닿는 감사 문서. 새 고아만 막고 기존은 통과시킨다 — check_figure_citations 와 같은 방식.",
+  "_note": "셋 다 날짜가 박힌 시점 기록이다. 그때의 사실이고 다시 인용될 이유가 없을 수 있다. 다만 늘어나면 안 된다.",
+  "as_of": "2026-08-30",
+  "orphans": [
+    "2026-08-24-host-and-github-delta.ko.md",
+    "SENIOR-REVIEW-2026-08-06.ko.md",
+    "WORKFLOW-REVIEW-2026-08-05.ko.md"
+  ]
+}

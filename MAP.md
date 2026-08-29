@@ -12,7 +12,7 @@
 
 | 등급 | 개수 | 뜻 |
 |---|---|---|
-| `active` | 54 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
+| `active` | 55 | 첫 홉 **후보 풀** (전부 읽는 집합이 아니다) |
 | `decision` | 7 | 프로젝트 판단 — **권위로** 찾는다 |
 | `meta` | 7 | 코퍼스 사용법 — 이 지도가 대체한다 |
 | `reference` | 101 | **물어봤을 때만** — 과거 하네스·원시 census |
@@ -77,6 +77,7 @@
 | unlabeled | `direction/04-the-plan.md` | 04-the-plan |
 | unlabeled | `direction/05-the-output-floor.md` | 05-the-output-floor |
 | unlabeled | `direction/06-how-we-work.md` | 06-how-we-work |
+| unlabeled | `direction/07-design-rules.md` | 07-design-rules |
 | navigation | `direction/README.md` | README |
 
 ## decision — 프로젝트 판단 (근거가 아니다)
