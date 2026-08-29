@@ -68,3 +68,29 @@ class HistoryIsNotATodo(unittest.TestCase):
 class RealLedger(unittest.TestCase):
     def test_the_real_ledger_is_consistent(self) -> None:
         self.assertEqual(parse(LEDGER.read_text(encoding="utf-8")), [])
+
+
+class DoneWordInAnUncheckedBox(unittest.TestCase):
+    """🔬 `R5-17` 이 이 모양이라 **다 끝나고도 사흘을 열려 있었다**.
+
+    같은 행의 배치 2·4 는 `✅` 인데 배치 3 만 `⬜ **배치 3 완료**` 였다.
+    **낱말은 *완료* 인데 상자가 미완**이면 둘 중 하나가 거짓말이다.
+    """
+
+    def test_unchecked_box_followed_by_done_word_is_caught(self) -> None:
+        bad = "| **R5-89** 무엇 | a | b | ⬜ **배치 3 완료 2026-08-26 (…)** |"
+        self.assertTrue(any("미완 상자인데" in f for f in parse(bad)), parse(bad))
+
+    def test_checked_box_with_done_word_passes(self) -> None:
+        ok = "| **R5-88** 무엇 | a | b | ✅ **배치 3 완료 2026-08-26** · ⬜ 배치 4 는 남았다 |"
+        self.assertEqual(parse(ok), [])
+
+    def test_unchecked_box_with_a_real_todo_passes(self) -> None:
+        """진짜 남은 일은 통과해야 한다 — 안 그러면 검사가 미완 상자 자체를 금지하게 된다."""
+        ok = "| **R5-87** 무엇 | a | b | ⬜ **소유자 결정**: 어느 쪽으로 갈지 |"
+        self.assertEqual(parse(ok), [])
+
+    def test_the_done_word_must_be_near(self) -> None:
+        """멀리 떨어진 '완료' 까지 잡으면 정상 행이 전부 빨개진다."""
+        far = "⬜ " + ("x" * 60) + " 완료"
+        self.assertEqual(parse(f"| **R5-86** 무엇 | a | b | {far} |"), [])

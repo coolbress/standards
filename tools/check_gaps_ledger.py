@@ -43,6 +43,9 @@ DONE_WORDS = ("종료", "닫힘")
 #: 닫힌 행이 **원래 표를 그대로 보존**하는 지점. 이 뒤는 역사다.
 HISTORY_MARKER = "원래 문제 ↓"
 
+#: 미완 상자 바로 뒤에 붙은 **완료 낱말**. 상자와 낱말이 반대를 말하는 자리다.
+DONE_BOX_RE = re.compile(r"⬜[^⬜✅|]{0,40}?(완료|종료|끝났|닫힘)")
+
 
 def rows(text: str) -> list[tuple[str, bool, str, str]]:
     """(id, 닫힘인가, 첫 칸, 나머지)"""
@@ -59,6 +62,7 @@ def problems(parsed: list[tuple[str, bool, str, str]]) -> list[str]:
     found: list[str] = []
     seen: set[str] = set()
     for gid, closed, head, tail in parsed:
+        rest = head + tail
         if gid in seen:
             found.append(f"{gid}: ID 가 두 번 나온다")
         seen.add(gid)
@@ -79,6 +83,14 @@ def problems(parsed: list[tuple[str, bool, str, str]]) -> list[str]:
         live = head.split(HISTORY_MARKER)[0] if HISTORY_MARKER in head else head
         if closed and "⬜" in live:
             found.append(f"{gid}: 닫혔는데 종료문에 `⬜` 가 남아 있다 — 둘 중 하나가 거짓말이다")
+
+        # 🔬 `R5-17` 이 이 모양이라 **다 끝나고도 사흘을 열려 있었다**: `⬜ **배치 3 완료**`.
+        # 같은 행의 배치 2·4 는 `✅` 였다. **낱말은 *완료* 인데 상자가 미완**이면 둘 중 하나가 거짓말이다.
+        for match in DONE_BOX_RE.finditer(rest):
+            found.append(
+                f"{gid}: 미완 상자인데 바로 뒤가 '{match.group(1)}' 다 "
+                f"— 끝났으면 `✅`, 안 끝났으면 낱말을 고쳐라"
+            )
     return found
 
 
