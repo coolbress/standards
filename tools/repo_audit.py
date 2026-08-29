@@ -343,6 +343,19 @@ def main() -> int:
             print(f"     {p}")
         for u in unknown:
             print(f"     ⚪ {u}")
+    # R5-37: 회부 기록 수단(라벨)이 **실제로 깔려 있나.** 서버 사실이라 여기서 본다 —
+    # 단위 시험은 네트워크를 안 탄다.
+    from check_decision_referrals import LABEL, RESIMPLE, labels_installed
+
+    no_labels = [r for r in ("standards", "workflows", "project-template", "divcal")
+                 if not labels_installed(r)]
+    if no_labels:
+        print(f"🔴 회부 기록 수단 — 라벨 미설치: {', '.join(no_labels)} "
+              f"(`{LABEL}`·`{RESIMPLE}`)")
+        drift += len(no_labels)
+    else:
+        print(f"✅ 회부 기록 수단 — 네 저장소에 `{LABEL}`·`{RESIMPLE}` 라벨이 있다")
+
     vocab = archetype_vocabulary_drift()
     if vocab:
         unknown_only = all(v.startswith("⚪") for v in vocab)

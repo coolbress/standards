@@ -13,11 +13,13 @@ import check_decision_referrals as mod
 
 
 class MechanismMustExist(unittest.TestCase):
-    """계기가 없는 것과 눈금이 0 인 것은 **다르다.**"""
+    """계기가 없는 것과 눈금이 0 인 것은 **다르다.**
 
-    def test_labels_are_installed_everywhere(self) -> None:
-        missing = [r for r in mod.REPOS if not mod.labels_installed(r)]
-        self.assertEqual(missing, [], f"수단 미설치: {missing}")
+    🔴 **라벨이 실제로 깔렸는지는 여기서 안 본다.** 그건 `gh` 를 타는 **서버 사실**이고,
+    CI 에는 네트워크·자격증명이 없다. 처음에 여기 넣었다가 CI 만 빨개졌다 —
+    *"네트워크는 안 탄다"* 고 적어놓고 타는 시험을 쓴 것이다.
+    서버 사실은 `tools/repo_audit.py` 가 본다(거기가 그런 검사의 자리다).
+    """
 
     def test_both_labels_are_named(self) -> None:
         self.assertEqual(mod.LABEL, "decision")
