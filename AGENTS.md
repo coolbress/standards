@@ -18,6 +18,7 @@ mypy                                      # 설정은 mypy.ini 가 정본 (stric
 🔴 **`README.md` 의 목적 한 줄은 손으로 고치지 않는다** — `direction/01` §한 줄이 정본이고
 `check_purpose_sync` 가 둘이 갈리는 것을 막는다.
 `repo_audit.py`·`check_template_drift.py`·`check_decision_referrals.py` 는 **네트워크를 탄다**(CI 밖).
+`check_skill_firing.py` 는 **로컬 전사**를 읽는다(CI 밖 · 계기 · 판정선 없음).
 
 ## 🔴 ALWAYS
 
