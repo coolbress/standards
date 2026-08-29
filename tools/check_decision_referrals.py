@@ -70,6 +70,20 @@ def referrals(repo: str) -> list[dict[str, object]]:
     return rows if isinstance(rows, list) else []
 
 
+def summarise(rows: list[tuple[str, dict[str, object]]]) -> dict[str, int]:
+    """세는 부분만 떼어낸다 — **네트워크 없이 시험할 수 있게.**
+
+    🔬 처음엔 `main()` 안에 있었고 `(comments or 0) > 0` 이라 **빈 리스트일 때만 통과**했다.
+    첫 코멘트가 달리자 `TypeError` 로 터졌다 — *실행되지 않은 경로의 초록은 증거가 아니다.*
+    """
+    closed = [i for _, i in rows if i.get("state") == "CLOSED"]
+    resimple = [i for _, i in rows
+                if any(lbl.get("name") == RESIMPLE for lbl in (i.get("labels") or []))]
+    answered = [i for i in closed if len(i.get("comments") or [])]
+    return {"total": len(rows), "closed": len(closed),
+            "resimple": len(resimple), "answered": len(answered)}
+
+
 def main() -> int:
     missing = [r for r in REPOS if not labels_installed(r)]
     rows: list[tuple[str, dict[str, object]]] = []
@@ -83,13 +97,11 @@ def main() -> int:
     else:
         print(f"  ✅ 수단 설치됨 — 네 저장소 모두 `{LABEL}`·`{RESIMPLE}` 라벨이 있다")
 
-    total = len(rows)
-    closed = [(r, i) for r, i in rows if i.get("state") == "CLOSED"]
-    resimple = [(r, i) for r, i in rows
-                if any(lbl.get("name") == RESIMPLE for lbl in (i.get("labels") or []))]
-    answered = [(r, i) for r, i in closed if (i.get("comments") or 0) > 0]
+    counts = summarise(rows)
+    total, n_closed = counts["total"], counts["closed"]
+    n_resimple, n_answered = counts["resimple"], counts["answered"]
 
-    print(f"\n  분모 — 회부된 결정 {total}건 (열림 {total - len(closed)} · 닫힘 {len(closed)})")
+    print(f"\n  분모 — 회부된 결정 {total}건 (열림 {total - n_closed} · 닫힘 {n_closed})")
     for repo, issue in rows[:8]:
         mark = "✅" if issue.get("state") == "CLOSED" else "⬜"
         print(f"     {mark} {repo}#{issue.get('number')} {str(issue.get('title'))[:52]}")
@@ -98,19 +110,18 @@ def main() -> int:
 
     if total:
         # 🔴 닫힌 게 없을 때 `0%` 로 찍으면 **나쁜 결과처럼 읽힌다.** 분모가 0 인 것과 다르다.
-        if closed:
-            rate = f"{100 * (len(closed) - len(resimple)) / len(closed):.0f}%"
+        if n_closed:
+            rate = f"{100 * (n_closed - n_resimple) / n_closed:.0f}%"
         else:
             rate = "판정 불가 — 아직 닫힌 회부가 없다"
-        print(f"\n  ⓐ 되묻지 않고 판단 — 닫힌 {len(closed)}건 중 "
-              f"{len(closed) - len(resimple)}건 ({rate})")
-        print(f"  ⓑ 재요청(`{RESIMPLE}`) — {len(resimple)}건")
-        print(f"     ⚠️ 닫혔는데 답 코멘트가 없는 회부 {len(closed) - len(answered)}건")
+        print(f"\n  ⓐ 되묻지 않고 판단 — 닫힌 {n_closed}건 중 {n_closed - n_resimple}건 ({rate})")
+        print(f"  ⓑ 재요청(`{RESIMPLE}`) — {n_resimple}건")
+        print(f"     ⚠️ 닫혔는데 답 코멘트가 없는 회부 {n_closed - n_answered}건")
     else:
         print("\n  ⚠️ 회부가 0건이다 — 계기는 달렸고 **눈금이 아직 안 움직였다.**")
         print("     회부 자체가 없었는지, 아니면 다른 데(대화·PR 본문)에 남겼는지는 이 도구가 못 가린다.")
 
-    print(f"\nMETRIC referrals={total} closed={len(closed)} resimple={len(resimple)} "
+    print(f"\nMETRIC referrals={total} closed={n_closed} resimple={n_resimple} "
           f"labels_missing={len(missing)}")
     if missing:
         print("RESULT FAIL — 수단이 설치되지 않았다. 계기가 없는 것과 눈금이 0 인 것은 다르다")
