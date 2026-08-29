@@ -52,3 +52,41 @@ class ItIsAnInstrumentNotAWall(unittest.TestCase):
         """다만 **수단 자체가 없으면** 실패다 — 그건 눈금이 0 인 게 아니라 계기가 없는 것이다."""
         source = open(mod.__file__, encoding="utf-8").read()
         self.assertIn("RESULT FAIL — 수단이 설치되지 않았다", source)
+
+
+class CountingWorksOnBothPaths(unittest.TestCase):
+    """🔬 **빈 경우만 돌려본 것이 초록이었다.**
+
+    처음 판은 `(comments or 0) > 0` 이라 **코멘트가 없을 때만** 통과했고, 첫 회부에 답이
+    달리는 순간 `TypeError: '>' not supported between 'list' and 'int'` 로 터졌다.
+    *실행되지 않은 경로의 초록은 증거가 아니다* — 그래서 **양쪽을 다 돌린다.**
+    """
+
+    @staticmethod
+    def _issue(state: str, comments: int = 0, resimple: bool = False) -> dict[str, object]:
+        return {
+            "state": state,
+            "comments": [{"body": "x"} for _ in range(comments)],
+            "labels": ([{"name": mod.RESIMPLE}] if resimple else []) + [{"name": mod.LABEL}],
+        }
+
+    def test_closed_with_comments_counts_as_answered(self) -> None:
+        rows = [("standards", self._issue("CLOSED", comments=2))]
+        self.assertEqual(mod.summarise(rows)["answered"], 1)
+
+    def test_closed_without_comments_is_not_answered(self) -> None:
+        """닫혔는데 답이 없는 회부 — *조용히 닫은 것*이라 드러나야 한다."""
+        rows = [("standards", self._issue("CLOSED"))]
+        self.assertEqual(mod.summarise(rows)["answered"], 0)
+
+    def test_open_referrals_are_not_closed(self) -> None:
+        rows = [("standards", self._issue("OPEN", comments=3))]
+        got = mod.summarise(rows)
+        self.assertEqual((got["total"], got["closed"]), (1, 0))
+
+    def test_needs_simpler_is_counted(self) -> None:
+        rows = [("standards", self._issue("CLOSED", comments=1, resimple=True))]
+        self.assertEqual(mod.summarise(rows)["resimple"], 1)
+
+    def test_empty_input_does_not_crash(self) -> None:
+        self.assertEqual(mod.summarise([])["total"], 0)
