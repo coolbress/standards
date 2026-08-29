@@ -115,7 +115,25 @@ coolbress-standards-hooks                  (+훅 · 옵트인)
 
 ## 6. 착수 순서 — **값이 확실한 것부터**
 
-1. 🟢 **`project-template` 의 `.claude/settings.json` + `SessionStart`** — `divcal` 실패의 직접 처방이고 **커밋되고 리뷰된다.** 플러그인 없이도 값을 낸다
-2. 🟢 **`coolbress-standards`(기본) 뼈대** — 커맨드 둘 + 지도 스킬 + 의존성 셋
-3. 🟡 **`coolbress-standards-hooks`** — ⑦ 과 `ponytail`. **①의 충돌을 재고 나서**
+1. ✅ **완료 2026-08-29** — `project-template` `.claude/settings.json` + `SessionStart`
+   ([v2.4.1](https://github.com/coolbress/project-template/releases/tag/v2.4.1) · `divcal` 이 따라왔고 **실물에서 열린 이슈 다섯을 읽는다**)
+2. ✅ **완료 2026-08-29** — `coolbress-standards`([`workflows` #37](https://github.com/coolbress/workflows/pull/37)).
+   `/kickoff`·`/new-project`·`where-is-the-truth` + 의존성 셋. **심볼릭 링크 수작업이 사라졌다**
+3. ✅ **완료 2026-08-29** — `coolbress-standards-hooks`([#38](https://github.com/coolbress/workflows/pull/38)).
+   ⚠️ **`ponytail` 은 의존성으로 걸었지만 §5① 충돌은 아직 안 쟀다** — 프론트엔드 과제가 없어 잴 수단이 없다
 4. ⬜ **`taste-skill` 비교** — 프론트엔드 과제가 처음 생길 때(`ARSENAL` §4 8번)
+
+### 🔬 만들면서 알게 된 것 — **⑦ 은 하나가 아니라 둘이었다**
+
+| | 무엇을 알려주나 | 어디 |
+|---|---|---|
+| **프로젝트 관례** | 열린 이슈 · 검사 명령 · `CONTRIBUTING` | `project-template` 의 `.claude/settings.json` — **커밋되고 리뷰된다** |
+| **운영자 관례** | 정본이 어느 저장소인가 | 플러그인의 훅 |
+
+**겹치면 같은 것을 두 번 찍는다.** 설계 문서에는 *"둘로 갈린다"* 고 적혀 있었는데
+**⑦ 자체가 둘이라는 것은 만들면서 확정됐다.**
+
+### ⚠️ 첫 설치에서 드러날 미검증 가정
+
+**다른 마켓의 플러그인을 `dependencies` 로 거는 것이 그 마켓을 먼저 더하지 않아도 풀리는가.**
+안 풀리면 `claude plugin marketplace add` 세 줄이 **선행 조건**이다 — `workflows` README 에 적어뒀다.
