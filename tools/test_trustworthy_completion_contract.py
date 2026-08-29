@@ -19,7 +19,6 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 LEGACY_GOPPI = ROOT / "legacy" / "judgments" / "goppi" / "foundation"
 WORTH = LEGACY_GOPPI / "worth-hypothesis.md"

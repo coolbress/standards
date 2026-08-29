@@ -198,9 +198,9 @@ class TestFailClosed(unittest.TestCase):
         import os
         from unittest import mock
 
-        with mock.patch.dict(os.environ, {"HOME": "/tmp"}, clear=True):
-            with self.assertRaises(SystemExit) as cm:
-                repo_audit._env()
+        with (mock.patch.dict(os.environ, {"HOME": "/tmp"}, clear=True),
+              self.assertRaises(SystemExit) as cm):
+            repo_audit._env()
         self.assertIn("GH_TOKEN", str(cm.exception))
 
     def test_token_is_passed_through(self) -> None:

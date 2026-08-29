@@ -11,11 +11,9 @@ workflow 하나만 믿지 않는다"* 고 규정한다. 감사 대상이 감사�
 
 from __future__ import annotations
 
-import re
-
 import base64
-
 import json
+import re
 import subprocess
 import sys
 

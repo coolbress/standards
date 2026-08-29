@@ -36,8 +36,10 @@ GUIDE = CORPUS / "GUIDE.ko.md"
 OLD_NAMES = ("gingoa", "goppi", "claudeck")
 
 #: **주어 자리**만 센다 — 단순 언급(*"gingoa 에서 승계"*)은 역사 서술이라 정상이다.
+#: 🔬 곡선 아포스트로피(U+2019)는 뺐다 — 코퍼스 전수 검색 결과 **0건**이라 방어가 아니라
+#: 잡음이었다(ruff 가 `RUF001` 로 잡는다). 필요해지면 그때 넣는다.
 SUBJECT = re.compile(
-    r"\b(" + "|".join(OLD_NAMES) + r")(_final)?('s|’s|\s?의\s|\s?가\s|\s?는\s|\s?은\s)"
+    r"\b(" + "|".join(OLD_NAMES) + r")(_final)?('s|\s?의\s|\s?가\s|\s?는\s|\s?은\s)"
 )
 
 #: 2026-08-29 실측(파일 52 · 등장 186 · `GUIDE.ko.md` 제외). **줄이는 것이 목표가 아니다** — 늘지 않는 것이 목표다.

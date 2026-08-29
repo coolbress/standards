@@ -114,12 +114,12 @@ class ClaimIdShapeTests(unittest.TestCase):
         )
 
     def test_unescaped_pipe_in_a_cell_is_reported_not_ignored(self) -> None:
-        """R5-14 side finding: CAS-005 carried `http\|sse\|stdio` and split into 8 fields.
+        r"""R5-14 side finding: CAS-005 carried `http\|sse\|stdio` and split into 8 fields.
 
         Markdown renders `\|` as a literal pipe, but the checker splits naively, so the
         row silently gained two fields. It must surface as a field-count error.
         """
-        row = "| ABC-002 | empirical | uses a\|b | `SRC-ONE` | high | 2027-01-01 |"
+        row = r"| ABC-002 | empirical | uses a\|b | `SRC-ONE` | high | 2027-01-01 |"
         _, errors = claim_table_errors(row, {"SRC-ONE"})
         self.assertTrue(
             any("expected 6" in message for message in errors),

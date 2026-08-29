@@ -8,9 +8,8 @@
 
 from __future__ import annotations
 
-import unittest
-
 import pathlib
+import unittest
 
 from check_template_drift import ANSWERS, GENERATOR_ONLY, _emitted, shared
 

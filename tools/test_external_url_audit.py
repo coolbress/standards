@@ -13,8 +13,8 @@ from unittest.mock import patch
 
 from external_url_audit import classify_http, curl_fallback, url_set_digest
 from validate_corpus import (
-    extract_external_urls,
     external_url_record_errors,
+    extract_external_urls,
     iso_12207_edition_warning,
     normalize_external_url,
 )
