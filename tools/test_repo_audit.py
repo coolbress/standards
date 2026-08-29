@@ -29,6 +29,8 @@ CLEAN: dict[str, Any] = {
     },
     "repos/x/vulnerability-alerts": True,  # 204 = 켜져 있다
     "repos/x/actions/permissions": {"sha_pinning_required": True, "allowed_actions": "selected"},
+    "repos/x/actions/permissions/workflow": {
+        "default_workflow_permissions": "read", "can_approve_pull_request_reviews": False},
     "repos/x/actions/permissions/selected-actions": {
         "github_owned_allowed": True, "verified_allowed": False, "patterns_allowed": []},
     "repos/x/rulesets": [{"id": 1}],
@@ -340,3 +342,36 @@ class RepoSelection(unittest.TestCase):
             sorted(repo_audit.OURS),
             sorted(r.split("/", 1)[1] for r in repo_audit.REPOS),
         )
+
+
+class WorkflowTokenPermissions(unittest.TestCase):
+    """워크플로 토큰의 **기본 권한**을 서버에서 본다.
+
+    🔴 파일마다 `permissions:` 를 적는 것과 **다른 문장이다** — 하나라도 빠뜨리면 그 워크플로가
+    **쓰기 토큰**을 들고 돈다. 서버 기본값이 마지막 방어선이고, 2026-08-30 까지
+    **아무도 이걸 안 봤다**(R5-38 과 같은 형태 — 실물은 맞았지만 **바뀌어도 몰랐다**).
+    """
+
+    def test_write_default_is_caught(self) -> None:
+        bad, _ = _both({"repos/x/actions/permissions/workflow": {
+            "default_workflow_permissions": "write", "can_approve_pull_request_reviews": False}})
+        self.assertTrue([b for b in bad if "기본 권한이 read 가 아니다" in b], bad)
+
+    def test_bot_approval_switch_is_caught(self) -> None:
+        """🔴 봇이 PR 을 승인할 수 있으면 **승인이 도장이 된다.**
+
+        우리는 승인 0 을 유지하지만, 이 스위치가 켜지면 **룰셋을 안 바꾸고도** 그 길이 열린다
+        (`direction/01` 경계 ② *동료 리뷰를 시뮬레이션하지 않는다*).
+        """
+        bad, _ = _both({"repos/x/actions/permissions/workflow": {
+            "default_workflow_permissions": "read", "can_approve_pull_request_reviews": True}})
+        self.assertTrue([b for b in bad if "승인할 수 있다" in b], bad)
+
+    def test_clean_state_passes(self) -> None:
+        bad, _ = _both({})
+        self.assertEqual([b for b in bad if "토큰" in b or "승인" in b], [])
+
+    def test_unreadable_is_unknown_not_failure(self) -> None:
+        """🔵 읽을 권한이 없는 것과 벽이 무너진 것은 **다른 문장이다.**"""
+        _, unknown = _both({}, status=403)
+        self.assertTrue([u for u in unknown if "기본 권한" in u], unknown)
