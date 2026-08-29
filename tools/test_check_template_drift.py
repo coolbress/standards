@@ -10,8 +10,16 @@ from __future__ import annotations
 
 import pathlib
 import unittest
+from typing import ClassVar
 
-from check_template_drift import ANSWERS, GENERATOR_ONLY, _emitted, shared
+from check_template_drift import (
+    ANSWERS,
+    BUILD_ONLY,
+    _emitted,
+    classify,
+    parse_gated_excludes,
+    shared,
+)
 
 SOURCE = pathlib.Path(__file__).resolve().parent / "check_template_drift.py"
 
@@ -41,15 +49,20 @@ class SubdirectoryMapping(unittest.TestCase):
             self.assertIsNone(_emitted(templated))
 
 
-class GeneratorOnlyFilter(unittest.TestCase):
-    def test_drops_archetype_conditional_files(self) -> None:
-        """`.env.example` 은 service·data-ml 에만 간다 — cli 인스턴스에 없는 게 정상이다."""
-        got = shared({
-            "template/.env.example",
-            "template/tests/test_env_example.py",
-            "template/dist/thing.whl",
-        })
-        self.assertEqual(got, set())
+class EmittedFilter(unittest.TestCase):
+    def test_drops_build_artifacts(self) -> None:
+        self.assertEqual(shared({"template/dist/thing.whl"}), set())
+
+    def test_keeps_archetype_conditional_files(self) -> None:
+        """조건부 파일은 **여기서 안 뺀다** — 인스턴스의 아키타입을 봐야 정해진다.
+
+        예전 판은 상수 목록으로 여기서 빼버렸고, 그래서 `web` 인스턴스가 `.env.example` 을
+        **안 갖고 있어도** 조용했다. 판정은 `classify` 가 아키타입을 보고 한다.
+        """
+        self.assertEqual(
+            shared({"template/.env.example", "template/tests/test_env_example.py"}),
+            {".env.example", "tests/test_env_example.py"},
+        )
 
     def test_keeps_shared_files(self) -> None:
         self.assertEqual(
@@ -64,8 +77,8 @@ class GeneratorOnlyFilter(unittest.TestCase):
         )
 
     def test_filter_list_is_not_empty(self) -> None:
-        # 비면 필터가 아무것도 안 하고 모든 인스턴스가 드리프트로 보인다.
-        self.assertTrue(GENERATOR_ONLY)
+        # 비면 빌드 산출물이 "없는 파일" 로 잡혀 모든 인스턴스가 드리프트로 보인다.
+        self.assertTrue(BUILD_ONLY)
 
 
     def test_answers_file_name_is_the_copier_default(self) -> None:
@@ -104,3 +117,61 @@ class InstanceDetection(unittest.TestCase):
     def test_the_template_itself_is_not_counted_as_an_instance(self) -> None:
         src = SOURCE.read_text(encoding="utf-8")
         self.assertIn("if n == TEMPLATE_NAME", src, "템플릿 자신을 인스턴스로 센다")
+
+
+class GatedExcludeParsing(unittest.TestCase):
+    """규칙의 정본은 템플릿의 `copier.yml` 이다 — 여기 베껴두면 갈린다."""
+
+    COPIER = '_exclude:\n  - .venv\n  - dist\n  - "{% if archetype not in [\'web\', \'backend\', \'data-ml\'] %}.env.example{% endif %}"\n  - "{% if archetype not in [\'web\', \'backend\', \'data-ml\'] %}tests/test_env_example.py{% endif %}"\n'
+
+    def test_reads_the_archetype_condition_and_path(self) -> None:
+        rules = parse_gated_excludes(self.COPIER)
+        self.assertEqual(
+            rules,
+            [(frozenset({"web", "backend", "data-ml"}), ".env.example"),
+             (frozenset({"web", "backend", "data-ml"}), "tests/test_env_example.py")],
+        )
+
+    def test_unconditional_excludes_are_not_rules(self) -> None:
+        """`.venv`·`dist` 는 아키타입과 무관하다 — 조건부로 오해하면 안 된다."""
+        self.assertEqual(parse_gated_excludes("_exclude:\n  - .venv\n  - dist\n"), [])
+
+    def test_empty_parse_is_visible_to_the_caller(self) -> None:
+        """🔴 fail-closed 의 입력이다 — 못 읽으면 `gated_rules()` 가 None 을 내고 BLIND 로 멈춘다."""
+        self.assertEqual(parse_gated_excludes("아무 규칙도 없는 본문"), [])
+
+
+class Classification(unittest.TestCase):
+    """🔴 이 클래스가 신설의 이유다 — **남아 있는 파일**을 아무도 안 보고 있었다."""
+
+    RULES: ClassVar = [(frozenset({"web", "backend", "data-ml"}), ".env.example")]
+    EMITTED: ClassVar = {"AGENTS.md", "CONTRIBUTING.md", ".env.example"}
+
+    def test_cli_instance_holding_env_example_is_extra(self) -> None:
+        """`divcal` 의 실제 상태였다 — v2.2.0 까지 따라왔는데도 남아 있었다."""
+        missing, extra = classify(
+            {"AGENTS.md", "CONTRIBUTING.md", ".env.example"}, "cli", self.EMITTED, self.RULES)
+        self.assertEqual(extra, [".env.example"])
+        self.assertEqual(missing, [])
+
+    def test_cli_instance_without_it_is_clean(self) -> None:
+        missing, extra = classify(
+            {"AGENTS.md", "CONTRIBUTING.md"}, "cli", self.EMITTED, self.RULES)
+        self.assertEqual((missing, extra), ([], []))
+
+    def test_web_instance_must_have_it(self) -> None:
+        """반대 방향 — 조건이 맞는데 없으면 그건 *없는 파일*이다."""
+        missing, extra = classify(
+            {"AGENTS.md", "CONTRIBUTING.md"}, "web", self.EMITTED, self.RULES)
+        self.assertEqual(missing, [".env.example"])
+        self.assertEqual(extra, [])
+
+    def test_unknown_archetype_judges_neither_way(self) -> None:
+        """모르는 것을 안다고 말하지 않는다."""
+        missing, extra = classify(
+            {"AGENTS.md", "CONTRIBUTING.md", ".env.example"}, None, self.EMITTED, self.RULES)
+        self.assertEqual((missing, extra), ([], []))
+
+    def test_shared_files_are_still_required(self) -> None:
+        missing, _ = classify({"AGENTS.md"}, "cli", self.EMITTED, self.RULES)
+        self.assertEqual(missing, ["CONTRIBUTING.md"])

@@ -378,7 +378,7 @@ ci / lint     ci / typecheck     ci / test     ci / build
 | ✅ | ⑫ **SAST** — 공개는 CodeQL default setup ([근거](audit/SAST-CODEQL-VS-SEMGREP.ko.md)) | 2026-08-27 |
 | ✅ | **`ci / diff-size`** — 리뷰 가능성 게이트. 룰셋 등재까지 | v3.2.0 · v3.3.0 |
 | ⬜ | pipeline-guard (테스트 동반 검사) | — |
-| ⬜ | ⑩ `floor-check` | **막는 것 없음** — CONTRIBUTING adequacy 는 템플릿 시험으로 갔다(§그 결정은 이미 났다) |
+| 🔄 | ⑩ `floor-check` | **재판정 2026-08-29 — 새 잡은 안 만든다.** 명세 5개 중 3개가 이미 덮여 있었다(`direction/04` §⑩ 재판정). 템플릿 시험 + 드리프트 검사로 갈랐다 |
 | 🔴 | **비공개 → Semgrep OSS** — *결정됐고 미구현*. `--private` 는 시작 전에 거부한다 | 측정 장비는 `workflows` 의 `research/c2-sast` 브랜치에 **주차돼 있다** |
 
 ✅ **`python-ci.yml` 의 내용은 이제 실제 프로젝트에서 돈다** — `divcal` 이 PR 4개를 그걸로 태웠다.
