@@ -123,6 +123,38 @@ coolbress-standards-hooks                  (+훅 · 옵트인)
    ⚠️ **`ponytail` 은 의존성으로 걸었지만 §5① 충돌은 아직 안 쟀다** — 프론트엔드 과제가 없어 잴 수단이 없다
 4. ⬜ **`taste-skill` 비교** — 프론트엔드 과제가 처음 생길 때(`ARSENAL` §4 8번)
 
+### ✅ 미검증 ① 해소 (2026-08-29) — **첫 설치가 통째로 실패했고, 고쳤다**
+
+```
+coolbress-standards@coolbress   ✘ failed to load
+Dependency "mattpocock-skills@coolbress" is not installed
+```
+
+🔴 **`dependencies` 의 이름은 *선언한 플러그인과 같은 마켓 안에서* 풀린다.**
+바깥 마켓은 `marketplace` 필드 **+ 루트 마켓의 `allowCrossMarketplaceDependenciesOn`** 이 있어야 한다
+(기본이 차단인 이유: *"한 마켓이 **검토하지 않은 출처**를 조용히 끌어오는 것"* 을 막는다).
+
+**고친 방식** — 그리고 이건 [`ARSENAL`](ARSENAL.ko.md) §2b 에 **이미 적혀 있던 것**이다(적어놓고 안 따랐다):
+
+| 의존성 | 어떻게 |
+|---|---|
+| `mattpocock-skills` | 교차 마켓(`claude-plugins-official`) + 허용목록 — **공식이 이미 SHA 로 핀한다** |
+| `taste-skill` · `last30days` · `ponytail` | **우리 마켓이 `sha` 로 직접 등재** |
+
+**설치 후 실측:**
+
+```
+coolbress-standards@coolbress                 ✔ enabled
+mattpocock-skills@claude-plugins-official      ✔ enabled
+taste-skill@coolbress                          ✔ enabled
+last30days@coolbress                           ✔ enabled
+
+상시 토큰 ~381 (where-is-the-truth 240 · new-project 90 · kickoff 50)
+```
+
+⚠️ **부수 확인**: 네 저장소 전부 태그가 `vX.Y.Z` 라 `{plugin-name}--v{version}` 규약을 안 쓴다 →
+**`version` 제약은 `no-matching-tag` 로 실패한다.** 핀은 제약이 아니라 **마켓 항목의 `sha`** 가 건다.
+
 ### 🔬 만들면서 알게 된 것 — **⑦ 은 하나가 아니라 둘이었다**
 
 | | 무엇을 알려주나 | 어디 |
