@@ -85,6 +85,7 @@ claude plugin install coolbress-standards@coolbress    # 실측: 상시 ~381 토
 | **격차가 몇 건 남았나** | `python3 tools/check_gaps_ledger.py` — 지금 **5건** |
 | **소유자에게 물어둔 것** | `gh issue list --label decision` — 지금 **0건 열림**(4/4 닫힘) |
 | **이 저장소에서 일하는 법** | [`AGENTS.md`](AGENTS.md) — 44줄. `CLAUDE.md` 는 심볼릭 링크 |
+| 🆕 **무엇으로 고르나** | [`direction/07`](direction/07-design-rules.md) — 원칙 넷과 **시행 기준**. 🔴 `04` 의 네 줄 표만 보면 **오독이 난다** |
 | **배포는 어떻게 생겼나** | [`audit/PLUGIN-DESIGN`](audit/PLUGIN-DESIGN.ko.md) — 목적 다섯 → 자리. 후보는 **저장소로** 적는다 |
 | **무엇이 깔려 있나** | `claude plugin list` — 지금 **5개** 전부 `enabled` |
 
