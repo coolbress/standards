@@ -32,11 +32,11 @@
 | 후보 | 하는 일 | 종류 | 처분 |
 |---|---|---|---|
 | [Matt Pocock Skills](https://github.com/mattpocock/skills) | 인터뷰 · 스펙 · 티켓 · TDD · 리뷰 | 스킬 | 🟢 **항목별 채택** — 대조는 [`SKILL-OVERLAP`](SKILL-OVERLAP.ko.md) |
-| [Ponytail](https://github.com/DietrichGebert/ponytail) | 먼저 찾고 최소한으로 구현 | 스킬 | 🟡 **구현 과제에서 시험** |
+| [Ponytail](https://github.com/DietrichGebert/ponytail) | 먼저 찾고 최소한으로 구현 | 스킬(플러그인) | 🟢 **채택 방향 확정 2026-08-29 — `+훅` 프로필.** 실물: MIT · ⭐115,858 · `SKILL.md` 가 *"YAGNI · 커스텀보다 표준 라이브러리 · 의존성보다 네이티브 · 오십 줄보다 한 줄"* 이라 **우리 규칙 1·2 의 코드 층 판**이고, 강도 `lite|full|ultra` 는 *가드 깊이는 위험 비례* 와 같은 형태다. 🔶 **훅 3종**(`SessionStart`·`SubagentStart`·`UserPromptSubmit`)이라 **기본이 아니라 옵트인**이다. 설계는 [`PLUGIN-DESIGN`](PLUGIN-DESIGN.ko.md) §3ⓑ |
 | [last30days](https://github.com/mvanhorn/last30days-skill) | 최근 반응과 새 후보 찾기 | 스킬 | 🟡 **후보 발견 전용** — 🔴 **판정에는 쓰지 않는다**(아래 §3) |
 | [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) | 도구 카탈로그 | 목록 | 🟢 **카탈로그로 읽었다 (2026-08-29)** — 기록은 [`ECC-CATALOG-READING`](ECC-CATALOG-READING.ko.md). 셋을 가져오고 넷을 버렸다. **전체 설치는 여전히 안 함** — 파일 3,505개이고 **자기를 하네스라 부른다** |
 | [Ouroboros](https://github.com/Q00/ouroboros) | 인터뷰부터 실행까지 Agent OS | 하네스 | 🔴 **전체 도입 보류** — 인터뷰 방식만 비교. **일곱 번째 하네스를 들이지 않는다** |
-| [Caveman](https://github.com/JuliusBrussee/caveman) | 짧게 설명 · 컨텍스트 축소 | 스킬+proxy | 🔴 **무거운 proxy 보류** — 간결성만 시험 |
+| [Caveman](https://github.com/JuliusBrussee/caveman) | 짧게 설명 · 컨텍스트 축소 | **엔진**(스킬 아님) | 🔴 **기각 2026-08-29 — 근거 셋, 하나만으로도 충분하다.** ① **라이선스**: `engine/`·`proxy/`·`cacheengine/`·`mcp/`·`cavemem` 이 **BSL-1.1**(오픈소스 아님)이고 원문이 *"새 Engine-linked 모듈은 **기본이 BSL-1.1**"* 이라 적는다 — [`05`](../direction/05-the-output-floor.md) §라이선스의 *아웃바운드 하나* 가 성립 안 한다 ② **상태 소유**(`cacheengine`·`cavemem`) — 판별식 ③ 위반 ③ **1,393파일·9.5MB·release-binaries** — 스킬이 아니라 엔진이다. ⚠️ *"측정된 65% 절감"* 은 **자기 측정**이라 검증 대상이지 채택 근거가 아니다. 🔵 **목적은 살린다** — 만들 것 ⑧ⓐ(*쉬운 말이 기본값*) + `needs-simpler` 라벨이 **이미 그 자리**다 |
 | 🔄 **[Taste Skill](https://github.com/Leonxlnx/taste-skill)**([tasteskill.dev](https://www.tasteskill.dev/)) · [frontend-design](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design) · [Impeccable](https://github.com/pbakaus/impeccable) | 프론트엔드 품질 — *anti-slop* | 스킬/플러그인 | 🟡 **같은 화면 과제로 비교해 하나만.** 🔴 **정정 2026-08-29 — 이 행이 *이름만* 적혀 있어서 엉뚱한 것을 가리켰다**: ECC 안의 `skills/taste` 는 **뮤직비디오 편집** 스킬이다. 소유자가 가리킨 것은 `Leonxlnx/taste-skill`(⭐82,005 · MIT · **이미 Claude Code 플러그인** · 스킬 13개)이고, **비교는 프론트엔드 과제가 생길 때 한다**(§4 8번). 실측은 [`ECC-CATALOG-READING`](ECC-CATALOG-READING.ko.md) §4 |
 | Herdr | 여러 터미널·에이전트 보기 | 화면 관리 | 🟡 관찰이 필요할 때 |
 | Ghostty | 터미널 | 화면 | 🟢 사용 중 |
@@ -169,13 +169,20 @@
 
 **지금 값** (실측한 것만 적는다 — 나머지는 재고 나서 채운다):
 
-| 후보 | `cost` | `stability` | `defaultInstall` |
-|---|---|---|---|
-| [Matt Pocock Skills](https://github.com/mattpocock/skills) | **light** — 프론트매터 35개 **≈1,841토큰**(본문 149KB 는 필요할 때만) | stable | ⬜ 미정 (`GAPS` R5-24) |
-| MCP 서버 일반 | 🔴 **heavy** — 도구 정의가 **컨텍스트에 영구 상주**, 개당 150~600토큰 · 매 호출 지불 | — | ❌ **아니오** |
-| [Taste Skill](https://github.com/Leonxlnx/taste-skill) | ⬜ 미측정 | ⚠️ v2 **실험판**(v1 은 legacy) | ❌ 아니오 — 프론트엔드 과제가 생길 때 비교 |
-| [ECC](https://github.com/affaan-m/everything-claude-code) | 🔴 **heavy** — 파일 3,505 · `SKILL.md` 898 | stable | ❌ **아니오 — 카탈로그로만** |
+| 후보 | `cost` | `stability` | `defaultInstall` | 훅 |
+|---|---|---|---|---|
+| [Matt Pocock Skills](https://github.com/mattpocock/skills) | **light** — 프론트매터 35개 **≈1,841토큰**(본문 149KB 는 필요할 때만) | stable | 🟢 **예 — 기본 프로필** | ❌ |
+| [last30days](https://github.com/mvanhorn/last30days-skill) | **light** | stable | 🟢 **예** — ✅ **이미 설치됨**. 규율은 §3(발견 전용) | ❌ |
+| [Taste Skill](https://github.com/Leonxlnx/taste-skill) | **light** — 스킬 13개 · *"어떤 규칙도 자동 발화하지 않는다"* | ⚠️ **experimental** (v2 실험판 · v1 legacy) | 🟡 **기본에 두되 비교 전까지 판단 보류** — 범위가 **랜딩·포트폴리오·리디자인**으로 한정된다 | ❌ |
+| [Ponytail](https://github.com/DietrichGebert/ponytail) | **light** — 파일 159 | stable (v4.9.0) | 🔶 **아니오 — `+훅` 옵트인** | 🔶 **3종** |
+| [Caveman](https://github.com/JuliusBrussee/caveman) | 🔴 **heavy** — 1,393파일 · 엔진 | — | 🔴 **기각**(라이선스 BSL-1.1 · 상태 소유) | 🔶 2종 |
+| MCP 서버 일반 | 🔴 **heavy** — 도구 정의가 **컨텍스트에 영구 상주**, 개당 150~600토큰 · 매 호출 지불 | — | ❌ **아니오** | — |
+| [ECC](https://github.com/affaan-m/everything-claude-code) | 🔴 **heavy** — 파일 3,505 · `SKILL.md` 898 | stable | ❌ **아니오 — 카탈로그로만** | 🔶 |
 
 🔴 **프로필은 둘까지만 만든다.** ECC 는 **7개 · 모듈 36개**다. 우리가 그 수를 따라가면 그게 하네스다
 (대전제 2). 우리 둘은 **기본**(안내 + 커맨드)과 **`+훅`**(만들 것 ⑦ 옵트인)이다 —
 🔵 **ECC 도 `minimal`·`opencode` 프로필에서 훅 런타임을 *일부러* 뺀다**(§ⓐ 실측).
+
+> 🔴 **그리고 프로필을 *설치기* 로 만들지 않는다** (2026-08-29). Claude Code 에는 프로필 개념이 없고,
+> ECC 는 그걸 **자체 설치 스크립트**로 만든다 — **설치기는 하네스의 시작이다.**
+> 우리는 **플러그인 둘 + 네이티브 `dependencies`** 로 같은 것을 얻는다. 설계는 [`PLUGIN-DESIGN`](PLUGIN-DESIGN.ko.md).
