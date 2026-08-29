@@ -29,6 +29,10 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
+      # `uvx` 로 ruff 를 부른다 — 이 저장소에는 파이썬 프로젝트가 없어서
+      # 의존성을 잠글 자리가 없다. 도구는 일회성으로 가져다 쓴다.
+      # 🔴 핀은 커밋 SHA 다(태그는 가변 = 공급망 벡터 · `GHW-005`).
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
       - name: 코퍼스 구조 검증
         run: python3 tools/validate_corpus.py
