@@ -356,6 +356,33 @@ def main() -> int:
     else:
         print(f"✅ 회부 기록 수단 — 네 저장소에 `{LABEL}`·`{RESIMPLE}` 라벨이 있다")
 
+    # R5-38: 바닥의 **문서 묶음**을 아무도 안 보고 있었다 — 이 감사기는 서버 설정만 보고
+    # `check_floor_coverage` 는 *바닥이 입장을 갖는가* 만 본다. 그 틈에서 두 저장소가
+    # `AGENTS.md` 없이 서 있었다(`POC-001` — 측정된 계획 산출물 중 채택률 1위).
+    # 🔵 `CLAUDE.md` 가 **심볼릭 링크인지**까지 본다 — 사본을 두면 둘이 갈린다(`CAS-001`).
+    doc_gaps: list[str] = []
+    for repo in ("standards", "workflows", "project-template", "divcal"):
+        agents = gh(f"repos/coolbress/{repo}/contents/AGENTS.md")
+        if agents is None:
+            doc_gaps.append(f"{repo}: AGENTS.md 가 없다")
+            continue
+        # 🔴 `contents` API 는 **심볼릭을 따라가** `type: file` 로 준다.
+        # 링크인지 보려면 **git tree 의 모드**(`120000`)를 봐야 한다 — 2026-08-29 실측.
+        tree = gh(f"repos/coolbress/{repo}/git/trees/HEAD")
+        entries = tree.get("tree", []) if isinstance(tree, dict) else []
+        claude = next((e for e in entries if e.get("path") == "CLAUDE.md"), None)
+        if claude is None:
+            doc_gaps.append(f"{repo}: CLAUDE.md 가 없다")
+        elif claude.get("mode") != "120000":
+            doc_gaps.append(f"{repo}: CLAUDE.md 가 심볼릭 링크가 아니다 (사본은 갈린다)")
+    if doc_gaps:
+        print("🔴 문서 묶음 — AGENTS.md / CLAUDE.md")
+        for d in doc_gaps:
+            print(f"     {d}")
+        drift += len(doc_gaps)
+    else:
+        print("✅ 문서 묶음 — 네 저장소에 AGENTS.md 가 있고 CLAUDE.md 는 심볼릭 링크다")
+
     vocab = archetype_vocabulary_drift()
     if vocab:
         unknown_only = all(v.startswith("⚪") for v in vocab)
