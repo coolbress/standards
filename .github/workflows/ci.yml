@@ -52,6 +52,13 @@ jobs:
       - name: 바닥 커버리지 (센서스 대조)
         run: python3 tools/check_floor_coverage.py
 
+      # 🔴 `F` 계열(pyflakes)만 켠다 — 그 안에 **`F821 undefined-name`** 이 있다.
+      # 2026-08-29: `check_decision_referrals.py` 가 `ROOT` 를 정의 없이 써서 **실행하자마자 터졌다.**
+      # mypy 도 잡는다(`Name "ROOT" is not defined`)지만 tools/ 전체는 38건이라 별건이다(R5-39).
+      # 이건 2건이었고 지금 0 이다 — **가장 싼 자리에서 가장 자주 나는 버그를 막는다.**
+      - name: tools/ 에 undefined name 이 있나 (pyflakes)
+        run: uvx --quiet ruff check --select F tools/
+
       - name: 코퍼스 근거는 경로로 인용됐나 (이름 인용은 claim 불변식을 우회한다)
         run: python3 tools/check_name_only_citations.py
 
