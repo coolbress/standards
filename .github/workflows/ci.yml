@@ -71,6 +71,17 @@ jobs:
           python -m pip install --quiet --disable-pip-version-check 'ruff==0.16.5'
           ruff check tools/
 
+      # 🔴 이 검사를 열게 만든 사건이 여기 있다 — `check_decision_referrals.py` 가 `ROOT` 를
+      # 정의 없이 써서 **실행하자마자 `NameError`** 로 터졌고, mypy 는 그걸
+      # `Name "ROOT" is not defined` 로 **정확히** 잡는다.
+      # 바닥이 프로젝트에 `typecheck` 를 **별도 required check** 로 요구하는데 이 저장소만
+      # 자기 파이썬 33파일에 안 돌리고 있었다 — `diff-size`(R5-34)와 같은 형태의 자기 면제다.
+      # 🔴 **설정은 `mypy.ini` 가 정본**이다. 여기 플래그를 박으면 로컬이 다른 걸 잰다.
+      - name: tools/ 타입 검사 (mypy strict — R5-39)
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'mypy==1.18.2'
+          mypy
+
       - name: 코퍼스 근거는 경로로 인용됐나 (이름 인용은 claim 불변식을 우회한다)
         run: python3 tools/check_name_only_citations.py
 

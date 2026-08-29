@@ -31,7 +31,7 @@ import re
 import sys
 from pathlib import Path
 
-from validate_corpus import CLAIMLESS_OK
+from validate_corpus import CLAIMLESS_OK as CLAIMLESS_OK
 
 ROOT = Path(__file__).resolve().parent.parent
 CORPUS = ROOT / "corpus"

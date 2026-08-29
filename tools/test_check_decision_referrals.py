@@ -8,7 +8,9 @@
 from __future__ import annotations
 
 import unittest
+from collections.abc import Mapping
 from pathlib import Path
+from typing import Any
 
 import check_decision_referrals as mod
 
@@ -110,9 +112,11 @@ class ThreeKindsNotOne(unittest.TestCase):
         self.assertIsNone(mod.kind_of({"labels": [{"name": mod.LABEL}]}))
 
     def test_summarise_counts_each_kind(self) -> None:
-        rows = [("s", {"state": "OPEN", "labels": [{"name": "decision:input"}], "comments": []}),
-                ("s", {"state": "OPEN", "labels": [{"name": "decision:input"}], "comments": []}),
-                ("s", {"state": "OPEN", "labels": [], "comments": []})]
+        # 🔴 명시한다 — 값이 섞인 dict 리터럴은 `object` 로 좁혀져 시그니처와 안 맞는다.
+        rows: list[tuple[str, Mapping[str, Any]]] = [
+            ("s", {"state": "OPEN", "labels": [{"name": "decision:input"}], "comments": []}),
+            ("s", {"state": "OPEN", "labels": [{"name": "decision:input"}], "comments": []}),
+            ("s", {"state": "OPEN", "labels": [], "comments": []})]
         got = mod.summarise(rows)
         self.assertEqual((got["decision:input"], got["unkinded"]), (2, 1))
 

@@ -13,9 +13,18 @@ from __future__ import annotations
 
 import base64
 import json
+import os
 import re
 import subprocess
 import sys
+from typing import Any
+
+#: `gh api` 가 낸 JSON. 🔴 **모양은 GitHub 의 것이지 우리 것이 아니다** —
+#: 여기서 필드를 다시 선언하면 GitHub 스키마의 **두 번째 사본**이 생기고,
+#: 갈려도 아무도 모른다(이 저장소가 반복해 고쳐온 결함의 형태다).
+#: 그래서 **경계에서 열어 받고** 읽는 자리에서 `or {}` · `isinstance` 로 좁힌다.
+#: mypy 를 켜서 얻는 값은 JSON 필드가 아니라 **F821·시그니처** 쪽에 있다.
+Json = Any
 
 # 감사 대상. **새 프로젝트를 만들면 여기에 한 줄 더한다** —
 # 템플릿에서 뜬 프로젝트는 기대값이 전부 같으므로(아래 PROJECT_*) 그 한 줄이면 끝난다.
@@ -90,11 +99,11 @@ def _env() -> dict[str, str]:
     감사기는 **에이전트와 같은 눈**으로 봐야 한다. 못 보는 것은 `unknown` 으로 보고한다.
     """
     env = {"PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin",
-           "HOME": subprocess.os.environ.get("HOME", "")}
+           "HOME": os.environ.get("HOME", "")}
     found = False
     for key in ("GH_TOKEN", "GITHUB_TOKEN"):
-        if subprocess.os.environ.get(key):
-            env[key] = subprocess.os.environ[key]
+        if os.environ.get(key):
+            env[key] = os.environ[key]
             found = True
     if not found:
         # 🔴 fail-closed. 토큰이 없으면 `gh` 가 **keyring 의 관리자 자격증명**으로 떨어진다.
@@ -112,7 +121,7 @@ def _env() -> dict[str, str]:
     return env
 
 
-def gh(path: str) -> object | None:
+def gh(path: str) -> Json:
     """`gh api` 한 번. 실패는 None.
 
     ⚠️ 204 No Content 를 실패로 읽으면 안 된다 — `vulnerability-alerts` 는
@@ -285,11 +294,13 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
             bad.append(f"벽: 기대하지 않은 요구 검사 '{extra}' — 의도한 변경이면 EXPECTED_CHECKS 를 고쳐라")
         for check in rule["parameters"]["required_status_checks"]:
             ctx = check["context"]
-            want = EXPECTED_APP.get(ctx, ACTIONS_APP_ID)
+            # 🔴 이름을 나눈다 — 위의 `want` 는 검사 이름 집합이고 이건 App ID 다.
+            # 한 이름으로 쓰면 사람도 mypy 도 뒤의 것만 본다.
+            want_app = EXPECTED_APP.get(ctx, ACTIONS_APP_ID)
             got = check.get("integration_id")
-            if got != want:
+            if got != want_app:
                 bad.append(
-                    f"벽: '{ctx}' 의 출처가 안 묶였거나 틀렸다 (기대 app {want}, 실제 {got})"
+                    f"벽: '{ctx}' 의 출처가 안 묶였거나 틀렸다 (기대 app {want_app}, 실제 {got})"
                 )
             # 🔴 언어별 CodeQL 잡을 요구하면 안 된다 — 저장소마다 언어가 다르다.
             # 없는 언어를 요구하면 그 이름이 영원히 보고되지 않아 저장소가 잠긴다.

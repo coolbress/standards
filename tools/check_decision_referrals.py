@@ -38,7 +38,9 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from collections.abc import Mapping, Sequence
 from pathlib import Path
+from typing import Any
 
 REPOS = ("standards", "workflows", "project-template", "divcal")
 LABEL = "decision"
@@ -84,22 +86,22 @@ def labels_installed(repo: str) -> bool:
     return LABEL in have and RESIMPLE in have
 
 
-def referrals(repo: str) -> list[dict[str, object]]:
+def referrals(repo: str) -> list[dict[str, Any]]:
     rows = _json(["gh", "issue", "list", "--repo", f"coolbress/{repo}", "--state", "all",
                   "--label", LABEL, "--limit", "200",
                   "--json", "number,title,state,labels,comments"])
     return rows if isinstance(rows, list) else []
 
 
-def kind_of(issue: dict[str, object]) -> str | None:
+def kind_of(issue: Mapping[str, Any]) -> str | None:
     for lbl in issue.get("labels") or []:
         name = lbl.get("name")
         if name in KINDS:
-            return name
+            return str(name)
     return None
 
 
-def has_channel(issue: dict[str, object]) -> bool:
+def has_channel(issue: Mapping[str, Any]) -> bool:
     return any(CHANNEL_MARKER in (c.get("body") or "") for c in (issue.get("comments") or []))
 
 
@@ -113,7 +115,7 @@ def committed_records(root: Path) -> str:
     return "\n".join(chunks)
 
 
-def summarise(rows: list[tuple[str, dict[str, object]]]) -> dict[str, int]:
+def summarise(rows: Sequence[tuple[str, Mapping[str, Any]]]) -> dict[str, int]:
     """세는 부분만 떼어낸다 — **네트워크 없이 시험할 수 있게.**
 
     🔬 처음엔 `main()` 안에 있었고 `(comments or 0) > 0` 이라 **빈 리스트일 때만 통과**했다.
@@ -133,7 +135,7 @@ def summarise(rows: list[tuple[str, dict[str, object]]]) -> dict[str, int]:
     return counts
 
 
-def unbridged(rows: list[tuple[str, dict[str, object]]], records: str) -> list[tuple[str, int]]:
+def unbridged(rows: Sequence[tuple[str, Mapping[str, Any]]], records: str) -> list[tuple[str, int]]:
     """닫혔는데 **커밋된 기록에 인용되지 않은** 회부.
 
     🔴 이게 이 도구의 핵심 다리다. RFC 는 이슈에 살아도 되지만 **결정은 커밋돼야** 한다 —

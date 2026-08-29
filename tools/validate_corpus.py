@@ -629,9 +629,9 @@ def main() -> int:
             except json.JSONDecodeError as exc:
                 errors.append(f"invalid source JSONL line {number}: {exc}")
                 continue
-            missing = {"id", "title", "publisher", "url", "source_type", "authority_for", "accessed_at", "freshness"} - set(record)
-            if missing:
-                errors.append(f"source line {number} missing {sorted(missing)}")
+            missing_keys = {"id", "title", "publisher", "url", "source_type", "authority_for", "accessed_at", "freshness"} - set(record)
+            if missing_keys:
+                errors.append(f"source line {number} missing {sorted(missing_keys)}")
             source_id = record.get("id")
             if source_id in registry_ids:
                 errors.append(f"duplicate source id: {source_id}")
@@ -736,12 +736,12 @@ def main() -> int:
             repeated_sections[hashlib.sha256(normalized.encode("utf-8")).hexdigest()].append(
                 (path, heading)
             )
-    repeated_groups = [group for group in repeated_sections.values() if len(group) > 1]
+    repeated_groups = [rows for rows in repeated_sections.values() if len(rows) > 1]
     metrics["exact_repeated_section_groups"] = len(repeated_groups)
-    for group in repeated_groups:
+    for section_group in repeated_groups:
         errors.append(
             "exact repeated substantial section: "
-            + ", ".join(f"{path.relative_to(ROOT)}#{heading}" for path, heading in group)
+            + ", ".join(f"{p.relative_to(ROOT)}#{h}" for p, h in section_group)
         )
 
     legacy_patterns = {

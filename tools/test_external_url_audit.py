@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from datetime import UTC, datetime
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from urllib.error import URLError
 
 from external_url_audit import check_one, classify_http, curl_fallback, url_set_digest
@@ -87,9 +87,10 @@ class ExternalUrlAuditTests(unittest.TestCase):
             "content_verified": False,
             "detail": "endpoint only",
         }
-        self.assertEqual([], external_url_record_errors(record, record["url"]))
+        url = str(record["url"])
+        self.assertEqual([], external_url_record_errors(record, url))
         broken = dict(record, checked_at="not-a-date", http_status=404, content_verified=True)
-        errors = external_url_record_errors(broken, record["url"])
+        errors = external_url_record_errors(broken, url)
         self.assertTrue(any("invalid checked_at" in item for item in errors))
         self.assertTrue(any("2xx/3xx" in item for item in errors))
         self.assertTrue(any("must not claim content" in item for item in errors))
@@ -106,7 +107,7 @@ class ExternalUrlAuditTests(unittest.TestCase):
             "content_verified": False,
             "detail": "",
         }
-        errors = external_url_record_errors(record, record["url"])
+        errors = external_url_record_errors(record, str(record["url"]))
         self.assertTrue(any("future" in item for item in errors))
         self.assertTrue(any("detail is blank" in item for item in errors))
 
@@ -134,7 +135,7 @@ class ExternalUrlAuditTests(unittest.TestCase):
         self.assertNotEqual(record["method"], "scheme-rejected")
 
     @patch("external_url_audit.subprocess.run")
-    def test_curl_fallback_rejects_nonzero_redirect_loop(self, run) -> None:
+    def test_curl_fallback_rejects_nonzero_redirect_loop(self, run: MagicMock) -> None:
         run.return_value = subprocess.CompletedProcess(
             args=["curl"], returncode=47, stdout="302\thttps://example.com/loop", stderr="redirect loop"
         )

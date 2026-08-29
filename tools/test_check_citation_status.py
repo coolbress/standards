@@ -15,7 +15,9 @@ import check_citation_status as mod
 
 
 class CitationStatus(unittest.TestCase):
-    def _fixture(self, body: str, status: str | None = "draft", name: str = "x.md") -> list:
+    def _fixture(
+        self, body: str, status: str | None = "draft", name: str = "x.md"
+    ) -> list[tuple[str, int, str, str]]:
         with TemporaryDirectory() as raw:
             root = Path(raw)
             corpus = root / "corpus" / "a"

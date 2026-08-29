@@ -15,6 +15,7 @@ import sys
 import tarfile
 from collections import deque
 from pathlib import Path
+from typing import Any
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -94,7 +95,7 @@ def has_traceable_claim(content: str) -> bool:
     )
 
 
-def evaluate(view: dict[str, bytes], arm: str, cases: list[dict]) -> dict[str, object]:
+def evaluate(view: dict[str, bytes], arm: str, cases: list[dict[str, Any]]) -> dict[str, object]:
     markdown_bytes = sum(len(data) for path, data in view.items() if path.endswith(".md"))
     routes = 0
     anchor_hits = 0
