@@ -4,7 +4,7 @@ corpus/INDEX.md	17533	1787558487	4cae532a39103051dde3163962113db218d9efe8e90803e
 corpus/PROVENANCE.md	4257	1787558487	57d5261483e148999971a7e5b303f455a189bd27ace042438198bc962064f1a6	active
 corpus/TAXONOMY.md	3617	1787558487	5fcec547367620ac8b3b306421cdd0df114069c9df57551435b4f0435b708f74	active
 corpus/_meta/README.md	462	1785659225	14813521bafff31c0a4ed18a1cfa477d6414cda2f191c0d5951544118efba09f	active
-corpus/_meta/sources.jsonl	49528	1787971547	a82778e7625133f0291255785551c1f081be9eeee6695910a10eb96b03f32333	active
+corpus/_meta/sources.jsonl	49528	1787972014	a82778e7625133f0291255785551c1f081be9eeee6695910a10eb96b03f32333	active
 corpus/_schema.md	11509	1787937206	1d7f564411fb790d30b8a543e9f499b7ae214f066bce1efc8490956cc9093d13	active
 corpus/aspects/01-requirements-planning/01-requirements-planning--overview.md	19766	1787558487	244b1ee4c2577181d5c31f788344e9bead458ec0eeb43d23b4ef1c55c83660d3	active
 corpus/aspects/01-requirements-planning/brownfield-planning-adoption.md	6824	1785658907	6d1d7002905f091848f65317b24020a22b5398436b88aa353a7d3879b50014ca	active
@@ -30,7 +30,7 @@ corpus/aspects/04-build-ci-engineering/visibility-provision-matrix.md	7186	17856
 corpus/aspects/04-build-ci-engineering/web-scaffold-baseline--facts-2026-08.md	17510	1787558487	9851a482a44fa9890818f635e99efea0162efde77cd4830e26d6fb96260bc5e8	active
 corpus/aspects/05-scm-workflow/05-scm-workflow--overview.md	14913	1787613158	0ac0a5f34b94fbcd350ffc02c5968b315add77f7750ad3598e3deb09f74e26c9	active
 corpus/aspects/05-scm-workflow/github-enforcement-boundaries--facts-2026-08.md	8457	1787664159	a3e8522f2a219a676a6c11c4f02a1c93abeb19d3230f9993c3447401e9aa1440	active
-corpus/aspects/05-scm-workflow/github-workflow-current.md	12370	1787971534	93c9b6bab71670524bf1e13739bd299b7232ec8bb8fd9aa4bf97b8c5475c314f	active
+corpus/aspects/05-scm-workflow/github-workflow-current.md	12370	1787972014	93c9b6bab71670524bf1e13739bd299b7232ec8bb8fd9aa4bf97b8c5475c314f	active
 corpus/aspects/06-config-secrets/06-config-secrets--overview.md	8234	1787558487	93efa3167c1604b825d36395ad6d25e02c71cc663fb5541df9d928adc01eba48	active
 corpus/aspects/06-config-secrets/config-validation-secrets--facts-2026-08.md	19503	1787558487	d6b0cbc8585f66252b07db993bd8ae00e62c672d15692c6f247040bce94551a0	active
 corpus/aspects/07-construction-code-review/07-construction-code-review--overview.md	8498	1787558487	14a34f43471e7e95481636f00657934e5b5553399e26466416182ed54a664e0a	active
