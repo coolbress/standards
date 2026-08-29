@@ -471,16 +471,17 @@ def missing_aspect_files(aspect_dirs: list[Path]) -> list[Path]:
     return [aspect_overview_path(path) for path in aspect_dirs if not aspect_overview_path(path).is_file()]
 
 
-def main() -> int:
+#: 검사 한 단계가 내는 것 — `(errors, warnings, metrics)`.
+#:
+#: 🔴 **단계는 공유 상태를 건드리지 않는다.** 자기 몫만 돌려주고 `main` 이 합친다 —
+#: 그래야 단계를 옮기거나 지울 때 **무엇이 딸려 오는지**가 시그니처에 보인다.
+#: ⚠️ **합치는 순서는 유지한다** — 오류는 쌓인 순서대로 출력되므로 순서가 곧 출력이다.
+Phase = tuple[list[str], list[str], dict[str, int]]
+
+
+def check_after_manifest(files: list[Path]) -> Phase:
+    """`after-manifest.tsv` 가 활성 코퍼스와 **정확히 같은 집합·크기·해시**인가."""
     errors: list[str] = []
-    warnings: list[str] = []
-    metrics: dict[str, int] = {}
-
-    files = sorted(path for path in CORPUS.rglob("*") if path.is_file())
-    markdown = [path for path in files if path.suffix == ".md"]
-    metrics["active_files"] = len(files)
-    metrics["markdown_files"] = len(markdown)
-
     manifest_records: dict[str, tuple[int, str]] = {}
     if not AFTER_MANIFEST.is_file():
         errors.append("missing after-manifest.tsv")
@@ -505,28 +506,32 @@ def main() -> int:
             record = manifest_records.get(rel)
             if record and record != (path.stat().st_size, sha256(path)):
                 errors.append(f"after-manifest size/hash mismatch: {rel}")
-    metrics["after_manifest_records"] = len(manifest_records)
+    return errors, [], {"after_manifest_records": len(manifest_records)}
 
-    dead = [
-        path for path in files
+
+def check_tree_hygiene(files: list[Path]) -> Phase:
+    """죽은 산출물과 **정확히 같은 내용의 중복 파일**이 트리에 있나."""
+    errors = [
+        f"dead/generated active artifact: {path.relative_to(ROOT)}"
+        for path in files
         if path.suffix == ".pyc" or "__pycache__" in path.parts or path.stat().st_size == 0
     ]
-    if dead:
-        errors.extend(f"dead/generated active artifact: {path.relative_to(ROOT)}" for path in dead)
-
     by_hash: dict[str, list[Path]] = defaultdict(list)
     for path in files:
         if path.stat().st_size:
             by_hash[sha256(path)].append(path)
     duplicate_groups = [group for group in by_hash.values() if len(group) > 1]
-    metrics["nonempty_duplicate_groups"] = len(duplicate_groups)
-    for group in duplicate_groups:
-        errors.append("exact duplicate: " + ", ".join(str(path.relative_to(ROOT)) for path in group))
+    errors.extend(
+        "exact duplicate: " + ", ".join(str(path.relative_to(ROOT)) for path in group)
+        for group in duplicate_groups
+    )
+    return errors, [], {"nonempty_duplicate_groups": len(duplicate_groups)}
 
+
+def check_aspect_directories() -> Phase:
+    """측면 28개가 **전부 있고**, 개요마다 `gated_archetypes` 가 닫힌 어휘인가 (R5-16)."""
+    errors: list[str] = []
     aspect_dirs = sorted(path for path in ASPECTS.iterdir() if path.is_dir())
-    metrics["aspect_directories"] = len(aspect_dirs)
-
-    # R5-16: `gated_archetypes` 는 있어야 하고 값은 닫힌 어휘여야 한다.
     gated_seen = 0
     for aspect_dir in aspect_dirs:
         overview = aspect_overview_path(aspect_dir)
@@ -534,15 +539,168 @@ def main() -> int:
             continue
         gated_seen += 1
         errors.extend(gated_archetype_errors(overview, overview.read_text(encoding="utf-8")))
-    metrics["aspects_with_gates_checked"] = gated_seen
     if len(aspect_dirs) != 28:
         errors.append(f"expected 28 aspect directories, found {len(aspect_dirs)}")
     expected_numbers = [f"{number:02d}" for number in range(1, 29)]
     actual_numbers = sorted(path.name[:2] for path in aspect_dirs)
     if actual_numbers != expected_numbers:
         errors.append(f"aspect ID set mismatch: {actual_numbers}")
-    for missing_aspect in missing_aspect_files(aspect_dirs):
-        errors.append(f"missing aspect overview: {missing_aspect.relative_to(ROOT)}")
+    errors.extend(
+        f"missing aspect overview: {missing_aspect.relative_to(ROOT)}"
+        for missing_aspect in missing_aspect_files(aspect_dirs)
+    )
+    metrics = {"aspect_directories": len(aspect_dirs), "aspects_with_gates_checked": gated_seen}
+    return errors, [], metrics
+
+
+def check_repeated_sections(markdown: list[Path]) -> Phase:
+    """같은 절이 **글자 그대로** 여러 문서에 있나 — 정본이 둘이 되는 자리다."""
+    repeated_sections: dict[str, list[tuple[Path, str]]] = defaultdict(list)
+    for path in markdown:
+        for heading, normalized in normalized_h2_sections(path):
+            repeated_sections[hashlib.sha256(normalized.encode("utf-8")).hexdigest()].append(
+                (path, heading)
+            )
+    groups = [rows for rows in repeated_sections.values() if len(rows) > 1]
+    errors = [
+        "exact repeated substantial section: "
+        + ", ".join(f"{p.relative_to(ROOT)}#{h}" for p, h in group)
+        for group in groups
+    ]
+    return errors, [], {"exact_repeated_section_groups": len(groups)}
+
+
+def check_legacy_sections(curated: list[Path]) -> Phase:
+    """폐기된 프로젝트의 절·필드가 코퍼스에 남아 있나."""
+    legacy_patterns = {
+        "gingoa_applied:": re.compile(r"(?m)^gingoa_applied:"),
+        "Implications for gingoa": re.compile(r"(?mi)^##\s+Implications for gingoa\s*$"),
+        "gingoa application": re.compile(r"(?mi)^##\s+gingoa application\s*$"),
+    }
+    errors: list[str] = []
+    for path in curated:
+        text = path.read_text(encoding="utf-8")
+        errors.extend(
+            f"legacy project section/field {label}: {path.relative_to(ROOT)}"
+            for label, pattern in legacy_patterns.items()
+            if pattern.search(text)
+        )
+    return errors, [], {}
+
+
+def check_iso_anchors(markdown: list[Path]) -> Phase:
+    """ISO/IEC 12207 판이 낡은 채로 인용되고 있나. **경고**이지 오류가 아니다."""
+    stale: list[tuple[Path, str]] = []
+    for path in markdown:
+        warning = iso_12207_edition_warning(path.read_text(encoding="utf-8"))
+        if warning:
+            stale.append((path, warning))
+    warnings = [f"{warning}: {path.relative_to(ROOT)}" for path, warning in stale]
+    return [], warnings, {"iso_12207_edition_warnings": len(stale)}
+
+
+def absorb(phase: Phase, errors: list[str], warnings: list[str], metrics: dict[str, int]) -> None:
+    """단계의 결과를 합친다. 🔴 **부르는 순서가 곧 출력 순서다.**"""
+    phase_errors, phase_warnings, phase_metrics = phase
+    errors.extend(phase_errors)
+    warnings.extend(phase_warnings)
+    metrics.update(phase_metrics)
+
+
+def check_source_registry() -> tuple[Phase, set[str]]:
+    """출처 원장이 스키마를 지키나. 🔴 **`registry_ids` 를 같이 낸다** — 뒤 단계가 그것으로 대조한다."""
+    errors: list[str] = []
+    registry_ids: set[str] = set()
+    required = {"id", "title", "publisher", "url", "source_type",
+                "authority_for", "accessed_at", "freshness"}
+    if not SOURCE_REGISTRY.is_file():
+        errors.append("missing source registry")
+    else:
+        for number, line in enumerate(SOURCE_REGISTRY.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as exc:
+                errors.append(f"invalid source JSONL line {number}: {exc}")
+                continue
+            missing_keys = required - set(record)
+            if missing_keys:
+                errors.append(f"source line {number} missing {sorted(missing_keys)}")
+            source_id = record.get("id")
+            if source_id in registry_ids:
+                errors.append(f"duplicate source id: {source_id}")
+            if source_id:
+                registry_ids.add(source_id)
+            if not str(record.get("url", "")).startswith("https://"):
+                errors.append(f"source URL must be HTTPS: {source_id}")
+    return (errors, [], {"registered_sources": len(registry_ids)}), registry_ids
+
+
+def check_direction_citations(registry_ids: set[str]) -> Phase:
+    """🔴 `direction/` 이 **claim 없는 코퍼스 문서**를 근거로 부르나.
+
+    2026-08-26 실측: 그 상태로 `GHW-012`(폐기 문서 인용)와 `IPC-001~003`(앵커 없는 🟢)이 서 있었다.
+    `CLAIMLESS_OK` 셋은 예외다 — 스키마·정책·역사 기록이라 claim 이 성립하지 않는다.
+    """
+    errors: list[str] = []
+    direction_dir = ROOT / "direction"
+    if not direction_dir.is_dir():
+        return errors, [], {}
+    for path in sorted(direction_dir.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        for rel in set(re.findall(r"corpus/([A-Za-z0-9_./-]+\.md)", text)):
+            target = CORPUS / rel
+            if target.name in CLAIMLESS_OK or not target.is_file():
+                continue
+            # "절차 포인터" 로 표시된 인용은 근거 인용이 아니므로 면제한다.
+            if f"{rel.rsplit('/', 1)[-1]}" in text and "절차 포인터" in text:
+                continue
+            count, _ = claim_table_errors(target.read_text(encoding="utf-8"), registry_ids)
+            if not count:
+                errors.append(
+                    f"direction cites a claim-less corpus document: "
+                    f"{path.relative_to(ROOT)} -> corpus/{rel}"
+                )
+    return errors, [], {}
+
+
+def check_internal_links(markdown: list[Path]) -> Phase:
+    """문서 사이 링크가 실제 파일을 가리키나. 외부 URL 은 여기서 안 연다."""
+    errors: list[str] = []
+    broken = 0
+    for path in markdown:
+        text = path.read_text(encoding="utf-8")
+        for raw_target in LINK_RE.findall(text):
+            target = raw_target.strip().split()[0].strip("<>")
+            if target.startswith(("http://", "https://", "mailto:", "#")):
+                continue
+            target = unquote(target.split("#", 1)[0])
+            if not target:
+                continue
+            if not (path.parent / target).resolve().exists():
+                broken += 1
+                errors.append(f"broken internal link: {path.relative_to(ROOT)} -> {raw_target}")
+    return errors, [], {"broken_internal_links": broken}
+
+
+def main() -> int:
+    errors: list[str] = []
+    warnings: list[str] = []
+    metrics: dict[str, int] = {}
+
+    files = sorted(path for path in CORPUS.rglob("*") if path.is_file())
+    markdown = [path for path in files if path.suffix == ".md"]
+    metrics["active_files"] = len(files)
+    metrics["markdown_files"] = len(markdown)
+
+    # 🔴 순서가 곧 출력이다 — 오류는 쌓인 순서대로 찍힌다.
+    for phase in (
+        check_after_manifest(files),
+        check_tree_hygiene(files),
+        check_aspect_directories(),
+    ):
+        absorb(phase, errors, warnings, metrics)
 
     curated = sorted(ASPECTS.rglob("*.md"))
     verified_count = 0
@@ -617,29 +775,8 @@ def main() -> int:
             errors.append(f"verified versioned/volatile document missing review_due: {path.relative_to(ROOT)}")
     metrics["verified_documents_total"] = len(verified_documents)
 
-    registry_ids: set[str] = set()
-    if not SOURCE_REGISTRY.is_file():
-        errors.append("missing source registry")
-    else:
-        for number, line in enumerate(SOURCE_REGISTRY.read_text(encoding="utf-8").splitlines(), 1):
-            if not line.strip():
-                continue
-            try:
-                record = json.loads(line)
-            except json.JSONDecodeError as exc:
-                errors.append(f"invalid source JSONL line {number}: {exc}")
-                continue
-            missing_keys = {"id", "title", "publisher", "url", "source_type", "authority_for", "accessed_at", "freshness"} - set(record)
-            if missing_keys:
-                errors.append(f"source line {number} missing {sorted(missing_keys)}")
-            source_id = record.get("id")
-            if source_id in registry_ids:
-                errors.append(f"duplicate source id: {source_id}")
-            if source_id:
-                registry_ids.add(source_id)
-            if not str(record.get("url", "")).startswith("https://"):
-                errors.append(f"source URL must be HTTPS: {source_id}")
-    metrics["registered_sources"] = len(registry_ids)
+    registry_phase, registry_ids = check_source_registry()
+    absorb(registry_phase, errors, warnings, metrics)
 
     verified_source_refs = 0
     verified_claim_rows = 0
@@ -686,42 +823,13 @@ def main() -> int:
     # 없으면 "어디까지 확인된 것인지" 를 기계로 물을 수 없고, 사슬이 그 문서에서 조용히 끝난다.
     # 2026-08-26 실측: 그 상태로 GHW-012(폐기 문서 인용)와 IPC-001~003(앵커 없는 🟢)이 서 있었다.
     # 아래 셋은 예외다 — 스키마·정책·역사 기록이라 claim 이 성립하지 않는다.
-    claimless_ok = CLAIMLESS_OK
-    direction_dir = ROOT / "direction"
-    if direction_dir.is_dir():
-        for path in sorted(direction_dir.glob("*.md")):
-            text = path.read_text(encoding="utf-8")
-            for rel in set(re.findall(r"corpus/([A-Za-z0-9_./-]+\.md)", text)):
-                target = CORPUS / rel
-                if target.name in claimless_ok or not target.is_file():
-                    continue
-                # "절차 포인터" 로 표시된 인용은 근거 인용이 아니므로 면제한다.
-                if f"{rel.rsplit('/', 1)[-1]}" in text and "절차 포인터" in text:
-                    continue
-                count, _ = claim_table_errors(target.read_text(encoding="utf-8"), registry_ids)
-                if not count:
-                    errors.append(
-                        f"direction cites a claim-less corpus document: "
-                        f"{path.relative_to(ROOT)} -> corpus/{rel}"
-                    )
-
+    for phase in (
+        check_direction_citations(registry_ids),
+        check_internal_links(markdown),
+    ):
+        absorb(phase, errors, warnings, metrics)
     external_urls = extract_external_urls(CORPUS)
-    broken_internal_count = 0
-    for path in markdown:
-        text = path.read_text(encoding="utf-8")
-        for raw_target in LINK_RE.findall(text):
-            target = raw_target.strip().split()[0].strip("<>")
-            if target.startswith(("http://", "https://", "mailto:", "#")):
-                continue
-            target = unquote(target.split("#", 1)[0])
-            if not target:
-                continue
-            resolved = (path.parent / target).resolve()
-            if not resolved.exists():
-                broken_internal_count += 1
-                errors.append(f"broken internal link: {path.relative_to(ROOT)} -> {raw_target}")
     metrics["external_urls"] = len(external_urls)
-    metrics["broken_internal_links"] = broken_internal_count
     external_check, external_counts, external_warnings, external_errors = validate_external_url_ledger(
         external_urls
     )
@@ -730,41 +838,12 @@ def main() -> int:
     warnings.extend(external_warnings)
     errors.extend(external_errors)
 
-    repeated_sections: dict[str, list[tuple[Path, str]]] = defaultdict(list)
-    for path in markdown:
-        for heading, normalized in normalized_h2_sections(path):
-            repeated_sections[hashlib.sha256(normalized.encode("utf-8")).hexdigest()].append(
-                (path, heading)
-            )
-    repeated_groups = [rows for rows in repeated_sections.values() if len(rows) > 1]
-    metrics["exact_repeated_section_groups"] = len(repeated_groups)
-    for section_group in repeated_groups:
-        errors.append(
-            "exact repeated substantial section: "
-            + ", ".join(f"{p.relative_to(ROOT)}#{h}" for p, h in section_group)
-        )
-
-    legacy_patterns = {
-        "gingoa_applied:": re.compile(r"(?m)^gingoa_applied:"),
-        "Implications for gingoa": re.compile(r"(?mi)^##\s+Implications for gingoa\s*$"),
-        "gingoa application": re.compile(r"(?mi)^##\s+gingoa application\s*$"),
-    }
-    for path in curated:
-        text = path.read_text(encoding="utf-8")
-        for label, pattern in legacy_patterns.items():
-            if pattern.search(text):
-                errors.append(f"legacy project section/field {label}: {path.relative_to(ROOT)}")
-
-    stale_anchor_files: list[tuple[Path, str]] = []
-    for path in markdown:
-        warning = iso_12207_edition_warning(path.read_text(encoding="utf-8"))
-        if warning:
-            stale_anchor_files.append((path, warning))
-    if stale_anchor_files:
-        warnings.extend(
-            f"{warning}: {path.relative_to(ROOT)}" for path, warning in stale_anchor_files
-        )
-    metrics["iso_12207_edition_warnings"] = len(stale_anchor_files)
+    for phase in (
+        check_repeated_sections(markdown),
+        check_legacy_sections(curated),
+        check_iso_anchors(markdown),
+    ):
+        absorb(phase, errors, warnings, metrics)
 
     print("Corpus validation")
     for key in sorted(metrics):
