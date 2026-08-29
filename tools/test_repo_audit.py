@@ -307,3 +307,36 @@ class TestWallCompleteness(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RepoSelection(unittest.TestCase):
+    """`--repo` 가 대상을 고르고 **우리 묶음 전용 검사를 꺼는가.**
+
+    🔴 남의 저장소에 우리 거버넌스(라벨·`AGENTS.md`)를 요구하면 그건 감사가 아니라 참견이다.
+    그리고 그 저장소는 **영원히 빨간불**이 되어 감사기가 무시당한다.
+    """
+
+    def test_no_argument_audits_our_four(self) -> None:
+        repos, ours = repo_audit.selected([])
+        self.assertEqual(repos, list(repo_audit.REPOS))
+        self.assertTrue(ours, "우리 묶음이면 라벨·문서 검사가 돌아야 한다")
+
+    def test_repo_argument_turns_our_only_checks_off(self) -> None:
+        repos, ours = repo_audit.selected(["someone/thing"])
+        self.assertEqual(repos, ["someone/thing"])
+        self.assertFalse(ours, "남의 저장소에 우리 거버넌스를 요구하면 안 된다")
+
+    def test_bare_name_defaults_to_our_owner(self) -> None:
+        repos, _ = repo_audit.selected(["divcal"])
+        self.assertEqual(repos, ["coolbress/divcal"])
+
+    def test_repeated_flag_accumulates(self) -> None:
+        repos, _ = repo_audit.selected(["a/b", "c"])
+        self.assertEqual(repos, ["a/b", "coolbress/c"])
+
+    def test_our_four_list_matches_the_audited_set(self) -> None:
+        """🔴 `OURS` 와 `REPOS` 가 갈리면 라벨 검사가 엉뚱한 집합을 본다."""
+        self.assertEqual(
+            sorted(repo_audit.OURS),
+            sorted(r.split("/", 1)[1] for r in repo_audit.REPOS),
+        )

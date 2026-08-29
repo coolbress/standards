@@ -11,6 +11,7 @@ workflow 하나만 믿지 않는다"* 고 규정한다. 감사 대상이 감사�
 
 from __future__ import annotations
 
+import argparse
 import base64
 import json
 import os
@@ -339,10 +340,38 @@ def archetype_vocabulary_drift() -> list[str]:
     return []
 
 
-def main() -> int:
+#: 우리 네 저장소. `--repo` 없이 부르면 이 묶음을 본다.
+OURS = ("standards", "workflows", "project-template", "divcal")
+
+
+def selected(repo_args: list[str]) -> tuple[list[str], bool]:
+    """무엇을 감사할지 정한다. 낸 것: `(저장소 목록, 우리 묶음인가)`.
+
+    🔴 **`--repo` 가 오면 우리 묶음 전용 검사는 건너뛴다.** 라벨(R5-37)과 문서 묶음(R5-38)은
+    *우리 거버넌스* 의 사실이지 남의 저장소에 요구할 것이 아니다 —
+    남의 저장소에 우리 규율을 강요하면 그건 감사가 아니라 참견이다.
+
+    ⚠️ 남의 저장소에는 **기본 기대값**(`PROJECT_CHECKS`·`PROJECT_ACTION_PATTERNS`)이 걸린다.
+    실측으로 그것만으로 충분했다 — `divcal` 이 그대로 통과했다(2026-08-28).
+    """
+    if not repo_args:
+        return list(REPOS), True
+    return [r if "/" in r else f"coolbress/{r}" for r in repo_args], False
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="저장소의 서버 바닥을 감사한다 — 읽기 전용. 대상 저장소 밖에서 돈다.")
+    parser.add_argument(
+        "--repo", action="append", default=[], metavar="OWNER/NAME",
+        help="이 저장소만 본다 (반복 가능). 생략하면 우리 네 저장소. "
+             "`owner/` 를 빼면 coolbress 로 친다")
+    args = parser.parse_args(argv)
+    repos, ours = selected(args.repo)
+
     drift = 0
     unknowns = 0
-    for repo in REPOS:
+    for repo in repos:
         problems, unknown = audit(repo)
         drift += len(problems)
         unknowns += len(unknown)
@@ -352,11 +381,18 @@ def main() -> int:
             print(f"     {p}")
         for u in unknown:
             print(f"     ⚪ {u}")
+    if not ours:
+        print(f"\nMETRIC audited={len(repos)} findings={drift} unknown={unknowns}")
+        print("⚪ 우리 묶음 전용 검사(라벨·문서 묶음)는 건너뛴다 — 남의 거버넌스가 아니다")
+        print("RESULT " + ("DRIFT" if drift else "CLEAN")
+              + " — 기본 기대값으로 봤다 (PROJECT_CHECKS · PROJECT_ACTION_PATTERNS)")
+        return 1 if drift else 0
+
     # R5-37: 회부 기록 수단(라벨)이 **실제로 깔려 있나.** 서버 사실이라 여기서 본다 —
     # 단위 시험은 네트워크를 안 탄다.
     from check_decision_referrals import LABEL, RESIMPLE, labels_installed
 
-    no_labels = [r for r in ("standards", "workflows", "project-template", "divcal")
+    no_labels = [r for r in OURS
                  if not labels_installed(r)]
     if no_labels:
         print(f"🔴 회부 기록 수단 — 라벨 미설치: {', '.join(no_labels)} "
@@ -370,7 +406,7 @@ def main() -> int:
     # `AGENTS.md` 없이 서 있었다(`POC-001` — 측정된 계획 산출물 중 채택률 1위).
     # 🔵 `CLAUDE.md` 가 **심볼릭 링크인지**까지 본다 — 사본을 두면 둘이 갈린다(`CAS-001`).
     doc_gaps: list[str] = []
-    for repo in ("standards", "workflows", "project-template", "divcal"):
+    for repo in OURS:
         agents = gh(f"repos/coolbress/{repo}/contents/AGENTS.md")
         if agents is None:
             doc_gaps.append(f"{repo}: AGENTS.md 가 없다")
