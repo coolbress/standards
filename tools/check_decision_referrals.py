@@ -38,10 +38,31 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 REPOS = ("standards", "workflows", "project-template", "divcal")
 LABEL = "decision"
 RESIMPLE = "needs-simpler"
+
+#: 회부의 **종류**. 12-Factor Agents Factor 7 계열의 HITL 분류를 그대로 쓴다 —
+#: 셋은 **트리거도 대기 방식도 다르다**. 한 통에 담으면 긴급도가 안 보인다.
+KINDS = {
+    "decision:approval": "되돌리기 어려운 행동의 가부",
+    "decision:input": "에이전트에게 없는 정보·취향",
+    "decision:escalation": "막혔다 — 권한 없음 · 반복 실패",
+}
+
+#: 답이 **어느 경로로 왔는지**. 원문: *"Log everything — who approved what, when, via which channel."*
+#: 🔴 대화로 온 답을 내가 옮겨 적으면, **내가 정확히 옮겼는지를 아무도 검증할 수 없다.**
+#: 그 사실 자체를 남긴다.
+CHANNEL_MARKER = "채널:"
+
+#: 닫힌 회부는 **커밋된 기록**을 남겨야 한다. 이슈는 저장소 밖이라 diff 도 PR 리뷰도 없다 —
+#: 코퍼스가 위키를 물리치며 든 이유가 그것이다(`decision-record-standard` §Publish).
+#: RFC 는 이슈에 살아도 되지만 **ADR 은 커밋된다.** 이 검사가 그 다리다.
+RECORD_DIRS = ("direction", "audit")
+
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def _json(args: list[str]) -> object:
@@ -70,6 +91,28 @@ def referrals(repo: str) -> list[dict[str, object]]:
     return rows if isinstance(rows, list) else []
 
 
+def kind_of(issue: dict[str, object]) -> str | None:
+    for lbl in issue.get("labels") or []:
+        name = lbl.get("name")
+        if name in KINDS:
+            return name
+    return None
+
+
+def has_channel(issue: dict[str, object]) -> bool:
+    return any(CHANNEL_MARKER in (c.get("body") or "") for c in (issue.get("comments") or []))
+
+
+def committed_records(root: Path) -> str:
+    """`direction/`·`audit/` 의 본문을 통째로 읽는다 — 이슈 번호가 인용됐는지 보려고."""
+    chunks: list[str] = []
+    for name in RECORD_DIRS:
+        folder = root / name
+        if folder.is_dir():
+            chunks.extend(p.read_text(encoding="utf-8") for p in folder.rglob("*.md"))
+    return "\n".join(chunks)
+
+
 def summarise(rows: list[tuple[str, dict[str, object]]]) -> dict[str, int]:
     """세는 부분만 떼어낸다 — **네트워크 없이 시험할 수 있게.**
 
@@ -80,8 +123,31 @@ def summarise(rows: list[tuple[str, dict[str, object]]]) -> dict[str, int]:
     resimple = [i for _, i in rows
                 if any(lbl.get("name") == RESIMPLE for lbl in (i.get("labels") or []))]
     answered = [i for i in closed if len(i.get("comments") or [])]
-    return {"total": len(rows), "closed": len(closed),
-            "resimple": len(resimple), "answered": len(answered)}
+    unkinded = [i for _, i in rows if kind_of(i) is None]
+    no_channel = [i for i in closed if not has_channel(i)]
+    counts = {"total": len(rows), "closed": len(closed), "resimple": len(resimple),
+              "answered": len(answered), "unkinded": len(unkinded),
+              "no_channel": len(no_channel)}
+    for kind in KINDS:
+        counts[kind] = sum(1 for _, i in rows if kind_of(i) == kind)
+    return counts
+
+
+def unbridged(rows: list[tuple[str, dict[str, object]]], records: str) -> list[tuple[str, int]]:
+    """닫혔는데 **커밋된 기록에 인용되지 않은** 회부.
+
+    🔴 이게 이 도구의 핵심 다리다. RFC 는 이슈에 살아도 되지만 **결정은 커밋돼야** 한다 —
+    안 그러면 *왜 그렇게 정했는지* 가 저장소 밖에만 남아 diff 도 PR 리뷰도 못 받는다.
+    지금까지 그게 지켜진 것은 **우연이었고, 우연은 규율이 아니다.**
+    """
+    out: list[tuple[str, int]] = []
+    for repo, issue in rows:
+        if issue.get("state") != "CLOSED":
+            continue
+        number = issue.get("number")
+        if f"#{number}" not in records and f"issues/{number}" not in records:
+            out.append((repo, int(number or 0)))
+    return out
 
 
 def main() -> int:
@@ -100,6 +166,7 @@ def main() -> int:
     counts = summarise(rows)
     total, n_closed = counts["total"], counts["closed"]
     n_resimple, n_answered = counts["resimple"], counts["answered"]
+    gaps = unbridged(rows, committed_records(ROOT))
 
     print(f"\n  분모 — 회부된 결정 {total}건 (열림 {total - n_closed} · 닫힘 {n_closed})")
     for repo, issue in rows[:8]:
@@ -117,14 +184,34 @@ def main() -> int:
         print(f"\n  ⓐ 되묻지 않고 판단 — 닫힌 {n_closed}건 중 {n_closed - n_resimple}건 ({rate})")
         print(f"  ⓑ 재요청(`{RESIMPLE}`) — {n_resimple}건")
         print(f"     ⚠️ 닫혔는데 답 코멘트가 없는 회부 {n_closed - n_answered}건")
+
+        print("\n  종류 — 셋은 트리거도 대기 방식도 다르다")
+        for kind, why in KINDS.items():
+            print(f"     {counts[kind]:2d}건  {kind:22s} {why}")
+        if counts["unkinded"]:
+            print(f"     🔴 종류가 안 붙은 회부 {counts['unkinded']}건 — "
+                  "긴급도를 못 가린다")
+
+        print(f"\n  다리 — 닫힌 회부가 커밋된 기록({'·'.join(RECORD_DIRS)}/)에 남았나")
+        for repo, number in gaps:
+            print(f"     🔴 {repo}#{number} — 결정이 **이슈 안에만** 있다")
+        if not gaps and n_closed:
+            print("     ✅ 닫힌 회부 전부 커밋된 기록에 인용돼 있다")
+        if counts["no_channel"]:
+            print(f"     🔶 답의 출처 채널(`{CHANNEL_MARKER}`)이 없는 회부 {counts['no_channel']}건")
     else:
         print("\n  ⚠️ 회부가 0건이다 — 계기는 달렸고 **눈금이 아직 안 움직였다.**")
         print("     회부 자체가 없었는지, 아니면 다른 데(대화·PR 본문)에 남겼는지는 이 도구가 못 가린다.")
 
     print(f"\nMETRIC referrals={total} closed={n_closed} resimple={n_resimple} "
-          f"labels_missing={len(missing)}")
+          f"unkinded={counts['unkinded']} unbridged={len(gaps)} "
+          f"no_channel={counts['no_channel']} labels_missing={len(missing)}")
     if missing:
         print("RESULT FAIL — 수단이 설치되지 않았다. 계기가 없는 것과 눈금이 0 인 것은 다르다")
+        return 1
+    if gaps:
+        print("RESULT FAIL — 닫힌 회부의 결정이 커밋된 기록에 없다. "
+              "RFC 는 이슈에 살아도 되지만 **결정은 커밋된다**")
         return 1
     print("RESULT INFO — 계기판이다. 판정은 2주 관측 뒤에 한다")
     return 0

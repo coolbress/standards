@@ -90,3 +90,67 @@ class CountingWorksOnBothPaths(unittest.TestCase):
 
     def test_empty_input_does_not_crash(self) -> None:
         self.assertEqual(mod.summarise([])["total"], 0)
+
+
+class ThreeKindsNotOne(unittest.TestCase):
+    """회부는 한 종류가 아니다 — Approval · Input · Escalation 은 **트리거도 대기 방식도 다르다.**"""
+
+    def test_three_kinds_are_defined(self) -> None:
+        self.assertEqual(
+            set(mod.KINDS), {"decision:approval", "decision:input", "decision:escalation"}
+        )
+
+    def test_kind_is_read_from_labels(self) -> None:
+        issue = {"labels": [{"name": mod.LABEL}, {"name": "decision:escalation"}]}
+        self.assertEqual(mod.kind_of(issue), "decision:escalation")
+
+    def test_missing_kind_is_detected(self) -> None:
+        """종류가 없으면 **긴급도를 못 가린다.**"""
+        self.assertIsNone(mod.kind_of({"labels": [{"name": mod.LABEL}]}))
+
+    def test_summarise_counts_each_kind(self) -> None:
+        rows = [("s", {"state": "OPEN", "labels": [{"name": "decision:input"}], "comments": []}),
+                ("s", {"state": "OPEN", "labels": [{"name": "decision:input"}], "comments": []}),
+                ("s", {"state": "OPEN", "labels": [], "comments": []})]
+        got = mod.summarise(rows)
+        self.assertEqual((got["decision:input"], got["unkinded"]), (2, 1))
+
+
+class ChannelIsRecorded(unittest.TestCase):
+    """*"who approved what, when, **via which channel**"* — 대화로 온 답을 옮기면
+    **내가 정확히 옮겼는지를 아무도 검증할 수 없다.** 그 사실을 남긴다."""
+
+    def test_channel_marker_is_found_in_any_comment(self) -> None:
+        issue = {"comments": [{"body": "일반 답"}, {"body": f"{mod.CHANNEL_MARKER} 대화"}]}
+        self.assertTrue(mod.has_channel(issue))
+
+    def test_absent_channel_is_detected(self) -> None:
+        self.assertFalse(mod.has_channel({"comments": [{"body": "그냥 답"}]}))
+
+
+class TheBridgeToCommittedRecords(unittest.TestCase):
+    """🔴 **RFC 는 이슈에 살아도 되지만 결정은 커밋된다.**
+
+    이슈는 저장소 밖이라 diff 도 PR 리뷰도 없다 — 코퍼스가 위키를 물리치며 든 이유다.
+    지금까지 지켜진 건 **우연이었고, 우연은 규율이 아니다.**
+    """
+
+    def test_closed_referral_cited_in_records_passes(self) -> None:
+        rows = [("standards", {"state": "CLOSED", "number": 141, "labels": [], "comments": []})]
+        self.assertEqual(mod.unbridged(rows, "…를 #141 에서 정했다…"), [])
+
+    def test_closed_referral_absent_from_records_is_caught(self) -> None:
+        rows = [("standards", {"state": "CLOSED", "number": 999, "labels": [], "comments": []})]
+        self.assertEqual(mod.unbridged(rows, "관계 없는 본문"), [("standards", 999)])
+
+    def test_open_referral_needs_no_record_yet(self) -> None:
+        """아직 안 정해진 것에 기록을 요구하면 검사가 소음이 된다."""
+        rows = [("standards", {"state": "OPEN", "number": 999, "labels": [], "comments": []})]
+        self.assertEqual(mod.unbridged(rows, ""), [])
+
+    def test_issue_url_form_also_counts(self) -> None:
+        rows = [("standards", {"state": "CLOSED", "number": 141, "labels": [], "comments": []})]
+        self.assertEqual(mod.unbridged(rows, "…/issues/141 참조…"), [])
+
+    def test_record_dirs_are_committed_ones(self) -> None:
+        self.assertEqual(set(mod.RECORD_DIRS), {"direction", "audit"})
