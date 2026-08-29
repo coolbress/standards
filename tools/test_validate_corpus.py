@@ -161,7 +161,6 @@ class GatedArchetypes(unittest.TestCase):
     """
 
     def _errs(self, body: str) -> list[str]:
-        from pathlib import Path
 
         import validate_corpus as vc
 

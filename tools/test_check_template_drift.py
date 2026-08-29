@@ -12,7 +12,7 @@ import unittest
 
 import pathlib
 
-from check_template_drift import ANSWERS, GENERATOR_ONLY, SUBDIR, _emitted, shared
+from check_template_drift import ANSWERS, GENERATOR_ONLY, _emitted, shared
 
 SOURCE = pathlib.Path(__file__).resolve().parent / "check_template_drift.py"
 
