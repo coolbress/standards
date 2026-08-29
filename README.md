@@ -2,9 +2,10 @@
 
 **소프트웨어를 현업 개발팀처럼 만들기 위한 근거·계보·방향 저장소.**
 
-> **목적 한 줄**(정본은 [`direction/01`](direction/01-what-i-want.md)):
-> *리서치로 찾은 현업 기준점을 따라 **비엔지니어가 에이전트로** 프로젝트를 굴리고,
-> **최종 산출물이 시니어 엔지니어급**이 되며, 그 과정에서 **내가 맥락을 잃지 않는 것.***
+> **목적 한 줄** — 정본은 [`direction/01`](direction/01-what-i-want.md) 이고, 아래는 **그대로 옮긴 것**이다
+> (`tools/check_purpose_sync.py` 가 둘이 갈리는 것을 막는다):
+>
+> **리서치로 찾은 현업 기준점과 밖에 선 품질 장벽을 써서, 비엔지니어가 목적과 결정권을 잃지 않고 에이전트와 프로젝트를 끝까지 굴리며, 시니어가 검토하고 인수할 수 있는 산출물을 반복해서 내고, 그 방식을 남이 설치해서 쓸 수 있게 포장하는 것.**
 
 하네스 **6세대**(claudeck-v1 → claudeck → gingoa → codex-native → goppi → goppi_final)에서 살아남은 것을 모았다.
 목적은 네 가지다:
@@ -46,7 +47,23 @@
 | 하네스가 자기 실패를 증명한 시험 | [`corpus/census-data/harness-confirmation-trial/`](corpus/census-data/harness-confirmation-trial/) |
 | 아직 빈 곳 | [`audit/GAPS.ko.md`](audit/GAPS.ko.md) |
 
-## 층위
+## 무엇을 지었나 — **네 층, 사는 곳이 다르다**
+
+**이 저장소는 그중 한 층이다.** 나머지 셋은 다른 저장소에 산다.
+
+```
+🔒 벽     GitHub 서버              에이전트가 못 끈다        coolbress/workflows + ruleset
+📦 상자   copier 템플릿            한 번 렌더, 인스턴스 소유  coolbress/project-template
+🤝 안내   플러그인 둘              모델이 읽고 고른다        coolbress/workflows 안
+📚 근거   ⭐ 여기                  왜 이 규칙이 있나         coolbress/standards
+```
+
+🔴 **벽은 플러그인에 안 들어간다.** 들어가는 순간 에이전트가 끌 수 있고, **끌 수 있으면 벽이 아니다.**
+
+**보장이 셋으로 갈린다** — 인식은 **훅**(결정적) · 선택은 **스킬**(모델 자유) · 판정은 **벽**(우회 불가).
+> *"안 쓰면 걸린다" 가 아니라 — **"안 써도 결과로 걸린다."***
+
+## 이 저장소의 층위
 
 ```
 direction/        ⭐ 결론 — 앞으로 어디로 가는가. 주장에 근거를 건다
