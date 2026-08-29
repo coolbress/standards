@@ -213,6 +213,19 @@ HITL 분류(12-Factor Agents Factor 7 계열)를 그대로 쓴다. 한 통에 �
 
 **묻는 것은 셋뿐이다** — 되돌리기 어렵거나 · 소유자 취향이 갈리거나 · **내가 권한이 없거나.**
 
+### 🚫 회부 폼은 템플릿에 안 넣는다 (2026-08-29 · [#148](https://github.com/coolbress/standards/issues/148))
+
+라벨(`decision`·`decision:*`·`needs-simpler`)은 `new-project.sh` 가 만든다 — **없으면 기능이 안 돈다**(배관).
+**이슈 폼(`decision.yml`)은 안 넣는다:**
+
+- 🔴 **census 표준은 `bug` + `feature` 두 폼**이다(측면 24). `task` 가 이미 add-on 이고
+  `decision` 을 더하면 **넷** — 표준에서 두 칸 멀어진다
+- **폼을 채우는 주체가 사람이 아니라 에이전트다.** 에이전트에게는 이 문서의 규정이
+  폼보다 강하다(읽고 따르므로). 폼은 *사람이 채울 때* 값을 한다
+- 안 쓰는 프로젝트에 빈 폼이 남으면 `presence ≠ adequacy`(`C50-14`) 그 자체다
+
+**다시 여는 조건**: 사람 기여자가 둘 이상이 되거나, 회부 본문의 품질이 실제로 흔들릴 때.
+
 ### 답이 오면 — **채널을 적는다**
 
 원문: *"Log everything — who approved what, when, **via which channel**."*
