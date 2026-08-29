@@ -449,6 +449,12 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
   `required_approving_review_count: 0`). [`01`](01-what-i-want.md) 경계 ②(*"동료 리뷰를 시뮬레이션하지 않는다"*)에 걸린다 —
   **파일은 있고 집행은 없는 것이 `presence≠adequacy` 그 자체다.** 다시 여는 조건: **기여자 2인 이상** 또는 `require_code_owner_review` 활성화.
 - **SBOM** — ✅ **부재가 맞다.** 이 프로젝트는 **EO 14028·CRA 적용 대상이 아니고**, OSPS 도 **L3** 에 둔다(`FFA-002`).
+- 🆕 **`performance` · `patterns` · `coding-style`** (2026-08-29 · [`ECC-CATALOG-READING`](../audit/ECC-CATALOG-READING.ko.md))
+  — **축이 다르다.** ECC 의 `rules/common/` 10개를 이 바닥과 대조하니 셋이 여기 없었는데, 그건 누락이 아니다:
+  저쪽은 ***"코드를 어떻게 쓰나"*** 이고 이 문서는 ***"저장소에 무엇이 남나"*** 다.
+  `coding-style` 은 **린터가 대신한다**(`ruff.toml` 12규칙군 — 문장이 아니라 검사다).
+  🔵 **반대 방향도 실측했다** — 라이선스·릴리스·거버넌스·설정·시크릿·빌드·의존성·온보딩은 **저쪽에 없다.**
+  **대체 관계가 아니라 보완이다.** 다시 여는 조건: 성능이 **산출물의 조건**이 되는 아키타입(`web`·`backend`)을 처음 맡을 때.
 
 ## 이 중 무엇이 **자동으로** 채워지나
 

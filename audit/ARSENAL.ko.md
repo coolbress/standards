@@ -34,10 +34,10 @@
 | [Matt Pocock Skills](https://github.com/mattpocock/skills) | 인터뷰 · 스펙 · 티켓 · TDD · 리뷰 | 스킬 | 🟢 **항목별 채택** — 대조는 [`SKILL-OVERLAP`](SKILL-OVERLAP.ko.md) |
 | [Ponytail](https://github.com/DietrichGebert/ponytail) | 먼저 찾고 최소한으로 구현 | 스킬 | 🟡 **구현 과제에서 시험** |
 | [last30days](https://github.com/mvanhorn/last30days-skill) | 최근 반응과 새 후보 찾기 | 스킬 | 🟡 **후보 발견 전용** — 🔴 **판정에는 쓰지 않는다**(아래 §3) |
-| [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) | 도구 카탈로그 | 목록 | 🟡 **카탈로그로만** — 전체 설치 안 함 |
+| [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) | 도구 카탈로그 | 목록 | 🟢 **카탈로그로 읽었다 (2026-08-29)** — 기록은 [`ECC-CATALOG-READING`](ECC-CATALOG-READING.ko.md). 셋을 가져오고 넷을 버렸다. **전체 설치는 여전히 안 함** — 파일 3,505개이고 **자기를 하네스라 부른다** |
 | [Ouroboros](https://github.com/Q00/ouroboros) | 인터뷰부터 실행까지 Agent OS | 하네스 | 🔴 **전체 도입 보류** — 인터뷰 방식만 비교. **일곱 번째 하네스를 들이지 않는다** |
 | [Caveman](https://github.com/JuliusBrussee/caveman) | 짧게 설명 · 컨텍스트 축소 | 스킬+proxy | 🔴 **무거운 proxy 보류** — 간결성만 시험 |
-| Taste · [frontend-design](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design) · [Impeccable](https://github.com/pbakaus/impeccable) | 프론트엔드 품질 | 스킬/플러그인 | 🟡 **같은 화면 과제로 비교해 하나만** — 셋을 동시에 켜지 않는다 |
+| 🔄 **[Taste Skill](https://github.com/Leonxlnx/taste-skill)**([tasteskill.dev](https://www.tasteskill.dev/)) · [frontend-design](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design) · [Impeccable](https://github.com/pbakaus/impeccable) | 프론트엔드 품질 — *anti-slop* | 스킬/플러그인 | 🟡 **같은 화면 과제로 비교해 하나만.** 🔴 **정정 2026-08-29 — 이 행이 *이름만* 적혀 있어서 엉뚱한 것을 가리켰다**: ECC 안의 `skills/taste` 는 **뮤직비디오 편집** 스킬이다. 소유자가 가리킨 것은 `Leonxlnx/taste-skill`(⭐82,005 · MIT · **이미 Claude Code 플러그인** · 스킬 13개)이고, **비교는 프론트엔드 과제가 생길 때 한다**(§4 8번). 실측은 [`ECC-CATALOG-READING`](ECC-CATALOG-READING.ko.md) §4 |
 | Herdr | 여러 터미널·에이전트 보기 | 화면 관리 | 🟡 관찰이 필요할 때 |
 | Ghostty | 터미널 | 화면 | 🟢 사용 중 |
 | **직접 만든 도구** | 외부 도구 사이의 빈틈 | — | 🔴 **빈틈이 실제로 확인됐을 때만.** 원칙: 규칙 1(*만들기 전에 먼저 찾는다*) |
@@ -95,6 +95,11 @@
 고정한 버전이나 commit · 대표 시험 결과 · 켜는 조건 · 같은 일을 하는 다른 후보 · 필요한 권한 ·
 시간/토큰/돈 · 다시 확인할 때 · **버릴 조건**.
 
+> 🔴 **후보는 *이름* 이 아니라 *저장소* 로 적는다** (2026-08-29 신설).
+> 이 대장의 *Taste* 행이 이름만 들고 있어서 **엉뚱한 물건을 가리켰다** — 같은 이름의 다른 스킬이 최소 둘이다
+> ([`ECC-CATALOG-READING`](ECC-CATALOG-READING.ko.md) §3). `direction/` 이 코퍼스를 **경로로** 인용해야 하는 것과
+> **같은 형태의 결함**이고, 그쪽은 `check_name_only_citations` 가 막는다. **여기는 아직 사람이 지킨다.**
+
 ## 5. 🗑 덜어낼 것 — 그리고 지금 어디에 있나
 
 *"가볍게 만들기 위해 뺄 것"* 일곱 가지. **덜어내기도 결정이므로 추적한다.**
@@ -147,3 +152,30 @@
 처음엔 *"에이전트는 `env -u GH_TOKEN` 을 안 쓴다"* 는 **규율**로 막으려 했는데,
 `security find-generic-password -w` 로 **`gh` 를 안 거치고도 프롬프트 없이 뚫렸다.**
 **규율로 막을 수 있는 것과 없는 것을 가르는 자리가 여기였다.**
+
+## 7. Loadout 의 실물 — **필드 셋** (2026-08-29 신설)
+
+§1 의 *Loadout*(오늘 필요한 것만 담은 가방)은 **개념만 있고 구현이 없었다.**
+[`ECC-CATALOG-READING`](ECC-CATALOG-READING.ko.md) §1ⓑ 에서 가져온다 — ECC 는 §4 의 열한 문항 중
+**두 개를 기계가 읽는 필드로** 만들었다.
+
+**후보마다 이 셋을 적는다:**
+
+| 필드 | 값 | 무엇을 답하나 |
+|---|---|---|
+| `cost` | `light` · `medium` · `heavy` | §4 **9번**(시간·토큰·돈). 🔴 **재는 것은 상시 부담이다** — 스킬은 프론트매터, MCP 는 도구 정의. 실측 단위를 같이 적는다 |
+| `stability` | `stable` · `beta` · `experimental` | 얼마나 믿고 켜나 |
+| `defaultInstall` | 예 · 아니오 | **가방에 기본으로 넣나** — 이게 Loadout 그 자체다 |
+
+**지금 값** (실측한 것만 적는다 — 나머지는 재고 나서 채운다):
+
+| 후보 | `cost` | `stability` | `defaultInstall` |
+|---|---|---|---|
+| [Matt Pocock Skills](https://github.com/mattpocock/skills) | **light** — 프론트매터 35개 **≈1,841토큰**(본문 149KB 는 필요할 때만) | stable | ⬜ 미정 (`GAPS` R5-24) |
+| MCP 서버 일반 | 🔴 **heavy** — 도구 정의가 **컨텍스트에 영구 상주**, 개당 150~600토큰 · 매 호출 지불 | — | ❌ **아니오** |
+| [Taste Skill](https://github.com/Leonxlnx/taste-skill) | ⬜ 미측정 | ⚠️ v2 **실험판**(v1 은 legacy) | ❌ 아니오 — 프론트엔드 과제가 생길 때 비교 |
+| [ECC](https://github.com/affaan-m/everything-claude-code) | 🔴 **heavy** — 파일 3,505 · `SKILL.md` 898 | stable | ❌ **아니오 — 카탈로그로만** |
+
+🔴 **프로필은 둘까지만 만든다.** ECC 는 **7개 · 모듈 36개**다. 우리가 그 수를 따라가면 그게 하네스다
+(대전제 2). 우리 둘은 **기본**(안내 + 커맨드)과 **`+훅`**(만들 것 ⑦ 옵트인)이다 —
+🔵 **ECC 도 `minimal`·`opencode` 프로필에서 훅 런타임을 *일부러* 뺀다**(§ⓐ 실측).
