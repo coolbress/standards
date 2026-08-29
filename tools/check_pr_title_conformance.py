@@ -101,7 +101,8 @@ def merged_prs(repo: str) -> list[dict[str, str]]:
          "--limit", LIMIT, "--json", "number,title,mergedAt"],
         capture_output=True, text=True, check=False,
     ).stdout
-    return json.loads(out or "[]")
+    rows: list[dict[str, str]] = json.loads(out or "[]")
+    return rows
 
 
 def main() -> int:

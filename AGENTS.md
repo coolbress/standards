@@ -11,6 +11,7 @@ node    tools/build-routes.mjs            # ROUTES.jsonl 재생성
 python3 tools/validate_corpus.py          # 스키마 · claim · 인용 사슬 · URL 원장
 python3 -m unittest discover -s tools -p 'test_*.py'
 ruff check tools/                         # 규칙은 ruff.toml 이 정본 (12군)
+mypy                                      # 설정은 mypy.ini 가 정본 (strict)
 ```
 
 나머지 검사는 **`tools/check_*.py` 를 그냥 다 돌린다** — 목록을 여기 적으면 바로 낡는다.

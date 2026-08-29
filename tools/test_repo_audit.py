@@ -63,12 +63,12 @@ repo_audit.EXPECTED_ACTION_PATTERNS["x"] = []
 def _both(overrides: dict[str, Any], status: int = 200) -> tuple[list[str], list[str]]:
     table = {**CLEAN, **overrides}
     orig_gh, orig_st = repo_audit.gh, repo_audit.gh_status
-    repo_audit.gh = lambda path: table.get(path)  # type: ignore[assignment]
-    repo_audit.gh_status = lambda path: status  # type: ignore[assignment]
+    repo_audit.gh = lambda path: table.get(path)
+    repo_audit.gh_status = lambda path: status
     try:
         return repo_audit.audit("x")
     finally:
-        repo_audit.gh, repo_audit.gh_status = orig_gh, orig_st  # type: ignore[assignment]
+        repo_audit.gh, repo_audit.gh_status = orig_gh, orig_st
 
 
 def _run(overrides: dict[str, Any]) -> list[str]:
