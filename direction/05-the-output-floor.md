@@ -418,7 +418,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 | **빌드·의존성** | **락파일 커밋** · 의존성 버전 고정 · **Actions 를 커밋 SHA 로 핀** · **의존성 갱신 봇** · 재현 가능한 단일 빌드 진입점 · CI 에서 warnings-as-errors | 🟢 SHA 핀(`GHW-005`: *"only a full-length commit SHA is immutable"*) / 🟡 나머지는 `03`·`10` 이 소유하고 **처분이 `SPLIT`**(보편 번들 기각) |
 | **CI/CD** | 매 PR·push 에 CI · **lint·typecheck·test·build 를 각각 별도 required check 로** · 워크플로마다 `permissions:` 최소화 · `pull_request_target` + 신뢰 불가 checkout 금지 | 🟢 **우회 불가**는 git 1차 문서가 받친다(`IPW-005`) / 🔵 **4종 분리는 이 프로젝트의 선택** — `04` 의 처분(`C50-12`)이 *"4종이 보편"* 을 기각했다 |
 | **코드 품질** | 린터 설정 커밋 · **포매터를 CI 가 강제** · **SAST** · **시크릿 탐지**(gitleaks + push protection) | 🟡 린터·포매터는 원칙이 선다 / 🔵 **SAST 는 표준이 요구해서가 아니라 선택이다** — 출처가 *"a deliberate above-OSPS-L1 harness uplift … **not** because a leveled standard mandates it"* 라 명시하고, **OSPS 는 L3 에 둔다**(`FFA-001`) |
-| **테스트** | CI 초록 · **모든 PR 에 테스트** · CONTRIBUTING 에 테스트 정책 · **walking skeleton — 실제 end-to-end 한 줄기**(Cockburn) | 🟢 **동반은 강하다**(`04 foundation-floor` MUST · `08` 이 4대 검사 중 하나로) / 🟡 피라미드 비율은 **권고이지 실측이 아니다**(`PYR-001`) |
+| **테스트** | CI 초록 · **모든 PR 에 테스트** · CONTRIBUTING 에 테스트 정책 · **walking skeleton — 실제 end-to-end 한 줄기**(🟡 **Cockburn 저서** `Crystal Clear`·`Writing Effective Use Cases` — ⚠️ **원서 미열람.** 코퍼스 측면 02 의 근거는 **Medium 요약**이라 2차다. 2026-08-29 정정) | 🟢 **동반은 강하다**(`04 foundation-floor` MUST · `08` 이 4대 검사 중 하나로) / 🟡 피라미드 비율은 **권고이지 실측이 아니다**(`PYR-001`) |
 | **보안·공급망** | `SECURITY.md` · Dependabot/OSV 경보 · secret-scanning + push protection · **쓰기 권한에 MFA** · 자체 제작 암호 금지 · 취약점 SLA(medium+ ≤60일) | 🟢 MFA 는 **OSPS L1**(`FFA-003` — 단 원문 범위는 *"read or modify a **sensitive resource**"*) / 🟡 나머지는 `09`·`10` 소유, 처분 `SPLIT` |
 | **설정·시크릿** | **설정을 환경으로 외부화**(12-Factor III) · **`.env.example` 커밋 + 실제 `.env` 는 ignore** | 🟡 `06` 소유 · 처분이 *"12-Factor 는 **service 맥락**"* 이라 **모든 아키타입 적용은 기각** |
 | **개발환경·온보딩** | **README 에 clone→install→test 가 5명령 이내** · 통합 태스크 러너 · 🟡 **`Dockerfile` 은 아키타입 조건부**(아래) | 🟡 5명령은 **재는 것**이라 검사 가능 / IDP·platform 문턱은 조직별(`C50-36`) |
@@ -449,6 +449,15 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
   `required_approving_review_count: 0`). [`01`](01-what-i-want.md) 경계 ②(*"동료 리뷰를 시뮬레이션하지 않는다"*)에 걸린다 —
   **파일은 있고 집행은 없는 것이 `presence≠adequacy` 그 자체다.** 다시 여는 조건: **기여자 2인 이상** 또는 `require_code_owner_review` 활성화.
 - **SBOM** — ✅ **부재가 맞다.** 이 프로젝트는 **EO 14028·CRA 적용 대상이 아니고**, OSPS 도 **L3** 에 둔다(`FFA-002`).
+- 🆕 **복잡도 게이트(cyclomatic complexity 상한)** — 🔴 **기각 2026-08-29. 근거가 약하고 이미 있는 것과 겹친다.**
+  `GAPS` R5-40 을 읽다 후보로 올라왔다(실측: `validate_corpus.main` **77** · `repo_audit.audit` **38**).
+  **그런데 CC 를 *문턱으로* 거는 것은 근거가 약하다**: Shepperd(1988, IET *Software Engineering Journal*)가
+  *"빈약한 이론적 기초"* 로 비판했고, **CC 는 실행 가능 줄 수와 거의 대체 가능하다**(회귀분석 **R² = 0.9251** —
+  *"줄 수가 이미 담은 정보에 유의미한 것을 거의 더하지 않는다"*), 결함 예측력도 약하다(Kendall **0.064**).
+  🔴 **그리고 우리는 이미 크기 게이트가 있다** — `ci / diff-size`(200/400). CC≈LOC 이므로 **두 번 재는 것**이다.
+  ⚠️ **기각한 것은 *문턱* 이지 *복잡성* 이 아니다.** 복잡도 77 짜리 함수는 지표 문제가 아니라
+  **읽을 수 없는 함수**이고, 그건 게이트가 아니라 **리팩터링으로 푼다**([`04`](04-the-plan.md) §리팩터링 분리).
+  다시 여는 조건: **회귀 방지 눈금**으로 쓸 근거(무작위 표본에서 CC 증가가 결함과 붙는다는 실측)가 나올 때.
 - 🆕 **`performance` · `patterns` · `coding-style`** (2026-08-29 · [`ECC-CATALOG-READING`](../audit/ECC-CATALOG-READING.ko.md))
   — **축이 다르다.** ECC 의 `rules/common/` 10개를 이 바닥과 대조하니 셋이 여기 없었는데, 그건 누락이 아니다:
   저쪽은 ***"코드를 어떻게 쓰나"*** 이고 이 문서는 ***"저장소에 무엇이 남나"*** 다.
