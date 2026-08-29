@@ -229,6 +229,23 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
             if got_pat != sorted(want_pat):
                 bad.append(f"Actions: allowlist 패턴이 다르다 (기대 {sorted(want_pat)}, 실제 {got_pat})")
 
+    # 🔴 워크플로 토큰의 **기본 권한**. 파일마다 `permissions:` 를 적는 것과 다른 문장이다 —
+    # 하나라도 빠뜨리면 그 워크플로가 **쓰기 토큰**을 들고 돈다. 서버 기본값이 마지막 방어선이다.
+    # ⚠️ 2026-08-30 까지 **아무도 이걸 안 봤다**(R5-38 과 같은 형태). 실물은 맞게 돼 있었지만
+    # **바뀌어도 몰랐다.** 시중 체크리스트가 명시적으로 요구하는 항목이다.
+    if blocked(f"repos/{repo}/actions/permissions/workflow"):
+        unknown.append("Actions: 워크플로 토큰 기본 권한을 읽을 권한이 없다")
+    else:
+        wf = gh(f"repos/{repo}/actions/permissions/workflow") or {}
+        if wf.get("default_workflow_permissions") != "read":
+            bad.append(
+                "Actions: 워크플로 토큰 기본 권한이 read 가 아니다 "
+                f"({wf.get('default_workflow_permissions')})")
+        # 🔴 봇이 PR 을 승인할 수 있으면 **승인이 도장이 된다.** 우리는 승인 0 을 유지하지만
+        # 이 스위치가 켜지면 룰셋을 바꾸지 않고도 그 길이 열린다(`01` 경계 ② · A-2).
+        if wf.get("can_approve_pull_request_reviews"):
+            bad.append("Actions: 워크플로가 PR 을 승인할 수 있다 — 승인이 도장이 된다")
+
     # SAST — 공개 저장소는 CodeQL default setup 이다 (소유자 결정 2026-08-27)
     if blocked(f"repos/{repo}/code-scanning/default-setup"):
         unknown.append("SAST: CodeQL 설정을 읽을 권한이 없다")
