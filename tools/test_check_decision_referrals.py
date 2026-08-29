@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
 import check_decision_referrals as mod
 
@@ -45,12 +46,12 @@ class PreRegistrationIsHonoured(unittest.TestCase):
 class ItIsAnInstrumentNotAWall(unittest.TestCase):
     def test_zero_referrals_is_not_a_failure(self) -> None:
         """회부가 0 인 것은 **아직 안 물었다**일 수도 있다. 그걸로 빨개지면 안 된다."""
-        source = (mod.__file__ and open(mod.__file__, encoding="utf-8").read()) or ""
+        source = Path(mod.__file__).read_text(encoding="utf-8") if mod.__file__ else ""
         self.assertIn("RESULT INFO", source)
 
     def test_missing_labels_is_a_failure(self) -> None:
         """다만 **수단 자체가 없으면** 실패다 — 그건 눈금이 0 인 게 아니라 계기가 없는 것이다."""
-        source = open(mod.__file__, encoding="utf-8").read()
+        source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("RESULT FAIL — 수단이 설치되지 않았다", source)
 
 

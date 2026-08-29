@@ -12,7 +12,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import unquote
 
-
 ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = ROOT
 CORPUS = RESEARCH / "corpus"

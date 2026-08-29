@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import socket
 import ssl
 import subprocess
 import time
@@ -18,7 +17,6 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from validate_corpus import CORPUS, extract_external_urls
-
 
 ROOT = Path(__file__).resolve().parents[1]
 AUDIT = ROOT / "audit"
@@ -139,7 +137,7 @@ def check_one(url: str, timeout: float, retries: int) -> dict[str, object]:
                     "detail": str(exc.reason),
                 }
             last_error = f"HTTP {code}: {exc.reason}"
-        except (URLError, TimeoutError, socket.timeout, ssl.SSLError, ValueError) as exc:
+        except (URLError, TimeoutError, ssl.SSLError, ValueError) as exc:
             last_error = f"{type(exc).__name__}: {exc}"
         if attempt <= retries:
             time.sleep(min(0.75 * attempt, 2.0))
