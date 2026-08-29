@@ -8,7 +8,7 @@ import json
 import re
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -167,7 +167,7 @@ def external_url_record_errors(record: dict[str, object], expected_url: str) -> 
         if checked.tzinfo is None:
             errors.append("checked_at must include a timezone")
         else:
-            age_seconds = (datetime.now(timezone.utc) - checked).total_seconds()
+            age_seconds = (datetime.now(UTC) - checked).total_seconds()
             if age_seconds > 30 * 86400:
                 errors.append("record is older than 30 days")
             if age_seconds < -300:
@@ -249,7 +249,7 @@ def validate_external_url_ledger(
         completed = datetime.fromisoformat(completed_at.replace("Z", "+00:00"))
         if completed.tzinfo is None:
             raise ValueError("timezone required")
-        age_days = (datetime.now(timezone.utc) - completed).total_seconds() / 86400
+        age_days = (datetime.now(UTC) - completed).total_seconds() / 86400
         if age_days > 30:
             warnings.append(f"external URL reachability ledger is stale ({age_days:.1f} days)")
         if age_days < -(5 / 1440):

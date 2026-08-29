@@ -7,11 +7,12 @@ import hashlib
 import subprocess
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import patch
+from urllib.error import URLError
 
-from external_url_audit import classify_http, curl_fallback, url_set_digest
+from external_url_audit import check_one, classify_http, curl_fallback, url_set_digest
 from validate_corpus import (
     external_url_record_errors,
     extract_external_urls,
@@ -77,7 +78,7 @@ class ExternalUrlAuditTests(unittest.TestCase):
     def test_reachability_record_requires_timestamp_and_response_evidence(self) -> None:
         record = {
             "url": "https://example.com/",
-            "checked_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "checked_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
             "status": "reachable",
             "http_status": 200,
             "final_url": "https://example.com/",
@@ -108,6 +109,29 @@ class ExternalUrlAuditTests(unittest.TestCase):
         errors = external_url_record_errors(record, record["url"])
         self.assertTrue(any("future" in item for item in errors))
         self.assertTrue(any("detail is blank" in item for item in errors))
+
+    def test_non_http_scheme_is_rejected_before_any_open(self) -> None:
+        """`file:` 는 외부가 아니다 — 열어보면 감사기가 로컬 파일을 "reachable" 이라 보고한다.
+
+        문(`check_one`)이 하나이므로 여기서 막으면 urllib 경로와 curl 대체 경로가 같이 막힌다.
+        그래서 **둘 다 호출되지 않았다는 것**까지 본다.
+        """
+        with (patch("external_url_audit.urlopen") as opened,
+              patch("external_url_audit.curl_fallback") as fallback):
+            record = check_one("file:///etc/passwd", timeout=1.0, retries=0)
+        opened.assert_not_called()
+        fallback.assert_not_called()
+        self.assertEqual(record["status"], "network-error")
+        self.assertEqual(record["method"], "scheme-rejected")
+        self.assertIn("file", str(record["detail"]))
+
+    def test_http_scheme_still_reaches_the_opener(self) -> None:
+        """게이트가 정상 URL 까지 막으면 감사기가 통째로 조용해진다 — 음성 시험이 필요하다."""
+        with (patch("external_url_audit.urlopen", side_effect=URLError("stop")) as opened,
+              patch("external_url_audit.curl_fallback", return_value=None)):
+            record = check_one("https://example.com/", timeout=0.1, retries=0)
+        self.assertTrue(opened.called)
+        self.assertNotEqual(record["method"], "scheme-rejected")
 
     @patch("external_url_audit.subprocess.run")
     def test_curl_fallback_rejects_nonzero_redirect_loop(self, run) -> None:

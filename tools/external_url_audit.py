@@ -11,9 +11,10 @@ import subprocess
 import time
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from validate_corpus import CORPUS, extract_external_urls
@@ -90,12 +91,31 @@ def curl_fallback(url: str, timeout: float, retries: int) -> dict[str, object] |
 
 
 def check_one(url: str, timeout: float, retries: int) -> dict[str, object]:
-    checked_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    checked_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
+
+    # 🔴 **http(s) 만 연다.** 이 감사기는 *외부* URL 이 사는지를 재는데 `file:` 은 외부가 아니다 —
+    # 원장에 `file:///etc/passwd` 가 들어오면 urllib 도 curl 도 그것을 열어주고 감사기는
+    # **"reachable" 이라 보고한다.** 문은 하나이므로(아래 urlopen 과 curl 대체 경로가 둘 다
+    # 이 함수 안에 있다) 여기서 한 번 막는다. 2026-08-29 · ruff `S310` 이 가리킨 자리다.
+    scheme = urlsplit(url).scheme.lower()
+    if scheme not in {"http", "https"}:
+        return {
+            "url": url,
+            "checked_at": checked_at,
+            "status": "network-error",  # 닫힌 어휘다 — 새 값을 만들지 않는다(validate_corpus 와 공유)
+            "http_status": None,
+            "final_url": None,
+            "attempts": 0,
+            "method": "scheme-rejected",
+            "content_verified": False,
+            "detail": f"허용되지 않은 스킴: {scheme or '(없음)'} — http/https 만 연다",
+        }
+
     last_error = ""
     attempts = 0
     for attempt in range(1, retries + 2):
         attempts = attempt
-        request = Request(
+        request = Request(  # noqa: S310 — 스킴은 이 함수 첫머리에서 http(s) 로 좁혔다
             url,
             headers={
                 "User-Agent": "goppi-final-research-link-audit/1.0",
@@ -105,7 +125,7 @@ def check_one(url: str, timeout: float, retries: int) -> dict[str, object]:
             method="GET",
         )
         try:
-            with urlopen(request, timeout=timeout, context=ssl.create_default_context()) as response:
+            with urlopen(request, timeout=timeout, context=ssl.create_default_context()) as response:  # noqa: S310 — 위 스킴 게이트
                 code = int(response.getcode() or 200)
                 final_url = response.geturl()
                 response.read(1024)
@@ -183,7 +203,7 @@ def write_ledger(records: list[dict[str, object]], started_at: str) -> None:
         "schema_version": 1,
         "checker_version": CHECKER_VERSION,
         "started_at": started_at,
-        "completed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "completed_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         "corpus_root": str(CORPUS.relative_to(ROOT)),
         "url_count": len(urls),
         "url_set_sha256": url_set_digest(urls),
@@ -207,7 +227,7 @@ def main() -> int:
     parser.add_argument("--retries", type=int, default=1)
     args = parser.parse_args()
     urls = extract_external_urls(CORPUS)
-    started_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    started_at = datetime.now(UTC).isoformat().replace("+00:00", "Z")
     print(f"Checking {len(urls)} URLs with workers={args.workers} timeout={args.timeout}s retries={args.retries}")
     records: list[dict[str, object]] = []
     with ThreadPoolExecutor(max_workers=args.workers) as executor:

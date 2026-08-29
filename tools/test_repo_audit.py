@@ -198,7 +198,8 @@ class TestFailClosed(unittest.TestCase):
         import os
         from unittest import mock
 
-        with (mock.patch.dict(os.environ, {"HOME": "/tmp"}, clear=True),
+        # `/tmp` 에 쓰지 않는다 — gh 설정이 없는 HOME 을 흉내내는 값일 뿐이다
+        with (mock.patch.dict(os.environ, {"HOME": "/tmp"}, clear=True),  # noqa: S108
               self.assertRaises(SystemExit) as cm):
             repo_audit._env()
         self.assertIn("GH_TOKEN", str(cm.exception))
@@ -207,7 +208,7 @@ class TestFailClosed(unittest.TestCase):
         import os
         from unittest import mock
 
-        with mock.patch.dict(os.environ, {"HOME": "/tmp", "GH_TOKEN": "t"}, clear=True):
+        with mock.patch.dict(os.environ, {"HOME": "/tmp", "GH_TOKEN": "t"}, clear=True):  # noqa: S108 — 위와 같다
             self.assertEqual(repo_audit._env().get("GH_TOKEN"), "t")
 
 
