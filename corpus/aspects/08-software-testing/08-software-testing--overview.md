@@ -46,7 +46,7 @@ maps_from: ["census-data/census-dev-environment"]
 - **Test harness is a universal, durable floor:** test_framework 88 simple / 86 weighted / **90 at N=938** (smplΔ ≈ +2 — confirms mandate) `[census]`. Runner winners (weighted): **pytest 98 · vitest 62 · go-test 42 · jest 31 · cargo-test 30 · playwright 6** `[census]` → harness defaults JS/TS **vitest** · Py **pytest** · Rust cargo · Go go.
 - **Coverage gating is a maturity signal, not a birth default:** coverage_config 25→**17** weighted (↓−8), **13 at N=938** `[census]`; archetype split: **library 43%** (publishers gate hardest) vs. web-app 12, cli 14, data-ml 13 `[census]` — confirms coverage belongs in conditional/maturity, not universal core.
 - **playwright present but rare (6)** `[census]` → e2e is a thin top layer, consistent with the pyramid `[lit]`.
-- **`[lit]` anchors:** SWEBOK KA5 Software Testing (test levels: unit/integration/system; techniques) · Fowler/Vocke *The Practical Test Pyramid* & *TestPyramid* bliki · Fowler *ContractTest* + Pact (consumer-driven contracts) · ISO/IEC 25010 (functional-suitability / reliability quality characteristics that tests verify) · Fowler *Eradicating Non-Determinism in Tests* + Google Testing Blog (flakiness).
+- **`[lit, normative]` anchors:** SWEBOK KA5 Software Testing (test levels: unit/integration/system; techniques) · Fowler/Vocke *The Practical Test Pyramid* & *TestPyramid* bliki · Fowler *ContractTest* + Pact (consumer-driven contracts) · ISO/IEC 25010 (functional-suitability / reliability quality characteristics that tests verify) · Fowler *Eradicating Non-Determinism in Tests* + Google Testing Blog (flakiness).
 
 ## Archetype variations
 

@@ -42,7 +42,7 @@ with host-specific extensions flagged.
 
 ## 1. Frontmatter schema (the contract)
 
-A skill is "a folder with a required SKILL.md and optional supporting files" [lit]. `SKILL.md` MUST be YAML
+A skill is "a folder with a required SKILL.md and optional supporting files" [lit, vendor]. `SKILL.md` MUST be YAML
 frontmatter (`---` fenced) followed by a Markdown body. **Open-spec fields** [lit, agentskills.io/specification]:
 
 | Field | Required | Constraint |

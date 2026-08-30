@@ -1,8 +1,8 @@
 {
   "total": 0,
   "measured": "2026-08-30",
-  "what": "corpus/aspects 에서 수치가 있고 [census]/[실측] 이 없는 줄의 한정어 없는 [lit] 개수",
+  "what": "corpus/aspects 의 **증거 줄**(수치가 있거나 이름 붙은 표준·레벨을 부르는 줄) 중 [census]/[실측] 없이 한정어 없는 [lit] 개수",
   "why": "claim 표의 Class 는 normative/empirical/vendor-behavior 를 구분하는데 본문 태그는 [lit] 하나로 담았다. 처방과 실측을 섞어 읽은 정정이 direction/05 에 넷 남아 있다(PYR-001 · SAST L3 · FFA-006 · Cockburn).",
-  "history": "첫 기준선 68 은 계기가 잘못돼 있었다 — [lit][census] 로 이미 갈라진 줄까지 세어 31건이 오탐이었다. 계기를 고쳐 37 이 되었고, 그 37 을 원 출처를 열어 전부 처리해 0 이 되었다(한정어 30 · 메타 산문 2 · 출처 목록 7 은 태그가 아니라 말이므로 말로 고쳤다).",
-  "how_to_keep": "🔴 이제 0 이다. 새 위반은 그대로 막힌다. 수치가 있는 줄에 [lit] 을 쓸 땐 normative · empirical · vendor 중 하나를 반드시 붙인다."
+  "history": "첫 기준선 68 은 계기가 잘못돼 있었다 — [lit][census] 로 이미 갈라진 줄까지 세어 31건이 오탐이었다. 계기를 고쳐 37 이 되었고, 그 37 을 원 출처를 열어 전부 처리해 0 이 되었다(한정어 30 · 메타 산문 2 · 출처 목록 7 은 태그가 아니라 말이므로 말로 고쳤다). 2026-08-30 2차: 범위를 넓혔다 — 데인 넷 중 **둘은 수치가 없었다**(SAST-가-L3 · SLSA-Source-L2는 레벨·강도 오독이다). 이름 붙은 표준(MUST/SHOULD 대문자 · L1~L3 · OSPS/SLSA/SWEBOK/NIST/WCAG/RFC/ISO)도 보게 하고 그 62건을 처리했다(normative 61 · vendor 1). ⚠️ 대소문자를 무시하면 산문의 \"should work\" 까지 잡혀 120건이 된다 — 좁힌 62가 맞다.",
+  "how_to_keep": "🔴 0 이다. 새 위반은 그대로 막힌다. 수치가 있거나 표준을 이름으로 부르는 줄에 [lit] 을 쓸 땐 normative · empirical · vendor 중 하나를 붙인다. ⚠️ 남은 것: 수치도 표준 이름도 없는 순수 산문 [lit] 386건. 검사가 안 건다 — 그 줄에는 오독할 수치도 오독할 레벨도 없다. 요구하면 바닥이 문진표가 되고 P40 위반이다."
 }
