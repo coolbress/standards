@@ -683,6 +683,7 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
 ## 위험 비례 — 전부를 항상 켜지 않는다
 
 - **비공개 + Free**: 룰셋 자체가 안 걸린다(`GEB-001·002`) → `new-project.sh` 가 **저장소를 남기지 않고 멈춘다.** CodeQL 도 별도 라이선스가 필요하다 → **Semgrep·gitleaks 로 대체**
+  🔵 **2026-08-30 정정 — *GitHub 에서* 안 걸리는 것이지 *어디서도* 안 걸리는 게 아니다.** 1차 문서로 재니 **GitLab Free 는 비공개에서 우리 벽을 거의 다 준다**: 보호 브랜치 **Free** · force push 금지 **Free** · *"Pipelines must succeed"* **Free** · **SAST Free** · **시크릿 탐지 + 푸시 보호 Free**. 🎯 **Premium 인 것이 하필 우리가 안 쓰는 둘**이다 — 승인(**승인 0** 이 우리 결정)과 CODEOWNERS(이미 기각). ⚠️ Dependency Scanning 만 Ultimate 라 `ci / deps` 는 대체가 필요하다. 🔴 **아직 안 만들었다** — 상상으로 만들면 검증할 인스턴스가 없어 스텁이 된다([`GAPS` R5-44](../audit/GAPS.ko.md)). 그래서 `/kickoff` 은 **셋을 보여주고 무엇이 미구현인지 밝힌다.**
 - **로컬 실험**: 바닥 전체가 과하다. [`github-workflow-current`](../corpus/aspects/05-scm-workflow/github-workflow-current.md) 의 risk-scaled 표를 쓴다
 - **공개 웹앱**: 바닥 전부 + 접근성 · 개인정보 — 아래
 
