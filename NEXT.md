@@ -541,6 +541,48 @@ cd ~   # 🔴 저장소 밖에서 — 스크립트가 저장소 안이면 멈춘
 **403 이 나면 그것이 정상이다.** 관리자 작업(룰셋 · Actions 정책 · 시크릿 · Environments ·
 CodeQL default setup)은 **사람이 한다.** 에이전트는 명령을 만들어 넘긴다.
 
+### 🔴 지금 소유자가 칠 세 줄 — `ci / deps` 를 벽으로 올린다 (2026-08-30)
+
+핀은 **다 올라갔다**([`workflows` v3.7.0](https://github.com/coolbress/workflows/releases/tag/v3.7.0) ·
+[`project-template` v2.5.0](https://github.com/coolbress/project-template/releases/tag/v2.5.0) ·
+`divcal` [#27](https://github.com/coolbress/divcal/pull/27)). 세 저장소 다 **`deps` 를 실제로 보고한다.**
+남은 건 룰셋에 **요구 검사로 등재**하는 것뿐 — 관리자 토큰이라 사람이 친다:
+
+```bash
+cd ~   # 🔴 저장소 밖에서
+~/workflows/tools/with-admin-token.sh ~/workflows/tools/upgrade-ruleset.sh coolbress/workflows        'canary / deps:15368'
+~/workflows/tools/with-admin-token.sh ~/workflows/tools/upgrade-ruleset.sh coolbress/project-template 'ci / deps:15368'
+~/workflows/tools/with-admin-token.sh ~/workflows/tools/upgrade-ruleset.sh coolbress/divcal          'ci / deps:15368'
+```
+
+⚠️ **첫 줄만 이름이 다르다** — `canary`. 아래가 이유다.
+
+#### 🔬 오늘 또 *적어놓고 안 따랐다* — 이번엔 검사로 잠갔다
+
+이 문서 §*"③·⑤가 반드시 지켜야 할 결합"* 이 이미 말하고 있었다 —
+**검사 이름은 `{호출잡}/{피호출잡}`.** `workflows` 는 자기 CI 를
+`uses: ./.github/workflows/python-ci.yml` 을 **`canary`** 라는 잡으로 부르므로 이름이
+`canary / deps` 다. 그런데 나는 세 저장소에 **같은 `ci / deps`** 를 쓸 명령을 만들었다.
+**그대로 쳤으면 `workflows` 가 머지 불가로 잠겼다** — 되돌리려면 관리자 토큰이 또 필요하다.
+
+읽어서 잡은 게 아니라 **이름을 실제로 조회해서** 잡았다. 그래서 그 조회를 스크립트에 넣었다:
+[`upgrade-ruleset.sh`](https://github.com/coolbress/workflows/blob/main/tools/upgrade-ruleset.sh)
+는 이제 **요구하려는 이름이 보고된 적 있는지 확인하고, 없으면 멈추고 실제로 온 이름을 보여준다**
+(최근 커밋 3 + 최근 PR 5 의 check-run·커밋 상태 — `CodeQL` 은 기본 브랜치엔 안 뜨고 **PR 에만** 뜬다).
+막기만 하면 사람이 고칠 수 없으므로 **맞는 이름을 같이 찍는 것**까지 시험한다
+(`tests/upgrade-ruleset-guard.sh` 6건 · [#46](https://github.com/coolbress/workflows/pull/46)).
+
+**같은 병의 세 번째다**(§2b 미준수 · 검사 끝 네 줄만 보기 · 이번). 앞의 둘은 기록으로 끝났고
+**이번엔 검사가 됐다** — `direction/07` §01 *집행은 에이전트 밖에서*.
+
+#### 그리고 템플릿 저장소엔 CI 파일이 **둘**이었다
+
+처음 낸 [#23](https://github.com/coolbress/project-template/pull/23) 은
+`template/.github/workflows/ci.yml`(**인스턴스에 실리는 것**)만 올렸다. 저장소 **자신의**
+`.github/workflows/ci.yml` 은 그대로라 **이 저장소에선 `ci / deps` 가 안 돌았다.**
+전부 초록이었다 — **검사 *목록*을 눈으로 세어서** 알았다. 초록은 *온 검사가 통과했다*는 뜻이지
+*와야 할 검사가 다 왔다*는 뜻이 아니다.
+
 ## 열린 공백 — [`audit/GAPS.ko.md`](audit/GAPS.ko.md) §R5
 
 🔴 **여기에 목록을 복사하지 않는다.** 이 자리에 있던 표가 `R5-2`·`R5-3`·`R5-6`·`R5-8` 을
