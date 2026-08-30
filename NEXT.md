@@ -3,19 +3,30 @@
 > 작성 2026-08-24 · 갱신 **2026-08-30 (2차)** · **이 문서는 낡는다.** 만들 것이 하나씩 끝나면 갱신하고,
 > 전부 끝나면 지운다. 정본은 [`direction/`](direction/)이고 이 문서는 **작업 지시서**다.
 
-## 🔴 지금 당신이 칠 한 줄 (2026-08-30)
+## ✅ 아스날이 처음으로 다 켜졌다 (2026-08-30 · 일곱 개 `enabled`)
 
-```bash
-claude plugin install coolbress-standards-hooks@coolbress
-```
+**설치했더니 두 가지가 한꺼번에 드러났다.**
 
-**왜 이게 맨 위인가** — 실측(2026-08-30): 설치된 플러그인이 `coolbress-standards` **하나뿐**이었다.
-`-hooks` 는 **한 번도 설치된 적이 없다.** 그런데 이 저장소의 설계표는 *"인식 · 🪝 SessionStart 훅 둘 ·
-🟢 결정적 · ✅"* 라고 적혀 있다 — 🔴 **운영자 훅 쪽은 이 기계에서 안 돌고 있었다.**
-`ponytail` 도 그 의존이라 같이 안 깔려 있었다.
+**① `-hooks` 는 한 번도 설치된 적이 없었다.** 설계표는 *"인식 · 🪝 SessionStart 훅 **둘** ·
+🟢 결정적 · ✅"* 라고 적혀 있었는데 **운영자 훅 쪽은 이 기계에서 안 돌고 있었다.**
 
-> **선언한 것과 도는 것은 다른 문장이다** — 오늘 여섯 번 만난 그 형태다
+**② 깔았더니 `✘ failed to load` 였다 — 만든 이후 한 번도 뜬 적이 없다.**
+
+> **"Duplicate hooks file detected … The standard `hooks/hooks.json` is loaded automatically,
+> so `manifest.hooks` should only reference *additional* hook files."**
+
+`hooks/hooks.json` 은 **자동 발견**된다. `plugin.json` 에 또 적어서 **두 번 로드**됐다.
+
+🔴 **검증 도구 셋이 다 초록을 말했다** — `claude plugin validate` ✔ ·
+`claude plugin details` 가 `Hooks (1) SessionStart` 로 정상 표시 · 우리 `plugin-manifests.sh` 통과.
+**설치하고 재시작해야만 보인다.** 이제 `plugin-manifests.sh` 가 막는다(v0.6.0).
+
+> **선언한 것과 도는 것은 다른 문장이다** — 오늘 **일곱 번** 만났고 이번 것이 가장 나빴다
 > ([`direction/07`](direction/07-design-rules.md) §반복해서 무는 실패).
+> **문서가 ✅ 라고 적는 것과 도는 것은 다르다.**
+
+**지금**: `coolbress-standards` **0.6.0** · `-hooks` **0.6.0** · `ponytail` 4.9.0 ·
+`taste-skill` 1.0.0 · `last30days` 3.21.1 · `mattpocock-skills` 1.2.3 — **전부 `✔ enabled`.**
 
 ## 🚀 2026-08-30 — 네 층을 전부 훑었다 (PR **43건** · 저장소 4곳)
 

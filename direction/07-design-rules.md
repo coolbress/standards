@@ -166,6 +166,9 @@ OpenAI 가 자기 Codex 플러그인에 **Stop 게이트**(`--enable-review-gate
 | `{% if %}` 조건 | 그 파일은 `.jinja` 가 아니라 **복사만 된다** | ✅ `test_no_unrendered_jinja…` |
 | `PATCH` 200 | 서버가 **모르는 필드를 조용히 무시**했다 | ✅ `set-security-setting.sh` 가 **쓰고 나서 대조** |
 | `[lit]` 검사 범위 | **실패 형태보다 좁았다** — 데인 넷 중 둘은 수치가 없었다 | ✅ 이름 붙은 표준까지 |
+| **`-hooks` 플러그인** | 🔴 **만든 이후 한 번도 뜬 적이 없다** — `hooks/hooks.json` 은 자동 발견되는데 manifest 에 또 적어 **두 번 로드**됐다 | ✅ `plugin-manifests.sh` |
+
+> 🔴 **일곱째가 가장 나빴다.** `claude plugin validate` 가 **통과**시키고 `claude plugin details` 가 `Hooks (1) SessionStart` 로 **정상 표시**하고 우리 시험도 통과했다. **검증 도구 셋이 다 초록을 말했다** — 오직 **설치하고 재시작해야만** 보였다. 그동안 이 저장소의 설계표는 *"인식 · 훅 둘 · 🟢 결정적 · ✅"* 라고 적고 있었다. **문서가 ✅ 라고 적는 것과 도는 것은 다르다.**
 
 **공통 형태**: *"만들어놨으니 돌 것이다"* 를 **확인 없이 믿었다.**
 `presence ≠ adequacy` 의 실행판이고, 이 저장소가 문서에 대해 이미 아는 것을 **장치에 대해서는 몰랐다.**
