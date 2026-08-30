@@ -222,6 +222,57 @@ web-app 은 `Dockerfile` + `docker-compose`"* 로 아키타입을 명시한다.
 | **Renovate** | 6.1% | **Dependabot 과 같은 일**을 한다. 둘을 같이 두면 갱신 PR 이 겹친다 | Dependabot 이 못 하는 생태계가 생기면 |
 | **pre-commit** | 5.1% | 🔴 **원칙적 기각이다.** 로컬 훅은 `--no-verify` 로 **에이전트가 우회할 수 있다.** 원칙 01 이 *"집행은 에이전트 밖에서"* 이므로 같은 검사를 **CI 에 둔다**(`ci / lint`·`typecheck`) | 훅이 CI 를 **대체**하지 않고 **선행**하기만 한다면 |
 
+### 🔴 **기계가 지켜주는 것을 저장소의 성질로 읽지 않는다** (2026-08-30 신설)
+
+📦 상자 층을 **파일 내용까지** 두 번째로 훑다가 나왔고, **이 저장소가 이미 한 번 걸린 부류**다.
+
+**실측**: 템플릿은 `.claude/settings.json` 을 커밋하는데(팀의 것), 그 옆에 생기는 **개인의 것**
+(`settings.local.json` — 권한 승인이 들어간다)을 **저장소 넷 어디도 안 막고 있었다.**
+안 보였던 이유가 이것이다 —
+
+```
+$ git check-ignore -v .claude/settings.local.json
+~/.config/git/ignore:1:**/.claude/settings.local.json
+```
+
+[Claude Code 1차 문서](https://code.claude.com/docs/en/settings)가 그 메커니즘을 명시한다:
+*"adds it to your **global git excludes** the first time it writes the file"* ·
+*"If you created the file by hand … **add it to `.gitignore` yourself**"*.
+
+> **전역 excludes 는 *그 기계* 를 지키지 *저장소* 를 지키지 않는다.**
+> 다른 기계 · 다른 기여자 · 손으로 만든 경우엔 안 막힌다. **우리는 이걸 배포한다.**
+
+🔴 **같은 부류가 이미 있었다** — *"막히면 `env -u GH_TOKEN` 으로 실행하라"* 가 **규율인 줄 알았는데
+없는 것**이었다(`NEXT.md`). 판정 질문은 하나다:
+
+> ***"이걸 갓 클론한 다른 기계에서도 참인가?"***
+
+**바닥 항목**: 에이전트 도구의 **개인 설정 파일은 저장소의 `.gitignore` 가 막는다.**
+집행은 `project-template` **v2.8.0** 의 `tests/test_tree_hygiene.py`.
+
+### 🔬 검사가 **도는 척하는 것**을 막는다 — pytest 엄격 옵션 (2026-08-30)
+
+`addopts = ["--strict-markers", "--strict-config"]`. 없으면 **오타가 아무 일도 안 하고 통과한다** —
+등록 안 된 `@pytest.mark.foo` 는 **조용히 no-op** 이고, `[tool.pytest.ini_options]` 의 키를
+잘못 쓰면(`filterwarning` 처럼) **무시된다.** 원칙 02(*완료는 주장이 아니라 머지된 커밋*)와 같은 방향이다.
+
+### ✅ 두 번째 훑기에서 **바꿀 게 없던 것** (2026-08-30)
+
+*부재가 판정의 결과라는 것을 적어두지 않으면 누락과 구별되지 않는다* — 그래서 통과한 것도 적는다.
+
+| | 판정 |
+|---|---|
+| **Python 3.12** | ✅ 2026 에도 실무 기본값(3.14 로 전환 중이나 아직 아님) |
+| **ruff 규칙군** | ✅ 템플릿 **13군** — 이 저장소 자신의 12군보다 **한 군 더 세다**(`PT`) |
+| **PR 템플릿** | ✅ census 규격 그대로 — 3절 · 빈 체크리스트 · HTML 주석 · *type of change* 없음 |
+| **`AGENTS.md`** | ✅ **40줄** — 자기가 적은 150줄 상한 아래 |
+| **`CONTRIBUTING`** | ✅ **내용** 기준 통과(빌드·테스트 설명 + PR 흐름 + 근거) |
+| **`release.yml`** | ✅ catch-all — 라벨 없는 PR 이 노트에서 안 사라진다 |
+| 커버리지 · SBOM · Attestations · devcontainer · pre-commit | ✅ **이미 적힌 기각** |
+
+⚠️ **한 가지는 R5-41 로 넘겼다** — CI 가 파이썬 **한 판**만 돌리는데 `requires-python` 은 `>=3.12` 다.
+`library` 아키타입이면 **선언한 범위를 안 재는** 것이고, 그건 아키타입 조건이라 R5-41 이 받는다.
+
 ### 🔬 `.gitattributes` 를 다시 읽고 얻은 규율 둘 (2026-08-30 · R5-42 종료)
 
 **① 저장소가 집행할 수 없는 규칙은 적지 않는다.** `diff=<이름>`·`merge=<이름>`·`filter=<이름>` 의
