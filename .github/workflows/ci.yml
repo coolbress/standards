@@ -94,6 +94,10 @@ jobs:
           python -m pip install --quiet --disable-pip-version-check 'mypy==1.18.2'
           mypy
 
+      # 🔴 처방과 실측을 한 태그에 담으면 정정이 매번 손으로 나온다 — 이미 넷이 그랬다.
+      - name: 증거 태그가 처방/실측을 구분하나 (기준선 대비)
+        run: python3 tools/check_evidence_class.py
+
       - name: 코퍼스 근거는 경로로 인용됐나 (이름 인용은 claim 불변식을 우회한다)
         run: python3 tools/check_name_only_citations.py
 
