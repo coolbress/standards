@@ -512,6 +512,13 @@ CONTRIBUTING 을 더 갖는다**(`<1k` 63.3% 대 18.0% · `10k+` 83.9% 대 63.3%
 | `.github/workflows/ci.yml` | 자기 검사 — actionlint(다이제스트 핀). 잡 이름 `integrity` |
 | `ruleset.json` | ⑤가 `--input` 으로 쓸 벽의 실물 |
 
+> 🔵 **그 분리는 *플랫폼* 산물이기도 하다 (2026-08-30 · `GAPS` R5-44).**
+> GitHub 룰셋은 **검사 *이름*** 을 요구하므로 개별 게이트를 만들려면 잡을 쪼개야 한다.
+> **GitLab 은 *파이프라인 전체* 를 게이트한다**(`only_allow_merge_if_pipeline_succeeds`) —
+> 거기서 잡 분리는 **진단 편의이지 벽의 요건이 아니다.** 🔴 **바닥이 요구하는 것은
+> *넷이 각각 막는다* 이지 *잡이 넷이다* 가 아니다** — 다른 플랫폼으로 갈 때 이 구별을 안 하면
+> **GitHub 의 형태를 규범으로 착각하게 된다.**
+
 **4개로 쪼갠 이유**: 바닥이 *"lint·typecheck·test·build를 **각각 별도 required check**로"* 를
 MUST 로 요구한다([`05`](direction/05-the-output-floor.md) §CI/CD). 한 잡 4스텝이면 첫 실패에서
 멈춰 나머지 상태를 알 수 없고 룰셋이 개별 검사를 요구할 수도 없다.
