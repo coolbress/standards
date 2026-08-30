@@ -217,10 +217,40 @@ web-app 은 `Dockerfile` + `docker-compose`"* 로 아키타입을 명시한다.
 |---|---|---|---|
 | **Discussions** | 39.5% | **1인 프로젝트에 포럼은 빈 방이다.** 질문·제안은 이슈가 받는다 | 외부 사용자 문의가 실제로 생기면 |
 | **`FUNDING.yml`** | 29.4% | 후원을 받을 계획이 없다. **링크가 죽은 FUNDING 은 `presence≠adequacy` 그 자체** | 후원을 받기로 하면 |
-| **`.gitattributes`** | 28.9% | 🟡 **조건부 기각.** 쓰임은 둘이다 — 개행 정규화(`* text=auto`)와 LFS. 지금은 **텍스트만 · 단일 OS** 라 개행 충돌이 난 적이 없고, 바이너리는 트리에 두지 않는다(VCS 위생). 🔴 **2026-08-30 — 열거가 불완전하다**: GitHub 1차 문서가 **세 번째 쓰임**을 말한다(`linguist-generated` 는 파일을 *"hidden by default in diffs"*). 우리는 `ci / diff-size` 상한과 `uv.lock` 을 갖고 있다 → [`GAPS` R5-42](../audit/GAPS.ko.md) | **Windows 기여자**가 생기거나 바이너리를 커밋해야 하면 · **또는 R5-42 가 세 번째 쓰임에 값을 매기면** |
+| ~~**`.gitattributes`**~~ | **cli 42% · library 35%** (N=6,582 · 아래) | ✅ **기각을 뒤집었다 (2026-08-30 · `GAPS` R5-42)** — 옛 사유는 *"쓰임은 둘이다(개행 정규화·LFS)"* 였는데 **열거가 빠져 있었다.** [git 1차 문서](https://git-scm.com/docs/gitattributes)만 세도 **속성이 열둘이 넘고**, [linguist 문서](https://github.com/github-linguist/linguist/blob/main/docs/overrides.md)의 `linguist-generated` 는 파일을 ***"suppressed in diffs"***. 🔴 **이 저장소는 하필 그 쓰임에 걸린다** — `ci / diff-size` 를 **면제받은 이유가 생성물**이었다(*"URL 원장 재감사 한 번이 964줄"*). 실물 넷을 접었다 | — (반영됨: `standards` · `project-template` **v2.7.0**) |
 | **`SUPPORT.md`** | 2.4% | 임계 아래. `CONTRIBUTING` 이 그 자리를 채운다 | — |
 | **Renovate** | 6.1% | **Dependabot 과 같은 일**을 한다. 둘을 같이 두면 갱신 PR 이 겹친다 | Dependabot 이 못 하는 생태계가 생기면 |
 | **pre-commit** | 5.1% | 🔴 **원칙적 기각이다.** 로컬 훅은 `--no-verify` 로 **에이전트가 우회할 수 있다.** 원칙 01 이 *"집행은 에이전트 밖에서"* 이므로 같은 검사를 **CI 에 둔다**(`ci / lint`·`typecheck`) | 훅이 CI 를 **대체**하지 않고 **선행**하기만 한다면 |
+
+### 🔬 `.gitattributes` 를 다시 읽고 얻은 규율 둘 (2026-08-30 · R5-42 종료)
+
+**① 저장소가 집행할 수 없는 규칙은 적지 않는다.** `diff=<이름>`·`merge=<이름>`·`filter=<이름>` 의
+이름 붙은 드라이버는 **각 사용자의 로컬 git config 에 정의돼 있어야** 돈다 —
+커밋된 파일만으로는 **안 돈다.** 적어두면 *돌고 있다고 착각하게* 만든다.
+**`pre-commit` 기각과 같은 형태**다(원칙 01: 집행은 에이전트 밖에서). 검사가 막는다
+(`tools/test_gitattributes.py` · 템플릿의 `tests/test_gitattributes.py`).
+
+**② 손으로 관리하는 파일은 접지 않는다.** `linguist-generated` 는 diff 를 숨기므로,
+쓰는 도구가 없는 파일에 붙이면 **진짜 수정이 숨는다.** 그래서 이 저장소는 **쓰는 도구가
+확인된 넷만** 접었고(`ROUTES.jsonl`·`external-url-status.jsonl`·`after-manifest.tsv`·
+`snapshot-manifest.json`), 넷은 **일부러 뺐다.** 검사가 *"그 도구가 정말 그 파일을 쓰는가"* 를 확인한다.
+
+### 🔴 그리고 이 표의 채택률 읽는 법이 하나 틀려 있었다
+
+옛 판은 `.gitattributes` 를 **28.9%** 로 적었다. 그건 **층화 안 된 전체 집계**이고
+`app_service` **5,789/6,582** 이 지배한다. 우리 아키타입으로 층화하면 다르다:
+
+| | `cli` | `library` | (전체) |
+|---|---|---|---|
+| `census-governance-floor` (N=6,582 · star≥29) | **42%** (n=312) | **35%** (n=824) | 29% |
+| `census-dev-environment` (n=429 · 상위 스타) | **57%** (n=77) | **57%** (n=93) | 58% |
+
+⚠️ **두 센서스는 안 싸운다.** 넓은 모집단일수록 낮다 — 이 문서가 이미 기록한 그 기울기다
+(이슈 템플릿 **78%**(n=500) → **68%**(N=2,000) → **47.9%**(N=6,582)).
+🔴 **다만 채택률은 이 판정의 하중이 아니었다** — 뒤집은 이유는 *열거가 빠졌다* 이지
+*생각보다 흔하다* 가 아니다. `pre-commit` 기각이 세운 그 구별을 여기서도 지킨다.
+⚠️ **`by_ecosystem` 에는 `gitattributes` 가 없다** — README 가 권하는 node/go/rust 참조군
+비교는 **이 항목에선 못 한다.**
 
 > 🔴 **`pre-commit` 기각이 이 표에서 가장 중요하다.** 채택률이 낮아서가 아니라
 > **집행 위치가 틀렸기 때문**이다. 채택률이 높았어도 같은 결론이었을 것이다 —
