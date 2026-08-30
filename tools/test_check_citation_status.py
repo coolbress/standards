@@ -64,3 +64,18 @@ class ListIsNotDuplicated(unittest.TestCase):
         import validate_corpus as vc
 
         self.assertIs(mod.CLAIMLESS_OK, vc.CLAIMLESS_OK)
+
+
+class ExemptionStaysNarrow(unittest.TestCase):
+    """🔴 이 목록은 **파일 이름**으로 맞는다 — 흔한 이름을 넣으면 여럿이 통째로 풀린다.
+
+    실측(2026-08-30): `README.md` 를 넣으려다 멈췄다. 코퍼스에 README 가 **열 개**고
+    그중 일부는 claim 을 담는다. (그때 진짜 답은 면제가 아니었다 — `direction/` 이
+    **claim 없는 색인을 인용하면 안 된다**는 `validate_corpus` 의 불변식이 맞았다.)
+    """
+
+    def test_common_filenames_are_not_exempt(self) -> None:
+        import validate_corpus as vc
+
+        for common in ("README.md", "INDEX.md", "index.md"):
+            self.assertNotIn(common, vc.CLAIMLESS_OK, f"{common} 은 너무 넓다")

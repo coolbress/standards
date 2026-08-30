@@ -420,6 +420,7 @@ CLAIMLESS_OK = frozenset({
     "review--codex-rejection-1-2026-08-12.md",  # 역사 기록 (frontmatter 자체가 없다)
 })
 
+
 GATED_RE = re.compile(r"^gated_archetypes:\s*(.*)$", re.M)
 KIND_RE = re.compile(r"^kind:\s*(\S+)", re.M)
 

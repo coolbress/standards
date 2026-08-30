@@ -30,6 +30,40 @@ OpenSSF Scorecard API. Legacy records without `createdAt` are explicitly unweigh
 invented timestamp.
 Count-census numbers are GitHub estimates (default-branch only, auth-gated, `total_count` approximate).
 
+### Uncertainty — measured, and deliberately not extended (2026-08-30)
+
+**Robustness apparatus exists on 1 of 9 censuses** (`census-issue-pr`): Wilson 95% CI,
+deterministic owner-cluster bootstrap (2,000 replicates, seeded), star-quartile stratification,
+and an honest note that recency weighting is *not* applied because `createdAt` is absent.
+
+🔴 **Extending it to the other eight was considered and rejected — it would not change one judgment.**
+The floor asks for a stance only above **20% adoption**. Wilson 95% intervals for every
+threshold-adjacent item were computed; **none straddles 20%**:
+
+| item | point | n | 95% CI |
+|---|---|---|---|
+| `pre-commit` | 5.1% | 6,582 | 4.6 – 5.7 |
+| devcontainer | 15.6% | 6,582 | 14.7 – 16.5 |
+| `.gitattributes` | 28.9% | 6,582 | 27.8 – 30.0 |
+| `FUNDING.yml` | 29.4% | 6,582 | 28.3 – 30.5 |
+| Discussions | 39.5% | 6,582 | 38.3 – 40.7 |
+
+At N=6,582 the half-width is **±0.5 – 1.2 pp**. Nothing near the line.
+
+### ⚠️ But stratified numbers are a different story
+
+Small strata carry **±3 – 5 pp**, and that *does* change how two of them may be compared:
+
+| stratum | point | n | 95% CI |
+|---|---|---|---|
+| `.gitattributes` · cli | 42% | 312 | 36.6 – 47.5 |
+| `.gitattributes` · library | 35% | 824 | 31.8 – 38.3 |
+
+The intervals **nearly touch**. *"cli adopts it more than library"* is **weakly supported, not established.**
+
+> 🔴 **Rule: never read two strata as different without checking whether their intervals overlap.**
+> A stratified point estimate is a location, not a ranking.
+
 ## Integrity and statistical robustness
 
 - `provenance/snapshot-manifest.json` binds normalized record/stat files and executable census code to SHA-256
