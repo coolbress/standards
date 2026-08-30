@@ -222,6 +222,66 @@ web-app 은 `Dockerfile` + `docker-compose`"* 로 아키타입을 명시한다.
 | **Renovate** | 6.1% | **Dependabot 과 같은 일**을 한다. 둘을 같이 두면 갱신 PR 이 겹친다 | Dependabot 이 못 하는 생태계가 생기면 |
 | **pre-commit** | 5.1% | 🔴 **원칙적 기각이다.** 로컬 훅은 `--no-verify` 로 **에이전트가 우회할 수 있다.** 원칙 01 이 *"집행은 에이전트 밖에서"* 이므로 같은 검사를 **CI 에 둔다**(`ci / lint`·`typecheck`) | 훅이 CI 를 **대체**하지 않고 **선행**하기만 한다면 |
 
+### 🔒 벽 층 2차 훑기 — `actionlint` 은 정확성, **보안은 아무도 안 보고 있었다** (2026-08-30)
+
+1차 벽 검수는 **트렌드 축**만 봤고 **워크플로 본문과 룰셋 규칙 종류**는 안 열었다. 열었더니 나왔다.
+
+**바닥 항목**: 워크플로에 **보안 정적분석**을 건다. `actionlint`(정확성)과 **층이 다르다** —
+1차 근거가 *"complementary, not alternatives"* 로 명시한다. 우리는 `actionlint` 만 돌고 있었다.
+
+실측(zizmor 1.29.0 · 38개 감사):
+
+| 저장소 | 처음 | 무엇 |
+|---|---|---|
+| `workflows` | 13 low | `artipacked` — 체크아웃이 토큰을 `.git/config` 에 남긴다 |
+| `standards` | 2 low | 같음 |
+| **`project-template`·`divcal`** | 🔴 **1 medium** | **`excessive-permissions`** — 부르는 잡에 `permissions:` 가 없다 |
+
+🔴 **medium 은 이 바닥이 이미 MUST 로 요구하던 것이다**(§CI/CD *"워크플로마다 `permissions:` 최소화"*).
+`label.yml` 엔 있었고 `ci.yml` 에만 없었다 — **있는 걸 보고 있다고 착각하기 딱 좋은 형태**다.
+⚠️ 저장소 설정(`default_workflow_permissions=read`)이 이미 있는데도 필요하다:
+그건 **관리자가 조용히 바꾸는 것**이고 이 줄은 **PR 로 리뷰되는 것**이다. **층이 다르다.**
+
+🔬 **엄격도를 폭발 반경으로 갈랐다** — `workflows` 자신은 **전부** 차단, 소비자용 `python-ci.yml` 은
+**medium 이상**(low 는 confidence 도 low 라 남을 무관하게 깨뜨린다).
+**새 잡이 아니라 `lint` 잡의 스텝**이다 — 새 검사 이름은 소비자마다 **룰셋 갱신(관리자 작업)** 을 부른다.
+전부 0건이 됐다(`workflows` v3.8.0 · `project-template` v2.9.0 · 이 저장소).
+
+### ⬜ 벽에서 **아직 입장이 없는 것들** — 침묵이지 기각이 아니다 (`GAPS` R5-43)
+
+실측: 우리 룰셋은 **네 규칙**뿐이다 — `deletion` · `non_fast_forward` · `pull_request` ·
+`required_status_checks`(넷 다 `bypass 0` · `active`). GitHub 이 주는 나머지에 **아무 입장도 없다**:
+
+| 후보 | 지금 | 왜 판단이 필요한가 |
+|---|---|---|
+| `required_linear_history` | 없음 | squash 전용이라 **결과는 선형**이지만, 그건 **관리자가 바꿀 수 있는 설정**이고 이건 `bypass 0` 룰이다 |
+| `code_scanning` 룰 | 없음 | 지금은 `CodeQL` **검사가 돌았나**만 요구한다. 이 룰은 **경보가 남았나**를 본다 — 다른 문장이다 |
+| 태그 룰셋 | 없음 | 릴리스 태그가 **핀 주석의 근거**다(`@<SHA> # v3.8.0`). 소비자는 SHA 로 도니 실행은 안 바뀌지만 **주석이 거짓이 될 수 있다** |
+| 푸시 룰셋(파일 크기·경로) | 없음 | *트리에 바이너리 없음* 이 지금은 **시험**으로만 선다. ⚠️ **가용성 확인 필요** — 1차 문서가 Enterprise Cloud + 비공개/내부라 한다 |
+| `required_signatures` | 없음 | ⚠️ **우리가 인용하는 표준이 요구하지 않는다** — SLSA Source L2 는 *"continuous, immutable, retained"* 이고 **서명이 아니다**(`FFA-006`) |
+| 머지 큐 | 없음 | 1인 프로젝트에 **줄 설 것이 없다** |
+
+⚠️ **전부 관리자 토큰이 필요하다** — 그래서 격차로 연다. 에이전트가 못 정한다.
+
+### 🟡 서버 설정에서 하나 더 (같은 격차)
+
+**`secret_scanning_non_provider_patterns` 가 넷 다 `disabled`.** 이 바닥은 이미
+*"푸시 보호가 통과시키는 **개인키 PEM**"* 을 문제로 적었고 **gitleaks(CI)** 로 막았다.
+비공급자 패턴은 **같은 구멍을 푸시 단계에서** 막는다 — CI 보다 **한 층 이르다.**
+(`secret_scanning_validity_checks` 도 `disabled`.) 켜는 것은 관리자 작업이다.
+
+### ✅ 벽에서 **바꿀 게 없던 것** (2026-08-30 실측)
+
+| | |
+|---|---|
+| 룰셋 넷 | ✅ `bypass 0` · `active` · strict — **에이전트가 못 끈다** |
+| 머지 방법 | ✅ squash 전용 · 브랜치 자동 삭제 |
+| Actions 정책 | ✅ `selected` · `standards` 는 **GitHub 소유만**(패턴 0) |
+| 워크플로 토큰 | ✅ 기본 `read` · **PR 승인 불가** |
+| 스크립트 인젝션 | ✅ `run:` 안의 `${{ }}` 보간 **0건** |
+| `pull_request_target` | ✅ **0건** |
+| 시크릿 탐지 · 푸시 보호 · Dependabot | ✅ 넷 다 `enabled` |
+
 ### 🔴 **기계가 지켜주는 것을 저장소의 성질로 읽지 않는다** (2026-08-30 신설)
 
 📦 상자 층을 **파일 내용까지** 두 번째로 훑다가 나왔고, **이 저장소가 이미 한 번 걸린 부류**다.

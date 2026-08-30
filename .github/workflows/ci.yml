@@ -21,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # 🔴 체크아웃은 기본으로 토큰을 `.git/config` 에 남긴다(zizmor `artipacked`).
+          # 이 저장소의 잡은 **아무것도 푸시하지 않는다** — 그래서 끈다.
+          persist-credentials: false
       # 🔴 버전을 여기 적지 않는다 — `.python-version` 이 정본이다.
       # 로컬(pyenv)과 CI 가 **같은 파일**을 읽어야 갈라지지 않는다.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -66,6 +70,14 @@ jobs:
       # 예전 판은 `--select` 를 이 줄에 박아서, 로컬에서 `ruff check tools/` 를 그냥 돌리면
       # CI 와 다른 규칙으로 재고 있었다. 끄는 규칙의 **근거도 그 파일에** 산다.
       # 2026-08-29: `E`(E501 제외 · 0건) 와 `S`(bandit) 를 더해 **열두 규칙군**이 됐다.
+      # 🔒 워크플로 **보안** 정적분석. `actionlint` 이 정확성을 보고 이건 보안을 본다 —
+      # 대안이 아니라 층이다(연구 합의). 템플릿 인젝션 · 자격증명 유출 · 캐시 오염 ·
+      # impostor commit(SHA 로 핀한 척하지만 그 저장소 히스토리에 없는 커밋 — 우린 전부 SHA 핀이다).
+      # ⚠️ **버전을 박는다** — 안 박으면 새 감사 규칙이 들어오는 날 CI 가 무관하게 빨개진다.
+      # `pipx` 는 러너에 이미 있고 **액션이 아니라** 이 저장소의 좁은 allowlist 와 무관하다.
+      - name: 워크플로 보안 (zizmor)
+        run: pipx run zizmor==1.29.0 --no-progress .github/workflows/
+
       - name: tools/ 린트 (규칙군을 하나씩 켠다 — R5-39)
         run: |
           python -m pip install --quiet --disable-pip-version-check 'ruff==0.16.5'
