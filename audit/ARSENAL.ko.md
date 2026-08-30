@@ -69,6 +69,47 @@
 🔴 **갱신 정책**: 핀을 올리는 것은 **PR** 이다. `claude plugin update` 는 최신으로 끌어오므로
 그것만 쓰면 *무엇이 언제 바뀌었는지*가 저장소에 안 남는다 — Actions 핀을 올릴 때와 같은 규율이다.
 
+### 2c. 🔬 2026 후보 훑기 — **셋을 재고 셋 다 안 넣는다** (2026-08-30)
+
+소유자 질문: *"좋은 무기를 트렌드 검색으로 다 넣는 게 낫지 않나?"*
+훑었고 **답은 아니다**. 이유가 항목마다 다르다.
+
+| 후보 | 설치 수 | 처분 | 왜 |
+|---|---|---|---|
+| **Superpowers** (`obra`) | ~752k | 🔴 **기각 — 경쟁 프레임워크지 빈칸이 아니다** | 아래 |
+| **Frontend Design** (Anthropic 공식) | ~277k | 🔴 **기각 — `taste-skill` 과 같은 자리** | 겹치면 안 넣는다(§4). 소유자가 이미 고른 것이 있다 |
+| **Context7** | ~349k | 🔴 **이미 적힌 기각에 걸린다** | MCP 서버다. [`PLUGIN-DESIGN`](PLUGIN-DESIGN.ko.md) §*"🚫 `mcpServers` 없음 — `gh` 가 있다 · 토큰 4~32배"* |
+
+#### Superpowers 를 왜 안 넣나 — **우리 결정과 정면으로 부딪힌다**
+
+12~14개 스킬이 **방법론 하나를 통째로** 깐다. 그 항목들이 우리 층과 하나씩 겹치는데,
+**겹침보다 나쁜 것은 그중 둘이 우리가 근거를 대고 내린 결정과 반대**라는 점이다:
+
+| Superpowers | 우리 |
+|---|---|
+| brainstorming · writing/executing plans | `/kickoff` · **`mattpocock-skills` 가 이미 그 자리다**(실측: 발화 기록에 `writing-plans`·`executing-plans` 가 찍힌다) |
+| requesting/receiving code review | `/review`(외부 모델 우선) |
+| verification before completion | **원칙 02** — 완료는 주장이 아니라 머지된 커밋 |
+| **test-driven-development 강제** | 🔴 **반대 결정**: `CONTRIBUTING` 이 *"실패하는 테스트를 먼저 쓰는 것을 **권한다 — 강제하지는 않는다.** 순서 자체의 효과는 **증거가 갈린다**"* |
+| **subagent-driven / dispatching parallel agents** | 🔴 **반대 결정**: **원칙 04 — 판단은 위임하지 않는다** |
+
+**프레임워크를 들이면 그 방법론도 같이 들어온다.** 대전제 1(*있는 걸 다시 만들지 않는다*)은
+**빈칸을 메울 때** 적용되는 것이지, **이미 결정한 자리를 덮으라는 말이 아니다.**
+
+#### 🔴 그리고 지금 더 넣는 것 자체가 틀린 순서다
+
+실측 — `check_skill_firing`: 사건 **15** · 서로 다른 **12** · **우리 것 1**.
+1차 보고가 그 형태를 정확히 부른다: *"the agent had all the tools and **none of the instructions
+to use them**"* · *"the **silent fallback to training data** is the actual problem"*.
+
+**무기가 모자란 게 아니라 무기고가 있다는 걸 안 알려준 것**이었다.
+`coolbress-standards-hooks` v0.5.0 이 그 안내를 넣었다(≈300토큰 · 강제 아님).
+
+> **순서: 안내를 켠다 → 발화를 다시 잰다 → 그래도 안 움직이면 그때 무기를 본다.**
+> 안 움직이는데 무기를 더 넣으면 **상시 토큰만 늘고 발화는 그대로**다.
+
+⚠️ **핀은 셋 다 HEAD 다**(2026-08-30 확인 · `taste-skill`·`last30days`·`ponytail`) — 뒤처져서 생긴 문제가 아니다.
+
 ## 3. 인기 신호와 사실 판정을 가른다
 
 **`last30days` 같은 도구는 *후보를 발견*한다. *판정*은 공식 자료가 한다.**
