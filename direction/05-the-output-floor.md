@@ -520,6 +520,18 @@ ETH Zurich(**138 repos · 5,694 PR**): LLM 이 생성한 컨텍스트 파일은 
 사람이 쓴 것도 **+4% 에 비용 +20~159%**. **150줄을 넘기지 않는다**(코퍼스의 <200줄과 같은 방향).
 *"비관련 내용은 선택적 무시가 아니라 **지시 전체의 무시**를 부른다."*
 
+🟢 **다른 경로에서 같은 결론이 왔다 (2026-08-30 · `GAPS` R5-27 종료).** OpenAI 팀이 Codex 로
+5개월 · 100만 줄 · PR 1,500건을 굴린 기록이 같은 것을 말한다 —
+*"give Codex a **map**, not a 1,000-page instruction manual"* ·
+*"`AGENTS.md` (roughly **100 lines**) … treated as **the table of contents**, not the encyclopedia"* ·
+*"**Context is a scarce resource.** A giant instruction file crowds out the task, the code,
+and the relevant docs"*.
+**우리 실물이 이미 그 모양이다** — 템플릿의 `AGENTS.md` **40줄**, `where-is-the-truth` 스킬은
+*"규칙을 여기 적지 않는다 — 어디를 열어야 하는지만 말한다"*.
+⚠️ **그 문서의 간판 수치는 인용하지 않는다** — *"we **estimate** … about 1/10th the time"* 은
+**방법도 대조군도 없는 추정**이다. 쓸 수 있는 것은 **길이·역할에 대한 그들의 선택**이지 효율 수치가 아니다
+(`OPENAI-HARNESS-ENGINEERING`).
+
 🔴 **상태(*"지금 어디까지"*)를 넣지 않는다.** 가변 상태는 파일이 아니라 **열린 이슈**가 갖는다 —
 `divcal` 완주 회고에서 차가운 세션이 시작 30초에 `gh issue list` 를 돌렸다.
 
