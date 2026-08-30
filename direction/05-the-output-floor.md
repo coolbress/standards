@@ -448,6 +448,18 @@ SLSA v1.2 · 12-Factor · GitHub community-health · SWEBOK/ISO-12207 을 대조
   **GitHub 은 PR 작성자에게 리뷰를 요청하지 않는다.** 실측으로 집행 경로도 없다(`require_code_owner_review: false` ·
   `required_approving_review_count: 0`). [`01`](01-what-i-want.md) 경계 ②(*"동료 리뷰를 시뮬레이션하지 않는다"*)에 걸린다 —
   **파일은 있고 집행은 없는 것이 `presence≠adequacy` 그 자체다.** 다시 여는 조건: **기여자 2인 이상** 또는 `require_code_owner_review` 활성화.
+- 🆕 **Artifact Attestations**(빌드 provenance) — 🔴 **기각 2026-08-30. 증명할 대상이 없다.**
+  GitHub 이 Sigstore 기반 서명 provenance 를 **공개 저장소에 사실상 무료로** 주고
+  *"opt-in 에서 기본으로 이동 중"* 이라 후보로 올렸다. **그런데 실측이 막았다** —
+  **우리는 빌드 산출물을 하나도 배포하지 않는다**: 배포 스텝 0건(`twine`·`uv publish`·`npm publish`·`docker push`) ·
+  `divcal` 릴리스 **0건** · `workflows` 최신 릴리스 **asset 0개**(태그와 노트뿐).
+  🔵 **그리고 우리가 실제로 배포하는 것**(플러그인)은 **git 내용이고 마켓 항목이 이미 커밋 SHA 로 핀한다** —
+  git 소스에 대해서는 **그것이 provenance 다**(`ARSENAL` §2b).
+  ⚠️ **`FFA-006` 을 다시 읽고 방향을 확인했다**: SLSA Source L2 는 *서명*이 아니라
+  ***"연속·불변·보존 + Source Provenance Attestations"*** 이다. **틀린 것은 서명 권고였지 provenance 자체가 아니다** —
+  그래서 이 기각은 *"provenance 가 필요 없다"* 가 아니라 ***"증명할 산출물이 아직 없다"*** 다.
+  **다시 여는 조건**: **처음으로 패키지를 퍼블리시할 때**(PyPI·npm·컨테이너·릴리스 asset).
+  그때는 `actions/attest-build-provenance` 한 줄이고, `FFA-002`(SBOM-on-release = **L3**)와 함께 판단한다.
 - **SBOM** — ✅ **부재가 맞다.** 이 프로젝트는 **EO 14028·CRA 적용 대상이 아니고**, OSPS 도 **L3** 에 둔다(`FFA-002`).
 - 🆕 **복잡도 게이트(cyclomatic complexity 상한)** — 🔴 **기각 2026-08-29. 근거가 약하고 이미 있는 것과 겹친다.**
   `GAPS` R5-40 을 읽다 후보로 올라왔다(실측: `validate_corpus.main` **77** · `repo_audit.audit` **38**).
