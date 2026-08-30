@@ -62,7 +62,7 @@ census_todo: "Signing now census-backed offline (gh-API=0) from the Scorecard `s
 
 ## Tradeoffs / what's ruled out
 - **Ruled out: hand-uploaded local builds.** A laptop `publish` defeats provenance and reproducibility — the artifact must be a CI output. Cost: requires CI publish credentials/OIDC wiring up front.
-- **Provenance/signing — `[lit]`-mandated despite 1.2% census.** This is a *do-it* (senior practice) decision, not a *publish-because-everyone-does*; the census says don't expect to find it, the standard says ship it. Cheap via Trusted Publishing; no excuse to skip.
+- **Provenance/signing — `[lit, normative]`-mandated despite 1.2% census.** This is a *do-it* (senior practice) decision, not a *publish-because-everyone-does*; the census says don't expect to find it, the standard says ship it. Cheap via Trusted Publishing; no excuse to skip.
 - **Don't cargo-cult ops channels onto libraries.** IaC/container/app-store on a pure library is waste — channel follows archetype (the C5 branch). Mandating container on a library is the inverse error of skipping it on a service.
 - **App-store review is non-automatable** — the harness prepares the submission + posture but cannot pass the gate; staged rollout mitigates blast radius but adds release latency.
 - **SLSA L3 (hardened isolated builds) is aspirational for most** — L2 (signed provenance on a hosted platform) is the realistic, near-free floor; L3 demands platform controls most teams don't run.

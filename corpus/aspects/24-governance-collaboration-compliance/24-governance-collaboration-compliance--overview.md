@@ -91,7 +91,7 @@ maps_from: ["census-data/census-governance", "census-data/census-governance-floo
 ## Tradeoffs / what's ruled out
 
 - **Heavy RACI / formal governance boards** — ruled out for the default (solo + AI builder); collapses to maintainer + CODEOWNERS + ADR. Re-introduce only at multi-team scale.
-- **ADR-for-everything** — ruled out; census 2–4% and `[lit]` warns of "settlement failure" (repos with 1–5 stale ADRs). Record *real* decisions only.
+- **ADR-for-everything** — ruled out; census 2–4% and `[lit, normative]` warns of "settlement failure" (repos with 1–5 stale ADRs). Record *real* decisions only.
 - **Public-by-default ADRs** — ruled out by the publish-axis: standard path, but kept local/opt-in (census says they are not a public norm).
 - **Retrofitting compliance** — ruled out; the cheap path is wiring the evidence trail (review history, signed commits, pinned deps) into normal flow from day-one, not an audit scramble later.
 - **Process theater** — a CoC/CONTRIBUTING file with no enforced review is ruled out; the *enforced* control (branch protection) is what the minimum-dimension scoring rewards.

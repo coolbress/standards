@@ -43,13 +43,21 @@ BASELINE = ROOT / "audit" / "evidence-class-baseline.json"
 FIGURE = re.compile("(?<![\\w.])\\d{1,3}(?:[.\u2013-]\\d+)?%|(?<![\\w.])[nN]\\s*=\\s*\\d")
 #: 한정어 없는 `[lit]`
 BARE_LIT = re.compile(r"\[lit\]")
+#: 같은 줄이 **이미 실측을 표시**하는가. 그러면 애매하지 않다.
+MEASURED = re.compile(r"\[census\]|\[실측\]")
 
 
 def untyped(text: str) -> list[tuple[int, str]]:
-    """수치가 있는 줄에서 한정어 없는 `[lit]` 을 찾는다."""
+    """수치가 있는 줄에서 **애매한** `[lit]` 을 찾는다.
+
+    🔴 **`[lit][census]` 는 세지 않는다** (2026-08-30 정정). 그런 줄은 이미 갈라져 있다 —
+    `[lit]` 이 *SemVer 가 그렇게 하라고 한다*, `[census]` 가 *86% 가 그렇게 한다* 를 맡는다.
+    처음 판은 그걸 다 세서 **68건 중 31건이 오탐**이었다. **오탐이 신호를 묻는다** —
+    이 저장소가 `check_template_drift` 에서 두 번 겪은 그 형태다.
+    """
     out: list[tuple[int, str]] = []
     for i, line in enumerate(text.splitlines(), 1):
-        if FIGURE.search(line):
+        if FIGURE.search(line) and not MEASURED.search(line):
             out.extend((i, line.strip()) for _ in BARE_LIT.findall(line))
     return out
 

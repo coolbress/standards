@@ -133,7 +133,7 @@ producing artifacts an agent (or another engineer) can build from without guessi
   8-attribute model. [lit]
 - RFC 2119 + RFC 8174 (BCP 14) — requirement-level keywords. [lit]
 - Connextra/Cohn *User Stories Applied* (2004) + INVEST (Wake, XP123, 2003). [lit]
-- MoSCoW (Clegg 1994; DSDM) — Must effort ≲60%, Could ~20%. [lit]
+- MoSCoW (Clegg 1994; DSDM) — Must effort ≲60%, Could ~20%. [lit, normative]
 - Lean Startup (Ries 2011) — MVP / build-measure-learn. [lit]
 - ADR (Nygard 2011) + MADR (adr.github.io). [lit]
 - **NaPiRE** ("Naming the Pain in RE", Méndez Fernández & Wagner et al., *EMSE* 2017; 228 companies /

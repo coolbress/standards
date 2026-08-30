@@ -326,7 +326,7 @@ improvement loop").
   use paired-differences + power analysis before claiming a regression/win [lit].
 - **An ambiguous or unsolvable eval task** — "0% pass rate… typically signals a broken task"; a good task has two
   experts agreeing on the verdict [lit].
-- **A saturated eval kept as a gate** — ~100% pass gives "no signal"; raise the difficulty [lit].
+- **A saturated eval kept as a gate** — ~100% pass gives "no signal"; raise the difficulty [lit, normative].
 
 ## How gingoa should author + version prompts and build its eval-harness
 
