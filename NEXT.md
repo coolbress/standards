@@ -541,21 +541,34 @@ cd ~   # 🔴 저장소 밖에서 — 스크립트가 저장소 안이면 멈춘
 **403 이 나면 그것이 정상이다.** 관리자 작업(룰셋 · Actions 정책 · 시크릿 · Environments ·
 CodeQL default setup)은 **사람이 한다.** 에이전트는 명령을 만들어 넘긴다.
 
-### 🔴 지금 소유자가 칠 세 줄 — `ci / deps` 를 벽으로 올린다 (2026-08-30)
+### ✅ `ci / deps` 가 벽이 됐다 (2026-08-30 · 소유자가 쳤다)
 
 핀은 **다 올라갔다**([`workflows` v3.7.0](https://github.com/coolbress/workflows/releases/tag/v3.7.0) ·
 [`project-template` v2.5.0](https://github.com/coolbress/project-template/releases/tag/v2.5.0) ·
 `divcal` [#27](https://github.com/coolbress/divcal/pull/27)). 세 저장소 다 **`deps` 를 실제로 보고한다.**
-남은 건 룰셋에 **요구 검사로 등재**하는 것뿐 — 관리자 토큰이라 사람이 친다:
+룰셋 등재까지 끝났다 — **세 저장소 다 요구 검사에 `deps` 가 있고 우회자 0 · `active`.**
+`repo_audit --repo` 로 넷 다 `CLEAN` 을 확인했고, `new-project.sh` 의 `ruleset.json` 과
+감사기의 `PROJECT_CHECKS` 가 **집합으로 같다**(새 저장소는 태어날 때부터 받는다).
+
+소유자가 친 것(관리자 토큰 · 기록용):
 
 ```bash
 cd ~   # 🔴 저장소 밖에서
-~/workflows/tools/with-admin-token.sh ~/workflows/tools/upgrade-ruleset.sh coolbress/workflows        'canary / deps:15368'
-~/workflows/tools/with-admin-token.sh ~/workflows/tools/upgrade-ruleset.sh coolbress/project-template 'ci / deps:15368'
-~/workflows/tools/with-admin-token.sh ~/workflows/tools/upgrade-ruleset.sh coolbress/divcal          'ci / deps:15368'
+~/workflows/tools/with-admin-token.sh ~/workflows/tools/upgrade-ruleset.sh coolbress/workflows 'canary / deps:15368'
+~/workflows/tools/with-admin-token.sh bash -c '
+for r in project-template divcal; do
+  ~/workflows/tools/upgrade-ruleset.sh "coolbress/$r" "ci / deps:15368"
+done'
 ```
 
-⚠️ **첫 줄만 이름이 다르다** — `canary`. 아래가 이유다.
+⚠️ **첫 줄만 이름이 다르다**(`canary`) — 아래가 이유다.
+🔴 **여러 저장소는 한 줄로 묶는다** — 세 줄을 붙여넣으면 토큰을 세 번 쳐야 하고,
+그 사이에 **줄이 삼켜진다**(아래 §토큰 프롬프트).
+
+⚪ **`standards` 에는 안 걸었다 — 기각이지 누락이 아니다.** 실측: 의존성 그래프가
+**넷뿐이고 전부 SHA 로 핀된 Actions** 다(파이썬 매니페스트가 없다 — `ruff`·`mypy` 는 CI 안에서
+버전을 박아 `pip install` 한다). SHA 핀 + 허용목록이 이미 덮는 면을 위해 **관리자 작업 둘**
+(허용목록 등재 · 룰셋 갱신)을 쓸 값이 아니다. 근거는 `repo_audit.py` 의 `EXPECTED_CHECKS` 밑에 있다.
 
 #### 🔬 오늘 또 *적어놓고 안 따랐다* — 이번엔 검사로 잠갔다
 
@@ -574,6 +587,33 @@ cd ~   # 🔴 저장소 밖에서
 
 **같은 병의 세 번째다**(§2b 미준수 · 검사 끝 네 줄만 보기 · 이번). 앞의 둘은 기록으로 끝났고
 **이번엔 검사가 됐다** — `direction/07` §01 *집행은 에이전트 밖에서*.
+
+⚠️ 그 함정은 **두 곳에 적혀 있었다** — 이 문서 §결합과 `repo_audit.py` 의 `EXPECTED_CHECKS`
+주석(*"`ci / diff-size` 를 걸면 … 자기잠금이 된다"*). **두 번 적어도 안 따랐다.**
+읽어서 잡은 게 아니라 **이름을 조회해서** 잡았다 — 그래서 조회를 스크립트에 넣었다.
+
+#### 🔬 토큰 프롬프트가 **다음 명령줄을 삼켰다**
+
+세 줄을 한 번에 붙여넣었더니 첫 줄만 돌고 멈췄다. 래퍼가 토큰을 **stdin** 에서 읽어서,
+셸이 들고 있던 **다음 명령줄이 토큰이 된다.** 고치기 전 판에 시험을 돌린 실측:
+
+```
+토큰 확인: 접두 LINE_ · 길이 15
+⚠️ 접두가 낯설다 — …
+```
+
+**경고만 뜨고 멈추지 않는다.** 즉 그 명령은 **조용히 사라지고**(실행 안 됨) 앞 명령은
+쓰레기 토큰으로 401 이 난다. 관리자 명령은 저장소를 만들고 벽을 고치는 것들이다.
+
+[`with-admin-token.sh`](https://github.com/coolbress/workflows/blob/main/tools/with-admin-token.sh)
+는 이제 **`/dev/tty` 에서 읽는다**(없으면 stdin 으로 되돌아간다 — CI 를 막지 않는다).
+시험은 **pty 를 실제로 띄운다** — controlling terminal 을 주고 **stdin 만 파이프로 바꿔서**
+남긴 줄이 살아 있는지 본다. `/dev/tty` 없이는 이 성질 자체를 확인할 수 없다.
+🔴 **고치기 전 판에서 2건 FAIL 하는 것을 확인했다**
+([#47](https://github.com/coolbress/workflows/pull/47) · `tests/token-prompt-not-from-stdin.sh`).
+
+그 시험도 CI 가 한 번 잡았다 — `/bin/sh script` 로 실행했는데 우분투에선 `/bin/sh` 가 **dash** 라
+`pipefail` 이 없다. macOS 는 `/bin/sh` 가 bash 라 **로컬에선 안 보였다.**
 
 #### 그리고 템플릿 저장소엔 CI 파일이 **둘**이었다
 

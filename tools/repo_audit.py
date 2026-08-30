@@ -57,7 +57,7 @@ EXPECTED_APP: dict[str, int] = {"CodeQL": CODE_SCANNING_APP_ID}
 PROJECT_CHECKS = {
     "CodeQL",
     "ci / pr-title", "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
-    "ci / diff-size",
+    "ci / diff-size", "ci / deps",
 }
 PROJECT_ACTION_PATTERNS = ["astral-sh/setup-uv@*", "coolbress/workflows/*"]
 
@@ -79,14 +79,22 @@ EXPECTED_CHECKS: dict[str, set[str]] = {
     "coolbress/workflows": {
         "integrity", "CodeQL",
         "canary / pr-title", "canary / lint", "canary / typecheck", "canary / test",
-        "canary / build", "canary / secrets", "canary / diff-size",
+        "canary / build", "canary / secrets", "canary / diff-size", "canary / deps",
     },
     "coolbress/project-template": {
         "CodeQL",
         "ci / pr-title", "ci / lint", "ci / typecheck", "ci / test", "ci / build", "ci / secrets",
-        "ci / diff-size",
+        "ci / diff-size", "ci / deps",
     },
 }
+
+# ⚪ `coolbress/standards` 에는 `deps` 를 걸지 않았다 — **기각이지 누락이 아니다.**
+# 실측(2026-08-30): 이 저장소의 의존성 그래프는 **넷뿐이고 전부 SHA 로 핀된 Actions** 다
+# (`checkout`·`setup-node`·`setup-python`·`upload-artifact`). 파이썬 매니페스트가 없다 —
+# `ruff`·`mypy` 는 CI 안에서 버전을 박아 `pip install` 한다.
+# 값: SHA 핀 + Actions 허용목록이 이미 덮는 면. 비용: `dependency-review-action` 을
+# **허용목록에 넣고**(관리자) **룰셋에 검사를 더하는**(관리자) 두 번의 관리자 작업.
+# 벽을 건드릴 값이 아니다 — 같은 판단이 이 저장소 `ci.yml` 에도 이미 한 번 적혀 있다.
 
 
 def _env() -> dict[str, str]:
