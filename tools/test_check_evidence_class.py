@@ -34,5 +34,17 @@ class Untyped(unittest.TestCase):
         """`v1.29.0` 같은 것에 걸리면 오탐이 신호를 묻는다."""
         self.assertEqual(mod.untyped("- zizmor v1.29.0 을 쓴다. [lit]"), [])
 
+    def test_a_named_standard_without_a_figure_is_also_caught(self) -> None:
+        """🔴 데인 넷 중 **둘은 수치가 없었다** — SAST-가-L3 · SLSA-Source-L2.
+
+        레벨과 강도에 대한 오독이지 숫자 오독이 아니었다. 수치만 보면 그 부류를 놓친다.
+        """
+        self.assertEqual(len(mod.untyped("- OSPS 는 SAST 를 L3 에 둔다. [lit]")), 1)
+        self.assertEqual(len(mod.untyped("- 이 항목은 MUST 다. [lit]")), 1)
+
+    def test_lowercase_should_in_prose_is_not_a_standard(self) -> None:
+        """⚠️ 대소문자를 무시하면 *"should work"* 까지 잡힌다 — 실측으로 120 vs 62 였다."""
+        self.assertEqual(mod.untyped('- 막연한 "should work" 가 아니라 검사로 적는다. [lit]'), [])
+
     def test_real_corpus_is_at_or_below_baseline(self) -> None:
         self.assertEqual(mod.main(), 0)

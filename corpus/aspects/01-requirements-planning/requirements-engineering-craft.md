@@ -28,7 +28,7 @@ requirement, follow the links, and you know exactly what design and which tests 
 contract's `prd.yml` SSOT assigns each requirement a stable ID; the harness threads **req → ADR/design →
 acceptance-test** as explicit links so that when a non-engineer revises a requirement, the change *cascades
 deterministically for the agent* (regenerate the affected design/tests) instead of silently desyncing — the
-machine-readable RTM is what turns "edit the spec" into a safe, traceable operation. [SWEBOK v4 KA1; Perforce RTM] [lit]
+machine-readable RTM is what turns "edit the spec" into a safe, traceable operation. [SWEBOK v4 KA1; Perforce RTM] [lit, normative]
 
 ## Requirements validation & verification — distinct from elicit/analyze
 SWEBOK v4 KA1 makes **Requirements Validation** its own activity, separate from elicitation and analysis: confirm
@@ -42,7 +42,7 @@ agree?) is part of it — GitHub Spec-Kit's `/analyze` command is the modern aut
 **gingoa:** validation is a real stage gate, not a vibe — the harness runs the 29148 well-formedness check as an
 automated stop, demands an acceptance test per requirement (EARS / Given-When-Then), and runs a Spec-Kit-style
 cross-artifact consistency pass + a post-draft adversarial review (see `elicitation-prior-art.md`) before the
-contract is allowed to drive the build. [SWEBOK v4 KA1 §Requirements Validation; GitHub Spec-Kit] [lit]
+contract is allowed to drive the build. [SWEBOK v4 KA1 §Requirements Validation; GitHub Spec-Kit] [lit, normative]
 
 ## Classic elicitation-technique catalogue
 Before the LLM-era techniques, RE has a canonical elicitation toolkit (SWEBOK v4 KA1): **interviews** (structured/
@@ -54,7 +54,7 @@ the kind of requirement it surfaces (interviews miss tacit work; observation sur
 does not run the whole catalogue — it picks **one** instantiation suited to a non-engineer who cannot sit in a
 workshop or be observed: a **Socratic, interview-first LLM dialogue** (adaptive, ≤2 questions/turn, serial context,
 hidden 5W1H × {functional/NFR/constraint/risk} coverage — full design in `elicitation-prior-art.md`). The classic
-catalogue is the *menu*; gingoa's chosen technique is the *dish*, deliberately scoped to the solo non-engineer. [SWEBOK v4 KA1; sdh.global elicitation-techniques] [lit]
+catalogue is the *menu*; gingoa's chosen technique is the *dish*, deliberately scoped to the solo non-engineer. [SWEBOK v4 KA1; sdh.global elicitation-techniques] [lit, normative]
 
 ## Stakeholder identification & classification
 SWEBOK v4 KA1 names **stakeholders** as a primary *source of requirements* and requires they be **identified and
@@ -66,7 +66,7 @@ Specification (StRS)** is the artifact that captures this source layer distinct 
 this is precisely the **non-engineer's blind spot** — a solo founder naturally speaks only as the *user* and forgets
 the *ops*, *buyer*, *regulator*, and *agent* viewpoints. The Socratic interview's coverage tracker explicitly probes
 each stakeholder class (Who operates it? Who pays? Who must it comply with? What does the agent need stated?) so the
-contract captures requirements and acceptance criteria the non-engineer didn't know were askable. [SWEBOK v4 KA1; ISO 29148 StRS via ReqView] [lit]
+contract captures requirements and acceptance criteria the non-engineer didn't know were askable. [SWEBOK v4 KA1; ISO 29148 StRS via ReqView] [lit, normative]
 
 ## Definition of Ready (DoR) — the entry gate
 The **Definition of Ready** is the agile **entry gate**, the mirror of the already-covered Definition of Done: a
@@ -97,7 +97,7 @@ space** and is **distinct from an NFR** (a constraint is imposed *on* the soluti
 solution must exhibit). **gingoa:** ACD is an explicit contract section the Socratic interview elicits, not an
 afterthought — surfacing "what are we assuming?", "what do we depend on?", and "what bounds the solution?" early is a
 core part of the gap the harness fills for a non-engineer who would otherwise leave them implicit (and have the agent
-discover them mid-build). [ISO 29148 / IEEE-830 SRS via ReqView] [lit]
+discover them mid-build). [ISO 29148 / IEEE-830 SRS via ReqView] [lit, normative]
 
 ## Lightweight estimation
 Estimation stays deliberately **light** — its only job at ① is to *confirm* INVEST's **Estimable** and **Small**

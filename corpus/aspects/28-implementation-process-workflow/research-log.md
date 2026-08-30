@@ -6,7 +6,7 @@ kind: research-log
 evidence_track: lit
 status: review-needed
 last_updated: "2026-06-26"
-why_lit_not_census: "How to ROUTE/MANAGE construction work is a process/method question — not observable from a repo census (a repo shows artifacts, not the decision process that produced them). The SWEBOK 'Software Engineering Process' + 'Software Engineering Management' KAs cover this; the 27-aspect corpus (domain-organized) never carved one out. claudeck v1's routing is an instance of this methodology, so far adopted on 'it's well-built' trust rather than [lit] grounding. This note supplies the grounding."
+why_lit_not_census: "How to ROUTE/MANAGE construction work is a process/method question — not observable from a repo census (a repo shows artifacts, not the decision process that produced them). The SWEBOK 'Software Engineering Process' + 'Software Engineering Management' KAs cover this; the 27-aspect corpus (domain-organized) never carved one out. claudeck v1's routing is an instance of this methodology, so far adopted on 'it's well-built' trust rather than [lit, normative] grounding. This note supplies the grounding."
 ---
 
 # ③ Implementation methodology — the [lit] backbone for claudeck v1's routing
@@ -29,7 +29,7 @@ and is reviewed* when doing construction. That layer is exactly SWEBOK's **Softw
   project's "defined process" to be a documented tailoring of the org standard. SWEBOK v4 SE-Process KA
   lists **risk-based rigor + lifecycle tailoring** as key principles. The current ISO/IEC/IEEE 12207:2026
   public catalog confirms a methodology-neutral life-cycle framework, but not this clause-level tailoring
-  detail; current-edition mapping is **INCONCLUSIVE**. `[lit]` historical ISO 12207:2017 ·
+  detail; current-edition mapping is **INCONCLUSIVE**. `[lit, normative]` historical ISO 12207:2017 ·
   CMU/SEI-94-TR-024 · SWEBOK v4.
 - **The canonical "how much process" model** = Boehm & Turner, *Balancing Agility and Discipline* (2004):
   five risk factors — **criticality, size, dynamism, personnel, culture**; criticality sets the minimum

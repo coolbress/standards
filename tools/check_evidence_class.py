@@ -41,6 +41,17 @@ BASELINE = ROOT / "audit" / "evidence-class-baseline.json"
 #: 퍼센트 또는 `n=` — 증거 수치가 있는 줄
 #  `2-4%` 를 EN DASH(U+2013)로 쓰는 범위가 실제로 있다 — 문자로 안 적고 코드포인트로 적는다(RUF001).
 FIGURE = re.compile("(?<![\\w.])\\d{1,3}(?:[.\u2013-]\\d+)?%|(?<![\\w.])[nN]\\s*=\\s*\\d")
+
+#: 🔴 **수치만으로는 범위가 좁다.** 이 저장소가 실제로 데인 넷 중 **둘은 수치가 없었다** —
+#: SAST-가-L3(*"표준이 요구해서가 아니라 선택"*)와 SLSA-Source-L2(*"서명이 아니다"*)는
+#: **레벨과 강도**에 대한 오독이지 숫자 오독이 아니었다. 그래서 **이름 붙은 표준·규격·레벨**도 본다.
+#: ⚠️ 대문자 RFC-2119 만 본다 — 소문자 *"should work"* 같은 산문까지 잡으면 오탐이 신호를 묻는다
+#: (실측으로 그랬다: 대소문자 무시로 재니 120건이었는데 좁히니 62건이다).
+NAMED_STANDARD = re.compile(
+    r"\b(MUST|SHOULD|SHALL)\b"
+    r"|\bL[123]\b"
+    r"|\b(OSPS|SLSA|SWEBOK|NIST SP|WCAG|RFC ?\d{3,}|ISO[/ ]?\d{4,})\b"
+)
 #: 한정어 없는 `[lit]`
 BARE_LIT = re.compile(r"\[lit\]")
 #: 같은 줄이 **이미 실측을 표시**하는가. 그러면 애매하지 않다.
@@ -48,7 +59,7 @@ MEASURED = re.compile(r"\[census\]|\[실측\]")
 
 
 def untyped(text: str) -> list[tuple[int, str]]:
-    """수치가 있는 줄에서 **애매한** `[lit]` 을 찾는다.
+    """**증거 줄**에서 애매한 `[lit]` 을 찾는다 — 수치가 있거나 이름 붙은 표준을 부르는 줄.
 
     🔴 **`[lit][census]` 는 세지 않는다** (2026-08-30 정정). 그런 줄은 이미 갈라져 있다 —
     `[lit]` 이 *SemVer 가 그렇게 하라고 한다*, `[census]` 가 *86% 가 그렇게 한다* 를 맡는다.
@@ -57,7 +68,8 @@ def untyped(text: str) -> list[tuple[int, str]]:
     """
     out: list[tuple[int, str]] = []
     for i, line in enumerate(text.splitlines(), 1):
-        if FIGURE.search(line) and not MEASURED.search(line):
+        ambiguous = FIGURE.search(line) or NAMED_STANDARD.search(line)
+        if ambiguous and not MEASURED.search(line):
             out.extend((i, line.strip()) for _ in BARE_LIT.findall(line))
     return out
 
@@ -78,7 +90,7 @@ def main() -> int:
     limit = int(base.get("total", total))
 
     print("증거 태그 — 처방/실측 구분")
-    print(f"METRIC untyped_lit_on_figure_lines={total}")
+    print(f"METRIC untyped_lit_on_evidence_lines={total}")
     print(f"METRIC baseline={limit}")
 
     if total > limit:

@@ -28,7 +28,7 @@ census_todo: "Signing now census-backed offline (gh-API=0) from the Scorecard `s
 > `[]` 는 *universal* 을 뜻하므로(`_schema.md` §3.1) 그대로 두면 **바닥이 로컬 CLI 스크립트에도 이걸 요구한다.** claim 본문과 분류가 어긋나 있었다.
 
 > **Standard (claim):** Ship from a tagged, SemVer'd CI release that publishes to the archetype's canonical channel (registry / binary tap / container / app store) with build provenance — the artifact is a reproducible CI output, never a hand-uploaded local build.
-> **Evidence:** 429-repo release-ops census + named standards (SemVer, npm provenance, SLSA, Homebrew/winget) · **Confidence:** High (release-half is hard census data; provenance/signing is `[lit]`-led, near-absent in the wild) · **Kind:** universal · **Stage:** ④
+> **Evidence:** 429-repo release-ops census + named standards (SemVer, npm provenance, SLSA, Homebrew/winget) · **Confidence:** High (release-half is hard census data; provenance/signing is `[lit, normative]`-led, near-absent in the wild) · **Kind:** universal · **Stage:** ④
 
 **Seed sub-aspects:** `registry publish (npm/PyPI/crates/Maven)` · `binary distribution (Homebrew/winget/goreleaser)` · `container / Helm publish` · `app-store submission / staged rollout` · `self-update` · `provenance`
 
@@ -45,7 +45,7 @@ census_todo: "Signing now census-backed offline (gh-API=0) from the Scorecard `s
 ## Evidence (lit + census)
 - `[lit]` **SemVer 2.0.0** — versioning grammar every registry/distribution channel keys off (https://semver.org/).
 - `[lit]` **npm provenance / Trusted Publishing** — OIDC-driven, Sigstore-signed provenance + publish attestations; explicitly "does not guarantee no malicious code" — it is transparency, not assurance (https://docs.npmjs.com/generating-provenance-statements).
-- `[lit]` **SLSA v1.2 Build-track Levels** (unchanged from v1.0) — L1 provenance exists (may be unsigned); **L2** hosted platform + signed provenance; **L3** hardened, isolated builds with inaccessible signing secrets (https://slsa.dev/spec/v1.2/build-requirements).
+- `[lit, normative]` **SLSA v1.2 Build-track Levels** (unchanged from v1.0) — L1 provenance exists (may be unsigned); **L2** hosted platform + signed provenance; **L3** hardened, isolated builds with inaccessible signing secrets (https://slsa.dev/spec/v1.2/build-requirements).
 - `[lit]` **Homebrew tap** (formula vs cask; CLIs = formula) (https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap) · **winget** community manifest repo (https://github.com/microsoft/winget-pkgs) · **goreleaser** cross-platform release orchestration (https://goreleaser.com/).
 - `[census]` 429-repo release-ops survey (recency-weighted `w=0.5^(age/2yr)`, ref 2026-06-24): has_releases **89/86**, release_notes **88/85**, semver_any **86/80** (ratio 0.72), changelog **55/52**, cc_adopted **45/67**, container **53/62** (backend 79), cd_deploy **64/68**, iac 28/29, observability 18/17. Release cadence median **7 days** (n=378).
 - `[census]` **Signed-Releases** (OpenSSF Scorecard `sc`, derived offline gh-API=0; governance n=103, mean 1.2/10): strong **15%** / present **17%** — provenance/signing is the supply-chain blind spot, the ~15% adoption grounding the [lit]-mandated signing gap. Senior practice (`[lit]`), rare in the wild. The lower n is an honest coverage limit (the check needs release visibility). (Source: census-governance `sc`; methodology `_schema.md` §4 (methodology).)

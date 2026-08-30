@@ -56,7 +56,7 @@ maps_from: ["census-data/census-governance"]
 
 ## What professional engineers do
 Before writing code, a senior engineer converts intent into a durable, reviewable baseline. The work
-follows the **SWEBOK v4 Software Requirements** flow — **elicit → analyze → specify → validate** [lit] —
+follows the **SWEBOK v4 Software Requirements** flow — **elicit → analyze → specify → validate** [lit, normative] —
 producing artifacts an agent (or another engineer) can build from without guessing.
 
 - **Elicitation (Socratic).** Don't take a feature wishlist at face value; *draw out* problem, users,
@@ -125,13 +125,13 @@ producing artifacts an agent (or another engineer) can build from without guessi
 
 ## Evidence (lit + census)
 **Literature.**
-- SWEBOK v4 *Software Requirements* KA — elicit/analyze/specify/validate flow. [lit]
+- SWEBOK v4 *Software Requirements* KA — elicit/analyze/specify/validate flow. [lit, normative]
 - ISO/IEC/IEEE 29148:2018 — well-formed-requirement characteristics: 10 *individual* (§5.2.5: necessary,
   appropriate, unambiguous, complete, singular, feasible, verifiable, correct, conforming, traceable) +
   5 *set-level* (§5.2.6: complete, consistent, feasible, comprehensible, able-to-be-validated). [lit]
 - ISO/IEC 25010:2023 — 9-characteristic product-quality model (safety added 2023); supersedes the 2011
   8-attribute model. [lit]
-- RFC 2119 + RFC 8174 (BCP 14) — requirement-level keywords. [lit]
+- RFC 2119 + RFC 8174 (BCP 14) — requirement-level keywords. [lit, normative]
 - Connextra/Cohn *User Stories Applied* (2004) + INVEST (Wake, XP123, 2003). [lit]
 - MoSCoW (Clegg 1994; DSDM) — Must effort ≲60%, Could ~20%. [lit, normative]
 - Lean Startup (Ries 2011) — MVP / build-measure-learn. [lit]

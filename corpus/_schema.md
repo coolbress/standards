@@ -192,6 +192,18 @@ So the tag takes the claim-table word — **one vocabulary, not two**:
 | `[lit, empirical]` | somebody **counted**. Then the population and n come with it | `empirical` |
 | `[lit, vendor]` | a named product's **documented current behavior** (a limit, a default, an API contract) | `vendor-behavior` |
 
+### What the check does and does not ask for
+
+| Line | Asked? | Why |
+|---|---|---|
+| carries a **figure** (`%`, `n=`) | ✅ | a number lifted out of context is read as verified |
+| names a **standard / spec / level** (`MUST`, `L1`–`L3`, OSPS, SLSA, SWEBOK, NIST SP, WCAG, RFC, ISO) | ✅ | 🔴 **two of the four corrections here had no figure at all** — SAST-at-L3 and SLSA-Source-L2 were misread *levels and strengths*, not misread numbers |
+| plain prose, no figure and no named standard | ✕ | there is no number and no level to misread. Asking anyway makes this schema a questionnaire — itself a **P40** violation. **386 lines sit here on purpose.** |
+
+⚠️ **Only uppercase RFC-2119 keywords count.** Case-insensitive matching drags in prose like
+*"not a vague 'should work'"* — measured: **120 hits case-insensitive vs 62 when tightened.**
+A false positive buries the signal.
+
 ⚠️ **A bare `[lit]` next to a `[census]` on the same line is not ambiguous** and is not counted —
 there the `[lit]` carries the prescription and the `[census]` carries the measurement
 (*"SemVer says tag every release"* `[lit]` + *"86% do"* `[census]`). The first version of the check
