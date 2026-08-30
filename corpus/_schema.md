@@ -161,6 +161,43 @@ Allowed classes:
 Every claim cites one or more source IDs or a corpus evidence path. Conflicting results remain separate; they
 are not averaged or silently reconciled. Exact quotations are exceptional and short.
 
+### 4.1 Inline evidence tags — the same vocabulary, in prose (added 2026-08-30)
+
+Most assertive content is **bullets, not claim rows** (`GAPS` R5-22 measured claim rows 42 vs assertive
+bullets 159 across the 12 load-bearing documents). Those bullets carry an inline tag:
+
+| Tag | Uses (2026-08-30) | Means |
+|---|---|---|
+| `[census]` | 150 | a result from this corpus's own data — same as class `local-census` |
+| `[실측]` | 7 | measured in this repository (tooling, live API) |
+| `[lit]` | **524** | 🔴 **a source said so — but *which kind* of saying?** |
+
+🔴 **`[lit]` collapsed the one distinction the claim table is careful about.** These sat under the same tag:
+
+```
+MoSCoW — Must effort ≲60%          [lit]   ← prescription. nobody counted 60%
+Buchgeher (900+ repos) ADR ~50%    [lit]   ← measurement. somebody counted
+```
+
+**This corpus has been bitten by that confusion four times**, and every correction is recorded in
+[`direction/05`](../direction/05-the-output-floor.md): the test-pyramid ratio (*"권고이지 실측이 아니다"* ·
+`PYR-001`) · SAST-at-L3 (*"표준이 요구해서가 아니라 선택"*) · SLSA Source L2 (*"서명이 아니다"* · `FFA-006`) ·
+the Cockburn attribution (the source was a Medium summary). **All four were caught by a human, later.**
+
+So the tag takes the claim-table word — **one vocabulary, not two**:
+
+| Write | When |
+|---|---|
+| `[lit, normative]` | a standard, spec, or guideline **says to do it**. There is no n, and there should not be |
+| `[lit, empirical]` | somebody **counted**. Then the population and n come with it |
+
+⚠️ **Required on lines that carry a figure**, not everywhere. That is where the confusion bites; demanding a
+tag on every prose line would make this schema a questionnaire, which is itself a P40 violation.
+
+🔴 **Do not re-tag the 524 in one pass.** A wrong tag is worse than no tag — it makes a prescription *look*
+verified. `tools/check_evidence_class.py` is **baseline-relative**: it blocks new untyped figure lines and
+holds the existing count at 68, to be lowered one source at a time.
+
 ## 5. Status semantics
 
 - `imported`: immutable source copy, not endorsed.
