@@ -56,7 +56,7 @@ maps_from: []
   - **Token-Permissions** (least-priv CI) strong **26%** (governance n=225) → **24%** (expanded n=502) — least-privilege CI tokens are uncommon.
   - **Security-Policy** strong **67%** (governance n=252) → **55%** (expanded n=619) — cross-validates the file census `SECURITY.md` ≈ **56%** presence.
   - **Dangerous-Workflow** strong **91%** (governance n=226) — most repos *do* avoid the worst untrusted-input → `run:` patterns (the bright spot).
-  - **Code-Review enforced ~41%** — mandatory PR review is far from universal (the [lit] basis for gingoa's ③ gate); **Pinned-Dependencies** strong 20–27%, **Signed-Releases** strong 15% (cross-ref aspect 10).
+  - **Code-Review enforced ~41%** — mandatory PR review is far from universal (the [lit, normative] basis for gingoa's ③ gate); **Pinned-Dependencies** strong 20–27%, **Signed-Releases** strong 15% (cross-ref aspect 10).
 - **Read of the census:** the *practices* are senior-standard `[lit]` but **adoption is thin** — so a non-engineer harness must *supply* them by default rather than assume the ecosystem will.
 
 ## Archetype variations

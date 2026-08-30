@@ -51,7 +51,7 @@ census_todo: "Deferred — needs a targeted workflow-content/topology survey; th
 - **Design Docs at Google** — Malte Ubl: 3–20pp, written before code, reviewed like code, tradeoff-centric. [lit] https://www.industrialempathy.com/posts/design-docs-at-google/
 - **Architectural fitness functions** — Ford/Parsons/Kua, *Building Evolutionary Architectures* (2017): executable tests of how close the architecture is to its aim. [lit] https://www.thoughtworks.com/insights/articles/fitness-function-driven-development
 - **[census] publish-axis (429-repo governance census, `census-governance/`):** *any* planning/design artifact present = **13% uniform / 19% weighted / 17% young**; **design-doc 11→16%** (rising, most common); formal **ADR dir 2–4%**; RFC 2%. By archetype: monorepo (anyplan 20%, adr 6%) and web (anyplan 21%) lead; **library 5% / mobile 0%**. → seniors *do* design (the doc is mostly [lit]), but they rarely *publish* the artifacts to a public remote. [census]
-- **Buchgeher et al. (IEEE Access 2023, 900+ repos)** — corroborates the rarity: ADR adoption low but rising; ~50% of ADR repos hold only 1–5 records ("tried, didn't stick"); Nygard template dominates. Matches our 2–4% ADR figure. [lit] https://research.jku.at/en/publications/using-architecture-decision-records-in-open-source-projects-an-ms/
+- **Buchgeher et al. (IEEE Access 2023, 900+ repos)** — corroborates the rarity: ADR adoption low but rising; ~50% of ADR repos hold only 1–5 records ("tried, didn't stick"); Nygard template dominates. Matches our 2–4% ADR figure. [lit, empirical] https://research.jku.at/en/publications/using-architecture-decision-records-in-open-source-projects-an-ms/
 
 ## Archetype variations
 
@@ -68,7 +68,7 @@ census_todo: "Deferred — needs a targeted workflow-content/topology survey; th
 - **Ruled out: BDUF (big design up front).** Document *just enough*; favor tailored arc42 sections + a few ADRs over an exhaustive spec that rots on first commit.
 - **Ruled out: zero-design / reverse-engineered architecture.** "Just start coding and the structure will emerge" produces a big ball of mud and unrecorded decisions; the contract (① C3/C7) forces deliberate style + ADRs before ②.
 - **Ruled out: microservices-by-default.** The distributed tax (network, eventual consistency, ops surface) is only justified by real independent-deploy/scale needs; modular monolith is the senior default.
-- **Tension — record vs. publish:** decisions should always be *recorded* ([lit]) but the census shows seniors mostly *don't publish* them (ADR 2–4%). gingoa resolves this with the two-axis rule: write the ADR (do-it), default it local/team, publish opt-in.
+- **Tension — record vs. publish:** decisions should always be *recorded* ([lit, normative]) but the census shows seniors mostly *don't publish* them (ADR 2–4%). gingoa resolves this with the two-axis rule: write the ADR (do-it), default it local/team, publish opt-in.
 - **Cost of fitness functions:** they add build-time + maintenance; apply only to attributes that actually matter, not as blanket ceremony.
 
 ## Sources

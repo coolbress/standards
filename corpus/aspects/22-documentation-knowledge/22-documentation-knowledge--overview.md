@@ -54,7 +54,7 @@ maps_from: ["census-data/census-governance", "census-data/census-expanded"]
 - **Docs-as-code** (Write the Docs) — version control + plain text + review + CI for docs. → https://www.writethedocs.org/guide/docs-as-code/ `[lit]`
 - **ISO/IEC/IEEE 15289:2019** — information items (content) for systems/software life-cycle processes; the standards anchor for *what* documents a process produces. → https://www.iso.org/standard/74345.html `[lit]`
 - **ADR** — Nygard, "Documenting Architecture Decisions" (2011): status/context/decision/consequences. → https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions · **MADR** → https://adr.github.io/madr/ `[lit]`
-- **ADR adoption (MSR study)** — Buchgeher et al., *Using Architecture Decision Records in Open Source Projects* (IEEE Access 2023, 900+ repos): ADR adoption is low but rising yearly; ~50% of ADR repos hold only 1–5 records ("tried, didn't stick"); Nygard template dominant. Matches our census ADR ≈ 2–4%. → https://research.jku.at/en/publications/using-architecture-decision-records-in-open-source-projects-an-ms/ `[lit]`
+- **ADR adoption (MSR study)** — Buchgeher et al., *Using Architecture Decision Records in Open Source Projects* (IEEE Access 2023, 900+ repos): ADR adoption is low but rising yearly; ~50% of ADR repos hold only 1–5 records ("tried, didn't stick"); Nygard template dominant. Matches our census ADR ≈ 2–4%. → https://research.jku.at/en/publications/using-architecture-decision-records-in-open-source-projects-an-ms/ `[lit, empirical]`
 - **Keep a Changelog 1.1.0** — human-curated, Unreleased-section CHANGELOG convention. → https://keepachangelog.com/en/1.1.0/ `[lit]`
 - **OpenAPI Specification** — machine-readable API contract → generated reference. → https://www.swagger.io/specification/ `[lit]`
 - **Google SRE Book** — runbooks/playbooks as living ops reference (MTTR impact). → https://sre.google/sre-book/being-on-call/ `[lit]`
@@ -78,7 +78,7 @@ maps_from: ["census-data/census-governance", "census-data/census-expanded"]
 
 - **Ruled out: heavyweight upfront doc suites** (full ISO 15289 information-item set, wiki sprawl) for small projects — they rot faster than they help. Ship the *minimum reader-intent-complete* set and grow it.
 - **Ruled out: hand-maintained API/reference docs** — they drift from code; generate from spec/source instead.
-- **Tension — ADR rarity vs senior practice:** the MSR study + our census show ADRs barely adopted in the wild (2–4%), yet they are a clear senior practice (capture the irreversible "why"). Resolution per the corpus two-axis rule: **do it `[lit]`, but keep local/team by default** (`plans/`, `docs/internal/`), publish opt-in — matching the 13–19% public-planning reality.
+- **Tension — ADR rarity vs senior practice:** the MSR study + our census show ADRs barely adopted in the wild (2–4%), yet they are a clear senior practice (capture the irreversible "why"). Resolution per the corpus two-axis rule: **do it `[lit, normative]`, but keep local/team by default** (`plans/`, `docs/internal/`), publish opt-in — matching the 13–19% public-planning reality.
 - **Tradeoff — docs-as-code friction:** PR+CI gates on docs slow trivial edits but are the only durable way to keep docs in sync; net-positive at production grade.
 - **Tradeoff — freshness gates have false positives** (link-checkers flag rate-limited/ephemeral URLs); mitigate with allowlists rather than dropping the gate.
 

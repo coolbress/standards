@@ -82,7 +82,7 @@ dynamically" [lit, engineering post]. Three tiers [lit, spec + engineering post]
 
 **Listing budgets** make the description cap real: Claude Code truncates the combined `description`+`when_to_use`
 at **1,536 chars** in the listing and scales the whole listing at ~1% of the context window; OpenAI Codex caps
-the listing at **2% of context or 8,000 chars**. Put the key use-case first so it survives truncation [lit].
+the listing at **2% of context or 8,000 chars**. Put the key use-case first so it survives truncation [lit, vendor].
 
 ## 3. Structure & sizing rules
 

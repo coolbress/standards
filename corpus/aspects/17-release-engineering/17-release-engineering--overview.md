@@ -45,8 +45,8 @@ maps_from: ["census-data/census-release-ops"]
 - **Keep a Changelog 1.1.0** `[lit]` (https://keepachangelog.com/en/1.1.0/). Census: `changelog` **55/52** `[census]`.
 - **Releases / notes** `[census]`: `has_releases` **89/86** (coverage 100%), `has_release_notes` **88/85**. **Cadence** median **7 days** (n=378).
 - **Deployment/ops half** `[census]`: `cd_deploy` **64/68**, `container` **53/62**, `iac` **28/29**, `observability` **18/17**.
-- **DORA Four Keys + reliability** `[lit]` (https://dora.dev/guides/dora-metrics-four-keys/; https://cloud.google.com/devops). **State of DevOps 2024** cluster split: Elite **19%**, High **22%** (↓ from 31%), Low **25%** (↑ from 17%) (https://getdx.com/blog/2024-dora-report/); foundations: *Accelerate* (Forsgren et al. 2018), *Google SRE* (Beyer et al. 2016).
-- **Observability/SLO surveys** `[lit]`: SLOs in production **~26%** (Grafana Observability Survey 2024, https://grafana.com/observability-survey/2024/); OpenTelemetry 58–85% — cross-validates the **17% observability-as-code** census (both: "monitoring/SLO maturity is a minority").
+- **DORA Four Keys + reliability** `[lit, empirical]` (https://dora.dev/guides/dora-metrics-four-keys/; https://cloud.google.com/devops). **State of DevOps 2024** cluster split: Elite **19%**, High **22%** (↓ from 31%), Low **25%** (↑ from 17%) (https://getdx.com/blog/2024-dora-report/); foundations: *Accelerate* (Forsgren et al. 2018), *Google SRE* (Beyer et al. 2016).
+- **Observability/SLO surveys** `[lit, empirical]`: SLOs in production **~26%** (Grafana Observability Survey 2024, https://grafana.com/observability-survey/2024/); OpenTelemetry 58–85% — cross-validates the **17% observability-as-code** census (both: "monitoring/SLO maturity is a minority").
 - **Census provenance** `[census]`: same 429-repo set as ② foundation, collected via GitHub Releases/Tags API + commit-message sampling + file-tree flags (mechanical, no LLM judgment); recency-weighted `w = 0.5^(age/2yr)`, ref 2026-06-24; 0 fetch failures, 5 tree truncations. Source `census-data/census-release-ops/`.
 
 ## Archetype variations
@@ -66,7 +66,7 @@ maps_from: ["census-data/census-release-ops"]
 ## Tradeoffs / what's ruled out
 
 - **Behavioral sampling beats file-presence.** ②'s file proxy under-counted commit convention at 14% (commitlint *config* exists); commit-message sampling shows **45% uniform / 67% weighted**(n=429) real practice. Evidence > proxy — but it costs an API sampling pass.
-- **Observability stays `[lit]`, not a census gap.** Even in repos that *should* have it, observability-as-code is sparse (17%) because real monitoring/SLOs live in Datadog/Grafana/PagerDuty, not the tree. Don't try to "fill" it with a wider census — it's an honest `[lit]` posture line.
+- **Observability stays literature-backed, not a census gap.** Even in repos that *should* have it, observability-as-code is sparse (17%) because real monitoring/SLOs live in Datadog/Grafana/PagerDuty, not the tree. Don't try to "fill" it with a wider census — it's an honest literature-backed posture line.
 - **Operational *achievement* (SLO attainment, MTTR, change-failure rate) is irreducibly `[lit]`** — exists outside any repo; population numbers come from DORA-style **surveys**, not repo census. The harness *instruments toward* the Four Keys (release automation→frequency, CI+tests→low failure rate) but cannot census others' attainment.
 - **Tool choice is `[lit]` default, not censused.** The census saw the *outcome* (a published GitHub Release), not whether it came from semantic-release / release-please / changesets / goreleaser; pick per ecosystem.
 - **Ruled out:** manual version bumps, hand-written changelogs, manual release uploads, mandatory IaC/observability for non-service archetypes.

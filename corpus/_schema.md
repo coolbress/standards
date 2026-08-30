@@ -186,10 +186,16 @@ the Cockburn attribution (the source was a Medium summary). **All four were caug
 
 So the tag takes the claim-table word — **one vocabulary, not two**:
 
-| Write | When |
-|---|---|
-| `[lit, normative]` | a standard, spec, or guideline **says to do it**. There is no n, and there should not be |
-| `[lit, empirical]` | somebody **counted**. Then the population and n come with it |
+| Write | When | Claim class |
+|---|---|---|
+| `[lit, normative]` | a standard, spec, or guideline **says to do it**. There is no n, and there should not be | `normative` |
+| `[lit, empirical]` | somebody **counted**. Then the population and n come with it | `empirical` |
+| `[lit, vendor]` | a named product's **documented current behavior** (a limit, a default, an API contract) | `vendor-behavior` |
+
+⚠️ **A bare `[lit]` next to a `[census]` on the same line is not ambiguous** and is not counted —
+there the `[lit]` carries the prescription and the `[census]` carries the measurement
+(*"SemVer says tag every release"* `[lit]` + *"86% do"* `[census]`). The first version of the check
+counted those too and **31 of its 68 findings were false positives.** **A false positive buries the signal.**
 
 ⚠️ **Required on lines that carry a figure**, not everywhere. That is where the confusion bites; demanding a
 tag on every prose line would make this schema a questionnaire, which is itself a P40 violation.
