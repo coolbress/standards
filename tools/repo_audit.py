@@ -271,12 +271,38 @@ def audit(repo: str) -> tuple[list[str], list[str]]:
     if not rulesets:
         bad.append("벽: 룰셋이 없다")
         return bad, unknown
-    # 🔴 [0] 만 보면 **룰셋이 여러 개일 때 엉뚱한 것을 본다.**
-    # 하나만 있어야 한다 — 여러 개면 어느 것이 진짜 벽인지 사람이 정해야 한다.
-    if len(rulesets) > 1:
-        names = ", ".join(str(r.get("name")) for r in rulesets)
-        bad.append(f"벽: 룰셋이 {len(rulesets)}개다 ({names}) — 어느 것이 벽인지 불명확하다")
-    rs = gh(f"repos/{repo}/rulesets/{rulesets[0]['id']}") or {}
+    # 🔴 **`[0]` 에 기대지 않는다 — 순서는 벽이 아니다.**
+    # 2026-08-30 에 태그 룰셋을 걸면서 룰셋이 둘이 됐다. 그때까지 이 코드는 `[0]` 을
+    # 브랜치 벽으로 읽었다 — 마침 넷 다 `[0]` 이 브랜치였을 뿐이고, **순서가 뒤집혔으면
+    # 감사기가 태그 룰셋을 브랜치 벽으로 보고 초록을 말했을 것이다.**
+    # 대상(`target`)으로 고른다. 그게 실제로 무엇을 지키는지 말해주는 유일한 필드다.
+    branch_rs = [r for r in rulesets if r.get("target") == "branch"]
+    tag_rs = [r for r in rulesets if r.get("target") == "tag"]
+    other = [r for r in rulesets if r.get("target") not in ("branch", "tag")]
+    if other:
+        names = ", ".join(f"{r.get('name')}({r.get('target')})" for r in other)
+        bad.append(f"벽: 모르는 대상의 룰셋이 있다 ({names}) — 무엇을 지키는지 사람이 정해야 한다")
+    if not branch_rs:
+        bad.append("벽: 브랜치 룰셋이 없다")
+        return bad, unknown
+    if len(branch_rs) > 1:
+        names = ", ".join(str(r.get("name")) for r in branch_rs)
+        bad.append(f"벽: 브랜치 룰셋이 {len(branch_rs)}개다 ({names}) — 어느 것이 벽인지 불명확하다")
+
+    # 🔒 태그 룰셋은 **있으면 검사하고 없으면 넘어간다.** 릴리스 태그가 핀 주석의 근거다 —
+    # 옮기거나 지울 수 있으면 `@<SHA> # v3.9.0` 의 주석이 거짓이 될 수 있다.
+    for tr in tag_rs:
+        d = gh(f"repos/{repo}/rulesets/{tr['id']}") or {}
+        if d.get("enforcement") != "active":
+            bad.append(f"벽: 태그 룰셋이 active 가 아니다 ({d.get('enforcement')})")
+        if d.get("bypass_actors"):
+            bad.append(f"벽: 태그 룰셋에 우회자가 있다 ({len(d['bypass_actors'])}건)")
+        kinds = {r.get("type") for r in d.get("rules", [])}
+        missing = {"deletion", "non_fast_forward"} - kinds
+        if missing:
+            bad.append(f"벽: 태그 룰셋에 없는 규칙 {sorted(missing)} — 태그를 지우거나 옮길 수 있다")
+
+    rs = gh(f"repos/{repo}/rulesets/{branch_rs[0]['id']}") or {}
     if rs.get("enforcement") != "active":
         bad.append(f"벽: enforcement={rs.get('enforcement')}")
     if rs.get("bypass_actors"):

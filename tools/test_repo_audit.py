@@ -33,7 +33,10 @@ CLEAN: dict[str, Any] = {
         "default_workflow_permissions": "read", "can_approve_pull_request_reviews": False},
     "repos/x/actions/permissions/selected-actions": {
         "github_owned_allowed": True, "verified_allowed": False, "patterns_allowed": []},
-    "repos/x/rulesets": [{"id": 1}],
+    # 🔴 `target` 을 실물처럼 넣는다. 진짜 API 는 항상 준다 —
+    # 없이 두면 감사기가 `target` 으로 고르게 바뀐 것(2026-08-30 · 태그 룰셋)을 못 보고
+    # 시험이 통과해버린다. **목이 실물보다 헐거우면 시험이 헛돈다.**
+    "repos/x/rulesets": [{"id": 1, "target": "branch"}],
     "repos/x/code-scanning/default-setup": {"state": "configured"},
     "repos/x/rulesets/1": {
         "enforcement": "active",
@@ -284,10 +287,36 @@ class TestWallCompleteness(unittest.TestCase):
                           "parameters": {"allowed_merge_methods": ["squash", "merge"]}}
         self.assertIn("squash 전용이 아니다", " ".join(_run({"repos/x/rulesets/1": rs})))
 
-    def test_multiple_rulesets_are_caught(self) -> None:
-        """[0] 만 보면 룰셋이 여럿일 때 엉뚱한 것을 본다."""
-        self.assertIn("룰셋이 2개다", " ".join(_run(
-            {"repos/x/rulesets": [{"id": 1, "name": "main protection"}, {"id": 2, "name": "몰래"}]})))
+    def test_two_branch_rulesets_are_caught(self) -> None:
+        """브랜치 룰셋이 둘이면 **어느 것이 벽인지 사람이 정해야 한다.**"""
+        self.assertIn("브랜치 룰셋이 2개다", " ".join(_run(
+            {"repos/x/rulesets": [{"id": 1, "name": "main protection", "target": "branch"},
+                                  {"id": 2, "name": "몰래", "target": "branch"}]})))
+
+    def test_a_tag_ruleset_alongside_is_not_a_finding(self) -> None:
+        """🔴 2026-08-30: 태그 룰셋을 걸었더니 이 검사가 **네 저장소 전부에 오탐**을 냈다.
+
+        `[0]` 에 기대던 코드가 남긴 자국이다 — 순서가 뒤집혔으면 **태그 룰셋을 브랜치 벽으로
+        보고 초록을 말했을 것**이다. 이제 `target` 으로 고른다.
+        """
+        out = " ".join(_run({
+            "repos/x/rulesets": [{"id": 1, "name": "main protection", "target": "branch"},
+                                 {"id": 2, "name": "tags", "target": "tag"}],
+            "repos/x/rulesets/2": {"enforcement": "active", "bypass_actors": [],
+                                   "rules": [{"type": "deletion"}, {"type": "non_fast_forward"}]},
+        }))
+        self.assertNotIn("룰셋이", out, out)
+
+    def test_a_weak_tag_ruleset_is_caught(self) -> None:
+        """태그가 핀 주석의 근거다 — 옮길 수 있으면 `@<SHA> # v3.9.0` 이 거짓이 될 수 있다."""
+        out = " ".join(_run({
+            "repos/x/rulesets": [{"id": 1, "name": "main protection", "target": "branch"},
+                                 {"id": 2, "name": "tags", "target": "tag"}],
+            "repos/x/rulesets/2": {"enforcement": "active", "bypass_actors": [{"actor_id": 5}],
+                                   "rules": [{"type": "deletion"}]},
+        }))
+        self.assertIn("태그 룰셋에 우회자가 있다", out)
+        self.assertIn("non_fast_forward", out)
 
     def test_approval_count_change_is_caught(self) -> None:
         """승인 1을 걸면 솔로는 자기 PR 을 승인 못 해 머지가 영원히 막힌다."""
