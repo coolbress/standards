@@ -148,6 +148,22 @@ def gh(path: str) -> Json:
         return None
 
 
+def gh_file(path: str) -> str:
+    """저장소 파일 하나의 **본문**. 못 읽으면 빈 문자열.
+
+    ⚠️ `--jq .content` 와 raw Accept 를 같이 쓰지 않는다 — 그러면 응답이 JSON 이 아니라
+    `--jq` 가 무의미해지고 **404 도 통과한다**(`check_template_drift` 가 실측으로 겪었다).
+    여기서는 JSON 을 받아 base64 를 직접 푼다.
+    """
+    blob = gh(path)
+    if not isinstance(blob, dict) or blob.get("encoding") != "base64":
+        return ""
+    try:
+        return base64.b64decode(str(blob.get("content", ""))).decode("utf-8", "replace")
+    except (ValueError, TypeError):
+        return ""
+
+
 def gh_status(path: str) -> int:
     """HTTP 상태 코드만 돌려준다. 0 = 알 수 없음.
 
@@ -451,6 +467,60 @@ def main(argv: list[str] | None = None) -> int:
         drift += len(no_labels)
     else:
         print(f"✅ 회부 기록 수단 — 네 저장소에 `{LABEL}`·`{RESIMPLE}` 라벨이 있다")
+
+    # 🔴 **이슈 폼이 요구하는 라벨이 실제로 있나** (2026-08-31 신설).
+    # 실측: `divcal` 의 `task.yml` 이 `labels: ["task"]` 를 요구하는데 저장소엔 그 라벨이 **없었다.**
+    # GitHub 은 없는 라벨을 **조용히 무시한다** — 이슈는 만들어지고 라벨만 안 붙는다.
+    # 그러면 `/kickoff` 이 만든 과제가 버그 신고와 안 갈려 `gh issue list` 로 다음 할 일을 못 추린다.
+    #
+    # 🔴 **뿌리는 더 크다**: `copier update` 는 **파일만** 옮긴다. 라벨·룰셋 같은 **서버 설정**은
+    # 안 따라온다. `task` 라벨을 `new-project.sh` 에 더한 날, 이미 있던 인스턴스는 못 받았다.
+    # 룰셋엔 도구가 있는데(`upgrade-ruleset.sh` 등) 라벨엔 없었다 — 그래서 **최소한 눈은 뜬다.**
+    #
+    # ⚠️ **목록을 여기 안 적는다.** 저장소의 폼에서 읽는다 — 적으면 폼과 갈린다.
+    # 🔴 **`OURS` 는 소유자 접두가 없다** — 첫 판이 `repos/{repo}/…` 로 물어 404 였고,
+    # 못 읽으면 조용히 넘어가 **초록**이 됐다. **fail-open 이었다.**
+    # 라벨을 실제로 지우고 돌려서 그걸 잡았다(2026-08-31). 이제 **못 읽으면 unknown 이다.**
+    label_gaps: list[str] = []
+    label_blind: list[str] = []
+    for repo in OURS:
+        forms = gh(f"repos/coolbress/{repo}/contents/.github/ISSUE_TEMPLATE")
+        if not isinstance(forms, list):
+            continue  # 폼 디렉터리가 없다 — 인스턴스가 아니다(404 는 정상)
+        wanted: set[str] = set()
+        for entry in forms:
+            name = str(entry.get("name", ""))
+            if not name.endswith(".yml") or name == "config.yml":
+                continue
+            body = gh_file(f"repos/coolbress/{repo}/contents/.github/ISSUE_TEMPLATE/{name}")
+            if not body:
+                label_blind.append(f"{repo}/{name} 을 못 읽었다")
+                continue
+            for line in body.splitlines():
+                if line.startswith("labels:"):
+                    wanted |= {s.strip().strip('"\'') for s in
+                               line.split(":", 1)[1].strip().strip("[]").split(",") if s.strip()}
+        if not wanted:
+            continue
+        raw = gh(f"repos/coolbress/{repo}/labels?per_page=100")
+        if not isinstance(raw, list):
+            label_blind.append(f"{repo} 의 라벨 목록을 못 읽었다")
+            continue
+        missing = sorted(wanted - {str(x.get("name")) for x in raw})
+        if missing:
+            label_gaps.append(f"{repo}: {', '.join(missing)}")
+    if label_blind:
+        # 🔴 **못 본 것을 초록이라 하지 않는다.** 첫 판이 그래서 거짓 초록을 냈다.
+        print("⚪ 이슈 폼 라벨 — 못 읽은 것이 있다:")
+        for b in label_blind:
+            print(f"     {b}")
+    if label_gaps:
+        print("🔴 이슈 폼이 요구하는 라벨이 없다 — GitHub 이 조용히 무시한다:")
+        for g in label_gaps:
+            print(f"     {g}")
+        drift += len(label_gaps)
+    elif not label_blind:
+        print("✅ 이슈 폼이 요구하는 라벨이 전부 저장소에 있다")
 
     # R5-38: 바닥의 **문서 묶음**을 아무도 안 보고 있었다 — 이 감사기는 서버 설정만 보고
     # `check_floor_coverage` 는 *바닥이 입장을 갖는가* 만 본다. 그 틈에서 두 저장소가
