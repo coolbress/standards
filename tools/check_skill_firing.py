@@ -44,6 +44,24 @@ TRANSCRIPTS = pathlib.Path.home() / ".claude" / "projects"
 #: 우리가 배포한 스킬·커맨드. 이것들이 뜨는지가 이 계기의 첫 질문이다.
 OURS = ("kickoff", "new-project", "floor-check", "review", "where-is-the-truth")
 
+#: 우리 스킬이 플러그인으로 뜰 때의 이름 공간.
+OUR_PLUGIN = "coolbress-standards"
+
+
+def is_ours(name: str) -> bool:
+    """이 스킬 이름이 **우리 것**인가.
+
+    맨 이름(`kickoff`)도 플러그인 형태(`coolbress-standards:kickoff`)도 우리 것이다.
+    🔴 **그러나 `codex:review` 는 아니다.** 첫 정정이 `rsplit(":")[-1]` 로 맨 이름만 봐서
+    **남의 플러그인의 동명 스킬을 우리 것으로 셌다** — `OURS` 에 `review` 가 있고
+    `codex` 플러그인에 `review` 가 있으므로 **가상이 아니라 실재하는 경로**다.
+    계기를 고치다가 계기를 반대쪽으로 틀리게 만든 것이고, `ci / review` 의 제3자가 잡았다.
+    """
+    plugin, _, bare = name.rpartition(":")
+    if plugin and plugin != OUR_PLUGIN:
+        return False
+    return bare in OURS
+
 
 def skill_events(text: str) -> list[str]:
     """전사 한 편에서 **`Skill` 도구 호출**의 스킬 이름만 뽑는다.
@@ -104,9 +122,10 @@ def main() -> int:
     # 맨 이름만 맞추던 첫 판은 `divcal` 의 실제 발화를 **0으로 셌고**, 하마터면
     # *"무기고 안내가 안 먹혔다"* 는 **틀린 결론**을 낼 뻔했다.
     # **계기가 틀리면 판정도 틀린다** — 오늘 이 형태로 여러 번 걸렸다.
+    # 🔴 그리고 그 정정이 **반대쪽으로 틀렸다** — `is_ours` 를 읽어라.
     ours_seen: dict[str, int] = {}
     for name, n in totals.items():
-        if name.rsplit(":", 1)[-1] in OURS:
+        if is_ours(name):
             ours_seen[name] = n
     print(f"\nMETRIC skill_events={sum(totals.values())} distinct_skills={len(totals)} "
           f"projects_with_skills={len(found)} ours={sum(ours_seen.values())}")

@@ -69,3 +69,28 @@ class PluginQualifiedNames(unittest.TestCase):
         """⚠️ 접미가 같다고 남의 것을 우리 것으로 세면 안 된다 — 그건 반대 방향 오류다."""
         for name in ("other-plugin:tdd", "obra:brainstorming"):
             self.assertNotIn(name.rsplit(":", 1)[-1], mod.OURS, name)
+
+
+class OwnershipIsNamespaced(unittest.TestCase):
+    """**남의 플러그인의 동명 스킬을 우리 것으로 세면 안 된다.**
+
+    🔴 이 시험이 없어서 첫 정정이 반대쪽으로 틀렸다. `OURS` 에 `review` 가 있고
+    설치된 `codex` 플러그인에 `review` 가 있으므로 **실재하는 충돌**이다.
+    `ci / review` 의 제3자가 잡았다 — 그리고 *"반대 방향 시험이 `OURS` 에 없는
+    이름만 써서 이 경로를 재현 못 한다"* 는 것까지 짚었다. 그 말이 맞았다.
+    """
+
+    def test_bare_name_is_ours(self) -> None:
+        self.assertTrue(mod.is_ours("kickoff"))
+
+    def test_our_plugin_prefix_is_ours(self) -> None:
+        self.assertTrue(mod.is_ours("coolbress-standards:kickoff"))
+
+    def test_someone_elses_plugin_with_the_same_skill_name_is_not_ours(self) -> None:
+        # 🔴 핵심. 맨 이름만 보면 `review` 라서 우리 것으로 세어 버린다.
+        self.assertIn("review", mod.OURS)
+        self.assertFalse(mod.is_ours("codex:review"))
+        self.assertFalse(mod.is_ours("other-plugin:review"))
+
+    def test_unrelated_skill_is_not_ours(self) -> None:
+        self.assertFalse(mod.is_ours("tdd"))
