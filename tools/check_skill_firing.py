@@ -99,7 +99,15 @@ def main() -> int:
         totals.update(names)
         print(f"  {project[:44]:46s} {len(names):3d}건  {', '.join(sorted(set(names)))}")
 
-    ours_seen = {name: totals[name] for name in OURS if totals[name]}
+    # 🔴 **`플러그인:스킬` 형태도 우리 것이다** (2026-08-31 정정).
+    # 플러그인으로 배포한 뒤 메뉴에 `coolbress-standards:kickoff` 로 뜬다.
+    # 맨 이름만 맞추던 첫 판은 `divcal` 의 실제 발화를 **0으로 셌고**, 하마터면
+    # *"무기고 안내가 안 먹혔다"* 는 **틀린 결론**을 낼 뻔했다.
+    # **계기가 틀리면 판정도 틀린다** — 오늘 이 형태로 여러 번 걸렸다.
+    ours_seen: dict[str, int] = {}
+    for name, n in totals.items():
+        if name.rsplit(":", 1)[-1] in OURS:
+            ours_seen[name] = n
     print(f"\nMETRIC skill_events={sum(totals.values())} distinct_skills={len(totals)} "
           f"projects_with_skills={len(found)} ours={sum(ours_seen.values())}")
     print(f"  우리 스킬: {ours_seen or '아직 한 번도 안 떴다'}")

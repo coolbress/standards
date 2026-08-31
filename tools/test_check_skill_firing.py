@@ -48,3 +48,24 @@ class SkillEvents(unittest.TestCase):
     def test_instrument_never_fails_the_build(self) -> None:
         """계기다. 판정하지 않는다 — 종료코드는 항상 0 이어야 한다."""
         self.assertEqual(mod.main(), 0)
+
+
+class PluginQualifiedNames(unittest.TestCase):
+    """🔴 플러그인으로 배포하면 이름이 `플러그인:스킬` 로 뜬다.
+
+    실측(2026-08-31 · `divcal`): 전사에 `coolbress-standards:kickoff` 가 찍혔는데
+    맨 이름만 맞추던 첫 판은 그걸 **0으로 셌다.** 하마터면 *"무기고 안내가 안 먹혔다"* 는
+    **틀린 결론**을 낼 뻔했다 — **계기가 틀리면 판정도 틀린다.**
+    """
+
+    def test_a_plugin_qualified_name_counts_as_ours(self) -> None:
+        # ⚠️ 파일의 `line()` 헬퍼를 쓴다 — 손으로 지은 JSON 은 실제 전사 모양이 아니었다.
+        self.assertEqual(
+            mod.skill_events(line("Skill", "coolbress-standards:kickoff")),
+            ["coolbress-standards:kickoff"],
+        )
+
+    def test_someone_elses_skill_is_still_not_ours(self) -> None:
+        """⚠️ 접미가 같다고 남의 것을 우리 것으로 세면 안 된다 — 그건 반대 방향 오류다."""
+        for name in ("other-plugin:tdd", "obra:brainstorming"):
+            self.assertNotIn(name.rsplit(":", 1)[-1], mod.OURS, name)
