@@ -1,0 +1,43 @@
+# 🤝 **제3자가 이 커밋을 봤는가** — [`audit/GAPS.ko.md`](../../audit/GAPS.ko.md) R5-40 의 ⓒ 층.
+# 검사 이름은 `third-party / review`.
+#
+# 🔴 **로컬 `/review` 와 무엇이 다른가**: 로컬은 **규율**이다 — 에이전트가 안 부르면 그만이고,
+# 실측으로 `disallowed-tools` 는 `Bash` 를 안 막는다(2026-08-31 프로브). 여기는 **벽**이다.
+#
+# ── 이 벽이 보증하는 것 / 안 하는 것 ────────────────────────────────────────
+# ✅ **제3자가 *이 커밋* 을 봤다** (옛 커밋의 리뷰는 안 쳐준다)
+# 🚫 **잘 짰다** — 리뷰의 판정으로는 안 막는다
+#
+# 근거는 코퍼스에 등재했다:
+#   · `IPW-019` — AI 생성 PR **33,596건 중 61.38%가 리뷰 기록 자체가 없다.**
+#     **이 벽이 막는 구멍이 그것이다.**
+#   · `IPW-020` — 리뷰 에이전트 **13종 중 12종이 signal ratio 60% 미만** ·
+#     닫힌 CRA-only PR 의 **60.2%가 0~30% 소음대**. **findings 로 막으면 소음으로 막는 것**이다.
+#   · `IPW-007` — 최선 조건에서도 **F1 28.6%**(오류의 71% 놓침). 안전망이 아니다.
+# (셋 다 `corpus/aspects/28-implementation-process-workflow/…--overview.md` · `status: review-needed`)
+#
+# ⚠️ **벽이 못 만드는 것**: 같은 논문이 CRA 댓글 처리율을 **0.9~19.2%** 로 잰다 —
+# ***"봤다" 는 "읽혔다" 가 아니다.*** 읽는 것은 **머지 버튼을 누르는 사람의 일**이다.
+#
+# 🔴 **왜 `ci.yml` 이 아니라 자기 파일인가**: `pull_request_review` 에도 걸려야 한다
+# (리뷰가 **비동기**라 붙는 순간 다시 돌아 초록이 되어야 한다). `ci.yml` 에 넣으면
+# 리뷰가 달릴 때마다 **CI 전체가 다시 돈다.**
+name: third-party
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: read
+  pull-requests: write   # 리뷰가 없을 때 `@codex review` 를 다는 데만 쓴다
+
+concurrency:
+  group: third-party-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  third-party:
+    uses: coolbress/workflows/.github/workflows/pr-review.yml@5223caa4e39a2ec604f099502e9d80381a5e6784
