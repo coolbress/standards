@@ -27,6 +27,33 @@
 | **ⓐ** | 닫힌 회부 중 `needs-simpler` 가 **안 붙은** 비율 |
 | **ⓑ** | `needs-simpler` 라벨이 붙은 회부 수 |
 
+## 🔄 2026-09-01 — 수단을 **하나 더** 연다: **PR 본문의 `회부:` 표시** (`GAPS` R5-37 ⓑ)
+
+🔴 **실측이 또 먼저다**: 결정당 이슈로 바꾼 뒤 **사흘에 회부 4건**이 쌓였다. 계기는 움직였다 —
+그런데 **같은 기간의 PR 은 스무 건이 넘고, 그 안에서 오간 판단이 이슈로는 안 올라온다.**
+이슈를 여는 값이 *"PR 안에서 이미 묻고 답한 것"* 에는 과했다. **분모가 여전히 실물보다 작다.**
+
+**표시 하나로 센다** — PR 본문에 이 꼴의 줄을 둔다:
+
+    회부: decision:input — 어휘를 A 로 갈까 B 로 갈까 → 답: A (채널: 대화)
+
+🔴 **네 축을 정직하게 적는다 — 이번엔 넷이 다 강해지지 않는다.**
+
+| | 이슈 → 이슈 **+** PR 표시 |
+|---|---|
+| **분모** | 이슈는 그대로 세고 PR 표시가 **더해진다** — 순증 |
+| **ⓑ 재요청** | PR 표시에도 `needs-simpler` 를 적을 수 있다 — **동일** |
+| **ⓒ *"그때 뭘 승인한 거지"*** | PR 본문은 **리뷰를 거치고 머지 커밋에 인용된다** — 이슈보다 찾기 쉽다 |
+| **작업량** | 🔴 **줄어든다.** 표시 한 줄이 이슈 하나보다 싸다 |
+
+⚠️ **그러니 이건 "네 축 다 강해진다" 가 아니다.** 2026-08-29 의 변경과 다르다 — **그때는 넷 다
+더 잡히는 쪽이었고, 이번은 셋만 그렇다.** 값이 싸진 것이 *기준 완화* 인지 *기록이 실제로
+일어나게 만드는 것* 인지는 **눈금이 답한다**: 분모가 안 늘면 완화였고, 늘면 수단이 맞은 것이다.
+🔴 **바꾸는 것은 수단이지 임계가 아니다** — ⓐ·ⓑ·ⓒ 의 판정선은 `direction/04` 그대로다.
+
+🚫 **이슈 수단을 걷어내지 않는다.** PR 이 없는 회부(권한 없음 · 착수 전 취향)는 여전히 이슈다.
+`AGENTS.md` §ASK FIRST 가 둘을 다 적는다 — **행동하는 자리에 안 적으면 발화하지 않는다.**
+
 ⚠️ **벽이 아니라 계기판이다.** 다만 **수단 자체가 없으면**(라벨 미설치) 실패로 본다 —
 계기가 없는 것과 눈금이 0 인 것은 다르다.
 
@@ -66,6 +93,10 @@ RECORD_DIRS = ("direction", "audit")
 
 ROOT = Path(__file__).resolve().parent.parent
 
+#: PR 본문에 회부를 남기는 표시(2026-09-01 · R5-37 ⓑ). 이슈 수단과 **병행**한다.
+#: 형식: `회부: decision:input — <물음> → 답: <답> (채널: 대화)`
+PR_MARKER = "회부:"
+
 
 def _json(args: list[str]) -> object:
     out = subprocess.run(args, capture_output=True, text=True, check=False)
@@ -103,6 +134,43 @@ def kind_of(issue: Mapping[str, Any]) -> str | None:
 
 def has_channel(issue: Mapping[str, Any]) -> bool:
     return any(CHANNEL_MARKER in (c.get("body") or "") for c in (issue.get("comments") or []))
+
+
+def marker_lines(body: str) -> list[str]:
+    """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**"""
+    return [ln.strip() for ln in (body or "").splitlines() if PR_MARKER in ln]
+
+
+def kind_of_line(line: str) -> str | None:
+    """표시 줄이 스스로 밝힌 회부 종류. 없으면 `None` — 긴급도를 못 가린다는 뜻이다."""
+    for kind in KINDS:
+        if kind in line:
+            return kind
+    return None
+
+
+def pr_marks(repo: str) -> list[tuple[str, int, str]]:
+    """(repo, PR 번호, 표시 줄). 🔴 **머지된 PR 만** 센다 — 닫힌 채 버려진 PR 의
+    본문은 결정이 아니다. 열린 PR 은 아직 답이 안 났을 수 있어 분모에 안 넣는다."""
+    rows = _json(["gh", "pr", "list", "--repo", f"coolbress/{repo}", "--state", "merged",
+                  "--limit", "200", "--json", "number,body"])
+    out: list[tuple[str, int, str]] = []
+    for pr in rows if isinstance(rows, list) else []:
+        for line in marker_lines(str(pr.get("body") or "")):
+            out.append((repo, int(pr.get("number") or 0), line))
+    return out
+
+
+def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
+    """표시 줄만 따로 센다. 🔬 **음성 시험이 있다** — 종류가 없는 줄과 채널이 없는 줄을
+    각각 세지 않으면 *"표시만 있으면 통과"* 가 되어 계기가 아무것도 안 재게 된다."""
+    counts = {"marks": len(marks),
+              "unkinded": sum(1 for _, _, ln in marks if kind_of_line(ln) is None),
+              "no_channel": sum(1 for _, _, ln in marks if CHANNEL_MARKER not in ln),
+              "resimple": sum(1 for _, _, ln in marks if RESIMPLE in ln)}
+    for kind in KINDS:
+        counts[kind] = sum(1 for _, _, ln in marks if kind_of_line(ln) == kind)
+    return counts
 
 
 def committed_records(root: Path) -> str:
@@ -165,6 +233,11 @@ def main() -> int:
     else:
         print(f"  ✅ 수단 설치됨 — 네 저장소 모두 `{LABEL}`·`{RESIMPLE}` 라벨이 있다")
 
+    marks: list[tuple[str, int, str]] = []
+    for repo in REPOS:
+        marks.extend(pr_marks(repo))
+    mcounts = summarise_marks(marks)
+
     counts = summarise(rows)
     total, n_closed = counts["total"], counts["closed"]
     n_resimple, n_answered = counts["resimple"], counts["answered"]
@@ -205,9 +278,30 @@ def main() -> int:
         print("\n  ⚠️ 회부가 0건이다 — 계기는 달렸고 **눈금이 아직 안 움직였다.**")
         print("     회부 자체가 없었는지, 아니면 다른 데(대화·PR 본문)에 남겼는지는 이 도구가 못 가린다.")
 
+    print(f"\n  PR 본문 표시(`{PR_MARKER}`) — 2026-09-01 에 연 두 번째 수단")
+    if marks:
+        for repo, number, line in marks[:8]:
+            flag = "🔴" if kind_of_line(line) is None else "  "
+            print(f"     {flag} {repo}#{number} {line[:76]}")
+        if len(marks) > 8:
+            print(f"     … 외 {len(marks) - 8}건")
+        if mcounts["unkinded"]:
+            print(f"     🔴 종류가 없는 표시 {mcounts['unkinded']}건 — 긴급도를 못 가린다")
+        if mcounts["no_channel"]:
+            print(f"     🔶 채널(`{CHANNEL_MARKER}`)이 없는 표시 {mcounts['no_channel']}건")
+    else:
+        print("     ⚠️ 아직 0건 — 수단을 연 것과 쓰이는 것은 다른 문장이다")
+
+    grand = total + mcounts["marks"]
+    print(f"\n  분모 합 — 이슈 {total} + PR 표시 {mcounts['marks']} = **{grand}건**")
+    print("     🔴 이 수가 안 늘면 수단 변경이 아니라 **완화**였다는 뜻이다 "
+          "(2026-09-01 에 연 눈금 · 판정선은 안 긋는다)")
+
     print(f"\nMETRIC referrals={total} closed={n_closed} resimple={n_resimple} "
           f"unkinded={counts['unkinded']} unbridged={len(gaps)} "
-          f"no_channel={counts['no_channel']} labels_missing={len(missing)}")
+          f"no_channel={counts['no_channel']} labels_missing={len(missing)} "
+          f"pr_marks={mcounts['marks']} pr_marks_unkinded={mcounts['unkinded']} "
+          f"referrals_total={grand}")
     if missing:
         print("RESULT FAIL — 수단이 설치되지 않았다. 계기가 없는 것과 눈금이 0 인 것은 다르다")
         return 1

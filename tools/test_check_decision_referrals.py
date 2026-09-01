@@ -159,3 +159,76 @@ class TheBridgeToCommittedRecords(unittest.TestCase):
 
     def test_record_dirs_are_committed_ones(self) -> None:
         self.assertEqual(set(mod.RECORD_DIRS), {"direction", "audit"})
+
+
+class PrBodyMarkerIsTheSecondMeans(unittest.TestCase):
+    """2026-09-01 · `GAPS` R5-37 ⓑ — PR 본문의 `회부:` 표시를 센다.
+
+    🔴 **음성 시험이 핵심이다.** 표시만 있으면 통과시키면 계기가 아무것도 안 재게 된다 —
+    종류가 없는 줄과 채널이 없는 줄이 **각각 잡혀야** 눈금이 뜻을 갖는다.
+    """
+
+    GOOD = "회부: decision:input — 어휘를 A 로 갈까 B 로 갈까 → 답: A (채널: 대화)"
+
+    def test_marker_line_is_picked_out_of_a_body(self) -> None:
+        body = f"## 무엇을 했나\n어쩌고.\n\n{self.GOOD}\n\n## 검사\n초록."
+        self.assertEqual(mod.marker_lines(body), [self.GOOD])
+
+    def test_body_without_marker_yields_nothing(self) -> None:
+        self.assertEqual(mod.marker_lines("## 무엇을 했나\n표시가 없다."), [])
+
+    def test_empty_body_does_not_crash(self) -> None:
+        self.assertEqual(mod.marker_lines(""), [])
+
+    def test_kind_is_read_from_the_line(self) -> None:
+        self.assertEqual(mod.kind_of_line(self.GOOD), "decision:input")
+
+    def test_line_without_a_kind_is_caught(self) -> None:
+        """🔬 음성 — 종류가 없으면 `None` 이어야 한다. 아니면 긴급도를 못 가린다."""
+        self.assertIsNone(mod.kind_of_line("회부: 뭔가 물었다 → 답: 응"))
+
+    def test_summarise_counts_kinds_and_gaps(self) -> None:
+        marks = [
+            ("standards", 1, self.GOOD),
+            ("standards", 2, "회부: decision:approval — 지울까 → 답: 그래"),   # 채널 없음
+            ("workflows", 3, "회부: 종류를 안 적었다 → 답: 응 (채널: 대화)"),   # 종류 없음
+        ]
+        counts = mod.summarise_marks(marks)
+        self.assertEqual(counts["marks"], 3)
+        self.assertEqual(counts["unkinded"], 1)
+        self.assertEqual(counts["no_channel"], 1)
+        self.assertEqual(counts["decision:input"], 1)
+        self.assertEqual(counts["decision:approval"], 1)
+
+    def test_needs_simpler_in_a_marker_line_is_counted(self) -> None:
+        marks = [("standards", 1, f"{self.GOOD} {mod.RESIMPLE}")]
+        self.assertEqual(mod.summarise_marks(marks)["resimple"], 1)
+
+    def test_empty_marks_do_not_crash(self) -> None:
+        self.assertEqual(mod.summarise_marks([])["marks"], 0)
+
+    def test_only_merged_prs_are_counted(self) -> None:
+        """🔴 닫힌 채 버려진 PR 의 본문은 결정이 아니다. 소스가 `--state merged` 여야 한다."""
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn('"--state", "merged"', source)
+
+
+class TheMeansChangeIsRecordedHonestly(unittest.TestCase):
+    """🔴 2026-08-29 의 변경은 **네 축 다** 강해졌다. 2026-09-01 의 변경은 **셋만** 그렇다.
+
+    그걸 *"이번에도 강화다"* 로 적으면 §판정 기준의 *"결과를 보고 기준을 옮기지 않는다"* 를
+    말로만 지키는 것이 된다. **작업량이 줄어든다는 사실이 문서에 있어야 한다.**
+    """
+
+    def test_the_doc_admits_the_cost_axis_gets_cheaper(self) -> None:
+        doc = mod.__doc__ or ""
+        self.assertIn("작업량", doc)
+        self.assertIn("줄어든다", doc, "작업량이 줄어든다는 것을 문서가 인정해야 한다")
+
+    def test_the_doc_says_which_number_settles_it(self) -> None:
+        """완화인지 아닌지는 **눈금이 답한다** — 그 판정 방법이 문서에 있어야 한다."""
+        doc = mod.__doc__ or ""
+        self.assertIn("분모가 안 늘면", doc)
+
+    def test_the_issue_means_is_not_removed(self) -> None:
+        self.assertIn("이슈 수단을 걷어내지 않는다", mod.__doc__ or "")
