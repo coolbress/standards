@@ -20,6 +20,12 @@
 # ⚠️ **벽이 못 만드는 것**:
 # ***"봤다" 는 "읽혔다" 가 아니다.*** 읽는 것은 **머지 버튼을 누르는 사람의 일**이다.
 #
+# 🔴 **핀을 올린 이유 (2026-09-01 · `workflows#71`)**: 판정이 리뷰 댓글의 `commit_id` 를 봤는데
+# **GitHub 이 새 커밋마다 그 필드를 현재 head 로 옮긴다.** 그래서 옛 리뷰의 인라인 댓글 하나만
+# 있으면 **그 뒤 모든 푸시가 자동으로 초록**이 됐다 — 실측(`#224` · 두 번 재현): 새 커밋 push 후
+# **20초에 SUCCESS**, 진짜 리뷰는 **140~160초 뒤**. 그 사이 머지가 가능했다.
+# 이제 `original_commit_id`(안 움직인다)를 본다. **핀을 안 올리면 여기선 안 고쳐진다.**
+#
 # 🔴 **왜 `ci.yml` 이 아니라 자기 파일인가**: `pull_request_review` 에도 걸려야 한다
 # (리뷰가 **비동기**라 붙는 순간 다시 돌아 초록이 되어야 한다). `ci.yml` 에 넣으면
 # 리뷰가 달릴 때마다 **CI 전체가 다시 돈다.**
@@ -44,4 +50,4 @@ concurrency:
 
 jobs:
   third-party:
-    uses: coolbress/workflows/.github/workflows/pr-review.yml@02e3af450cb29d7033fae3c562e58655f1ae0c49
+    uses: coolbress/workflows/.github/workflows/pr-review.yml@8e31fee7e9f8b16086e3bb96030ac52046b49588
