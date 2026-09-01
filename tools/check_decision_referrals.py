@@ -63,6 +63,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from collections.abc import Mapping, Sequence
@@ -181,99 +182,81 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
     return any(_has_channel_field(c.get("body") or "") for c in (issue.get("comments") or []))
 
 
-def _strip_comments(line: str, hidden: bool) -> tuple[str, bool]:
-    """한 줄에서 HTML 주석을 걷어낸다. `hidden` 은 **여러 줄 주석 안인가**를 들고 다닌다."""
-    out: list[str] = []
-    rest = line
-    while rest:
-        if hidden:
-            close = rest.find("-->")
-            if close < 0:
-                return "".join(out), True
-            rest, hidden = rest[close + 3:], False
-            continue
-        open_at = rest.find("<!--")
-        if open_at < 0:
-            out.append(rest)
-            return "".join(out), False
-        out.append(rest[:open_at])
-        rest, hidden = rest[open_at + 4:], True
-    return "".join(out), hidden
+#: 표시가 살 수 있는 자리. 🔴 **첫 제목 앞의 머리말**, 그리고 **열 0** 뿐이다.
+#:
+#: 🔬 **왜 이렇게 좁히나 — 손으로 마크다운 파서를 짓고 있었다** (2026-09-01).
+#: 본문 전체를 훑으니 예시를 걸러내려고 펜스(백틱·물결·중첩·info string·목록 안·펜스 안 목록) ·
+#: 들여쓴 코드 · HTML 주석을 차례로 때웠고 **제3자 리뷰가 그 가장자리로만 9건**을 물었다.
+#: 가장자리는 끝이 없다(참조 링크 · 각주 · 표 안 코드 · `<pre>` …).
+#:
+#: 🔵 **자리를 좁히면 파싱이 사라진다.** 이건 이 세션에서 배운 것의 한 층 위다 —
+#: *"필수 칸을 산문이 채울 수 있으면 그건 필수 칸이 아니다"* 의 형제:
+#: **표시가 아무 데나 있을 수 있으면 아무 데나 파싱해야 한다.**
+#:
+#: ⚠️ **남는 위험은 적었다** — **머리말 안의 펜스는 아예 안 본다**: 거기 예시를 넣으면
+#: 세어지고, 거기 `<!--` 가 있으면 그 뒤가 삼켜진다.
+#: 그 자리는 **예시를 두는 곳이 아니라** 실질 위험이 낮고, 그 대가로 파싱 80여 줄이 사라졌다.
+#: 진짜 ATX 제목만 경계로 본다. 🔴 `##not-a-heading` 은 제목이 아니다 —
+#: 접두만 보면 거기서 멈춰 **그 뒤의 진짜 표시가 사라진다**(제3자 리뷰 · 2026-09-01).
+#: 🔬 마크다운은 **선행 공백 3칸까지** 제목으로 친다 — 안 받으면 ` ## 형식` 뒤의 예시가
+#: 세어진다(제3자 리뷰 · 2026-09-01). 표시 자체는 여전히 **열 0** 만 인정한다.
+HEADING = re.compile(r"^ {0,3}#{1,6}(?:\s|$)")
 
 
-def _delist(line: str) -> str:
-    """줄 머리의 **목록 기호**를 벗긴다 — `-` `*` `+` 와 `1.` `1)` 까지.
+def _comment_state(line: str, inside: bool) -> tuple[bool, bool]:
+    """(줄이 **시작될 때** 주석 안이었나, 줄이 **끝날 때** 주석 안인가).
 
-    🔴 `-`·`*` 만 벗겨서 `+ 회부: …` 와 `1. 회부: …` 가 **조용히 사라졌다**
-    (제3자 리뷰 · 2026-09-01). 분모가 주는 쪽이라 오탐보다 나쁘다.
+    🔴 **한 줄의 전이를 전부 훑는다.** 닫기 하나만 보면 `--> 보임 <!--` 처럼
+    **닫고 다시 여는 줄**에서 상태가 어긋나 그 뒤의 숨은 예시가 세어진다
+    (제3자 리뷰 · 2026-09-01).
     """
-    s = line.strip()
-    while s[:1] in ("-", "*", "+"):
-        s = s[1:].lstrip()
-    head = s.split(".", 1)[0] if "." in s else s.split(")", 1)[0] if ")" in s else ""
-    if head.isdigit() and len(head) <= 3:
-        s = s[len(head) + 1:].lstrip()
-    return s
-
-
-def _fence_of(line: str) -> tuple[str, int] | None:
-    """이 줄이 펜스 구분자면 `(문자, 길이)`. 아니면 `None`.
-
-    🔴 **하나의 불리언으로 켜고 끄면 안 된다** — 백틱 4개 안의 백틱 3개는 **닫는 게 아니고**,
-    `~~~` 는 백틱 펜스를 **못 닫는다**(제3자 리뷰 · 2026-09-01). 문자와 길이를 들고 다닌다.
-    """
-    s = line.lstrip()
-    if s[:1] not in ("`", "~"):
-        return None
-    ch = s[0]
-    n = len(s) - len(s.lstrip(ch))
-    return (ch, n) if n >= 3 else None
+    started = inside
+    i = 0
+    while i < len(line):
+        if inside:
+            j = line.find("-->", i)
+            if j < 0:
+                break
+            inside, i = False, j + 3
+        else:
+            j = line.find("<!--", i)
+            if j < 0:
+                break
+            inside, i = True, j + 4
+    return started, inside
 
 
 def marker_lines(body: str) -> list[str]:
-    """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
+    """PR 본문 **머리말**에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
 
-    🔴 **순서가 계약이다.** 리뷰가 이 자리만 **여덟 번** 물었다 — 걸러야 할 것과
-    **삼키면 안 되는 것**이 섞여 있어서다:
-
-    | 걸러낸다(분모 부풀림) | 삼키면 안 된다(분모 축소) |
-    |---|---|
-    | 코드펜스 · 들여쓴 코드 · HTML 주석 안의 예시 | 들여쓴 펜스 뒤의 진짜 표시 |
-    | 줄 가운데의 언급 | 펜스 안의 `<!--` 뒤의 진짜 표시 |
-    | | **들여쓴 `-->` 뒤의 진짜 표시** |
-
-    🔴 **주석 안에 있을 때가 먼저다.** 들여쓰기 배제를 먼저 하면 **들여쓴 `-->` 를 못 읽어**
-    주석이 안 닫히고 그 뒤가 통째로 사라진다.
+    규칙은 둘뿐이다: **첫 제목(`#`~`######`) 앞** · **열 0 에서 시작**.
+    설명·예시는 제목 아래에 살므로 **저절로 걸러진다** — 펜스도 주석도 안 본다.
     """
     out: list[str] = []
-    fence: tuple[str, int] | None = None
-    hidden = False
+    in_comment = False
     for raw in (body or "").splitlines():
-        if hidden:
-            # 🔴 주석을 닫는 줄은 **들여쓰기와 무관하게** 먼저 읽는다.
-            rest, hidden = _strip_comments(raw, hidden)
-            if hidden:
-                continue
-        else:
-            if raw.startswith(("    ", "\t")):
-                continue
-            found = _fence_of(raw)
-            if found:
-                if fence is None:
-                    fence = found
-                    continue
-                if found[0] == fence[0] and found[1] >= fence[1]:
-                    fence = None
-                    continue
-            if fence is not None:      # 펜스 안에서는 `<!--` 도 그냥 글자다
-                continue
-            rest, hidden = _strip_comments(raw, hidden)
-            if hidden:
-                continue
-        stripped = _delist(rest)
-        if stripped.startswith(PR_MARKER):
-            out.append(stripped)
+        # 🔴 **주석 상태 하나만 들고 다닌다.** 걷어낸 파서(펜스·들여쓰기·목록·인라인 코드)와 달리
+        # 이건 **줄 여섯**이고 실물 근거가 있다 — 이 저장소의 `PULL_REQUEST_TEMPLATE.md` 가
+        # **주석 블록으로 시작**한다. 주석 안의 `# …` 을 제목으로 읽으면 거기서 멈춰
+        # **그 뒤의 진짜 표시가 사라진다**(제3자 리뷰 · 2026-09-01).
+        # 🔴 **표시를 먼저 거둔다.** `회부: … <!-- 보충` 처럼 표시 줄이 주석을 열면
+        # 상태만 켜고 **표시는 버리면 안 된다**(내가 이 순서를 틀려 회귀를 냈다).
+        started_hidden, in_comment = _comment_state(raw, in_comment)
+        if started_hidden:
+            continue
+        if HEADING.match(raw):
+            break
+        if raw.startswith(PR_MARKER):
+            out.append(raw.split("<!--", 1)[0].strip())
     return out
+
+
+def _run_length(text: str, at: int) -> int:
+    """`at` 에서 시작하는 백틱 묶음의 길이."""
+    n = 0
+    while at + n < len(text) and text[at + n] == "`":
+        n += 1
+    return n
 
 
 def _mask_code(text: str) -> str:
@@ -283,17 +266,36 @@ def _mask_code(text: str) -> str:
     답 칸을 채웠다(제3자 리뷰 · 2026-09-01). 마스킹한 사본에서 자리를 찾고 **원본을 그 자리에서** 자른다.
     """
     out = list(text)
+    text_len = len(text)
     i = 0
-    while True:
-        open_at = text.find("`", i)
-        if open_at < 0:
-            break
-        close_at = text.find("`", open_at + 1)
-        if close_at < 0:
-            break
-        for k in range(open_at, close_at + 1):
+    while i < text_len:
+        if text[i] != "`":
+            i += 1
+            continue
+        # 🔴 **묶음 단위로 짝짓는다.** 위치 단위로 찾으면 **더 긴 묶음의 안쪽**을 닫는 것으로
+        # 읽어 `` `foo`` `` 뒤가 안 가려진다(제3자 리뷰 · 2026-09-01). 여는 묶음과
+        # **길이가 정확히 같은** 묶음만 닫는다.
+        run = _run_length(text, i)
+        close = -1
+        j = i + run
+        while j < text_len:
+            if text[j] != "`":
+                j += 1
+                continue
+            other = _run_length(text, j)
+            if other == run:
+                close = j
+                break
+            j += other
+        if close < 0:
+            # 🔴 **멈추지 않는다.** 짝 없는 묶음에서 `break` 하면 **그 뒤의 멀쩡한 인용이
+            # 통째로 안 가려진다** — 뒤에 있는 `` ``→ 답:`` `` 이 답으로 세어졌다
+            # (제3자 리뷰 · 2026-09-01). 그 묶음만 건너뛰고 계속 본다.
+            i += run
+            continue
+        for k in range(i, close + run):
             out[k] = "\x00"
-        i = close_at + 1
+        i = close + run
     return "".join(out)
 
 
@@ -383,11 +385,20 @@ def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
 def cited(repo: str, number: int, records: str) -> bool:
     """저장소까지 맞춰서 인용됐나. 🔴 **맨 `#224` 로는 안 된다** — 네 저장소가 번호를 공유해
     `workflows#224` 가 `standards#224` 인용으로 통과했다(제3자 리뷰 · 2026-09-01)."""
-    return any(form in records for form in (
-        f"{repo}#{number}",
-        f"coolbress/{repo}/pull/{number}",
-        f"coolbress/{repo}/issues/{number}",
-    ))
+    # 🔴 **양쪽 경계를 다 본다.** 오른쪽만 막으면 `standards#224` 가 `standards#22` 의 인용으로
+    # 통과하고, 왼쪽을 안 막으면 **다른 조직의 `otherorg/standards#22`** 가 우리 인용으로 통과한다
+    # (제3자 리뷰 2회 · 2026-09-01). 둘 다 **다리가 조용히 초록이 되는** 쪽이다.
+    # 🔬 형태마다 왼쪽 경계가 다르다. `repo#N` 은 앞이 **글자·슬래시면 안 되고**(다른 조직),
+    # URL 은 앞이 **반드시 `https://github.com/`** 이어야 한다 — 호스트에 못 박지 않으면 `https://example.com/github.com/…` 도 통과한다 — URL 은 원래 앞이 `/` 라
+    # 같은 경계를 쓰면 **실물 인용이 전부 끊긴다**(실측: `unbridged` 0 → 4).
+    patterns = (
+        rf"(?<![\w/-]){re.escape(repo)}#{number}(?!\d)",
+        # 🔵 **우리 것을 완전한 형태로 적은 것은 받는다** — `coolbress/standards#22` 가
+        # 왼쪽 경계에 걸려 거부됐다(제3자 리뷰 · 2026-09-01). 다른 조직은 여전히 막힌다.
+        rf"(?<![\w/-])coolbress/{re.escape(repo)}#{number}(?!\d)",
+        rf"(?<![\w.-])https://github\.com/coolbress/{re.escape(repo)}/(?:pull|issues)/{number}(?!\d)",
+    )
+    return any(re.search(p, records) for p in patterns)
 
 
 def committed_records(root: Path) -> str:
