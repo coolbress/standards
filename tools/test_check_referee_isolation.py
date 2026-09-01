@@ -90,3 +90,22 @@ class ItSaysWhatItComparedAgainst(unittest.TestCase):
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("tuple[list[str], str] | None", source)
         self.assertIn("GITHUB_BASE_REF", source)
+
+
+class ReviewFindingsOn227(unittest.TestCase):
+    def test_only_yaml_under_workflows_is_a_referee(self) -> None:
+        """🔴 디렉터리 접두만 보면 README 까지 심판이 되어 **평범한 PR 이 막힌다.**"""
+        self.assertFalse(mod.is_referee(".github/workflows/README.md"))
+        self.assertTrue(mod.is_referee(".github/workflows/ci.yml"))
+        self.assertTrue(mod.is_referee(".github/workflows/ci.yaml"))
+
+    def test_renames_are_not_collapsed(self) -> None:
+        """🔴 이름 변경 탐지가 켜져 있으면 목적지만 보여 **벽을 치우는 PR 이 통과한다.**"""
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn('"--no-renames"', source)
+
+    def test_the_wiring_split_is_explained(self) -> None:
+        """배선 전에는 아무것도 안 막는다 — 그 사실이 도구에 적혀 있어야 한다."""
+        doc = mod.__doc__ or ""
+        self.assertIn("배선은 별도 PR", doc)
+        self.assertIn("배선 전에는 이 검사가 아무것도 안 막는다", doc)

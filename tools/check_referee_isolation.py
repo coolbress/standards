@@ -30,6 +30,11 @@
 **심판만 바꾸는 PR 은 통과한다** — 밀반입할 것이 **없기** 때문이다.
 `04` §리팩터링 분리(Fowler·Google)와 같은 모양이다.
 
+🔧 **배선은 별도 PR 이다 — 이 검사 자신의 규칙 때문이다.** `ci.yml` 에 스텝을 붙이는 것이
+**심판 변경**이라 도구·문서와 같은 PR 에 못 넣는다. 그래서 **표시·검사** 와 **배선** 을 갈랐다.
+⚠️ **배선 전에는 이 검사가 아무것도 안 막는다** — 규칙이 문서에만 있는 상태이고,
+이 저장소는 그 상태를 여러 번 겪었다. **두 PR 을 붙여서 머지한다.**
+
 🔴 **못 읽으면 실패다.** 변경 목록을 못 구하면 *통과* 가 아니라 **모른다** 이고,
 이 저장소는 그걸 통과로 읽어 여러 번 데었다.
 """
@@ -43,11 +48,18 @@ from collections.abc import Sequence
 
 #: 심판. 🔴 **늘리기 전에 위 표를 읽어라** — 넓히면 벽이 아니라 족쇄가 된다.
 REFEREE_PREFIXES = (".github/workflows/",)
+REFEREE_SUFFIXES = (".yml", ".yaml")
 REFEREE_NAMES = ("ruleset.json",)
 
 
 def is_referee(path: str) -> bool:
-    return path.startswith(REFEREE_PREFIXES) or path in REFEREE_NAMES
+    """🔴 **문서가 말한 대로 `*.yml` 만.** 디렉터리 접두만 보면
+    `.github/workflows/README.md` 까지 심판이 되어 **평범한 PR 이 막힌다**
+    (제3자 리뷰 · 2026-09-01) — 넓히면 벽이 아니라 족쇄다.
+    """
+    if path in REFEREE_NAMES:
+        return True
+    return path.startswith(REFEREE_PREFIXES) and path.endswith(REFEREE_SUFFIXES)
 
 
 def split(changed: Sequence[str]) -> tuple[list[str], list[str]]:
@@ -70,7 +82,11 @@ def changed_files() -> tuple[list[str], str] | None:
                                     capture_output=True, text=True, check=False)
         if merge_base.returncode != 0:
             continue
-        diff = subprocess.run(["git", "diff", "--name-only", merge_base.stdout.strip(), "HEAD"],
+        # 🔴 **`--no-renames`.** 이름 변경 탐지가 켜져 있으면 `git diff --name-only` 가
+        # **목적지만** 낸다 — `ci.yml` → `ci.disabled` 로 옮기면서 다른 것을 같이 넣으면
+        # 심판이 0으로 보여 **벽을 치우는 PR 이 통과한다**(제3자 리뷰 · 2026-09-01).
+        diff = subprocess.run(["git", "diff", "--no-renames", "--name-only",
+                               merge_base.stdout.strip(), "HEAD"],
                               capture_output=True, text=True, check=False)
         if diff.returncode == 0:
             return [ln for ln in diff.stdout.splitlines() if ln.strip()], ref
