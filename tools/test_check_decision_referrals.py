@@ -712,3 +712,14 @@ class HostMustBeAnchored(unittest.TestCase):
     def test_the_real_url_still_counts(self) -> None:
         self.assertTrue(mod.cited(
             "standards", 22, "https://github.com/coolbress/standards/pull/22"))
+
+
+class FencesInsideListItems(unittest.TestCase):
+    def test_a_fence_inside_a_list_item_is_recognized(self) -> None:
+        body = "- ```text\n  회부: decision:input — 예시 → 답: 응 (채널: 대화)\n- ```\n"
+        self.assertEqual(mod.marker_lines(body), [], "목록 안 펜스를 못 알아봤다")
+
+    def test_a_list_prefixed_real_marker_still_reads(self) -> None:
+        """🔬 반대편 — 목록으로 적은 **진짜** 표시는 계속 읽혀야 한다."""
+        body = "- 회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
+        self.assertEqual(len(mod.marker_lines(body)), 1)

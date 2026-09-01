@@ -263,7 +263,9 @@ def marker_lines(body: str) -> list[str]:
         else:
             if raw.startswith(("    ", "\t")):
                 continue
-            found = _fence_of(raw)
+            # 🔴 **목록 기호를 벗기고 본다.** `- ```text ` 처럼 목록 안에 펜스가 있으면
+            # 못 알아보고 그 안의 예시가 진짜 회부로 세어진다(제3자 리뷰 · 2026-09-01).
+            found = _fence_of(_delist(raw))
             if found:
                 if fence is None:
                     fence = found
