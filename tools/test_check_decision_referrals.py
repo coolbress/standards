@@ -582,3 +582,34 @@ class NinthRoundReviewFindings20260901(unittest.TestCase):
         """사람이 읽는 절은 잡는데 METRIC 에 없으면 **수집기는 0 으로 기록한다.**"""
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("pr_no_channel=", source)
+
+
+class TenthRoundReviewFindings20260901(unittest.TestCase):
+    def test_comment_token_inside_a_fence_does_not_swallow_a_marker(self) -> None:
+        """🔴 펜스 안의 `<!--` 를 진짜 주석으로 읽으면 그 뒤 진짜 표시가 사라진다."""
+        body = ("```text\n<!-- 예시 안내\n```\n"
+                "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n")
+        lines = mod.marker_lines(body)
+        self.assertEqual(len(lines), 1, "펜스 안 주석 기호가 진짜 표시를 삼켰다")
+
+    def test_progress_comment_mentioning_the_word_is_not_an_answer(self) -> None:
+        """🔬 *"답변에는 채널: 항목도 적어야 합니다"* 는 진행 보고이지 답이 아니다.
+
+        🔴 **호출부까지 잰다.** 처음엔 `_has_channel_field` 만 직접 봐서, `has_channel` 을
+        부분문자열로 되돌리는 변이를 **못 잡았다** — 시험이 실제 경로를 안 탔다.
+        """
+        self.assertFalse(mod._has_channel_field("진행 중 — 답변에는 채널: 항목도 적어야 합니다"))
+        rows = [("standards", {"state": "CLOSED", "labels": [{"name": mod.LABEL}],
+                               "comments": [{"body": "진행 중 — 답변에는 채널: 항목도 적어야 합니다"}]})]
+        got = mod.summarise(rows)
+        self.assertEqual(got["answered"], 0, "진행 보고가 답으로 세어졌다")
+        self.assertEqual(got["no_channel"], 1)
+        self.assertEqual(got["incomplete"], 1)
+
+    def test_a_real_answer_comment_still_reads(self) -> None:
+        """🔬 실물 그대로 — 닫힌 회부 넷의 답 코멘트가 이 꼴이다."""
+        real = "## ✅ 처리 — ⓑ (안 넣습니다)\n\n**채널: 대화(Claude Code 세션)** — 소유자 …"
+        self.assertTrue(mod._has_channel_field(real))
+
+    def test_plain_channel_line_reads_too(self) -> None:
+        self.assertTrue(mod._has_channel_field("채널: 대화"))

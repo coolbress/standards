@@ -164,8 +164,21 @@ def kind_of(issue: Mapping[str, Any]) -> str | None:
     return None
 
 
+def _has_channel_field(text: str) -> bool:
+    """`채널:` 을 **줄 머리 칸**에서만 인정한다(굵게·목록 기호는 벗긴다).
+
+    🔴 부분문자열로 보면 *"답변에는 채널: 항목도 적어야 합니다"* 같은 **진행 보고가 답이 된다**
+    (제3자 리뷰 10회차 · 2026-09-01). PR 표시에 이미 적용한 규율을 이슈 쪽에도 맞춘다 —
+    **필수 칸을 산문이 채울 수 있으면 그건 필수 칸이 아니다.**
+    """
+    for line in (text or "").splitlines():
+        if line.strip().lstrip("-*# ").lstrip("*").startswith(CHANNEL_MARKER):
+            return True
+    return False
+
+
 def has_channel(issue: Mapping[str, Any]) -> bool:
-    return any(CHANNEL_MARKER in (c.get("body") or "") for c in (issue.get("comments") or []))
+    return any(_has_channel_field(c.get("body") or "") for c in (issue.get("comments") or []))
 
 
 def _strip_comments(line: str, hidden: bool) -> tuple[str, bool]:
@@ -204,22 +217,23 @@ def marker_lines(body: str) -> list[str]:
     fenced = False
     hidden = False   # 🔴 HTML 주석 — `.github/PULL_REQUEST_TEMPLATE.md` 가 실제로 이 꼴로 안내한다.
     for raw in (body or "").splitlines():
+        # 🔴 **순서가 계약이다** (리뷰 5·9·10회차가 차례로 물었다):
+        # 들여쓰기 → 펜스 → 주석. 주석을 먼저 벗기면 **펜스 안의 `<!--` 를 진짜 주석으로 읽어**
+        # `hidden` 이 켜진 채 남고, 그 뒤의 **진짜 표시가 통째로 사라진다**.
+        if raw.startswith(("    ", "\t")):
+            continue
+        if not hidden and raw.lstrip().startswith(("```", "~~~")):
+            fenced = not fenced
+            continue
+        if fenced:            # 펜스 안에서는 `<!--` 도 그냥 글자다
+            continue
         # 🔴 **정규식을 안 쓴다.** `<!--.*?-->` 는 줄바꿈을 안 넘어 **여러 줄 주석을 못 벗긴다** —
         # CodeQL(`py/bad-tag-filter`)이 잡았다. 상태를 들고 문자열로 자른다.
         line, hidden = _strip_comments(raw, hidden)
         if not line.strip():
             continue
-        # 🔴 **들여쓰기를 먼저 본다.** 두 이유가 있다:
-        # ⓐ 마크다운의 **4칸 들여쓴 코드블록**이 그냥 표시가 된다(리뷰 5회차) ·
-        # ⓑ 들여쓴 ``` 를 펜스로 읽으면 **상태가 뒤집혀 그 뒤의 진짜 표시가 통째로 사라진다**
-        #    (리뷰 9회차 — 오탐보다 나쁘다. **있는 회부를 없다고 하는 것**이다).
-        if line.startswith(("    ", "\t")):
-            continue
-        if line.lstrip().startswith(("```", "~~~")):   # 마크다운은 물결 펜스도 쓴다
-            fenced = not fenced
-            continue
         stripped = line.strip().lstrip("-*").strip()
-        if not fenced and stripped.startswith(PR_MARKER):
+        if stripped.startswith(PR_MARKER):
             out.append(stripped)
     return out
 
