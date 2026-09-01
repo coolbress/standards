@@ -44,4 +44,4 @@ concurrency:
 
 jobs:
   third-party:
-    uses: coolbress/workflows/.github/workflows/pr-review.yml@986095f0e5fbde8062be08a678ce0edeae384173
+    uses: coolbress/workflows/.github/workflows/pr-review.yml@02e3af450cb29d7033fae3c562e58655f1ae0c49
