@@ -94,8 +94,13 @@ def is_reviewer(login: str) -> bool:
 def tally(comments: list[dict[str, Any]], touched: dict[str, set[str]]) -> Counter[str]:
     """리뷰 댓글을 심각도별로 세고, **그 뒤에 그 파일이 바뀌었는지**를 같이 센다.
 
-    `touched[commit_id]` 는 그 커밋 이후 PR 안에서 바뀐 파일 경로들이다.
+    `touched[commit_of(c)]` 는 그 커밋 이후 PR 안에서 바뀐 파일 경로들이다.
     순수 함수다 — 네트워크를 안 탄다.
+
+    🔴 **키가 `commit_of` 여야 한다.** 지도는 `original_commit_id` 로 만들어놓고 조회를
+    `commit_id` 로 했더니 **전부 빗나가 `after` 가 늘 빈 집합**이었다 — 대리지표가 조용히
+    낮아진다. 🔬 **같은 뿌리에 네 번째로 물린 자리다**(벽 · 지도 · 여기): *한 곳을 고칠 때
+    **같은 값을 읽는 다른 줄** 을 안 봤다.*
     """
     out: Counter[str] = Counter()
     for c in comments:
@@ -104,7 +109,7 @@ def tally(comments: list[dict[str, Any]], touched: dict[str, set[str]]) -> Count
         sev = severity_of(c.get("body") or "")
         out["findings"] += 1
         out[f"sev_{sev}"] += 1
-        after = touched.get(c.get("commit_id") or "", set())
+        after = touched.get(commit_of(c), set())
         if (c.get("path") or "") in after:
             out["touched_after"] += 1
             out[f"touched_{sev}"] += 1

@@ -134,3 +134,33 @@ class MergedWithOpenFindings(unittest.TestCase):
         source = pathlib.Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("RESULT INFO", source)
         self.assertNotIn("RESULT FAIL", source)
+
+
+class LookupKeyMustMatchTheMapKey(unittest.TestCase):
+    """🔴 **같은 뿌리에 네 번째로 물린 자리.**
+
+    지도는 `original_commit_id` 로 만들어놓고 조회를 `commit_id` 로 했다. GitHub 이 그 값을
+    head 로 옮기므로 **전부 빗나가 `after` 가 늘 빈 집합**이었고 대리지표가 조용히 낮아졌다
+    (실측: 고치니 44% → 58%). *한 곳을 고칠 때 **같은 값을 읽는 다른 줄** 을 안 봤다.*
+    """
+
+    OLD = "a" * 40
+    HEAD = "e" * 40
+    BOT = "chatgpt-codex-connector[bot]"
+
+    def _comment(self) -> dict[str, object]:
+        # 🔬 실물 그대로 — 옛 커밋에 달렸는데 `commit_id` 는 head 로 옮겨져 있다.
+        return {"user": {"login": self.BOT}, "path": "tools/x.py",
+                "original_commit_id": self.OLD, "commit_id": self.HEAD,
+                "body": "**![P2 Badge](x) 어떤 지적**"}
+
+    def test_touched_after_is_found_via_the_original_commit(self) -> None:
+        got = mod.tally([self._comment()], {self.OLD: {"tools/x.py"}})
+        self.assertEqual(got["touched_after"], 1,
+                         "조회 키가 지도 키와 다르다 — 대리지표가 조용히 0 이 된다")
+
+    def test_a_file_not_touched_afterwards_is_not_counted(self) -> None:
+        """🔬 음성 — 안 바뀐 것을 바뀌었다고 하면 대리지표가 부푼다."""
+        got = mod.tally([self._comment()], {self.OLD: {"tools/other.py"}})
+        self.assertEqual(got["touched_after"], 0)
+        self.assertEqual(got["findings"], 1)
