@@ -63,6 +63,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from collections.abc import Mapping, Sequence
@@ -182,7 +183,16 @@ def marker_lines(body: str) -> list[str]:
     """
     out: list[str] = []
     fenced = False
-    for line in (body or "").splitlines():
+    hidden = False   # 🔴 HTML 주석 — `.github/PULL_REQUEST_TEMPLATE.md` 가 실제로 이 꼴로 안내한다.
+    for raw in (body or "").splitlines():
+        line = re.sub(r"<!--.*?-->", "", raw)   # 한 줄짜리 주석은 지운다
+        if hidden:
+            if "-->" in line:
+                hidden = False
+            continue
+        if "<!--" in line:
+            hidden = True
+            continue
         if line.lstrip().startswith(("```", "~~~")):   # 마크다운은 물결 펜스도 쓴다
             fenced = not fenced
             continue
@@ -213,9 +223,19 @@ def parse_marker(line: str) -> dict[str, object]:
         return {"kind": None, "answered": False, "channel": "", "resimple": False}
     body = line.split(PR_MARKER, 1)[1].strip()
     meta = ""
-    if body.endswith(")") and "(" in body:
-        cut = body.rfind("(")
-        meta, body = body[cut + 1:-1], body[:cut].rstrip()
+    if body.endswith(")"):
+        # 🔴 **바깥 괄호를 찾는다.** `rfind("(")` 는 안쪽을 집는다 —
+        # `(채널: Slack (#ops))` 가 `#ops)` 로 파싱돼 채널이 빈 것으로 세어졌다
+        # (제3자 리뷰 7회차 · 2026-09-01).
+        depth = 0
+        for i in range(len(body) - 1, -1, -1):
+            if body[i] == ")":
+                depth += 1
+            elif body[i] == "(":
+                depth -= 1
+                if depth == 0:
+                    meta, body = body[i + 1:-1], body[:i].rstrip()
+                    break
     head = body.split()
     _question, sep, answer = body.partition(ANSWER_MARKER)
     return {"kind": head[0] if head and head[0] in KINDS else None,

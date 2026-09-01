@@ -500,3 +500,28 @@ class SixthRoundReviewFindings20260901(unittest.TestCase):
 
     def test_an_empty_answer_is_not_an_answer(self) -> None:
         self.assertFalse(mod.parse_marker("회부: decision:input — 물었다 → 답:  (채널: 대화)")["answered"])
+
+
+class SeventhRoundReviewFindings20260901(unittest.TestCase):
+    def test_example_inside_an_html_comment_is_not_a_marker(self) -> None:
+        """🔴 이 저장소의 PR 템플릿이 실제로 HTML 주석으로 안내한다 — 거기 예시를 넣으면
+        **머지되는 PR 마다** 분모가 부푼다."""
+        body = ("<!--\n회부: decision:input — <물음> → 답: <답> (채널: 대화)\n-->\n"
+                "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n")
+        lines = mod.marker_lines(body)
+        self.assertEqual(len(lines), 1)
+        self.assertIn("진짜", lines[0])
+
+    def test_single_line_html_comment_is_stripped(self) -> None:
+        self.assertEqual(mod.marker_lines("<!-- 회부: decision:input — 예시 → 답: 응 -->"), [])
+
+    def test_channel_may_contain_parentheses(self) -> None:
+        """🔬 `rfind(\"(\")` 는 안쪽 괄호를 집는다 — 바깥 괄호를 찾아야 한다."""
+        f = mod.parse_marker("회부: decision:input — 물었다 → 답: 예 (채널: Slack (#ops))")
+        self.assertEqual(f["channel"], "Slack (#ops)")
+        self.assertTrue(f["answered"])
+
+    def test_no_meta_field_still_parses(self) -> None:
+        f = mod.parse_marker("회부: decision:input — 물었다 → 답: 예")
+        self.assertEqual(f["channel"], "")
+        self.assertTrue(f["answered"])
