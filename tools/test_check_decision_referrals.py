@@ -712,3 +712,16 @@ class HeadingsInsideCommentsAreIgnored(unittest.TestCase):
     def test_a_real_heading_after_the_comment_still_stops(self) -> None:
         body = f"<!-- 안내 -->\n## 형식\n{self.REAL}\n"
         self.assertEqual(mod.marker_lines(body), [])
+
+
+class IndentedHeadingsAreHeadings(unittest.TestCase):
+    def test_up_to_three_leading_spaces_still_stops(self) -> None:
+        """마크다운은 선행 공백 3칸까지 제목으로 친다."""
+        for pad in ("", " ", "  ", "   "):
+            body = f"{pad}## 형식\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n"
+            self.assertEqual(mod.marker_lines(body), [], f"pad={len(pad)}")
+
+    def test_four_spaces_is_not_a_heading(self) -> None:
+        """🔬 반대편 — 4칸부터는 코드블록이지 제목이 아니다."""
+        real = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)"
+        self.assertEqual(mod.marker_lines(f"    ## 형식\n{real}\n"), [real])
