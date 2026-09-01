@@ -167,7 +167,7 @@ class TheBridgeToCommittedRecords(unittest.TestCase):
 
     def test_issue_url_form_also_counts(self) -> None:
         rows = [("standards", {"state": "CLOSED", "number": 141, "labels": [], "comments": []})]
-        self.assertEqual(mod.unbridged(rows, "…coolbress/standards/issues/141 참조…"), [])
+        self.assertEqual(mod.unbridged(rows, "…github.com/coolbress/standards/issues/141 참조…"), [])
 
     def test_record_dirs_are_committed_ones(self) -> None:
         self.assertEqual(set(mod.RECORD_DIRS), {"direction", "audit"})
@@ -340,7 +340,7 @@ class SecondRoundReviewFindings20260901(unittest.TestCase):
         marks = [("standards", 224, "회부: decision:input — 물었다 → 답: 응 (채널: 대화)")]
         self.assertEqual(mod.unbridged_marks(marks, "아무 인용도 없는 본문"), [("standards", 224)])
         self.assertEqual(mod.unbridged_marks(marks, "결정은 standards#224 에서 오갔다"), [])
-        self.assertEqual(mod.unbridged_marks(marks, "coolbress/standards/pull/224 참조"), [])
+        self.assertEqual(mod.unbridged_marks(marks, "https://github.com/coolbress/standards/pull/224 참조"), [])
 
     def test_p1_the_wrong_claim_is_corrected_everywhere(self) -> None:
         """🔴 한 곳만 고치면 요약이 갈린다 — 네 곳이 같은 말을 해야 한다."""
@@ -685,7 +685,18 @@ class ReviewFindingsOn226(unittest.TestCase):
         self.assertFalse(mod.parse_marker(line)["answered"])
 
     def test_cited_matches_at_a_number_boundary(self) -> None:
-        """`standards#224` 가 `standards#22` 의 인용으로 통과했다."""
+        """`standards#224` 가 `standards#22` 의 인용으로 통과했다 — 오른쪽 경계."""
         self.assertFalse(mod.cited("standards", 22, "standards#224 에서 정했다"))
         self.assertTrue(mod.cited("standards", 224, "standards#224 에서 정했다"))
         self.assertTrue(mod.cited("standards", 22, "standards#22 에서 정했다"))
+
+    def test_another_org_reference_does_not_count(self) -> None:
+        """🔴 왼쪽 경계 — **다른 조직의** `otherorg/standards#22` 는 우리 인용이 아니다."""
+        self.assertFalse(mod.cited("standards", 22, "otherorg/standards#22 를 봐라"))
+        self.assertFalse(mod.cited("standards", 22, "elsewhere/coolbress/standards/pull/22"))
+        self.assertFalse(mod.cited("standards", 22, "gitlab.com/coolbress/standards/pull/22"))
+
+    def test_our_own_url_form_still_counts(self) -> None:
+        """🔬 반대편 — 우리 URL 은 여전히 통과해야 한다(안 그러면 다리가 전부 빨개진다)."""
+        self.assertTrue(mod.cited(
+            "standards", 22, "https://github.com/coolbress/standards/pull/22 참조"))

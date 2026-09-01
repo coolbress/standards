@@ -398,14 +398,17 @@ def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
 def cited(repo: str, number: int, records: str) -> bool:
     """저장소까지 맞춰서 인용됐나. 🔴 **맨 `#224` 로는 안 된다** — 네 저장소가 번호를 공유해
     `workflows#224` 가 `standards#224` 인용으로 통과했다(제3자 리뷰 · 2026-09-01)."""
-    # 🔴 **경계까지 본다.** 부분문자열로 보면 `standards#224` 가 `standards#22` 의 인용으로
-    # 통과한다 — 다리가 조용히 초록이 된다(제3자 리뷰 · 2026-09-01).
-    for form in (rf"{re.escape(repo)}#{number}",
-                 rf"coolbress/{re.escape(repo)}/pull/{number}",
-                 rf"coolbress/{re.escape(repo)}/issues/{number}"):
-        if re.search(form + r"(?!\d)", records):
-            return True
-    return False
+    # 🔴 **양쪽 경계를 다 본다.** 오른쪽만 막으면 `standards#224` 가 `standards#22` 의 인용으로
+    # 통과하고, 왼쪽을 안 막으면 **다른 조직의 `otherorg/standards#22`** 가 우리 인용으로 통과한다
+    # (제3자 리뷰 2회 · 2026-09-01). 둘 다 **다리가 조용히 초록이 되는** 쪽이다.
+    # 🔬 형태마다 왼쪽 경계가 다르다. `repo#N` 은 앞이 **글자·슬래시면 안 되고**(다른 조직),
+    # URL 은 앞이 **반드시 `github.com/`** 이어야 한다 — URL 은 원래 앞이 `/` 라
+    # 같은 경계를 쓰면 **실물 인용이 전부 끊긴다**(실측: `unbridged` 0 → 4).
+    patterns = (
+        rf"(?<![\w/-]){re.escape(repo)}#{number}(?!\d)",
+        rf"github\.com/coolbress/{re.escape(repo)}/(?:pull|issues)/{number}(?!\d)",
+    )
+    return any(re.search(p, records) for p in patterns)
 
 
 def committed_records(root: Path) -> str:
