@@ -186,6 +186,10 @@ def marker_lines(body: str) -> list[str]:
         if line.lstrip().startswith(("```", "~~~")):   # 마크다운은 물결 펜스도 쓴다
             fenced = not fenced
             continue
+        # 🔴 **들여쓰기를 먼저 본다.** `strip()` 부터 하면 마크다운의 **4칸 들여쓴 코드블록**이
+        # 그냥 표시가 된다(제3자 리뷰 5회차 · 2026-09-01). 펜스만 막아선 부족했다.
+        if line.startswith(("    ", "\t")):
+            continue
         stripped = line.strip().lstrip("-*").strip()
         if not fenced and stripped.startswith(PR_MARKER):
             out.append(stripped)
@@ -296,6 +300,13 @@ def unbridged_marks(marks: Sequence[tuple[str, int, str]], records: str) -> list
     처음엔 이 도구가 *"PR 본문은 머지 커밋에 인용된다"* 고 적었는데 **그건 사실이 아니었다**
     (제3자 리뷰 P1 · 2026-09-01). 이슈에 걸었던 다리를 **그대로** 건다:
     RFC 는 밖에 살아도 되지만 **결정은 커밋된다.**
+
+    🔴 **다만 이 다리가 지키지 못하는 것을 분명히 한다** (제3자 리뷰 5회차 · 2026-09-01):
+    이 함수는 **지금 본문에 남아 있는 표시**만 본다. 머지 뒤에 본문에서 표시를 지우면
+    `pr_marks` 에서 사라지고 **`referrals_total` 이 조용히 줄어드는데, 여기서는 안 걸린다**
+    (인용은 남아 있고 표시만 없어지므로 *못 이은 것* 으로도 안 잡힌다).
+    **이 계기의 원천은 가변이다** — `GAPS` R5-47 로 등재했다. 지금 고치지 않는 이유는
+    지속화 수단(커밋 메시지 · 별도 원장)이 **수단 선택**이라 눈금이 몇 건 쌓인 뒤에 정해야 하기 때문이다.
     """
     seen: set[tuple[str, int]] = set()
     for repo, number, _ in marks:

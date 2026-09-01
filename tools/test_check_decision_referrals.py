@@ -445,3 +445,23 @@ class FourthRoundReviewFindings20260901(unittest.TestCase):
         """이슈 0건 + PR 표시 1건이면 `referrals_total=1` 인데 *"회부 0건"* 이라고 말했다."""
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn('if total or mcounts["marks"]:', source)
+
+
+class FifthRoundReviewFindings20260901(unittest.TestCase):
+    def test_indented_code_block_is_not_a_marker(self) -> None:
+        """🔬 음성 — 마크다운은 **4칸 들여쓰기도 코드블록**이다. 펜스만 막아선 부족했다."""
+        body = "형식은 이렇다:\n\n    회부: decision:input — <물음> → 답: <답> (채널: 대화)\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_tab_indented_example_is_not_a_marker(self) -> None:
+        self.assertEqual(mod.marker_lines("\t회부: decision:input — 예시 → 답: 응"), [])
+
+    def test_a_real_marker_at_the_line_head_still_reads(self) -> None:
+        body = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
+        self.assertEqual(len(mod.marker_lines(body)), 1)
+
+    def test_the_bridge_admits_what_it_cannot_protect(self) -> None:
+        """🔴 다리가 **지워진 표시는 못 잡는다** — 그걸 적어두지 않으면 과신한다."""
+        doc = mod.unbridged_marks.__doc__ or ""
+        self.assertIn("조용히 줄어드는데", doc)
+        self.assertIn("R5-47", doc)
