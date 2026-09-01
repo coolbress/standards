@@ -263,9 +263,11 @@ def marker_lines(body: str) -> list[str]:
         else:
             if raw.startswith(("    ", "\t")):
                 continue
-            # 🔴 **목록 기호를 벗기고 본다.** `- ```text ` 처럼 목록 안에 펜스가 있으면
-            # 못 알아보고 그 안의 예시가 진짜 회부로 세어진다(제3자 리뷰 · 2026-09-01).
-            found = _fence_of(_delist(raw))
+            # 🔴 **여는 펜스에서만 목록 기호를 벗긴다.** `- ```text ` 처럼 목록 안에 펜스가 있으면
+            # 못 알아보고 그 안의 예시가 세어진다 — 그런데 **펜스 안에서도 벗기면** 안에 있는
+            # `- ``` ` 를 닫는 것으로 읽어 펜스가 일찍 닫힌다(제3자 리뷰 2회 · 2026-09-01).
+            # **펜스 안의 줄은 글자 그대로다.**
+            found = _fence_of(_delist(raw) if fence is None else raw)
             if found:
                 if fence is None:
                     fence = found
@@ -408,6 +410,9 @@ def cited(repo: str, number: int, records: str) -> bool:
     # 같은 경계를 쓰면 **실물 인용이 전부 끊긴다**(실측: `unbridged` 0 → 4).
     patterns = (
         rf"(?<![\w/-]){re.escape(repo)}#{number}(?!\d)",
+        # 🔵 **우리 것을 완전한 형태로 적은 것은 받는다** — `coolbress/standards#22` 가
+        # 왼쪽 경계에 걸려 거부됐다(제3자 리뷰 · 2026-09-01). 다른 조직은 여전히 막힌다.
+        rf"(?<![\w/-])coolbress/{re.escape(repo)}#{number}(?!\d)",
         rf"https://github\.com/coolbress/{re.escape(repo)}/(?:pull|issues)/{number}(?!\d)",
     )
     return any(re.search(p, records) for p in patterns)

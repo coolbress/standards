@@ -723,3 +723,24 @@ class FencesInsideListItems(unittest.TestCase):
         """🔬 반대편 — 목록으로 적은 **진짜** 표시는 계속 읽혀야 한다."""
         body = "- 회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
         self.assertEqual(len(mod.marker_lines(body)), 1)
+
+
+class FencesAreLiteralInside(unittest.TestCase):
+    def test_a_bullet_delimiter_inside_a_fence_does_not_close_it(self) -> None:
+        """🔴 앞 수정이 만든 것 — 펜스 **안** 의 `- ``` ` 는 글자 그대로다."""
+        body = "```text\n- ```\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_a_fence_opened_inside_a_list_is_still_recognized(self) -> None:
+        """🔬 반대편 — 여는 쪽에서는 여전히 목록 기호를 벗긴다."""
+        body = "- ```text\n  회부: decision:input — 예시 → 답: 응 (채널: 대화)\n- ```\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+
+class QualifiedLocalReferencesCount(unittest.TestCase):
+    def test_our_own_owner_qualified_form_is_accepted(self) -> None:
+        self.assertTrue(mod.cited("standards", 22, "coolbress/standards#22 에서 정했다"))
+
+    def test_another_owner_is_still_rejected(self) -> None:
+        self.assertFalse(mod.cited("standards", 22, "otherorg/standards#22 를 봐라"))
+        self.assertFalse(mod.cited("standards", 22, "x/coolbress/standards#22"))
