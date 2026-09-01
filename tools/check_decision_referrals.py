@@ -182,7 +182,7 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
     return any(_has_channel_field(c.get("body") or "") for c in (issue.get("comments") or []))
 
 
-#: 표시가 살 수 있는 자리. 🔴 **첫 `##` 제목 앞의 머리말**, 그리고 **열 0** 뿐이다.
+#: 표시가 살 수 있는 자리. 🔴 **첫 제목 앞의 머리말**, 그리고 **열 0** 뿐이다.
 #:
 #: 🔬 **왜 이렇게 좁히나 — 손으로 마크다운 파서를 짓고 있었다** (2026-09-01).
 #: 본문 전체를 훑으니 예시를 걸러내려고 펜스(백틱·물결·중첩·info string·목록 안·펜스 안 목록) ·
@@ -195,18 +195,20 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
 #:
 #: ⚠️ **남는 위험은 적었다** — 머리말 안에 펜스로 예시를 넣으면 여전히 세어진다.
 #: 그 자리는 **예시를 두는 곳이 아니라** 실질 위험이 낮고, 그 대가로 파싱 80여 줄이 사라졌다.
-SECTION_START = "##"
+#: 진짜 ATX 제목만 경계로 본다. 🔴 `##not-a-heading` 은 제목이 아니다 —
+#: 접두만 보면 거기서 멈춰 **그 뒤의 진짜 표시가 사라진다**(제3자 리뷰 · 2026-09-01).
+HEADING = re.compile(r"^#{1,6}(?:\s|$)")
 
 
 def marker_lines(body: str) -> list[str]:
     """PR 본문 **머리말**에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
 
-    규칙은 둘뿐이다: **첫 `##` 제목 앞** · **열 0 에서 시작**.
+    규칙은 둘뿐이다: **첫 제목(`#`~`######`) 앞** · **열 0 에서 시작**.
     설명·예시는 제목 아래에 살므로 **저절로 걸러진다** — 펜스도 주석도 안 본다.
     """
     out: list[str] = []
     for raw in (body or "").splitlines():
-        if raw.startswith(SECTION_START):
+        if HEADING.match(raw):
             break
         if raw.startswith(PR_MARKER):
             out.append(raw.strip())
@@ -358,7 +360,7 @@ def cited(repo: str, number: int, records: str) -> bool:
         # 🔵 **우리 것을 완전한 형태로 적은 것은 받는다** — `coolbress/standards#22` 가
         # 왼쪽 경계에 걸려 거부됐다(제3자 리뷰 · 2026-09-01). 다른 조직은 여전히 막힌다.
         rf"(?<![\w/-])coolbress/{re.escape(repo)}#{number}(?!\d)",
-        rf"https://github\.com/coolbress/{re.escape(repo)}/(?:pull|issues)/{number}(?!\d)",
+        rf"(?<![\w.-])https://github\.com/coolbress/{re.escape(repo)}/(?:pull|issues)/{number}(?!\d)",
     )
     return any(re.search(p, records) for p in patterns)
 

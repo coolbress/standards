@@ -660,3 +660,35 @@ class MarkersLiveOnlyInThePreamble(unittest.TestCase):
         body = ("> 🔗 **#226 위에 쌓은 PR** (base = `docs/two-lessons`).\n\n"
                 "회부: decision:approval — 어디까지 만들까 → 답: 계기만 (채널: 대화)\n\n## 왜\n")
         self.assertEqual(len(mod.marker_lines(body)), 1)
+
+
+class HeadingBoundaryIsARealHeading(unittest.TestCase):
+    REAL = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)"
+
+    def test_a_hash_run_without_space_is_not_a_heading(self) -> None:
+        """🔴 `##not-a-heading` 에서 멈추면 **그 뒤의 진짜 표시가 사라진다.**"""
+        body = f"##not-a-heading\n{self.REAL}\n\n## 무엇을 왜\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_a_real_heading_still_stops(self) -> None:
+        body = f"## 형식\n{self.REAL}\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_a_level_one_heading_also_stops(self) -> None:
+        body = f"# 제목\n{self.REAL}\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+
+class UrlNeedsALeftBoundaryToo(unittest.TestCase):
+    def test_a_glued_prefix_does_not_count(self) -> None:
+        self.assertFalse(mod.cited(
+            "standards", 22, "xhttps://github.com/coolbress/standards/issues/22"))
+
+    def test_the_plain_url_still_counts(self) -> None:
+        self.assertTrue(mod.cited(
+            "standards", 22, "보라: https://github.com/coolbress/standards/issues/22"))
+
+    def test_a_markdown_link_still_counts(self) -> None:
+        """🔬 실물이 이 꼴이다 — `[#142](https://github.com/...)`."""
+        self.assertTrue(mod.cited(
+            "standards", 142, "[#142](https://github.com/coolbress/standards/issues/142)"))
