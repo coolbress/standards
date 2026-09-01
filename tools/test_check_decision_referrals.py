@@ -273,7 +273,7 @@ class ThirdPartyReviewFindings20260901(unittest.TestCase):
 
         분모(`referrals_total`)는 올라가는데 ⓑ 는 안 올라가는 조합이 가능해선 안 된다.
         """
-        r = mod.rates({"closed": 1, "resimple": 1, "answered": 1},
+        r = mod.rates({"closed": 1, "resimple": 1, "answered": 1, "incomplete": 1},
                       {"marks": 1, "resimple": 1, "incomplete": 1})
         self.assertEqual(r["b_total"], 2, "ⓑ 가 두 수단을 합치지 않는다")
         source = Path(mod.__file__).read_text(encoding="utf-8")
@@ -339,7 +339,7 @@ class SecondRoundReviewFindings20260901(unittest.TestCase):
 
     def test_p2_alpha_rate_counts_both_paths(self) -> None:
         """P2 — ⓐ 를 이슈만으로 내면 1/1(100%) 인데 실제로는 1/2(50%) 다. **행동으로 잰다.**"""
-        counts = {"closed": 1, "resimple": 0, "answered": 1}
+        counts = {"closed": 1, "resimple": 0, "answered": 1, "incomplete": 0}
         mcounts = {"marks": 1, "resimple": 1, "incomplete": 1}
         r = mod.rates(counts, mcounts)
         self.assertEqual((r["a_denom"], r["a_numer"]), (2, 1))
@@ -401,18 +401,47 @@ class IncompleteRecordsAreNotSuccesses(unittest.TestCase):
 
     def test_alpha_numerator_subtracts_incomplete_records(self) -> None:
         """답 없는 표시 하나뿐이면 ⓐ 는 **1건 중 0건**이어야 한다 — 100% 가 아니다."""
-        r = mod.rates({"closed": 0, "resimple": 0, "answered": 0},
+        r = mod.rates({"closed": 0, "resimple": 0, "answered": 0, "incomplete": 0},
                       {"marks": 1, "resimple": 0, "incomplete": 1})
         self.assertEqual((r["a_denom"], r["a_numer"]), (1, 0))
 
     def test_alpha_numerator_subtracts_closed_issues_without_an_answer(self) -> None:
         """🔬 이슈 쪽도 같다 — 닫혔는데 답이 없는 회부가 성공으로 세어지면 안 된다."""
-        r = mod.rates({"closed": 1, "resimple": 0, "answered": 0},
+        r = mod.rates({"closed": 1, "resimple": 0, "answered": 0, "incomplete": 1},
                       {"marks": 0, "resimple": 0, "incomplete": 0})
         self.assertEqual((r["a_denom"], r["a_numer"]), (1, 0))
 
     def test_a_fully_recorded_referral_counts_as_success(self) -> None:
         """🔬 음성의 반대편 — 제대로 적힌 회부까지 깎으면 계기가 쓸모없다."""
-        r = mod.rates({"closed": 1, "resimple": 0, "answered": 1},
+        r = mod.rates({"closed": 1, "resimple": 0, "answered": 1, "incomplete": 0},
                       {"marks": 1, "resimple": 0, "incomplete": 0})
         self.assertEqual((r["a_denom"], r["a_numer"]), (2, 2))
+
+
+class FourthRoundReviewFindings20260901(unittest.TestCase):
+    """3회차 수정이 만든 것 셋. 🔴 **고치면서 새로 벌어진다** — 그래서 매번 다시 읽는다."""
+
+    def test_issue_side_is_not_subtracted_twice(self) -> None:
+        """닫힌 회부 하나가 재요청이면서 답도 없으면 `1-1-1 = -1` 이라 **-100%** 가 찍혔다."""
+        rows = [("s", {"state": "CLOSED", "labels": [{"name": mod.RESIMPLE}], "comments": []})]
+        counts = mod.summarise(rows)
+        self.assertEqual(counts["incomplete"], 1, "합집합으로 한 번만 세야 한다")
+        r = mod.rates(counts, {"marks": 0, "resimple": 0, "incomplete": 0})
+        self.assertEqual((r["a_denom"], r["a_numer"]), (1, 0))
+        self.assertGreaterEqual(r["a_numer"], 0, "분자가 음수로 가면 안 된다")
+
+    def test_answer_must_sit_after_the_arrow(self) -> None:
+        """🔬 물음 안의 `답:` 은 답이 아니다 — 종류 칸에서 물었던 것과 같은 결함."""
+        line = "회부: decision:input — 출력에 답: 접두사를 넣을까 (채널: 대화)"
+        counts = mod.summarise_marks([("s", 1, line)])
+        self.assertEqual(counts["unanswered"], 1)
+        self.assertEqual(counts["incomplete"], 1)
+
+    def test_a_real_answer_still_reads(self) -> None:
+        line = "회부: decision:input — 물었다 → 답: 응 (채널: 대화)"
+        self.assertEqual(mod.summarise_marks([("s", 1, line)])["unanswered"], 0)
+
+    def test_report_is_gated_on_either_source(self) -> None:
+        """이슈 0건 + PR 표시 1건이면 `referrals_total=1` 인데 *"회부 0건"* 이라고 말했다."""
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn('if total or mcounts["marks"]:', source)

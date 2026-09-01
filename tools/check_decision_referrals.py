@@ -106,7 +106,10 @@ PR_MARKER = "회부:"
 #: *결정이 기록된 것* 은 아니다(제3자 리뷰 P2 · 2026-09-01). 열린 PR 을 안 세는 이유가
 #: *"답이 아직 없을 수 있어서"* 인데, 답 없는 표시를 완전한 것으로 세면 그 이유가 무너진다.
 #: 이슈 쪽과 같은 처분을 한다 — **분모에는 넣고(회부는 일어났다) 따로 센다.**
-ANSWER_MARKER = "답:"
+#: 🔴 **화살표까지가 표시다.** `답:` 만 찾으면 **물음 안의 `답:` 도 통과한다** —
+#: `회부: … 출력에 답: 접두사를 넣을까 (채널: 대화)` 가 *답이 적힌 회부* 로 세어졌다
+#: (제3자 리뷰 3회차 · 2026-09-01). 종류 칸에서 물었던 것과 **같은 결함**이다.
+ANSWER_MARKER = "→ 답:"
 
 
 #: 🔴 **읽지 못한 원천.** `_json` 이 `None` 을 주면 호출부는 *빈 결과* 로 읽는데,
@@ -255,9 +258,15 @@ def summarise(rows: Sequence[tuple[str, Mapping[str, Any]]]) -> dict[str, int]:
     answered = [i for i in closed if len(i.get("comments") or [])]
     unkinded = [i for _, i in rows if kind_of(i) is None]
     no_channel = [i for i in closed if not has_channel(i)]
+    # 🔴 **합집합으로 한 번만 뺀다.** 재요청이면서 답도 없는 회부를 따로 빼면 ⓐ 의 분자가
+    # 음수로 간다 — 닫힌 회부 1건이 둘 다면 `1 - 1 - 1 = -1` 이라 **-100%** 가 찍혔다
+    # (제3자 리뷰 3회차 · 2026-09-01). PR 쪽엔 이미 있던 처분을 이슈 쪽에도 한다.
+    incomplete = [i for i in closed
+                  if any(lbl.get("name") == RESIMPLE for lbl in (i.get("labels") or []))
+                  or not (i.get("comments") or [])]
     counts = {"total": len(rows), "closed": len(closed), "resimple": len(resimple),
               "answered": len(answered), "unkinded": len(unkinded),
-              "no_channel": len(no_channel)}
+              "incomplete": len(incomplete), "no_channel": len(no_channel)}
     for kind in KINDS:
         counts[kind] = sum(1 for _, i in rows if kind_of(i) == kind)
     return counts
@@ -303,9 +312,8 @@ def rates(counts: Mapping[str, int], mcounts: Mapping[str, int]) -> dict[str, in
     분모만 올리고 분자에서 안 빠지면 **불완전한 기록이 비율을 좋게 만든다.**
     이슈 쪽도 같다 — *닫혔는데 답 코멘트가 없는 회부* 가 그동안 성공이었다(지금 0건이라 안 보였다).
     """
-    n_closed = counts["closed"]
-    denom = n_closed + mcounts["marks"]
-    numer = denom - counts["resimple"] - (n_closed - counts["answered"]) - mcounts["incomplete"]
+    denom = counts["closed"] + mcounts["marks"]
+    numer = denom - counts["incomplete"] - mcounts["incomplete"]
     return {"a_denom": denom, "a_numer": numer,
             "b_total": counts["resimple"] + mcounts["resimple"]}
 
@@ -342,7 +350,9 @@ def main() -> int:
     if total > 8:
         print(f"     … 외 {total - 8}건")
 
-    if total:
+    if total or mcounts["marks"]:
+        # 🔴 **이슈가 0건이어도 PR 표시가 있으면 낸다.** 이슈 수로만 게이트하면
+        # `referrals_total=1` 인데 *"회부가 0건이다"* 라고 말한다(제3자 리뷰 3회차 · 2026-09-01).
         # 🔴 닫힌 게 없을 때 `0%` 로 찍으면 **나쁜 결과처럼 읽힌다.** 분모가 0 인 것과 다르다.
         # 🔴 ⓐ 도 **두 수단을 합쳐서** 낸다. 이슈만으로 내면 PR 표시의 재요청이 분모에서 빠져
         # 1/1(100%) 로 읽히는데 실제로는 1/2(50%) 다(제3자 리뷰 P2 · 2026-09-01).
