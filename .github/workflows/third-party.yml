@@ -35,10 +35,13 @@ permissions:
   contents: read
   pull-requests: write   # 리뷰가 없을 때 `@codex review` 를 다는 데만 쓴다
 
+# 🔴 **취소하지 않는다.** 코덱스가 리뷰를 붙이면 `pull_request_review` 실행이 떠서
+# 돌고 있던 실행을 **취소**하는데, **취소는 검사에서 빨강으로 읽힌다**(실측 2026-09-01).
+# 거짓 빨강을 안 만드는 게 이 벽의 전부다.
 concurrency:
   group: third-party-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   third-party:
-    uses: coolbress/workflows/.github/workflows/pr-review.yml@32a1ec94ecd78e7486a9eeebfa6eff6444b73444
+    uses: coolbress/workflows/.github/workflows/pr-review.yml@986095f0e5fbde8062be08a678ce0edeae384173
