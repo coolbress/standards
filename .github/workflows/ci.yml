@@ -124,6 +124,12 @@ jobs:
       - name: 목적 한 줄이 정본과 같은가
         run: python3 tools/check_purpose_sync.py
 
+      # ⚖️ 벽이 **느슨해지면 더 잘 통과한다** — 초록이 오히려 증거처럼 보인다.
+      # 그래서 판정으로는 못 막고 **조합**만 막는다: 심판(이 디렉터리 · `ruleset.json`)을
+      # 고치는 PR 은 **그것만** 고쳐야 한다. 심판만 바꾸는 PR 은 통과한다(`GAPS` R5-46).
+      - name: 심판이 선수와 같이 바뀌지 않는가
+        run: python3 tools/check_referee_isolation.py
+
       # 2026-08-25 추가 (GAPS R5-15). tools/test_*.py 4개가 저장소에 있는데
       # 이 잡이 하나도 돌리지 않았다 — 그래서 7건이 PR #12 의 디렉터리 개편
       # 이후 계속 깨진 채로 초록이었다. 붙이기 전에 그 7건을 먼저 고쳤다.
