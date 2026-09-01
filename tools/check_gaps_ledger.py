@@ -58,6 +58,23 @@ def rows(text: str) -> list[tuple[str, bool, str, str]]:
     return out
 
 
+#: 🔴 **머지 충돌 표식.** 2026-08-29 커밋(`3abeb15`)이 이 셋을 **대장에 그대로 커밋했고
+#: 사흘 동안 아무것도 안 잡았다** — 표 안에 `=======` 가 박혀 렌더가 깨진 채였다.
+#: 이 문서는 *"남은 일이 몇 건인가"* 의 정본이라, **못 읽는 대장은 틀린 대장보다 낫지 않다.**
+CONFLICT_PREFIXES = ("<<<<<<< ", ">>>>>>> ")
+CONFLICT_EXACT = "======="
+
+
+def conflict_markers(text: str) -> list[tuple[int, str]]:
+    """(줄 번호, 줄) — 커밋된 충돌 표식. **순수 함수라 시험이 파일을 안 만진다.**"""
+    out: list[tuple[int, str]] = []
+    for number, line in enumerate(text.splitlines(), start=1):
+        stripped = line.rstrip()
+        if stripped.startswith(CONFLICT_PREFIXES) or stripped == CONFLICT_EXACT:
+            out.append((number, stripped[:60]))
+    return out
+
+
 def problems(parsed: list[tuple[str, bool, str, str]]) -> list[str]:
     found: list[str] = []
     seen: set[str] = set()
@@ -98,7 +115,9 @@ def main() -> int:
     if not LEDGER.is_file():
         print(f"대장이 없다: {LEDGER}")
         return 1
-    parsed = rows(LEDGER.read_text(encoding="utf-8"))
+    text = LEDGER.read_text(encoding="utf-8")
+    conflicts = conflict_markers(text)
+    parsed = rows(text)
     if not parsed:
         print("대장에서 R5-* 행을 하나도 못 읽었다 — 표 형식이 바뀌었나")
         return 1
@@ -108,10 +127,16 @@ def main() -> int:
     closed_n = len(parsed) - len(open_ids)
 
     print(f"GAPS 대장 — {LEDGER.relative_to(ROOT)}")
+    for number, line in conflicts:
+        print(f"  🔴 {number}줄에 머지 충돌 표식이 커밋돼 있다: {line}")
     for message in found:
         print(f"  🔴 {message}")
     print(f"\n  열린 격차 {len(open_ids)}건: {' '.join(sorted(open_ids, key=lambda g: int(g[3:])))}")
-    print(f"METRIC gaps_open={len(open_ids)} gaps_closed={closed_n} notation_problems={len(found)}")
+    print(f"METRIC gaps_open={len(open_ids)} gaps_closed={closed_n} "
+          f"notation_problems={len(found)} conflict_markers={len(conflicts)}")
+    if conflicts:
+        print("RESULT FAIL — 충돌 표식이 대장에 커밋돼 있다. 표가 깨지고 행이 안 읽힌다")
+        return 1
     if found:
         print("RESULT FAIL — 종료 표기가 하나가 아니다. 남은 일의 크기를 잘못 알게 된다")
         return 1

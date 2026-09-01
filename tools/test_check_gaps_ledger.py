@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import unittest
 
+import check_gaps_ledger as mod
 from check_gaps_ledger import LEDGER, problems, rows
 
 
@@ -94,3 +95,34 @@ class DoneWordInAnUncheckedBox(unittest.TestCase):
         """멀리 떨어진 '완료' 까지 잡으면 정상 행이 전부 빨개진다."""
         far = "⬜ " + ("x" * 60) + " 완료"
         self.assertEqual(parse(f"| **R5-86** 무엇 | a | b | {far} |"), [])
+
+
+class CommittedConflictMarkersAreCaught(unittest.TestCase):
+    """🔴 실물에서 물린 결함 — `3abeb15` 가 충돌 표식 셋을 대장에 커밋했고 사흘을 안 잡혔다.
+
+    이 문서는 *"남은 일이 몇 건인가"* 의 정본이다. 표 안에 `=======` 가 박히면 렌더가 깨지고
+    행이 안 읽힌다 — **못 읽는 대장은 틀린 대장보다 낫지 않다.**
+    """
+
+    def test_all_three_marker_forms_are_found(self) -> None:
+        text = (
+            "| **R5-1** 정상 |\n"
+            "<<<<<<< HEAD\n"
+            "| **R5-2** 한쪽 |\n"
+            "=======\n"
+            ">>>>>>> 3abeb15 (어떤 커밋)\n"
+        )
+        found = mod.conflict_markers(text)
+        self.assertEqual([n for n, _ in found], [2, 4, 5])
+
+    def test_clean_ledger_has_none(self) -> None:
+        """🔬 음성 — 멀쩡한 본문에서 표식을 만들어내면 안 된다."""
+        self.assertEqual(mod.conflict_markers("| **R5-1** 정상 |\n표 구분선: |---|---|\n"), [])
+
+    def test_a_table_separator_is_not_a_conflict_marker(self) -> None:
+        """🔬 음성 — 마크다운 표의 `|---|` 나 밑줄은 표식이 아니다. 오탐이 신호를 묻는다."""
+        self.assertEqual(mod.conflict_markers("|---|---|\n-------\n<<< 세 개는 아니다\n"), [])
+
+    def test_the_real_ledger_is_clean(self) -> None:
+        """실물이 지금 깨끗한가 — 이게 이 시험이 붙은 이유다."""
+        self.assertEqual(mod.conflict_markers(mod.LEDGER.read_text(encoding="utf-8")), [])
