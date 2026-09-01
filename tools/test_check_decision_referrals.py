@@ -263,3 +263,53 @@ class ExamplesInsideFencesAreNotReferrals(unittest.TestCase):
     def test_language_tagged_fence_also_counts_as_a_fence(self) -> None:
         body = "```text\n회부: decision:input — 예시\n```\n"
         self.assertEqual(mod.marker_lines(body), [])
+
+
+class ThirdPartyReviewFindings20260901(unittest.TestCase):
+    """제3자 리뷰가 문 셋. **셋 다 계기가 재겠다던 것을 안 재게 만드는 결함**이었다."""
+
+    def test_p1_pr_re_requests_reach_the_reported_metric(self) -> None:
+        """P1 — PR 표시의 `needs-simpler` 가 ⓑ 에서 사라지면 **사전등록 지표가 조용히 초록**이 된다.
+
+        분모(`referrals_total`)는 올라가는데 ⓑ 는 안 올라가는 조합이 가능해선 안 된다.
+        """
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("resimple_total=", source, "ⓑ 합산 지표가 METRIC 에 없다")
+        self.assertIn("pr_resimple=", source, "PR 쪽 ⓑ 가 METRIC 에 없다")
+        self.assertIn("n_resimple + mcounts['resimple']", source,
+                      "ⓑ 출력이 두 수단을 합치지 않는다")
+
+    def test_p2_prose_mention_is_not_a_referral(self) -> None:
+        """🔬 음성 — 줄 가운데의 언급은 회부가 아니다."""
+        prose = "이번 PR 은 회부: 표시를 검사한다\n"
+        self.assertEqual(mod.marker_lines(prose), [])
+
+    def test_p2_line_head_with_a_list_bullet_still_counts(self) -> None:
+        """목록으로 여러 건 적는 것은 정상 사용이다 — 그것까지 버리면 과잉이다."""
+        body = "- 회부: decision:input — 물었다 → 답: 응 (채널: 대화)\n"
+        self.assertEqual(len(mod.marker_lines(body)), 1)
+
+    def test_p2_unreadable_source_is_not_zero(self) -> None:
+        """P2 fail-open — 원천을 못 읽으면 **0 이 아니라 실패**여야 한다.
+
+        🔴 **소스에 문구가 있는지로 재지 않는다.** 처음엔 그렇게 썼는데 판정을 `if False:` 로
+        죽여도 **문자열은 남아 시험이 초록이었다** — *실행되지 않은 경로의 초록은 증거가 아니다.*
+        그래서 **`gh` 를 못 찾게 만든 채 도구를 실제로 돌린다**(네트워크는 안 탄다 — 애초에 못 부른다).
+        """
+        import os
+        import subprocess
+        import sys
+
+        env = {**os.environ, "PATH": ""}
+        out = subprocess.run([sys.executable, str(mod.__file__)],
+                             capture_output=True, text=True, env=env, check=False)
+        self.assertEqual(out.returncode, 1, f"못 읽었는데 실패로 안 끝났다:\n{out.stdout[-600:]}")
+        self.assertIn("RESULT FAIL — 못 읽은 원천이 있다", out.stdout)
+        self.assertIn("unreadable_sources=", out.stdout)
+
+    def test_fetch_failure_is_recorded_not_swallowed(self) -> None:
+        """🔬 실제로 부른다 — 존재하지 않는 명령이면 실패가 **기록**돼야 한다."""
+        before = len(mod.FETCH_FAILURES)
+        self.assertIsNone(mod._json(["gh-does-not-exist-r5-37", "--json", "x"]))
+        self.assertEqual(len(mod.FETCH_FAILURES), before + 1)
+        mod.FETCH_FAILURES.pop()

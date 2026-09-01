@@ -98,13 +98,27 @@ ROOT = Path(__file__).resolve().parent.parent
 PR_MARKER = "회부:"
 
 
+#: 🔴 **읽지 못한 원천.** `_json` 이 `None` 을 주면 호출부는 *빈 결과* 로 읽는데,
+#: 그러면 **못 읽은 저장소가 회부 0건인 저장소와 구별이 안 된다** — fail-open 이다.
+#: (제3자 리뷰 P2 · 2026-09-01. 이 저장소가 반복해서 무는 형태라 `AGENTS.md` 가 이름을 붙여뒀다.)
+FETCH_FAILURES: list[str] = []
+
+
 def _json(args: list[str]) -> object:
-    out = subprocess.run(args, capture_output=True, text=True, check=False)
+    label = " ".join(a for a in args if not a.startswith("-"))
+    try:
+        out = subprocess.run(args, capture_output=True, text=True, check=False)
+    except OSError as err:
+        # 🔴 `gh` 자체가 없으면 터진다 — 그건 *회부 0건* 이 아니라 **못 읽은 것**이다.
+        FETCH_FAILURES.append(f"{label} ({err.__class__.__name__})")
+        return None
     if out.returncode != 0:
+        FETCH_FAILURES.append(f"{label} (exit {out.returncode})")
         return None
     try:
         return json.loads(out.stdout or "null")
     except json.JSONDecodeError:
+        FETCH_FAILURES.append(f"{label} (JSON 이 아니다)")
         return None
 
 
@@ -139,10 +153,14 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
 def marker_lines(body: str) -> list[str]:
     """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
 
-    🔴 **코드펜스 안은 안 센다.** 첫 실물 시험에서 이 도구가 **자기 사용법 예시를 회부로 셌다**
-    (`회부: decision:input — <물음> → 답: <답>`). 형식을 설명하는 PR 마다 분모가 부풀면
-    `referrals_total` 이 *행동* 이 아니라 *문서를 몇 번 썼나* 를 재게 된다 —
-    **계기가 재겠다던 것을 안 재는 것**이다. 예시는 펜스 안에, 진짜 회부는 본문에 쓴다.
+    🔴 **두 가지를 걸러낸다 — 둘 다 분모를 부풀린다.**
+    ⓐ **코드펜스 안**: 첫 실물 시험에서 이 도구가 **자기 사용법 예시를 회부로 셌다**
+    (`회부: decision:input — <물음> → 답: <답>`).
+    ⓑ **줄 가운데의 언급**: *"이번 PR 은 `회부:` 표시를 검사한다"* 같은 산문도 세어졌다
+    (제3자 리뷰 P2 · 2026-09-01). 그래서 **줄 머리**(목록 기호는 허용)에서만 인정한다.
+
+    형식을 설명하는 PR 마다 분모가 부풀면 `referrals_total` 이 *행동* 이 아니라
+    *문서를 몇 번 썼나* 를 재게 된다 — **계기가 재겠다던 것을 안 재는 것**이다.
     """
     out: list[str] = []
     fenced = False
@@ -150,8 +168,9 @@ def marker_lines(body: str) -> list[str]:
         if line.lstrip().startswith("```"):
             fenced = not fenced
             continue
-        if not fenced and PR_MARKER in line:
-            out.append(line.strip())
+        stripped = line.strip().lstrip("-*").strip()
+        if not fenced and stripped.startswith(PR_MARKER):
+            out.append(stripped)
     return out
 
 
@@ -271,7 +290,10 @@ def main() -> int:
         else:
             rate = "판정 불가 — 아직 닫힌 회부가 없다"
         print(f"\n  ⓐ 되묻지 않고 판단 — 닫힌 {n_closed}건 중 {n_closed - n_resimple}건 ({rate})")
-        print(f"  ⓑ 재요청(`{RESIMPLE}`) — {n_resimple}건")
+        # 🔴 ⓑ 는 **두 수단을 합쳐서** 낸다. PR 표시의 재요청을 빼면 그 PR 은 분모(`referrals_total`)를
+        # 올리면서 ⓑ 에서는 사라져 **사전등록된 지표가 조용히 초록**이 된다(제3자 리뷰 P1 · 2026-09-01).
+        print(f"  ⓑ 재요청(`{RESIMPLE}`) — **{n_resimple + mcounts['resimple']}건** "
+              f"(이슈 {n_resimple} + PR 표시 {mcounts['resimple']})")
         print(f"     ⚠️ 닫혔는데 답 코멘트가 없는 회부 {n_closed - n_answered}건")
 
         print("\n  종류 — 셋은 트리거도 대기 방식도 다르다")
@@ -315,7 +337,15 @@ def main() -> int:
           f"unkinded={counts['unkinded']} unbridged={len(gaps)} "
           f"no_channel={counts['no_channel']} labels_missing={len(missing)} "
           f"pr_marks={mcounts['marks']} pr_marks_unkinded={mcounts['unkinded']} "
-          f"referrals_total={grand}")
+          f"pr_resimple={mcounts['resimple']} "
+          f"resimple_total={n_resimple + mcounts['resimple']} "
+          f"referrals_total={grand} unreadable_sources={len(FETCH_FAILURES)}")
+    if FETCH_FAILURES:
+        for source in FETCH_FAILURES[:6]:
+            print(f"  🔴 원천을 못 읽었다: {source}")
+        print("RESULT FAIL — 못 읽은 원천이 있다. **0 으로 읽으면 fail-open 이다** "
+              "(못 잰 것과 눈금이 0 인 것은 다르다)")
+        return 1
     if missing:
         print("RESULT FAIL — 수단이 설치되지 않았다. 계기가 없는 것과 눈금이 0 인 것은 다르다")
         return 1
