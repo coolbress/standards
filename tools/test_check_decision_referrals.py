@@ -744,3 +744,21 @@ class QualifiedLocalReferencesCount(unittest.TestCase):
     def test_another_owner_is_still_rejected(self) -> None:
         self.assertFalse(mod.cited("standards", 22, "otherorg/standards#22 를 봐라"))
         self.assertFalse(mod.cited("standards", 22, "x/coolbress/standards#22"))
+
+
+class BacktickRunsPairByLength(unittest.TestCase):
+    def test_a_longer_run_inside_does_not_close_a_shorter_span(self) -> None:
+        """🔴 위치 단위로 찾으면 **더 긴 묶음의 안쪽**을 닫는 것으로 읽는다."""
+        line = "회부: decision:input — `foo`` → 답: bar` 표기를 쓸까 (채널: 대화)"
+        self.assertFalse(mod.parse_marker(line)["answered"])
+
+    def test_double_run_pairs_with_double_run(self) -> None:
+        line = "회부: decision:input — ``→ 답:`` 표기를 쓸까 (채널: 대화)"
+        self.assertFalse(mod.parse_marker(line)["answered"])
+
+    def test_an_answer_outside_any_span_still_reads(self) -> None:
+        """🔬 반대편 — 인용 밖의 진짜 답은 계속 읽혀야 한다."""
+        line = "회부: decision:input — ``표기`` 를 쓸까 → 답: 아니오 (채널: 대화)"
+        f = mod.parse_marker(line)
+        self.assertTrue(f["answered"])
+        self.assertEqual(f["channel"], "대화")

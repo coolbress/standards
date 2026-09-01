@@ -289,6 +289,14 @@ def marker_lines(body: str) -> list[str]:
     return out
 
 
+def _run_length(text: str, at: int) -> int:
+    """`at` 에서 시작하는 백틱 묶음의 길이."""
+    n = 0
+    while at + n < len(text) and text[at + n] == "`":
+        n += 1
+    return n
+
+
 def _mask_code(text: str) -> str:
     """인라인 코드(`` ` `` 로 감싼 것)를 같은 길이의 `\x00` 으로 덮는다. **인덱스가 보존된다.**
 
@@ -296,18 +304,27 @@ def _mask_code(text: str) -> str:
     답 칸을 채웠다(제3자 리뷰 · 2026-09-01). 마스킹한 사본에서 자리를 찾고 **원본을 그 자리에서** 자른다.
     """
     out = list(text)
+    text_len = len(text)
     i = 0
-    while i < len(text):
+    while i < text_len:
         if text[i] != "`":
             i += 1
             continue
-        # 🔴 **같은 길이의 백틱 묶음끼리 짝짓는다.** 한 글자씩 짝지으면
-        # ``` ``→ 답:`` ``` 에서 앞의 둘·뒤의 둘이 각각 짝나 **가운데가 안 가려진다**
-        # (제3자 리뷰 · 2026-09-01).
-        run = len(text[i:]) - len(text[i:].lstrip("`"))
-        close = text.find("`" * run, i + run)
-        while close >= 0 and text[close:close + run + 1] == "`" * (run + 1):
-            close = text.find("`" * run, close + 1)
+        # 🔴 **묶음 단위로 짝짓는다.** 위치 단위로 찾으면 **더 긴 묶음의 안쪽**을 닫는 것으로
+        # 읽어 `` `foo`` `` 뒤가 안 가려진다(제3자 리뷰 · 2026-09-01). 여는 묶음과
+        # **길이가 정확히 같은** 묶음만 닫는다.
+        run = _run_length(text, i)
+        close = -1
+        j = i + run
+        while j < text_len:
+            if text[j] != "`":
+                j += 1
+                continue
+            other = _run_length(text, j)
+            if other == run:
+                close = j
+                break
+            j += other
         if close < 0:
             break
         for k in range(i, close + run):
