@@ -66,10 +66,27 @@ class ItFailsClosed(unittest.TestCase):
         """
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("RESULT FAIL — **못 읽은 것을 통과로 읽지 않는다.**", source)
-        self.assertIn("if changed is None:", source)
+        self.assertIn("if found is None:", source)
 
     def test_the_referee_set_is_narrow_on_purpose(self) -> None:
         """🔴 넓히면 벽이 아니라 족쇄가 된다 — 왜 좁은지가 문서에 있어야 한다."""
         doc = mod.__doc__ or ""
         self.assertIn("전부 보호하면 아무것도 못 고친다", doc)
         self.assertIn("안 넣는다", doc)
+
+
+class ItSaysWhatItComparedAgainst(unittest.TestCase):
+    """🔴 스택 PR 을 로컬에서 돌리면 기본값 `main` 과 비교해 **아래 PR 의 변경까지 섞인다.**
+
+    실측(2026-09-01): 배선 PR 에서 `referee=0` 이 나와 *심판을 안 건드린다* 로 읽힐 뻔했다.
+    **무엇과 비교했는지 안 찍으면 숫자를 못 읽는다.**
+    """
+
+    def test_the_base_is_printed(self) -> None:
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn('print(f"  기준 {base} 대비', source)
+
+    def test_changed_files_returns_the_base_too(self) -> None:
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("tuple[list[str], str] | None", source)
+        self.assertIn("GITHUB_BASE_REF", source)

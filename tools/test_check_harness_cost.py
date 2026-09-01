@@ -33,8 +33,8 @@ class WhatCountsAsWhich(unittest.TestCase):
 class RatioDoesNotLie(unittest.TestCase):
     def test_ratio_is_harness_over_total(self) -> None:
         got = mod.ratio(3, 1)
-        assert got is not None
-        self.assertAlmostEqual(got, 0.75)
+        self.assertIsNotNone(got)
+        self.assertAlmostEqual(got or 0.0, 0.75)
 
     def test_empty_denominator_is_none_not_zero(self) -> None:
         """🔴 분모가 0 인데 `0%` 로 찍으면 **좋은 결과처럼 읽힌다.**
@@ -45,8 +45,8 @@ class RatioDoesNotLie(unittest.TestCase):
 
     def test_all_harness_is_one(self) -> None:
         got = mod.ratio(5, 0)
-        assert got is not None
-        self.assertAlmostEqual(got, 1.0)
+        self.assertIsNotNone(got)
+        self.assertAlmostEqual(got or 0.0, 1.0)
 
 
 class ItIsAnInstrumentThatFailsClosed(unittest.TestCase):
