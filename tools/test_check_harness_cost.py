@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import unittest
+from datetime import UTC, datetime
 from pathlib import Path
 
 import check_harness_cost as mod
@@ -71,3 +72,35 @@ class ItIsAnInstrumentThatFailsClosed(unittest.TestCase):
         """🔴 하네스가 *비싼* 것과 제품이 *아직 하나뿐인* 것은 **같은 숫자로 보인다.**"""
         doc = mod.__doc__ or ""
         self.assertIn("비율만으로는 못 가른다", doc)
+
+
+class TheWindowIsWhatSeesASpike(unittest.TestCase):
+    """🔴 **평생 누적만 재면 지금의 유지비 급증이 창립 이력에 묻힌다** (제3자 리뷰 P1 · 2026-09-02).
+
+    누적 318:23 위에 이번 달 20:3 이 얹혀도 비율은 **93% 그대로**다 —
+    그게 바로 `R5-45` 가 잡으라던 시나리오인데 **원래 못 봤다.**
+    """
+
+    NOW = datetime(2026, 9, 2, tzinfo=UTC)
+
+    def test_a_recent_merge_is_inside(self) -> None:
+        self.assertTrue(mod.within("2026-09-01T00:00:00Z", self.NOW))
+
+    def test_an_old_merge_is_outside(self) -> None:
+        self.assertFalse(mod.within("2026-06-01T00:00:00Z", self.NOW))
+
+    def test_the_boundary_is_exclusive_at_the_window_edge(self) -> None:
+        self.assertTrue(mod.within("2026-08-04T00:00:00Z", self.NOW))     # 29일 전
+        self.assertFalse(mod.within("2026-08-03T00:00:00Z", self.NOW))    # 30일 전
+
+    def test_an_unreadable_timestamp_is_outside(self) -> None:
+        """🔴 못 읽는 값을 창 안으로 세면 **지금 유지비가 실제보다 커 보인다.**"""
+        self.assertFalse(mod.within("", self.NOW))
+        self.assertFalse(mod.within("어제", self.NOW))
+
+    def test_the_window_would_expose_a_spike(self) -> None:
+        """🔬 누적은 안 움직이는데 창은 움직인다 — 그게 이 눈금의 존재 이유다."""
+        lifetime = mod.ratio(318 + 20, 23 + 3)
+        window = mod.ratio(20, 3)
+        self.assertAlmostEqual(lifetime or 0.0, 0.929, places=2)
+        self.assertAlmostEqual(window or 0.0, 0.870, places=2)
