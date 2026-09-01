@@ -91,3 +91,46 @@ class ItRefusesToDrawALine(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MergedWithOpenFindings(unittest.TestCase):
+    """🔴 **머지 head 에 달린 지적은 정의상 아무도 안 고쳤다** — 그 뒤 커밋이 없다.
+
+    실측(2026-09-01): 두 저장소에서 **PR 11개 · 지적 18건**이 그 상태였다. 오늘 것은 꼬리였고
+    `#211`(벽을 세운 PR)과 `workflows#66` 도 **P1 을 처분 기록 없이** 머지했다.
+    """
+
+    HEAD = "e" * 40
+    OLD = "a" * 40
+
+    def _pr(self, merged: bool = True) -> dict[str, object]:
+        return {"merged_at": "2026-09-01T00:00:00Z" if merged else None,
+                "head": {"sha": self.HEAD}}
+
+    def test_finding_on_the_merge_head_is_counted(self) -> None:
+        cs = [{"original_commit_id": self.HEAD, "commit_id": self.HEAD}]
+        self.assertEqual(mod.merged_unaddressed(self._pr(), cs), 1)
+
+    def test_finding_on_an_older_commit_is_not_counted(self) -> None:
+        """🔬 음성 — 그 뒤 커밋이 있으니 고쳤을 수 있다. 판단하지 않는다."""
+        cs = [{"original_commit_id": self.OLD, "commit_id": self.HEAD}]
+        self.assertEqual(mod.merged_unaddressed(self._pr(), cs), 0)
+
+    def test_open_pr_is_not_counted(self) -> None:
+        """🔬 음성 — 아직 열린 PR 은 고칠 기회가 남았다. 세면 소음이다."""
+        cs = [{"original_commit_id": self.HEAD, "commit_id": self.HEAD}]
+        self.assertEqual(mod.merged_unaddressed(self._pr(merged=False), cs), 0)
+
+    def test_commit_of_prefers_the_original(self) -> None:
+        """🔴 `commit_id` 는 GitHub 이 head 로 옮긴다 — 그걸 쓰면 대리지표가 통째로 어긋난다."""
+        self.assertEqual(
+            mod.commit_of({"original_commit_id": self.OLD, "commit_id": self.HEAD}), self.OLD)
+
+    def test_commit_of_falls_back_when_original_is_absent(self) -> None:
+        self.assertEqual(mod.commit_of({"commit_id": self.HEAD}), self.HEAD)
+
+    def test_it_is_an_instrument_not_a_wall(self) -> None:
+        """*findings 로 안 막는다* 는 `IPW-020` 으로 사전등록된 결정이다."""
+        source = pathlib.Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("RESULT INFO", source)
+        self.assertNotIn("RESULT FAIL", source)
