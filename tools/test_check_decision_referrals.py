@@ -725,3 +725,22 @@ class IndentedHeadingsAreHeadings(unittest.TestCase):
         """🔬 반대편 — 4칸부터는 코드블록이지 제목이 아니다."""
         real = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)"
         self.assertEqual(mod.marker_lines(f"    ## 형식\n{real}\n"), [real])
+
+
+class EveryCommentTransitionOnALineCounts(unittest.TestCase):
+    REAL = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)"
+    HIDDEN = "회부: decision:input — 숨은 예시 → 답: 응 (채널: 대화)"
+
+    def test_close_then_reopen_on_one_line(self) -> None:
+        """🔴 닫기만 보면 `--> 보임 <!--` 뒤의 숨은 예시가 세어진다."""
+        body = f"<!-- 안내\n--> 보임 <!--\n{self.HIDDEN}\n-->\n{self.REAL}\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_open_close_open_on_one_line(self) -> None:
+        body = f"<!-- a --> b <!--\n{self.HIDDEN}\n-->\n{self.REAL}\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_state_helper_reports_both_ends(self) -> None:
+        self.assertEqual(mod._comment_state("--> 보임 <!--", True), (True, True))
+        self.assertEqual(mod._comment_state("<!-- a -->", False), (False, False))
+        self.assertEqual(mod._comment_state("평범한 줄", False), (False, False))

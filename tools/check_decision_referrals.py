@@ -203,6 +203,29 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
 HEADING = re.compile(r"^ {0,3}#{1,6}(?:\s|$)")
 
 
+def _comment_state(line: str, inside: bool) -> tuple[bool, bool]:
+    """(줄이 **시작될 때** 주석 안이었나, 줄이 **끝날 때** 주석 안인가).
+
+    🔴 **한 줄의 전이를 전부 훑는다.** 닫기 하나만 보면 `--> 보임 <!--` 처럼
+    **닫고 다시 여는 줄**에서 상태가 어긋나 그 뒤의 숨은 예시가 세어진다
+    (제3자 리뷰 · 2026-09-01).
+    """
+    started = inside
+    i = 0
+    while i < len(line):
+        if inside:
+            j = line.find("-->", i)
+            if j < 0:
+                break
+            inside, i = False, j + 3
+        else:
+            j = line.find("<!--", i)
+            if j < 0:
+                break
+            inside, i = True, j + 4
+    return started, inside
+
+
 def marker_lines(body: str) -> list[str]:
     """PR 본문 **머리말**에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
 
@@ -216,18 +239,15 @@ def marker_lines(body: str) -> list[str]:
         # 이건 **줄 여섯**이고 실물 근거가 있다 — 이 저장소의 `PULL_REQUEST_TEMPLATE.md` 가
         # **주석 블록으로 시작**한다. 주석 안의 `# …` 을 제목으로 읽으면 거기서 멈춰
         # **그 뒤의 진짜 표시가 사라진다**(제3자 리뷰 · 2026-09-01).
-        if in_comment:
-            if "-->" in raw:
-                in_comment = False
-            continue
         # 🔴 **표시를 먼저 거둔다.** `회부: … <!-- 보충` 처럼 표시 줄이 주석을 열면
         # 상태만 켜고 **표시는 버리면 안 된다**(내가 이 순서를 틀려 회귀를 냈다).
+        started_hidden, in_comment = _comment_state(raw, in_comment)
+        if started_hidden:
+            continue
         if HEADING.match(raw):
             break
         if raw.startswith(PR_MARKER):
             out.append(raw.split("<!--", 1)[0].strip())
-        if "<!--" in raw and "-->" not in raw:
-            in_comment = True
     return out
 
 
