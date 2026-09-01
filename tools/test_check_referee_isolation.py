@@ -104,6 +104,12 @@ class ReviewFindingsOn227(unittest.TestCase):
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn('"--no-renames"', source)
 
+    def test_both_workflow_extensions_are_documented(self) -> None:
+        """🔴 코드가 받는데 문서가 안 적으면 **적히지 않은 제약**을 강제하는 것이다."""
+        doc = mod.__doc__ or ""
+        self.assertIn("*.yaml", doc)
+        self.assertTrue(mod.is_referee(".github/workflows/ci.yaml"))
+
     def test_the_wiring_split_is_explained(self) -> None:
         """배선 전에는 아무것도 안 막는다 — 그 사실이 도구에 적혀 있어야 한다."""
         doc = mod.__doc__ or ""
