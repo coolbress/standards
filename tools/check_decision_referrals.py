@@ -193,7 +193,8 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
 #: *"필수 칸을 산문이 채울 수 있으면 그건 필수 칸이 아니다"* 의 형제:
 #: **표시가 아무 데나 있을 수 있으면 아무 데나 파싱해야 한다.**
 #:
-#: ⚠️ **남는 위험은 적었다** — 머리말 안에 펜스로 예시를 넣으면 여전히 세어진다.
+#: ⚠️ **남는 위험은 적었다** — **머리말 안의 펜스는 아예 안 본다**: 거기 예시를 넣으면
+#: 세어지고, 거기 `<!--` 가 있으면 그 뒤가 삼켜진다.
 #: 그 자리는 **예시를 두는 곳이 아니라** 실질 위험이 낮고, 그 대가로 파싱 80여 줄이 사라졌다.
 #: 진짜 ATX 제목만 경계로 본다. 🔴 `##not-a-heading` 은 제목이 아니다 —
 #: 접두만 보면 거기서 멈춰 **그 뒤의 진짜 표시가 사라진다**(제3자 리뷰 · 2026-09-01).
@@ -207,11 +208,24 @@ def marker_lines(body: str) -> list[str]:
     설명·예시는 제목 아래에 살므로 **저절로 걸러진다** — 펜스도 주석도 안 본다.
     """
     out: list[str] = []
+    in_comment = False
     for raw in (body or "").splitlines():
+        # 🔴 **주석 상태 하나만 들고 다닌다.** 걷어낸 파서(펜스·들여쓰기·목록·인라인 코드)와 달리
+        # 이건 **줄 여섯**이고 실물 근거가 있다 — 이 저장소의 `PULL_REQUEST_TEMPLATE.md` 가
+        # **주석 블록으로 시작**한다. 주석 안의 `# …` 을 제목으로 읽으면 거기서 멈춰
+        # **그 뒤의 진짜 표시가 사라진다**(제3자 리뷰 · 2026-09-01).
+        if in_comment:
+            if "-->" in raw:
+                in_comment = False
+            continue
+        # 🔴 **표시를 먼저 거둔다.** `회부: … <!-- 보충` 처럼 표시 줄이 주석을 열면
+        # 상태만 켜고 **표시는 버리면 안 된다**(내가 이 순서를 틀려 회귀를 냈다).
         if HEADING.match(raw):
             break
         if raw.startswith(PR_MARKER):
-            out.append(raw.strip())
+            out.append(raw.split("<!--", 1)[0].strip())
+        if "<!--" in raw and "-->" not in raw:
+            in_comment = True
     return out
 
 

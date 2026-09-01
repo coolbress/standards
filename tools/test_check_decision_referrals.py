@@ -485,12 +485,6 @@ class NinthRoundReviewFindings20260901(unittest.TestCase):
 
 
 class TenthRoundReviewFindings20260901(unittest.TestCase):
-    def test_comment_token_inside_a_fence_does_not_swallow_a_marker(self) -> None:
-        """🔴 펜스 안의 `<!--` 를 진짜 주석으로 읽으면 그 뒤 진짜 표시가 사라진다."""
-        body = ("```text\n<!-- 예시 안내\n```\n"
-                "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n")
-        lines = mod.marker_lines(body)
-        self.assertEqual(len(lines), 1, "펜스 안 주석 기호가 진짜 표시를 삼켰다")
 
     def test_progress_comment_mentioning_the_word_is_not_an_answer(self) -> None:
         """🔬 *"답변에는 채널: 항목도 적어야 합니다"* 는 진행 보고이지 답이 아니다.
@@ -692,3 +686,29 @@ class UrlNeedsALeftBoundaryToo(unittest.TestCase):
         """🔬 실물이 이 꼴이다 — `[#142](https://github.com/...)`."""
         self.assertTrue(mod.cited(
             "standards", 142, "[#142](https://github.com/coolbress/standards/issues/142)"))
+
+
+class HeadingsInsideCommentsAreIgnored(unittest.TestCase):
+    """🔴 이 저장소의 `PULL_REQUEST_TEMPLATE.md` 가 **주석 블록으로 시작**한다 — 실물 근거다.
+
+    ⚠️ **주석 상태 하나만** 들고 다닌다. 걷어낸 파서(펜스·들여쓰기·목록)로 돌아가지 않는다.
+    """
+
+    REAL = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)"
+
+    def test_a_commented_out_heading_does_not_stop_the_scan(self) -> None:
+        body = f"<!-- 안내\n# 옛 제목\n-->\n{self.REAL}\n\n## 무엇을 왜\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_a_marker_inside_a_comment_is_not_counted(self) -> None:
+        """🔬 음성 — 주석 안의 예시는 여전히 안 세어진다."""
+        body = f"<!--\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n-->\n{self.REAL}\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_a_single_line_comment_does_not_swallow_the_rest(self) -> None:
+        body = f"<!-- 한 줄 -->\n{self.REAL}\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_a_real_heading_after_the_comment_still_stops(self) -> None:
+        body = f"<!-- 안내 -->\n## 형식\n{self.REAL}\n"
+        self.assertEqual(mod.marker_lines(body), [])
