@@ -17,7 +17,8 @@ mypy                                      # 설정은 mypy.ini 가 정본 (stric
 나머지 검사는 **`tools/check_*.py` 를 그냥 다 돌린다** — 목록을 여기 적으면 바로 낡는다.
 🔴 **`README.md` 의 목적 한 줄은 손으로 고치지 않는다** — `direction/01` §한 줄이 정본이고
 `check_purpose_sync` 가 둘이 갈리는 것을 막는다.
-`repo_audit.py`·`check_template_drift.py`·`check_decision_referrals.py` 는 **네트워크를 탄다**(CI 밖).
+`repo_audit.py`·`check_template_drift.py`·`check_decision_referrals.py`·`check_review_signal.py` 는
+**네트워크를 탄다**(CI 밖). 마지막 것은 **제3자 리뷰의 신호비**를 재는 계기다 — 판정선은 없다.
 `check_skill_firing.py` 는 **로컬 전사**를 읽는다(CI 밖 · 계기 · 판정선 없음).
 
 ## 🔴 ALWAYS

@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+"""제3자 리뷰가 **신호를 내는가, 소음을 내는가** — 계기다. 판정선은 긋지 않는다.
+
+🔴 **왜 이게 필요한가.** `third-party / review` 벽은 *"제3자가 이 커밋을 봤다"* 까지만
+보증한다. 그런데 등재된 실증이 **그 다음이 새는 곳**이라고 말한다:
+
+- `IPW-020`(MSR '26 · PR 3,109 · 에이전트 13종) — **13종 중 12종이 signal ratio 60% 미만** ·
+  닫힌 CRA-only PR 의 **60.2%가 0~30% 소음대**
+- `IPW-019`(AI PR 33,596) — **61.38%가 리뷰 기록 자체가 없다**
+
+⚠️ **그래서 우리 것도 재야 한다.** 남의 저장소가 시끄럽다고 우리 것이 시끄러운 건 아니고,
+반대도 마찬가지다. **재기 전에는 모른다.**
+
+🔴 **판정선을 상상해서 박지 않는다.** `R5-2` 에서 배운 것이 그것이다 —
+*"θ 는 **건강한 실행**에서 읽고 시험 데이터에서 읽지 않는다."* 지금은 표본이 없다.
+**쌓이면 그때 긋는다.** 다시 볼 조건은 아래 `ENOUGH` 에 적었다.
+
+## 못 재는 것 (명시한다)
+
+- 🔴 ***"읽혔는가"* 는 못 잰다.** 아래 `touched_after` 는 **댓글이 달린 파일이 그 뒤 커밋에서
+  바뀌었나** 일 뿐이다 — 우연히 같이 바뀌었을 수도, 읽고 무시했을 수도 있다. **대리지표다.**
+- **finding 이 옳았는지**도 못 잰다. 그건 판단이고 사람이 한다.
+- 코드 검토와 보안 검토를 **작성자로는 못 가른다**(같은 봇 · `openai/codex#38110`).
+
+네트워크를 탄다 — **CI 밖**이다.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import subprocess
+import sys
+from collections import Counter
+from typing import Any
+
+#: 제3자 리뷰어의 로그인. 벽(`pr-review.yml`)의 기본값과 **같은 이름**이어야 한다.
+REVIEWER = "chatgpt-codex-connector[bot]"
+
+#: 재는 저장소. 소유자 접두를 붙인다 — 안 붙이면 404 가 나고 조용히 0 이 된다(실측 사고).
+REPOS = ("coolbress/standards", "coolbress/workflows")
+
+#: 최근 몇 개의 PR 을 보나.
+RECENT = 30
+
+#: 🔴 **이만큼 쌓이면 판정선을 논의한다.** 그 전에는 숫자를 보고 결정하지 않는다.
+ENOUGH = 20
+
+#: 코덱스는 심각도를 배지 이미지로 박는다: `![P1 Badge](https://img.shields.io/badge/P1-…)`
+SEVERITY = re.compile(r"!\[(P\d) Badge\]")
+
+
+def _env() -> dict[str, str]:
+    """`gh` 가 에이전트 토큰을 쓰게 한다."""
+    env = dict(os.environ)
+    env.pop("GITHUB_TOKEN", None)
+    return env
+
+
+def gh(path: str) -> Any:
+    """`gh api` 한 번. 실패는 None — 조용히 넘기지 않고 부르는 쪽이 센다."""
+    # 억제를 안 단다 — `ruff.toml` 이 S603·S607 을 이미 ignore 하고,
+    # 안 걸리는 것에 `noqa` 를 달면 `RUF100` 이 반대로 터진다(실측).
+    r = subprocess.run(
+        ["gh", "api", "--paginate", path],
+        capture_output=True,
+        text=True,
+        check=False,
+        env=_env(),
+    )
+    if r.returncode != 0 or not r.stdout.strip():
+        return None
+    try:
+        return json.loads(r.stdout)
+    except json.JSONDecodeError:
+        return None
+
+
+def severity_of(body: str) -> str:
+    """댓글 본문에서 심각도를 읽는다. 배지가 없으면 `"?"`.
+
+    🔴 **본문 전체를 안 본다** — 첫 배지만 센다. 한 댓글에 배지가 둘이면 앞엣것이 그 댓글의 것이다.
+    """
+    m = SEVERITY.search(body or "")
+    return m.group(1) if m else "?"
+
+
+def is_reviewer(login: str) -> bool:
+    """제3자 리뷰어가 쓴 것인가. 대소문자는 무시한다(실측: 표기가 흔들린다)."""
+    return (login or "").lower() == REVIEWER.lower()
+
+
+def tally(comments: list[dict[str, Any]], touched: dict[str, set[str]]) -> Counter[str]:
+    """리뷰 댓글을 심각도별로 세고, **그 뒤에 그 파일이 바뀌었는지**를 같이 센다.
+
+    `touched[commit_id]` 는 그 커밋 이후 PR 안에서 바뀐 파일 경로들이다.
+    순수 함수다 — 네트워크를 안 탄다.
+    """
+    out: Counter[str] = Counter()
+    for c in comments:
+        if not is_reviewer((c.get("user") or {}).get("login") or ""):
+            continue
+        sev = severity_of(c.get("body") or "")
+        out["findings"] += 1
+        out[f"sev_{sev}"] += 1
+        after = touched.get(c.get("commit_id") or "", set())
+        if (c.get("path") or "") in after:
+            out["touched_after"] += 1
+            out[f"touched_{sev}"] += 1
+    return out
+
+
+def _touched_map(repo: str, comments: list[dict[str, Any]], head: str) -> dict[str, set[str]]:
+    """댓글이 달린 커밋 → 그 뒤로 바뀐 파일 집합. 커밋당 한 번만 묻는다."""
+    out: dict[str, set[str]] = {}
+    for base in {(c.get("commit_id") or "") for c in comments if c.get("commit_id")}:
+        if base == head:
+            out[base] = set()
+            continue
+        cmp_ = gh(f"repos/{repo}/compare/{base}...{head}")
+        files = (cmp_ or {}).get("files") or [] if isinstance(cmp_, dict) else []
+        out[base] = {f.get("filename") or "" for f in files}
+    return out
+
+
+def scan(repo: str) -> tuple[Counter[str], int, int]:
+    """저장소 하나. (합계, 리뷰가 붙은 PR 수, 본 PR 수)."""
+    prs = gh(f"repos/{repo}/pulls?state=all&per_page={RECENT}")
+    if not isinstance(prs, list):
+        print(f"  ⚪ {repo}: PR 을 못 읽었다 — 건너뛴다(권한이나 이름을 확인해라)")
+        return Counter(), 0, 0
+
+    total: Counter[str] = Counter()
+    reviewed = 0
+    for pr in prs[:RECENT]:
+        num, head = pr.get("number"), (pr.get("head") or {}).get("sha") or ""
+        cs = gh(f"repos/{repo}/pulls/{num}/comments")
+        cs = cs if isinstance(cs, list) else []
+        mine = [c for c in cs if is_reviewer((c.get("user") or {}).get("login") or "")]
+        if not mine:
+            continue
+        reviewed += 1
+        total.update(tally(mine, _touched_map(repo, mine, head)))
+    return total, reviewed, len(prs[:RECENT])
+
+
+def main() -> int:
+    print("제3자 리뷰가 신호를 내는가 — 계기 (판정 아님)\n")
+    grand: Counter[str] = Counter()
+    prs_reviewed = prs_seen = 0
+    for repo in REPOS:
+        t, reviewed, seen = scan(repo)
+        grand.update(t)
+        prs_reviewed += reviewed
+        prs_seen += seen
+        sev = " ".join(f"{k[4:]}={v}" for k, v in sorted(t.items()) if k.startswith("sev_"))
+        print(f"  {repo:26s} PR {seen:3d} · 리뷰 붙은 PR {reviewed:2d} · "
+              f"finding {t['findings']:3d}  {sev}")
+
+    f = grand["findings"]
+    ta = grand["touched_after"]
+    print(f"\nMETRIC prs_seen={prs_seen} prs_reviewed={prs_reviewed} findings={f} "
+          f"touched_after={ta} " + " ".join(
+              f"{k}={v}" for k, v in sorted(grand.items()) if k.startswith("sev_")))
+    if f:
+        print(f"  대리지표: finding 이 달린 파일이 그 뒤 바뀐 비율 = {ta}/{f} = {ta / f:.0%}")
+    print(f"  PR 당 finding = {f / prs_reviewed:.1f}" if prs_reviewed else "  아직 표본이 없다")
+
+    print("\n  ⚠️ **읽혔는지는 못 잰다** — 위 비율은 *파일이 바뀌었나* 일 뿐이다(대리지표).")
+    print("  ⚠️ 코드 검토와 보안 검토를 **작성자로는 못 가른다**(openai/codex#38110).")
+    if prs_reviewed < ENOUGH:
+        print(f"  🔴 표본 {prs_reviewed} < {ENOUGH} — **판정선을 긋지 않는다.** "
+              "쌓이면 그때 논의한다(R5-2 에서 배운 것).")
+    else:
+        print(f"  🔵 표본이 {ENOUGH} 를 넘었다 — **이제 문턱을 논의할 수 있다.**")
+    print("RESULT INFO — 계기판이다. 판정선은 긋지 않았다")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
