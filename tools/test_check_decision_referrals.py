@@ -562,3 +562,23 @@ class EighthRoundReviewFindings20260901(unittest.TestCase):
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("counts[kind] + mcounts[kind]", source,
                       "종류 분포가 PR 표시를 안 합친다")
+
+
+class NinthRoundReviewFindings20260901(unittest.TestCase):
+    def test_indented_fence_does_not_swallow_a_later_marker(self) -> None:
+        """🔴 오탐보다 나쁘다 — **있는 회부를 없다고 한다.**
+
+        들여쓴 ``` 를 펜스로 읽으면 상태가 뒤집혀 그 뒤의 진짜 표시가 통째로 사라진다.
+        """
+        body = "    ```\n회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
+        lines = mod.marker_lines(body)
+        self.assertEqual(len(lines), 1, "들여쓴 펜스가 진짜 표시를 삼켰다")
+
+    def test_top_level_fence_still_hides_examples(self) -> None:
+        """🔬 반대편 — 진짜 펜스는 여전히 막아야 한다."""
+        self.assertEqual(mod.marker_lines("```\n회부: decision:input — 예시\n```\n"), [])
+
+    def test_pr_channel_gap_reaches_the_metric_line(self) -> None:
+        """사람이 읽는 절은 잡는데 METRIC 에 없으면 **수집기는 0 으로 기록한다.**"""
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("pr_no_channel=", source)

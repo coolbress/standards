@@ -209,12 +209,14 @@ def marker_lines(body: str) -> list[str]:
         line, hidden = _strip_comments(raw, hidden)
         if not line.strip():
             continue
+        # 🔴 **들여쓰기를 먼저 본다.** 두 이유가 있다:
+        # ⓐ 마크다운의 **4칸 들여쓴 코드블록**이 그냥 표시가 된다(리뷰 5회차) ·
+        # ⓑ 들여쓴 ``` 를 펜스로 읽으면 **상태가 뒤집혀 그 뒤의 진짜 표시가 통째로 사라진다**
+        #    (리뷰 9회차 — 오탐보다 나쁘다. **있는 회부를 없다고 하는 것**이다).
+        if line.startswith(("    ", "\t")):
+            continue
         if line.lstrip().startswith(("```", "~~~")):   # 마크다운은 물결 펜스도 쓴다
             fenced = not fenced
-            continue
-        # 🔴 **들여쓰기를 먼저 본다.** `strip()` 부터 하면 마크다운의 **4칸 들여쓴 코드블록**이
-        # 그냥 표시가 된다(제3자 리뷰 5회차 · 2026-09-01). 펜스만 막아선 부족했다.
-        if line.startswith(("    ", "\t")):
             continue
         stripped = line.strip().lstrip("-*").strip()
         if not fenced and stripped.startswith(PR_MARKER):
@@ -507,7 +509,7 @@ def main() -> int:
           f"no_channel={counts['no_channel']} labels_missing={len(missing)} "
           f"pr_marks={mcounts['marks']} pr_marks_unkinded={mcounts['unkinded']} "
           f"pr_resimple={mcounts['resimple']} pr_unanswered={mcounts['unanswered']} "
-          f"pr_unbridged={len(mark_gaps)} "
+          f"pr_unbridged={len(mark_gaps)} pr_no_channel={mcounts['no_channel']} "
           f"resimple_total={rates(counts, mcounts)['b_total']} "
           f"referrals_total={grand} unreadable_sources={len(FETCH_FAILURES)}")
     if FETCH_FAILURES:
