@@ -137,8 +137,22 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
 
 
 def marker_lines(body: str) -> list[str]:
-    """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**"""
-    return [ln.strip() for ln in (body or "").splitlines() if PR_MARKER in ln]
+    """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
+
+    🔴 **코드펜스 안은 안 센다.** 첫 실물 시험에서 이 도구가 **자기 사용법 예시를 회부로 셌다**
+    (`회부: decision:input — <물음> → 답: <답>`). 형식을 설명하는 PR 마다 분모가 부풀면
+    `referrals_total` 이 *행동* 이 아니라 *문서를 몇 번 썼나* 를 재게 된다 —
+    **계기가 재겠다던 것을 안 재는 것**이다. 예시는 펜스 안에, 진짜 회부는 본문에 쓴다.
+    """
+    out: list[str] = []
+    fenced = False
+    for line in (body or "").splitlines():
+        if line.lstrip().startswith("```"):
+            fenced = not fenced
+            continue
+        if not fenced and PR_MARKER in line:
+            out.append(line.strip())
+    return out
 
 
 def kind_of_line(line: str) -> str | None:

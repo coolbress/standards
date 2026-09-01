@@ -232,3 +232,34 @@ class TheMeansChangeIsRecordedHonestly(unittest.TestCase):
 
     def test_the_issue_means_is_not_removed(self) -> None:
         self.assertIn("이슈 수단을 걷어내지 않는다", mod.__doc__ or "")
+
+
+class ExamplesInsideFencesAreNotReferrals(unittest.TestCase):
+    """🔴 실물에서 물린 결함 — 이 도구가 **자기 사용법 예시를 회부로 셌다.**
+
+    형식을 설명하는 PR 마다 분모가 부푼다. 그러면 `referrals_total` 이 *행동* 이 아니라
+    *문서를 몇 번 썼나* 를 재게 되고, **계기가 재겠다던 것을 안 재는 것**이 된다.
+    """
+
+    BODY = (
+        "회부: decision:input — 진짜로 물었다 → 답: 그래 (채널: 대화)\n"
+        "\n"
+        "형식은 이렇다:\n"
+        "```\n"
+        "회부: decision:input — <물음> → 답: <답> (채널: 대화)\n"
+        "```\n"
+    )
+
+    def test_only_the_real_referral_is_counted(self) -> None:
+        lines = mod.marker_lines(self.BODY)
+        self.assertEqual(len(lines), 1)
+        self.assertIn("진짜로 물었다", lines[0])
+
+    def test_a_body_that_is_only_an_example_counts_zero(self) -> None:
+        """🔬 음성 — 예시밖에 없는 본문은 **0건**이어야 한다."""
+        only_example = "```\n회부: decision:input — <물음> → 답: <답>\n```\n"
+        self.assertEqual(mod.marker_lines(only_example), [])
+
+    def test_language_tagged_fence_also_counts_as_a_fence(self) -> None:
+        body = "```text\n회부: decision:input — 예시\n```\n"
+        self.assertEqual(mod.marker_lines(body), [])
