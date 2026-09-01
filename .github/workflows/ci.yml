@@ -130,22 +130,3 @@ jobs:
       # discover 가 -s 디렉터리를 sys.path 에 넣으므로 tools/ 안의 직접 import 가 동작한다.
       - name: 도구 회귀시험
         run: python3 -m unittest discover -s tools -p 'test_*.py'
-
-  # 🤝 **제3자가 본다** — `audit/GAPS.ko.md` R5-40 의 ⓒ 층. 검사 이름은 `third-party / review`.
-  #
-  # 🔴 **로컬 `/review` 와 무엇이 다른가**: 로컬은 **규율**이다 — 에이전트가 안 부르면 그만이고,
-  # 실측으로 `disallowed-tools` 는 `Bash` 를 안 막는다(2026-08-31 프로브). 여기는 **벽**이다:
-  # required check 라 **안 돌면 머지가 안 된다.** 그 차이 하나가 이 격차의 전부였다.
-  #
-  # ⚠️ **findings 로는 안 막는다** — 설계원칙 04(*판단은 위임하지 않는다*)와
-  # 등재 실측(LLM 리뷰 F1 **28.6%** · `IPW-007`). 막는 것은 *제3자가 실제로 봤는가* 뿐이다.
-  third-party:
-    if: github.event_name == 'pull_request'
-    # 🔴 호출부가 권한을 준다 — 맨 위는 `contents: read` 뿐이라 그대로는 못 준다.
-    permissions:
-      contents: read
-      pull-requests: write
-    uses: coolbress/workflows/.github/workflows/pr-review.yml@084fc3a77de554badb30051d554da50f8248e28d # v3.9.0+
-    secrets:
-      # `inherit` 를 안 쓴다 — 필요한 것 하나만 넘긴다(zizmor overprovisioned_secrets).
-      openai_api_key: ${{ secrets.OPENAI_API_KEY }}
