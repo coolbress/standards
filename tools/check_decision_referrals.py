@@ -201,84 +201,139 @@ def _strip_comments(line: str, hidden: bool) -> tuple[str, bool]:
     return "".join(out), hidden
 
 
+def _delist(line: str) -> str:
+    """줄 머리의 **목록 기호**를 벗긴다 — `-` `*` `+` 와 `1.` `1)` 까지.
+
+    🔴 `-`·`*` 만 벗겨서 `+ 회부: …` 와 `1. 회부: …` 가 **조용히 사라졌다**
+    (제3자 리뷰 · 2026-09-01). 분모가 주는 쪽이라 오탐보다 나쁘다.
+    """
+    s = line.strip()
+    while s[:1] in ("-", "*", "+"):
+        s = s[1:].lstrip()
+    head = s.split(".", 1)[0] if "." in s else s.split(")", 1)[0] if ")" in s else ""
+    if head.isdigit() and len(head) <= 3:
+        s = s[len(head) + 1:].lstrip()
+    return s
+
+
+def _fence_of(line: str) -> tuple[str, int] | None:
+    """이 줄이 펜스 구분자면 `(문자, 길이)`. 아니면 `None`.
+
+    🔴 **하나의 불리언으로 켜고 끄면 안 된다** — 백틱 4개 안의 백틱 3개는 **닫는 게 아니고**,
+    `~~~` 는 백틱 펜스를 **못 닫는다**(제3자 리뷰 · 2026-09-01). 문자와 길이를 들고 다닌다.
+    """
+    s = line.lstrip()
+    if s[:1] not in ("`", "~"):
+        return None
+    ch = s[0]
+    n = len(s) - len(s.lstrip(ch))
+    return (ch, n) if n >= 3 else None
+
+
 def marker_lines(body: str) -> list[str]:
     """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
 
-    🔴 **두 가지를 걸러낸다 — 둘 다 분모를 부풀린다.**
-    ⓐ **코드펜스 안**: 첫 실물 시험에서 이 도구가 **자기 사용법 예시를 회부로 셌다**
-    (`회부: decision:input — <물음> → 답: <답>`).
-    ⓑ **줄 가운데의 언급**: *"이번 PR 은 `회부:` 표시를 검사한다"* 같은 산문도 세어졌다
-    (제3자 리뷰 P2 · 2026-09-01). 그래서 **줄 머리**(목록 기호는 허용)에서만 인정한다.
+    🔴 **순서가 계약이다.** 리뷰가 이 자리만 **여덟 번** 물었다 — 걸러야 할 것과
+    **삼키면 안 되는 것**이 섞여 있어서다:
 
-    형식을 설명하는 PR 마다 분모가 부풀면 `referrals_total` 이 *행동* 이 아니라
-    *문서를 몇 번 썼나* 를 재게 된다 — **계기가 재겠다던 것을 안 재는 것**이다.
+    | 걸러낸다(분모 부풀림) | 삼키면 안 된다(분모 축소) |
+    |---|---|
+    | 코드펜스 · 들여쓴 코드 · HTML 주석 안의 예시 | 들여쓴 펜스 뒤의 진짜 표시 |
+    | 줄 가운데의 언급 | 펜스 안의 `<!--` 뒤의 진짜 표시 |
+    | | **들여쓴 `-->` 뒤의 진짜 표시** |
+
+    🔴 **주석 안에 있을 때가 먼저다.** 들여쓰기 배제를 먼저 하면 **들여쓴 `-->` 를 못 읽어**
+    주석이 안 닫히고 그 뒤가 통째로 사라진다.
     """
     out: list[str] = []
-    fenced = False
-    hidden = False   # 🔴 HTML 주석 — `.github/PULL_REQUEST_TEMPLATE.md` 가 실제로 이 꼴로 안내한다.
+    fence: tuple[str, int] | None = None
+    hidden = False
     for raw in (body or "").splitlines():
-        # 🔴 **순서가 계약이다** (리뷰 5·9·10회차가 차례로 물었다):
-        # 들여쓰기 → 펜스 → 주석. 주석을 먼저 벗기면 **펜스 안의 `<!--` 를 진짜 주석으로 읽어**
-        # `hidden` 이 켜진 채 남고, 그 뒤의 **진짜 표시가 통째로 사라진다**.
-        if raw.startswith(("    ", "\t")):
-            continue
-        if not hidden and raw.lstrip().startswith(("```", "~~~")):
-            fenced = not fenced
-            continue
-        if fenced:            # 펜스 안에서는 `<!--` 도 그냥 글자다
-            continue
-        # 🔴 **정규식을 안 쓴다.** `<!--.*?-->` 는 줄바꿈을 안 넘어 **여러 줄 주석을 못 벗긴다** —
-        # CodeQL(`py/bad-tag-filter`)이 잡았다. 상태를 들고 문자열로 자른다.
-        line, hidden = _strip_comments(raw, hidden)
-        if not line.strip():
-            continue
-        stripped = line.strip().lstrip("-*").strip()
+        if hidden:
+            # 🔴 주석을 닫는 줄은 **들여쓰기와 무관하게** 먼저 읽는다.
+            rest, hidden = _strip_comments(raw, hidden)
+            if hidden:
+                continue
+        else:
+            if raw.startswith(("    ", "\t")):
+                continue
+            found = _fence_of(raw)
+            if found:
+                if fence is None:
+                    fence = found
+                    continue
+                if found[0] == fence[0] and found[1] >= fence[1]:
+                    fence = None
+                    continue
+            if fence is not None:      # 펜스 안에서는 `<!--` 도 그냥 글자다
+                continue
+            rest, hidden = _strip_comments(raw, hidden)
+            if hidden:
+                continue
+        stripped = _delist(rest)
         if stripped.startswith(PR_MARKER):
             out.append(stripped)
     return out
+
+
+def _mask_code(text: str) -> str:
+    """인라인 코드(`` ` `` 로 감싼 것)를 같은 길이의 `\x00` 으로 덮는다. **인덱스가 보존된다.**
+
+    🔴 **구조를 찾을 때 산문을 봐야 한다.** `` `→ 답:` 표기를 쓸까 `` 처럼 **형식을 논하는 물음**이
+    답 칸을 채웠다(제3자 리뷰 · 2026-09-01). 마스킹한 사본에서 자리를 찾고 **원본을 그 자리에서** 자른다.
+    """
+    out = list(text)
+    i = 0
+    while True:
+        open_at = text.find("`", i)
+        if open_at < 0:
+            break
+        close_at = text.find("`", open_at + 1)
+        if close_at < 0:
+            break
+        for k in range(open_at, close_at + 1):
+            out[k] = "\x00"
+        i = close_at + 1
+    return "".join(out)
 
 
 def parse_marker(line: str) -> dict[str, object]:
     """표시 줄을 **칸으로 쪼갠다.** 각 값은 자기 칸에서만 읽는다.
 
     형식: `회부: <종류> — <물음> → 답: <답> (채널: <어디> · needs-simpler)`
-    끝의 괄호가 **메타 칸**이고, 채널과 재요청 표시는 **거기서만** 읽는다.
+    끝의 **바깥 괄호**가 메타 칸이고, 채널과 재요청 표시는 `·` 로 나눈 **항목**에서만 읽는다.
 
-    🔴 **왜 파싱하나 — 같은 결함을 네 번 물렸다** (제3자 리뷰 3·4·6회차 · 2026-09-01):
-    종류 · 답 · 채널 · `needs-simpler` 를 **줄 전체에서 찾으면 물음 텍스트가 필수 칸을 채운다.**
-    `회부: … needs-simpler 라벨을 붙일까 → 답: 아니오` 가 **재요청으로** 세어졌고,
-    `회부: … 출력에 채널: 접두사를 넣을까` 가 **채널이 적힌 것으로** 세어졌다.
-    **필수 칸을 물음이 채울 수 있으면 그건 필수 칸이 아니다** — 그래서 칸마다 때우지 않고
-    **한 번 쪼갠다.** 다섯 번째 필드가 생겨도 같은 구멍이 안 난다.
+    🔴 **왜 파싱하나 — 같은 결함을 다섯 번 물렸다** (종류 · 답 · 채널 · `needs-simpler` · 인용된 답):
+    구조화된 줄을 부분문자열로 훑으면 **물음 텍스트가 필수 칸을 채운다.**
+    **필수 칸을 산문이 채울 수 있으면 그건 필수 칸이 아니다.**
     """
     if PR_MARKER not in line:
         return {"kind": None, "answered": False, "channel": "", "resimple": False}
     body = line.split(PR_MARKER, 1)[1].strip()
+    masked = _mask_code(body)
     meta = ""
-    if body.endswith(")"):
-        # 🔴 **바깥 괄호를 찾는다.** `rfind("(")` 는 안쪽을 집는다 —
-        # `(채널: Slack (#ops))` 가 `#ops)` 로 파싱돼 채널이 빈 것으로 세어졌다
-        # (제3자 리뷰 7회차 · 2026-09-01).
+    if masked.rstrip().endswith(")"):
+        # 🔴 **바깥 괄호를 짝 맞춰 찾는다** — 채널에 괄호가 들어갈 수 있다.
         depth = 0
-        for i in range(len(body) - 1, -1, -1):
-            if body[i] == ")":
+        for i in range(len(masked) - 1, -1, -1):
+            if masked[i] == ")":
                 depth += 1
-            elif body[i] == "(":
+            elif masked[i] == "(":
                 depth -= 1
                 if depth == 0:
                     meta, body = body[i + 1:-1], body[:i].rstrip()
+                    masked = masked[:i].rstrip()
                     break
     head = body.split()
-    _question, sep, answer = body.partition(ANSWER_MARKER)
-    # 🔴 메타 칸은 `·` 로 나눈 **항목들**이다. 통째로 읽으면 `(채널: · needs-simpler)` 가
-    # 채널 `"· needs-simpler"` 로 잡혀 **빈 채널이 조용히 통과한다**(제3자 리뷰 8회차 · 2026-09-01).
+    at = masked.find(ANSWER_MARKER)      # 🔴 인용 밖에서만 찾는다
+    answer = body[at + len(ANSWER_MARKER):] if at >= 0 else ""
     entries = [e.strip() for e in meta.split("·")]
     channel = ""
     for entry in entries:
         if entry.startswith(CHANNEL_MARKER):
             channel = entry[len(CHANNEL_MARKER):].strip()
     return {"kind": head[0] if head and head[0] in KINDS else None,
-            "answered": bool(sep) and bool(answer.strip()),
+            "answered": at >= 0 and bool(answer.strip()),
             "channel": channel,
             "resimple": any(e == RESIMPLE for e in entries)}
 
@@ -323,6 +378,16 @@ def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
     for kind in KINDS:
         counts[kind] = sum(1 for f in parsed if f["kind"] == kind)
     return counts
+
+
+def cited(repo: str, number: int, records: str) -> bool:
+    """저장소까지 맞춰서 인용됐나. 🔴 **맨 `#224` 로는 안 된다** — 네 저장소가 번호를 공유해
+    `workflows#224` 가 `standards#224` 인용으로 통과했다(제3자 리뷰 · 2026-09-01)."""
+    return any(form in records for form in (
+        f"{repo}#{number}",
+        f"coolbress/{repo}/pull/{number}",
+        f"coolbress/{repo}/issues/{number}",
+    ))
 
 
 def committed_records(root: Path) -> str:
@@ -376,9 +441,9 @@ def unbridged(rows: Sequence[tuple[str, Mapping[str, Any]]], records: str) -> li
     for repo, issue in rows:
         if issue.get("state") != "CLOSED":
             continue
-        number = issue.get("number")
-        if f"#{number}" not in records and f"issues/{number}" not in records:
-            out.append((repo, int(number or 0)))
+        number = int(issue.get("number") or 0)
+        if not cited(repo, number, records):
+            out.append((repo, number))
     return out
 
 
@@ -399,7 +464,7 @@ def unbridged_marks(marks: Sequence[tuple[str, int, str]], records: str) -> list
     """
     seen: set[tuple[str, int]] = set()
     for repo, number, _ in marks:
-        if f"#{number}" not in records and f"pull/{number}" not in records:
+        if not cited(repo, number, records):
             seen.add((repo, number))
     return sorted(seen)
 

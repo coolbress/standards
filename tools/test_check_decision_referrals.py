@@ -154,7 +154,7 @@ class TheBridgeToCommittedRecords(unittest.TestCase):
 
     def test_closed_referral_cited_in_records_passes(self) -> None:
         rows = [("standards", {"state": "CLOSED", "number": 141, "labels": [], "comments": []})]
-        self.assertEqual(mod.unbridged(rows, "…를 #141 에서 정했다…"), [])
+        self.assertEqual(mod.unbridged(rows, "…를 standards#141 에서 정했다…"), [])
 
     def test_closed_referral_absent_from_records_is_caught(self) -> None:
         rows = [("standards", {"state": "CLOSED", "number": 999, "labels": [], "comments": []})]
@@ -167,7 +167,7 @@ class TheBridgeToCommittedRecords(unittest.TestCase):
 
     def test_issue_url_form_also_counts(self) -> None:
         rows = [("standards", {"state": "CLOSED", "number": 141, "labels": [], "comments": []})]
-        self.assertEqual(mod.unbridged(rows, "…/issues/141 참조…"), [])
+        self.assertEqual(mod.unbridged(rows, "…coolbress/standards/issues/141 참조…"), [])
 
     def test_record_dirs_are_committed_ones(self) -> None:
         self.assertEqual(set(mod.RECORD_DIRS), {"direction", "audit"})
@@ -339,8 +339,8 @@ class SecondRoundReviewFindings20260901(unittest.TestCase):
         """
         marks = [("standards", 224, "회부: decision:input — 물었다 → 답: 응 (채널: 대화)")]
         self.assertEqual(mod.unbridged_marks(marks, "아무 인용도 없는 본문"), [("standards", 224)])
-        self.assertEqual(mod.unbridged_marks(marks, "결정은 #224 에서 오갔다"), [])
-        self.assertEqual(mod.unbridged_marks(marks, ".../pull/224 참조"), [])
+        self.assertEqual(mod.unbridged_marks(marks, "결정은 standards#224 에서 오갔다"), [])
+        self.assertEqual(mod.unbridged_marks(marks, "coolbress/standards/pull/224 참조"), [])
 
     def test_p1_the_wrong_claim_is_corrected_everywhere(self) -> None:
         """🔴 한 곳만 고치면 요약이 갈린다 — 네 곳이 같은 말을 해야 한다."""
@@ -613,3 +613,48 @@ class TenthRoundReviewFindings20260901(unittest.TestCase):
 
     def test_plain_channel_line_reads_too(self) -> None:
         self.assertTrue(mod._has_channel_field("채널: 대화"))
+
+
+class PostMergeReviewFindings20260901(unittest.TestCase):
+    """🔴 **머지 뒤에 온 것과 내가 놓친 것 다섯.** `#224` 의 findings 는 20건이 아니라 **32건**이었다 —
+    내 요약이 원자료보다 작았다. 이 저장소의 대표 결함을 내가 그대로 했다."""
+
+    def test_bare_number_from_another_repo_does_not_bridge(self) -> None:
+        """네 저장소가 번호를 공유한다 — `workflows#224` 가 `standards#224` 인용으로 통과했다."""
+        marks = [("workflows", 224, "회부: decision:input — 물었다 → 답: 응 (채널: 대화)")]
+        self.assertEqual(mod.unbridged_marks(marks, "standards#224 에서 정했다"),
+                         [("workflows", 224)])
+        self.assertEqual(mod.unbridged_marks(marks, "workflows#224 에서 정했다"), [])
+
+    def test_inner_fence_does_not_close_an_outer_one(self) -> None:
+        """백틱 4개 안의 3개는 **닫는 게 아니다.**"""
+        body = "````\n```\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n````\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_tilde_does_not_close_a_backtick_fence(self) -> None:
+        body = "```\n~~~\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_plus_and_ordered_list_markers_are_recognized(self) -> None:
+        """🔴 분모가 **주는** 쪽이라 오탐보다 나쁘다."""
+        for line in ("+ 회부: decision:input — 물었다 → 답: 응 (채널: 대화)",
+                     "1. 회부: decision:input — 물었다 → 답: 응 (채널: 대화)",
+                     "2) 회부: decision:input — 물었다 → 답: 응 (채널: 대화)"):
+            self.assertEqual(len(mod.marker_lines(line)), 1, line)
+
+    def test_quoted_answer_delimiter_does_not_fill_the_answer(self) -> None:
+        """형식을 논하는 물음이 답 칸을 채웠다."""
+        line = "회부: decision:input — `→ 답:` 표기를 쓸까 (채널: 대화)"
+        self.assertFalse(mod.parse_marker(line)["answered"])
+
+    def test_a_real_answer_outside_backticks_still_reads(self) -> None:
+        line = "회부: decision:input — `→ 답:` 표기를 쓸까 → 답: 아니오 (채널: 대화)"
+        f = mod.parse_marker(line)
+        self.assertTrue(f["answered"])
+        self.assertEqual(f["channel"], "대화")
+
+    def test_indented_comment_closer_is_processed(self) -> None:
+        """🔴 들여쓴 `-->` 를 건너뛰면 주석이 안 닫혀 **그 뒤가 통째로 사라진다.**"""
+        body = "<!-- 안내\n    -->\n회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
+        lines = mod.marker_lines(body)
+        self.assertEqual(len(lines), 1, "들여쓴 주석 닫기 뒤의 진짜 표시가 사라졌다")
