@@ -43,7 +43,7 @@
 |---|---|
 | **분모** | 이슈는 그대로 세고 PR 표시가 **더해진다** — 순증 |
 | **ⓑ 재요청** | PR 표시에도 `needs-simpler` 를 적을 수 있다 — **동일** |
-| **ⓒ *"그때 뭘 승인한 거지"*** | PR 본문은 **리뷰를 거치고 머지 커밋에 인용된다** — 이슈보다 찾기 쉽다 |
+| **ⓒ *"그때 뭘 승인한 거지"*** | 🔴 **정정 2026-09-01(제3자 리뷰 P1)** — 처음엔 *"머지 커밋에 인용된다"* 고 적었는데 **사실이 아니다.** PR 본문은 **저장소 밖**이고 머지 뒤에도 고쳐지고 지워진다 — 이슈와 **같은 약점**이다. 리뷰 시점에 읽힌다는 것만 낫다. **그래서 이슈에 걸었던 다리를 PR 에도 건다**: 표시를 단 머지된 PR 이 `direction/`·`audit/` 에 인용되지 않으면 검사가 **실패**한다 |
 | **작업량** | 🔴 **줄어든다.** 표시 한 줄이 이슈 하나보다 싸다 |
 
 ⚠️ **그러니 이건 "네 축 다 강해진다" 가 아니다.** 2026-08-29 의 변경과 다르다 — **그때는 넷 다
@@ -70,6 +70,11 @@ from pathlib import Path
 from typing import Any
 
 REPOS = ("standards", "workflows", "project-template", "divcal")
+
+#: 🔴 **한 번에 가져오는 상한.** 200 이었는데 `standards` 가 **이미 머지된 PR 208건**이라
+#: 넘어 있었다(제3자 리뷰 P2 · 2026-09-01). 상한에 **닿으면 실패로 본다** — 조용히 잘리면
+#: `referrals_total` 이 줄어들고 **예전 관측이 사라진다.**
+FETCH_LIMIT = 1000
 LABEL = "decision"
 RESIMPLE = "needs-simpler"
 
@@ -96,6 +101,12 @@ ROOT = Path(__file__).resolve().parent.parent
 #: PR 본문에 회부를 남기는 표시(2026-09-01 · R5-37 ⓑ). 이슈 수단과 **병행**한다.
 #: 형식: `회부: decision:input — <물음> → 답: <답> (채널: 대화)`
 PR_MARKER = "회부:"
+
+#: 답이 실제로 적혔는가. 🔴 **물음만 적힌 표시는 회부의 절반이다** — 종류·채널이 다 붙어 있어도
+#: *결정이 기록된 것* 은 아니다(제3자 리뷰 P2 · 2026-09-01). 열린 PR 을 안 세는 이유가
+#: *"답이 아직 없을 수 있어서"* 인데, 답 없는 표시를 완전한 것으로 세면 그 이유가 무너진다.
+#: 이슈 쪽과 같은 처분을 한다 — **분모에는 넣고(회부는 일어났다) 따로 센다.**
+ANSWER_MARKER = "답:"
 
 
 #: 🔴 **읽지 못한 원천.** `_json` 이 `None` 을 주면 호출부는 *빈 결과* 로 읽는데,
@@ -133,9 +144,13 @@ def labels_installed(repo: str) -> bool:
 
 def referrals(repo: str) -> list[dict[str, Any]]:
     rows = _json(["gh", "issue", "list", "--repo", f"coolbress/{repo}", "--state", "all",
-                  "--label", LABEL, "--limit", "200",
+                  "--label", LABEL, "--limit", str(FETCH_LIMIT),
                   "--json", "number,title,state,labels,comments"])
-    return rows if isinstance(rows, list) else []
+    if not isinstance(rows, list):
+        return []
+    if len(rows) >= FETCH_LIMIT:
+        FETCH_FAILURES.append(f"gh issue list {repo} (상한 {FETCH_LIMIT} 에 닿았다 — 잘렸을 수 있다)")
+    return rows
 
 
 def kind_of(issue: Mapping[str, Any]) -> str | None:
@@ -165,7 +180,7 @@ def marker_lines(body: str) -> list[str]:
     out: list[str] = []
     fenced = False
     for line in (body or "").splitlines():
-        if line.lstrip().startswith("```"):
+        if line.lstrip().startswith(("```", "~~~")):   # 마크다운은 물결 펜스도 쓴다
             fenced = not fenced
             continue
         stripped = line.strip().lstrip("-*").strip()
@@ -186,7 +201,9 @@ def pr_marks(repo: str) -> list[tuple[str, int, str]]:
     """(repo, PR 번호, 표시 줄). 🔴 **머지된 PR 만** 센다 — 닫힌 채 버려진 PR 의
     본문은 결정이 아니다. 열린 PR 은 아직 답이 안 났을 수 있어 분모에 안 넣는다."""
     rows = _json(["gh", "pr", "list", "--repo", f"coolbress/{repo}", "--state", "merged",
-                  "--limit", "200", "--json", "number,body"])
+                  "--limit", str(FETCH_LIMIT), "--json", "number,body"])
+    if isinstance(rows, list) and len(rows) >= FETCH_LIMIT:
+        FETCH_FAILURES.append(f"gh pr list {repo} (상한 {FETCH_LIMIT} 에 닿았다 — 잘렸을 수 있다)")
     out: list[tuple[str, int, str]] = []
     for pr in rows if isinstance(rows, list) else []:
         for line in marker_lines(str(pr.get("body") or "")):
@@ -198,6 +215,7 @@ def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
     """표시 줄만 따로 센다. 🔬 **음성 시험이 있다** — 종류가 없는 줄과 채널이 없는 줄을
     각각 세지 않으면 *"표시만 있으면 통과"* 가 되어 계기가 아무것도 안 재게 된다."""
     counts = {"marks": len(marks),
+              "unanswered": sum(1 for _, _, ln in marks if ANSWER_MARKER not in ln),
               "unkinded": sum(1 for _, _, ln in marks if kind_of_line(ln) is None),
               "no_channel": sum(1 for _, _, ln in marks if CHANNEL_MARKER not in ln),
               "resimple": sum(1 for _, _, ln in marks if RESIMPLE in ln)}
@@ -253,6 +271,21 @@ def unbridged(rows: Sequence[tuple[str, Mapping[str, Any]]], records: str) -> li
     return out
 
 
+def unbridged_marks(marks: Sequence[tuple[str, int, str]], records: str) -> list[tuple[str, int]]:
+    """표시를 단 **머지된 PR** 중 커밋된 기록에 인용되지 않은 것.
+
+    🔴 **PR 본문은 저장소 밖이다.** 머지 뒤에도 고쳐지고 지워지며 **커밋에 안 들어간다** —
+    처음엔 이 도구가 *"PR 본문은 머지 커밋에 인용된다"* 고 적었는데 **그건 사실이 아니었다**
+    (제3자 리뷰 P1 · 2026-09-01). 이슈에 걸었던 다리를 **그대로** 건다:
+    RFC 는 밖에 살아도 되지만 **결정은 커밋된다.**
+    """
+    seen: set[tuple[str, int]] = set()
+    for repo, number, _ in marks:
+        if f"#{number}" not in records and f"pull/{number}" not in records:
+            seen.add((repo, number))
+    return sorted(seen)
+
+
 def main() -> int:
     missing = [r for r in REPOS if not labels_installed(r)]
     rows: list[tuple[str, dict[str, object]]] = []
@@ -274,7 +307,9 @@ def main() -> int:
     counts = summarise(rows)
     total, n_closed = counts["total"], counts["closed"]
     n_resimple, n_answered = counts["resimple"], counts["answered"]
-    gaps = unbridged(rows, committed_records(ROOT))
+    records = committed_records(ROOT)
+    gaps = unbridged(rows, records)
+    mark_gaps = unbridged_marks(marks, records)
 
     print(f"\n  분모 — 회부된 결정 {total}건 (열림 {total - n_closed} · 닫힘 {n_closed})")
     for repo, issue in rows[:8]:
@@ -285,11 +320,16 @@ def main() -> int:
 
     if total:
         # 🔴 닫힌 게 없을 때 `0%` 로 찍으면 **나쁜 결과처럼 읽힌다.** 분모가 0 인 것과 다르다.
-        if n_closed:
-            rate = f"{100 * (n_closed - n_resimple) / n_closed:.0f}%"
+        # 🔴 ⓐ 도 **두 수단을 합쳐서** 낸다. 이슈만으로 내면 PR 표시의 재요청이 분모에서 빠져
+        # 1/1(100%) 로 읽히는데 실제로는 1/2(50%) 다(제3자 리뷰 P2 · 2026-09-01).
+        a_denom = n_closed + mcounts["marks"]
+        a_numer = a_denom - (n_resimple + mcounts["resimple"])
+        if a_denom:
+            rate = f"{100 * a_numer / a_denom:.0f}%"
         else:
             rate = "판정 불가 — 아직 닫힌 회부가 없다"
-        print(f"\n  ⓐ 되묻지 않고 판단 — 닫힌 {n_closed}건 중 {n_closed - n_resimple}건 ({rate})")
+        print(f"\n  ⓐ 되묻지 않고 판단 — **{a_denom}건 중 {a_numer}건 ({rate})** "
+              f"(닫힌 이슈 {n_closed} + PR 표시 {mcounts['marks']})")
         # 🔴 ⓑ 는 **두 수단을 합쳐서** 낸다. PR 표시의 재요청을 빼면 그 PR 은 분모(`referrals_total`)를
         # 올리면서 ⓑ 에서는 사라져 **사전등록된 지표가 조용히 초록**이 된다(제3자 리뷰 P1 · 2026-09-01).
         print(f"  ⓑ 재요청(`{RESIMPLE}`) — **{n_resimple + mcounts['resimple']}건** "
@@ -323,6 +363,12 @@ def main() -> int:
             print(f"     … 외 {len(marks) - 8}건")
         if mcounts["unkinded"]:
             print(f"     🔴 종류가 없는 표시 {mcounts['unkinded']}건 — 긴급도를 못 가린다")
+        if mcounts["unanswered"]:
+            print(f"     🔴 답(`{ANSWER_MARKER}`)이 없는 표시 {mcounts['unanswered']}건 — "
+                  "물음만 적힌 것은 회부의 절반이다")
+        for repo, number in mark_gaps:
+            print(f"     🔴 {repo}#{number} — 표시가 **PR 본문에만** 있다 "
+                  "(본문은 머지 뒤에도 고쳐진다 · 커밋된 기록에 인용해라)")
         if mcounts["no_channel"]:
             print(f"     🔶 채널(`{CHANNEL_MARKER}`)이 없는 표시 {mcounts['no_channel']}건")
     else:
@@ -337,7 +383,8 @@ def main() -> int:
           f"unkinded={counts['unkinded']} unbridged={len(gaps)} "
           f"no_channel={counts['no_channel']} labels_missing={len(missing)} "
           f"pr_marks={mcounts['marks']} pr_marks_unkinded={mcounts['unkinded']} "
-          f"pr_resimple={mcounts['resimple']} "
+          f"pr_resimple={mcounts['resimple']} pr_unanswered={mcounts['unanswered']} "
+          f"pr_unbridged={len(mark_gaps)} "
           f"resimple_total={n_resimple + mcounts['resimple']} "
           f"referrals_total={grand} unreadable_sources={len(FETCH_FAILURES)}")
     if FETCH_FAILURES:
@@ -349,9 +396,10 @@ def main() -> int:
     if missing:
         print("RESULT FAIL — 수단이 설치되지 않았다. 계기가 없는 것과 눈금이 0 인 것은 다르다")
         return 1
-    if gaps:
-        print("RESULT FAIL — 닫힌 회부의 결정이 커밋된 기록에 없다. "
-              "RFC 는 이슈에 살아도 되지만 **결정은 커밋된다**")
+    if gaps or mark_gaps:
+        print("RESULT FAIL — 회부의 결정이 커밋된 기록에 없다. "
+              "RFC 는 이슈·PR 본문에 살아도 되지만 **결정은 커밋된다** "
+              "(둘 다 저장소 밖이라 나중에 고쳐진다)")
         return 1
     print("RESULT INFO — 계기판이다. 판정은 2주 관측 뒤에 한다")
     return 0

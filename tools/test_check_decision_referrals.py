@@ -313,3 +313,54 @@ class ThirdPartyReviewFindings20260901(unittest.TestCase):
         self.assertIsNone(mod._json(["gh-does-not-exist-r5-37", "--json", "x"]))
         self.assertEqual(len(mod.FETCH_FAILURES), before + 1)
         mod.FETCH_FAILURES.pop()
+
+
+class SecondRoundReviewFindings20260901(unittest.TestCase):
+    """제3자 리뷰 2회차가 문 다섯. 🔴 **첫 회차 수정이 만든 것도 있다** — 고치면서 새로 벌어진다."""
+
+    def test_p1_pr_markers_need_a_committed_record(self) -> None:
+        """P1 — **PR 본문은 저장소 밖이다.** 머지 뒤에도 고쳐지고 지워진다.
+
+        *"머지 커밋에 인용된다"* 고 적었던 것이 **사실이 아니었다.** 이슈에 걸었던 다리를 PR 에도 건다.
+        """
+        marks = [("standards", 224, "회부: decision:input — 물었다 → 답: 응 (채널: 대화)")]
+        self.assertEqual(mod.unbridged_marks(marks, "아무 인용도 없는 본문"), [("standards", 224)])
+        self.assertEqual(mod.unbridged_marks(marks, "결정은 #224 에서 오갔다"), [])
+        self.assertEqual(mod.unbridged_marks(marks, ".../pull/224 참조"), [])
+
+    def test_p1_the_wrong_claim_is_corrected_everywhere(self) -> None:
+        """🔴 한 곳만 고치면 요약이 갈린다 — 네 곳이 같은 말을 해야 한다."""
+        doc = mod.__doc__ or ""
+        self.assertNotIn("머지 커밋에 인용된다** — 이슈보다 찾기 쉽다", doc)
+        for path in ("direction/04-the-plan.md", "audit/GAPS.ko.md", "NEXT.md"):
+            text = (mod.ROOT / path).read_text(encoding="utf-8")
+            self.assertNotIn("PR 본문은 **리뷰를 거치고 머지 커밋에 인용된다**", text, path)
+
+    def test_p2_alpha_rate_counts_both_paths(self) -> None:
+        """P2 — ⓐ 를 이슈만으로 내면 1/1(100%) 로 읽히는데 실제로는 1/2(50%) 다."""
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("a_denom = n_closed + mcounts[\"marks\"]", source)
+        self.assertIn("n_resimple + mcounts[\"resimple\"]", source)
+
+    def test_p2_tilde_fence_is_a_fence(self) -> None:
+        """🔬 음성 — 마크다운은 물결 펜스도 쓴다."""
+        self.assertEqual(mod.marker_lines("~~~text\n회부: decision:input — 예시\n~~~\n"), [])
+
+    def test_p2_marker_without_an_answer_is_flagged(self) -> None:
+        """P2 — 물음만 적힌 표시는 **회부의 절반**이다. 분모엔 넣되 따로 센다."""
+        marks = [("standards", 1, "회부: decision:input — 물었다 (채널: 대화)"),
+                 ("standards", 2, "회부: decision:input — 물었다 → 답: 응 (채널: 대화)")]
+        counts = mod.summarise_marks(marks)
+        self.assertEqual(counts["unanswered"], 1)
+        self.assertEqual(counts["marks"], 2, "분모에서는 빼지 않는다 — 회부는 일어났다")
+
+    def test_p2_hitting_the_fetch_cap_is_a_failure(self) -> None:
+        """P2 — `standards` 는 **이미 머지된 PR 208건**이라 200 상한을 넘어 있었다.
+
+        상한에 닿으면 조용히 잘려 `referrals_total` 이 줄고 **예전 관측이 사라진다.**
+        """
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("FETCH_LIMIT", source)
+        self.assertIn("상한", source)
+        self.assertNotIn('"--limit", "200"', source, "200 상한이 아직 남아 있다")
+        self.assertGreaterEqual(mod.FETCH_LIMIT, 1000)
