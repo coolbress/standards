@@ -63,6 +63,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from collections.abc import Mapping, Sequence
@@ -216,7 +217,7 @@ def _delist(line: str) -> str:
     return s
 
 
-def _fence_of(line: str) -> tuple[str, int] | None:
+def _fence_of(line: str) -> tuple[str, int, str] | None:
     """이 줄이 펜스 구분자면 `(문자, 길이)`. 아니면 `None`.
 
     🔴 **하나의 불리언으로 켜고 끄면 안 된다** — 백틱 4개 안의 백틱 3개는 **닫는 게 아니고**,
@@ -227,7 +228,12 @@ def _fence_of(line: str) -> tuple[str, int] | None:
         return None
     ch = s[0]
     n = len(s) - len(s.lstrip(ch))
-    return (ch, n) if n >= 3 else None
+    if n < 3:
+        return None
+    # 🔴 **여는 펜스만 info string 을 가질 수 있다.** ```` ```text ```` 를 닫는 것으로 읽어
+    # 펜스가 일찍 닫히고 **그 안의 예시가 진짜 회부로 세어졌다**(제3자 리뷰 · 2026-09-01).
+    # 뒤에 뭐가 붙었는지는 호출부가 `info` 로 받아 판단한다.
+    return (ch, n, s[n:].strip())
 
 
 def marker_lines(body: str) -> list[str]:
@@ -246,7 +252,7 @@ def marker_lines(body: str) -> list[str]:
     주석이 안 닫히고 그 뒤가 통째로 사라진다.
     """
     out: list[str] = []
-    fence: tuple[str, int] | None = None
+    fence: tuple[str, int, str] | None = None
     hidden = False
     for raw in (body or "").splitlines():
         if hidden:
@@ -262,14 +268,17 @@ def marker_lines(body: str) -> list[str]:
                 if fence is None:
                     fence = found
                     continue
-                if found[0] == fence[0] and found[1] >= fence[1]:
+                # 닫는 펜스는 **같은 문자 · 같거나 긴 길이 · 뒤가 비어 있어야** 한다
+                if found[0] == fence[0] and found[1] >= fence[1] and not found[2]:
                     fence = None
                     continue
             if fence is not None:      # 펜스 안에서는 `<!--` 도 그냥 글자다
                 continue
             rest, hidden = _strip_comments(raw, hidden)
-            if hidden:
-                continue
+            # 🔴 **`hidden` 이 켜져도 앞의 보이는 부분은 살린다.**
+            # `회부: … (채널: 대화) <!-- 보충` 처럼 표시 뒤에 주석이 열리면
+            # 그 줄을 통째로 버려 **진짜 회부가 사라졌다**(제3자 리뷰 · 2026-09-01).
+            # 주석 *안* 만 건너뛴다.
         stripped = _delist(rest)
         if stripped.startswith(PR_MARKER):
             out.append(stripped)
@@ -284,16 +293,22 @@ def _mask_code(text: str) -> str:
     """
     out = list(text)
     i = 0
-    while True:
-        open_at = text.find("`", i)
-        if open_at < 0:
+    while i < len(text):
+        if text[i] != "`":
+            i += 1
+            continue
+        # 🔴 **같은 길이의 백틱 묶음끼리 짝짓는다.** 한 글자씩 짝지으면
+        # ``` ``→ 답:`` ``` 에서 앞의 둘·뒤의 둘이 각각 짝나 **가운데가 안 가려진다**
+        # (제3자 리뷰 · 2026-09-01).
+        run = len(text[i:]) - len(text[i:].lstrip("`"))
+        close = text.find("`" * run, i + run)
+        while close >= 0 and text[close:close + run + 1] == "`" * (run + 1):
+            close = text.find("`" * run, close + 1)
+        if close < 0:
             break
-        close_at = text.find("`", open_at + 1)
-        if close_at < 0:
-            break
-        for k in range(open_at, close_at + 1):
+        for k in range(i, close + run):
             out[k] = "\x00"
-        i = close_at + 1
+        i = close + run
     return "".join(out)
 
 
@@ -383,11 +398,14 @@ def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
 def cited(repo: str, number: int, records: str) -> bool:
     """저장소까지 맞춰서 인용됐나. 🔴 **맨 `#224` 로는 안 된다** — 네 저장소가 번호를 공유해
     `workflows#224` 가 `standards#224` 인용으로 통과했다(제3자 리뷰 · 2026-09-01)."""
-    return any(form in records for form in (
-        f"{repo}#{number}",
-        f"coolbress/{repo}/pull/{number}",
-        f"coolbress/{repo}/issues/{number}",
-    ))
+    # 🔴 **경계까지 본다.** 부분문자열로 보면 `standards#224` 가 `standards#22` 의 인용으로
+    # 통과한다 — 다리가 조용히 초록이 된다(제3자 리뷰 · 2026-09-01).
+    for form in (rf"{re.escape(repo)}#{number}",
+                 rf"coolbress/{re.escape(repo)}/pull/{number}",
+                 rf"coolbress/{re.escape(repo)}/issues/{number}"):
+        if re.search(form + r"(?!\d)", records):
+            return True
+    return False
 
 
 def committed_records(root: Path) -> str:

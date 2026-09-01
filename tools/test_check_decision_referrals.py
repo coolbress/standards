@@ -658,3 +658,34 @@ class PostMergeReviewFindings20260901(unittest.TestCase):
         body = "<!-- 안내\n    -->\n회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
         lines = mod.marker_lines(body)
         self.assertEqual(len(lines), 1, "들여쓴 주석 닫기 뒤의 진짜 표시가 사라졌다")
+
+
+class ReviewFindingsOn226(unittest.TestCase):
+    """`#226` 이 문 넷. 🔴 **셋이 분모를 *줄이는* 쪽**이라 오탐보다 나쁘다."""
+
+    def test_marker_before_a_comment_opener_survives(self) -> None:
+        body = "회부: decision:input — 진짜 → 답: 응 (채널: 대화) <!-- 보충 설명\n계속\n-->\n"
+        lines = mod.marker_lines(body)
+        self.assertEqual(len(lines), 1, "표시 뒤에 주석이 열리면 표시까지 버렸다")
+        self.assertIn("진짜", lines[0])
+
+    def test_info_string_cannot_close_a_fence(self) -> None:
+        """닫는 펜스는 뒤가 비어 있어야 한다 — ```` ```text ```` 는 못 닫는다."""
+        body = "```\n```text\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_opening_fence_may_have_an_info_string(self) -> None:
+        """🔬 반대편 — 여는 펜스의 info string 은 정상이다."""
+        body = "```text\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_double_backtick_span_is_masked_whole(self) -> None:
+        """한 글자씩 짝지으면 ``` ``→ 답:`` ``` 의 가운데가 안 가려진다."""
+        line = "회부: decision:input — ``→ 답:`` 표기를 쓸까 (채널: 대화)"
+        self.assertFalse(mod.parse_marker(line)["answered"])
+
+    def test_cited_matches_at_a_number_boundary(self) -> None:
+        """`standards#224` 가 `standards#22` 의 인용으로 통과했다."""
+        self.assertFalse(mod.cited("standards", 22, "standards#224 에서 정했다"))
+        self.assertTrue(mod.cited("standards", 224, "standards#224 에서 정했다"))
+        self.assertTrue(mod.cited("standards", 22, "standards#22 에서 정했다"))
