@@ -63,7 +63,6 @@
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import sys
 from collections.abc import Mapping, Sequence
@@ -169,6 +168,26 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
     return any(CHANNEL_MARKER in (c.get("body") or "") for c in (issue.get("comments") or []))
 
 
+def _strip_comments(line: str, hidden: bool) -> tuple[str, bool]:
+    """한 줄에서 HTML 주석을 걷어낸다. `hidden` 은 **여러 줄 주석 안인가**를 들고 다닌다."""
+    out: list[str] = []
+    rest = line
+    while rest:
+        if hidden:
+            close = rest.find("-->")
+            if close < 0:
+                return "".join(out), True
+            rest, hidden = rest[close + 3:], False
+            continue
+        open_at = rest.find("<!--")
+        if open_at < 0:
+            out.append(rest)
+            return "".join(out), False
+        out.append(rest[:open_at])
+        rest, hidden = rest[open_at + 4:], True
+    return "".join(out), hidden
+
+
 def marker_lines(body: str) -> list[str]:
     """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
 
@@ -185,13 +204,10 @@ def marker_lines(body: str) -> list[str]:
     fenced = False
     hidden = False   # 🔴 HTML 주석 — `.github/PULL_REQUEST_TEMPLATE.md` 가 실제로 이 꼴로 안내한다.
     for raw in (body or "").splitlines():
-        line = re.sub(r"<!--.*?-->", "", raw)   # 한 줄짜리 주석은 지운다
-        if hidden:
-            if "-->" in line:
-                hidden = False
-            continue
-        if "<!--" in line:
-            hidden = True
+        # 🔴 **정규식을 안 쓴다.** `<!--.*?-->` 는 줄바꿈을 안 넘어 **여러 줄 주석을 못 벗긴다** —
+        # CodeQL(`py/bad-tag-filter`)이 잡았다. 상태를 들고 문자열로 자른다.
+        line, hidden = _strip_comments(raw, hidden)
+        if not line.strip():
             continue
         if line.lstrip().startswith(("```", "~~~")):   # 마크다운은 물결 펜스도 쓴다
             fenced = not fenced
@@ -238,10 +254,17 @@ def parse_marker(line: str) -> dict[str, object]:
                     break
     head = body.split()
     _question, sep, answer = body.partition(ANSWER_MARKER)
+    # 🔴 메타 칸은 `·` 로 나눈 **항목들**이다. 통째로 읽으면 `(채널: · needs-simpler)` 가
+    # 채널 `"· needs-simpler"` 로 잡혀 **빈 채널이 조용히 통과한다**(제3자 리뷰 8회차 · 2026-09-01).
+    entries = [e.strip() for e in meta.split("·")]
+    channel = ""
+    for entry in entries:
+        if entry.startswith(CHANNEL_MARKER):
+            channel = entry[len(CHANNEL_MARKER):].strip()
     return {"kind": head[0] if head and head[0] in KINDS else None,
             "answered": bool(sep) and bool(answer.strip()),
-            "channel": meta.split(CHANNEL_MARKER, 1)[1].strip() if CHANNEL_MARKER in meta else "",
-            "resimple": RESIMPLE in meta}
+            "channel": channel,
+            "resimple": any(e == RESIMPLE for e in entries)}
 
 
 def kind_of_line(line: str) -> str | None:
@@ -305,15 +328,19 @@ def summarise(rows: Sequence[tuple[str, Mapping[str, Any]]]) -> dict[str, int]:
     closed = [i for _, i in rows if i.get("state") == "CLOSED"]
     resimple = [i for _, i in rows
                 if any(lbl.get("name") == RESIMPLE for lbl in (i.get("labels") or []))]
-    answered = [i for i in closed if len(i.get("comments") or [])]
+    # 🔴 **코멘트가 있다 ≠ 답이 왔다.** 실측에서 그 코멘트들은 **진행 보고**였다(이 파일 상단).
+    # 답은 *"누가 · 언제 · 어느 경로로"* 를 적은 것이라 **채널을 적은 코멘트**를 답으로 본다
+    # (제3자 리뷰 8회차 · 2026-09-01). 진행 보고 하나로 ⓐ 의 성공이 되면 안 된다.
+    answered = [i for i in closed if has_channel(i)]
     unkinded = [i for _, i in rows if kind_of(i) is None]
     no_channel = [i for i in closed if not has_channel(i)]
     # 🔴 **합집합으로 한 번만 뺀다.** 재요청이면서 답도 없는 회부를 따로 빼면 ⓐ 의 분자가
     # 음수로 간다 — 닫힌 회부 1건이 둘 다면 `1 - 1 - 1 = -1` 이라 **-100%** 가 찍혔다
     # (제3자 리뷰 3회차 · 2026-09-01). PR 쪽엔 이미 있던 처분을 이슈 쪽에도 한다.
+    # 🔴 `answered` 와 **같은 정의**를 쓴다. 갈리면 진행 보고 하나로 ⓐ 의 성공이 된다.
     incomplete = [i for i in closed
                   if any(lbl.get("name") == RESIMPLE for lbl in (i.get("labels") or []))
-                  or not (i.get("comments") or [])]
+                  or not has_channel(i)]
     counts = {"total": len(rows), "closed": len(closed), "resimple": len(resimple),
               "answered": len(answered), "unkinded": len(unkinded),
               "incomplete": len(incomplete), "no_channel": len(no_channel)}
@@ -432,7 +459,9 @@ def main() -> int:
 
         print("\n  종류 — 셋은 트리거도 대기 방식도 다르다")
         for kind, why in KINDS.items():
-            print(f"     {counts[kind]:2d}건  {kind:22s} {why}")
+            # 🔴 이슈만 찍으면 **이슈 0건 + PR 표시 1건일 때 전부 0** 으로 보인다
+            # (제3자 리뷰 8회차 · 2026-09-01). 두 수단을 합쳐 찍는다.
+            print(f"     {counts[kind] + mcounts[kind]:2d}건  {kind:22s} {why}")
         if counts["unkinded"]:
             print(f"     🔴 종류가 안 붙은 회부 {counts['unkinded']}건 — "
                   "긴급도를 못 가린다")

@@ -66,16 +66,28 @@ class CountingWorksOnBothPaths(unittest.TestCase):
     """
 
     @staticmethod
-    def _issue(state: str, comments: int = 0, resimple: bool = False) -> dict[str, object]:
+    def _issue(state: str, comments: int = 0, resimple: bool = False,
+               body: str = "채널: 대화") -> dict[str, object]:
         return {
             "state": state,
-            "comments": [{"body": "x"} for _ in range(comments)],
+            "comments": [{"body": body} for _ in range(comments)],
             "labels": ([{"name": mod.RESIMPLE}] if resimple else []) + [{"name": mod.LABEL}],
         }
 
-    def test_closed_with_comments_counts_as_answered(self) -> None:
+    def test_closed_with_an_answer_comment_counts_as_answered(self) -> None:
         rows = [("standards", self._issue("CLOSED", comments=2))]
         self.assertEqual(mod.summarise(rows)["answered"], 1)
+
+    def test_progress_report_alone_is_not_an_answer(self) -> None:
+        """🔴 **코멘트가 있다 ≠ 답이 왔다.** 실측에서 그 코멘트들은 진행 보고였다.
+
+        진행 보고 하나로 ⓐ 의 *성공* 이 되면 계기가 재겠다던 것을 안 재는 것이다
+        (제3자 리뷰 8회차 · 2026-09-01). 답은 **채널을 적은 코멘트**다.
+        """
+        rows = [("standards", self._issue("CLOSED", comments=1, body="진행 중입니다"))]
+        got = mod.summarise(rows)
+        self.assertEqual(got["answered"], 0)
+        self.assertEqual(got["incomplete"], 1, "답 없는 회부가 ⓐ 분자에서 빠져야 한다")
 
     def test_closed_without_comments_is_not_answered(self) -> None:
         """닫혔는데 답이 없는 회부 — *조용히 닫은 것*이라 드러나야 한다."""
@@ -525,3 +537,28 @@ class SeventhRoundReviewFindings20260901(unittest.TestCase):
         f = mod.parse_marker("회부: decision:input — 물었다 → 답: 예")
         self.assertEqual(f["channel"], "")
         self.assertTrue(f["answered"])
+
+
+class EighthRoundReviewFindings20260901(unittest.TestCase):
+    def test_multiline_html_comment_is_stripped_without_a_regex(self) -> None:
+        """🔴 CodeQL(`py/bad-tag-filter`) — `<!--.*?-->` 는 줄바꿈을 못 넘는다."""
+        body = ("<!-- 안내 시작\n회부: decision:input — 예시 → 답: 예 (채널: 대화)\n마지막 -->\n"
+                "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n")
+        lines = mod.marker_lines(body)
+        self.assertEqual(len(lines), 1)
+        self.assertIn("진짜", lines[0])
+
+    def test_text_after_a_closing_comment_on_the_same_line_survives(self) -> None:
+        body = "<!-- 숨김 --> 회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
+        self.assertEqual(len(mod.marker_lines(body)), 1)
+
+    def test_empty_channel_entry_is_not_a_channel(self) -> None:
+        """`(채널: · needs-simpler)` 가 채널 `"· needs-simpler"` 로 잡혀 조용히 통과했다."""
+        f = mod.parse_marker(f"회부: decision:input — 물었다 → 답: 예 (채널: · {mod.RESIMPLE})")
+        self.assertEqual(f["channel"], "")
+        self.assertTrue(f["resimple"])
+
+    def test_kind_distribution_includes_pr_markers(self) -> None:
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("counts[kind] + mcounts[kind]", source,
+                      "종류 분포가 PR 표시를 안 합친다")
