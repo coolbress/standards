@@ -222,6 +222,9 @@ def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
     각각 세지 않으면 *"표시만 있으면 통과"* 가 되어 계기가 아무것도 안 재게 된다."""
     counts = {"marks": len(marks),
               "unanswered": sum(1 for _, _, ln in marks if ANSWER_MARKER not in ln),
+              # 🔴 ⓐ 의 **분자에서 뺄 것**. 재요청과 답 없음을 따로 빼면 둘 다인 표시를 두 번 뺀다.
+              "incomplete": sum(1 for _, _, ln in marks
+                                if RESIMPLE in ln or ANSWER_MARKER not in ln),
               "unkinded": sum(1 for _, _, ln in marks if kind_of_line(ln) is None),
               "no_channel": sum(1 for _, _, ln in marks if CHANNEL_MARKER not in ln),
               "resimple": sum(1 for _, _, ln in marks if RESIMPLE in ln)}
@@ -292,6 +295,21 @@ def unbridged_marks(marks: Sequence[tuple[str, int, str]], records: str) -> list
     return sorted(seen)
 
 
+def rates(counts: Mapping[str, int], mcounts: Mapping[str, int]) -> dict[str, int]:
+    """ⓐ·ⓑ 를 **두 수단을 합쳐** 낸다. 순수 함수라 네트워크 없이 시험된다.
+
+    🔴 세 번을 틀린 자리다(제3자 리뷰 1·2·3회차 · 2026-09-01):
+    ⓑ 가 이슈만 셌고 → ⓐ 도 이슈만 셌고 → **기록이 반쪽인 회부가 ⓐ 의 *성공* 으로** 세어졌다.
+    분모만 올리고 분자에서 안 빠지면 **불완전한 기록이 비율을 좋게 만든다.**
+    이슈 쪽도 같다 — *닫혔는데 답 코멘트가 없는 회부* 가 그동안 성공이었다(지금 0건이라 안 보였다).
+    """
+    n_closed = counts["closed"]
+    denom = n_closed + mcounts["marks"]
+    numer = denom - counts["resimple"] - (n_closed - counts["answered"]) - mcounts["incomplete"]
+    return {"a_denom": denom, "a_numer": numer,
+            "b_total": counts["resimple"] + mcounts["resimple"]}
+
+
 def main() -> int:
     missing = [r for r in REPOS if not labels_installed(r)]
     rows: list[tuple[str, dict[str, object]]] = []
@@ -328,8 +346,11 @@ def main() -> int:
         # 🔴 닫힌 게 없을 때 `0%` 로 찍으면 **나쁜 결과처럼 읽힌다.** 분모가 0 인 것과 다르다.
         # 🔴 ⓐ 도 **두 수단을 합쳐서** 낸다. 이슈만으로 내면 PR 표시의 재요청이 분모에서 빠져
         # 1/1(100%) 로 읽히는데 실제로는 1/2(50%) 다(제3자 리뷰 P2 · 2026-09-01).
-        a_denom = n_closed + mcounts["marks"]
-        a_numer = a_denom - (n_resimple + mcounts["resimple"])
+        # 🔴 **기록이 반쪽인 회부는 성공이 아니다.** 답이 안 적힌 표시가 분모만 올리고 분자에서
+        # 안 빠지면 ⓐ 가 1/1(100%) 로 읽힌다(제3자 리뷰 P2 · 2026-09-01). 이슈 쪽도 같다 —
+        # 닫혔는데 답 코멘트가 없는 회부가 그동안 성공으로 세어지고 있었다(지금은 0건이라 안 보였다).
+        r = rates(counts, mcounts)
+        a_denom, a_numer = r["a_denom"], r["a_numer"]
         if a_denom:
             rate = f"{100 * a_numer / a_denom:.0f}%"
         else:
@@ -338,7 +359,7 @@ def main() -> int:
               f"(닫힌 이슈 {n_closed} + PR 표시 {mcounts['marks']})")
         # 🔴 ⓑ 는 **두 수단을 합쳐서** 낸다. PR 표시의 재요청을 빼면 그 PR 은 분모(`referrals_total`)를
         # 올리면서 ⓑ 에서는 사라져 **사전등록된 지표가 조용히 초록**이 된다(제3자 리뷰 P1 · 2026-09-01).
-        print(f"  ⓑ 재요청(`{RESIMPLE}`) — **{n_resimple + mcounts['resimple']}건** "
+        print(f"  ⓑ 재요청(`{RESIMPLE}`) — **{r['b_total']}건** "
               f"(이슈 {n_resimple} + PR 표시 {mcounts['resimple']})")
         print(f"     ⚠️ 닫혔는데 답 코멘트가 없는 회부 {n_closed - n_answered}건")
 
@@ -391,7 +412,7 @@ def main() -> int:
           f"pr_marks={mcounts['marks']} pr_marks_unkinded={mcounts['unkinded']} "
           f"pr_resimple={mcounts['resimple']} pr_unanswered={mcounts['unanswered']} "
           f"pr_unbridged={len(mark_gaps)} "
-          f"resimple_total={n_resimple + mcounts['resimple']} "
+          f"resimple_total={rates(counts, mcounts)['b_total']} "
           f"referrals_total={grand} unreadable_sources={len(FETCH_FAILURES)}")
     if FETCH_FAILURES:
         for source in FETCH_FAILURES[:6]:

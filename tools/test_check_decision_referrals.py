@@ -273,11 +273,12 @@ class ThirdPartyReviewFindings20260901(unittest.TestCase):
 
         분모(`referrals_total`)는 올라가는데 ⓑ 는 안 올라가는 조합이 가능해선 안 된다.
         """
+        r = mod.rates({"closed": 1, "resimple": 1, "answered": 1},
+                      {"marks": 1, "resimple": 1, "incomplete": 1})
+        self.assertEqual(r["b_total"], 2, "ⓑ 가 두 수단을 합치지 않는다")
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("resimple_total=", source, "ⓑ 합산 지표가 METRIC 에 없다")
         self.assertIn("pr_resimple=", source, "PR 쪽 ⓑ 가 METRIC 에 없다")
-        self.assertIn("n_resimple + mcounts['resimple']", source,
-                      "ⓑ 출력이 두 수단을 합치지 않는다")
 
     def test_p2_prose_mention_is_not_a_referral(self) -> None:
         """🔬 음성 — 줄 가운데의 언급은 회부가 아니다."""
@@ -337,10 +338,12 @@ class SecondRoundReviewFindings20260901(unittest.TestCase):
             self.assertNotIn("PR 본문은 **리뷰를 거치고 머지 커밋에 인용된다**", text, path)
 
     def test_p2_alpha_rate_counts_both_paths(self) -> None:
-        """P2 — ⓐ 를 이슈만으로 내면 1/1(100%) 로 읽히는데 실제로는 1/2(50%) 다."""
-        source = Path(mod.__file__).read_text(encoding="utf-8")
-        self.assertIn("a_denom = n_closed + mcounts[\"marks\"]", source)
-        self.assertIn("n_resimple + mcounts[\"resimple\"]", source)
+        """P2 — ⓐ 를 이슈만으로 내면 1/1(100%) 인데 실제로는 1/2(50%) 다. **행동으로 잰다.**"""
+        counts = {"closed": 1, "resimple": 0, "answered": 1}
+        mcounts = {"marks": 1, "resimple": 1, "incomplete": 1}
+        r = mod.rates(counts, mcounts)
+        self.assertEqual((r["a_denom"], r["a_numer"]), (2, 1))
+        self.assertEqual(r["b_total"], 1, "ⓑ 가 PR 표시의 재요청을 안 세고 있다")
 
     def test_p2_tilde_fence_is_a_fence(self) -> None:
         """🔬 음성 — 마크다운은 물결 펜스도 쓴다."""
@@ -378,3 +381,38 @@ class KindMustComeFromItsOwnField(unittest.TestCase):
         self.assertEqual(
             mod.kind_of_line("회부: decision:escalation — 막혔다 → 답: 내가 한다 (채널: 대화)"),
             "decision:escalation")
+
+
+class IncompleteRecordsAreNotSuccesses(unittest.TestCase):
+    """🔴 답이 안 적힌 회부가 ⓐ 의 **성공**으로 세어지면 비율이 좋아진다 (제3자 리뷰 P2)."""
+
+    def test_unanswered_marker_counts_as_incomplete(self) -> None:
+        marks = [("s", 1, "회부: decision:input — 물었다 (채널: 대화)")]
+        self.assertEqual(mod.summarise_marks(marks)["incomplete"], 1)
+
+    def test_both_flaws_on_one_line_are_counted_once(self) -> None:
+        """🔬 재요청이면서 답도 없는 표시를 **두 번 빼면** 분자가 음수로 간다."""
+        marks = [("s", 1, f"회부: decision:input — 물었다 {mod.RESIMPLE}")]
+        self.assertEqual(mod.summarise_marks(marks)["incomplete"], 1)
+
+    def test_a_complete_marker_is_not_incomplete(self) -> None:
+        marks = [("s", 1, "회부: decision:input — 물었다 → 답: 응 (채널: 대화)")]
+        self.assertEqual(mod.summarise_marks(marks)["incomplete"], 0)
+
+    def test_alpha_numerator_subtracts_incomplete_records(self) -> None:
+        """답 없는 표시 하나뿐이면 ⓐ 는 **1건 중 0건**이어야 한다 — 100% 가 아니다."""
+        r = mod.rates({"closed": 0, "resimple": 0, "answered": 0},
+                      {"marks": 1, "resimple": 0, "incomplete": 1})
+        self.assertEqual((r["a_denom"], r["a_numer"]), (1, 0))
+
+    def test_alpha_numerator_subtracts_closed_issues_without_an_answer(self) -> None:
+        """🔬 이슈 쪽도 같다 — 닫혔는데 답이 없는 회부가 성공으로 세어지면 안 된다."""
+        r = mod.rates({"closed": 1, "resimple": 0, "answered": 0},
+                      {"marks": 0, "resimple": 0, "incomplete": 0})
+        self.assertEqual((r["a_denom"], r["a_numer"]), (1, 0))
+
+    def test_a_fully_recorded_referral_counts_as_success(self) -> None:
+        """🔬 음성의 반대편 — 제대로 적힌 회부까지 깎으면 계기가 쓸모없다."""
+        r = mod.rates({"closed": 1, "resimple": 0, "answered": 1},
+                      {"marks": 1, "resimple": 0, "incomplete": 0})
+        self.assertEqual((r["a_denom"], r["a_numer"]), (2, 2))
