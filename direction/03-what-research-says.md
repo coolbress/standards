@@ -87,7 +87,7 @@
 - 🟡 **단일 작성자 원칙** — *"Actions carry implicit decisions, and conflicting decisions carry bad results"*(2024 Principle 2) · *"writes stay single-threaded … contribute **intelligence rather than actions**"*(2025). **근거는 통제실험이 아니라 자사 운영 경험**이고 예시에 저자가 *"This may seem contrived"* 라 단서를 단다. *"single-writer"* 라는 이름은 **이 코퍼스의 것**이다 (`MAO-004`).
 - 🟡 **코딩과 다중에이전트** — 원문은 단정이 아니라 **비교문**(*"fewer truly parallelizable tasks **than research**"*)이고, 실제 부적합 조건은 **공유 컨텍스트·상호 의존**이다 (`MAO-005`).
 - 🟢 ⭐ **작성자 컨텍스트가 없는 리뷰어가 더 찾는다 — 통제실험.** 30 산출물·150 주입오류·**360 리뷰**. CCR **F1 28.6%** vs 같은세션 자기리뷰 24.6%(p=0.008). **SR2 대조가 결정적** — 같은 세션에서 두 번 리뷰해도 낫지 않았다(p=0.11) → **반복이 아니라 컨텍스트 분리가 원인** (`IPW-006`).
-- 🟡 **그러나 안전망이 아니다** — 최선 조건에서도 **오류의 약 71% 를 놓친다.** *"+16%"* 는 상대 개선이다. **게이트는 여전히 CI** (`IPW-007`).
+- 🟡 **그러나 안전망이 아니다** — 최선 조건에서도 **F1 28.6%** 다. *"+16%"* 는 상대 개선이다. **게이트는 여전히 CI** (`IPW-007`). ⚠️ **놓친 비율로 옮겨 적지 않는다** — `1 − F1` 은 위음성률이 아니고 원문은 recall 을 안 낸다(2026-09-01 정정).
 - 🟡 **교차벤더 라우팅은 비용이 아니라 역량 최적화** — *"a **capability router** rather than a difficulty escalator"*. 출처는 벤더 경험 보고 (`IPW-009`).
 - 🟢 **호스트 제약**: 서브에이전트 `model` 필드는 **Anthropic 모델만** 받는다. 외부 모델 경로는 **MCP 또는 셸아웃 둘뿐** (`CAS-001·006`).
 

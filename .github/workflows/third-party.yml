@@ -13,10 +13,11 @@
 #     **이 벽이 막는 구멍이 그것이다.**
 #   · `IPW-020` — 리뷰 에이전트 **13종 중 12종이 signal ratio 60% 미만** ·
 #     닫힌 CRA-only PR 의 **60.2%가 0~30% 소음대**. **findings 로 막으면 소음으로 막는 것**이다.
-#   · `IPW-007` — 최선 조건에서도 **F1 28.6%**(오류의 71% 놓침). 안전망이 아니다.
+#   · `IPW-007` — 최선 조건에서도 **F1 28.6%**. 안전망이 아니다.
+#     ⚠️ **놓친 비율로 옮겨 적지 않는다** — `1 − F1` 은 위음성률이 아니고 원문은 recall 을 안 낸다.
 # (셋 다 `corpus/aspects/28-implementation-process-workflow/…--overview.md` · `status: review-needed`)
 #
-# ⚠️ **벽이 못 만드는 것**: 같은 논문이 CRA 댓글 처리율을 **0.9~19.2%** 로 잰다 —
+# ⚠️ **벽이 못 만드는 것**:
 # ***"봤다" 는 "읽혔다" 가 아니다.*** 읽는 것은 **머지 버튼을 누르는 사람의 일**이다.
 #
 # 🔴 **왜 `ci.yml` 이 아니라 자기 파일인가**: `pull_request_review` 에도 걸려야 한다
@@ -40,4 +41,4 @@ concurrency:
 
 jobs:
   third-party:
-    uses: coolbress/workflows/.github/workflows/pr-review.yml@d773bf283b4966717d94ef34b2b97b414c6c65e0
+    uses: coolbress/workflows/.github/workflows/pr-review.yml@7e89630e95b898b0c4f1db95bf337ca9f6ed4198
