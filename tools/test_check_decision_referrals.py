@@ -762,3 +762,15 @@ class BacktickRunsPairByLength(unittest.TestCase):
         f = mod.parse_marker(line)
         self.assertTrue(f["answered"])
         self.assertEqual(f["channel"], "대화")
+
+
+class UnmatchedRunDoesNotStopTheScan(unittest.TestCase):
+    def test_a_later_span_is_still_masked(self) -> None:
+        """🔴 짝 없는 묶음에서 멈추면 **그 뒤의 멀쩡한 인용이 통째로 안 가려진다.**"""
+        line = "회부: decision:input — ` 짝없음 ``→ 답:`` 표기를 쓸까 (채널: 대화)"
+        self.assertFalse(mod.parse_marker(line)["answered"])
+
+    def test_an_answer_after_an_unmatched_run_still_reads(self) -> None:
+        """🔬 반대편 — 짝 없는 묶음 뒤의 **진짜** 답은 계속 읽혀야 한다."""
+        line = "회부: decision:input — ` 짝없음 → 답: 진짜 (채널: 대화)"
+        self.assertTrue(mod.parse_marker(line)["answered"])

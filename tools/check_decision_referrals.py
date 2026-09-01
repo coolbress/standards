@@ -326,7 +326,11 @@ def _mask_code(text: str) -> str:
                 break
             j += other
         if close < 0:
-            break
+            # 🔴 **멈추지 않는다.** 짝 없는 묶음에서 `break` 하면 **그 뒤의 멀쩡한 인용이
+            # 통째로 안 가려진다** — 뒤에 있는 `` ``→ 답:`` `` 이 답으로 세어졌다
+            # (제3자 리뷰 · 2026-09-01). 그 묶음만 건너뛰고 계속 본다.
+            i += run
+            continue
         for k in range(i, close + run):
             out[k] = "\x00"
         i = close + run
