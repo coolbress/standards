@@ -190,11 +190,17 @@ def marker_lines(body: str) -> list[str]:
 
 
 def kind_of_line(line: str) -> str | None:
-    """표시 줄이 스스로 밝힌 회부 종류. 없으면 `None` — 긴급도를 못 가린다는 뜻이다."""
-    for kind in KINDS:
-        if kind in line:
-            return kind
-    return None
+    """표시 줄의 **종류 칸**에서만 읽는다. 없으면 `None` — 긴급도를 못 가린다는 뜻이다.
+
+    🔴 처음엔 **줄 전체**를 훑었다. 그러면 물음 안에 종류 이름이 있기만 해도 통과한다 —
+    `회부: 이 요청을 decision:approval 로 분류할까 → 답: 예` 가 **종류가 붙은 표시**로 세어졌고
+    `pr_marks_unkinded=0` 이라 경고도 안 났다(제3자 리뷰 P2 · 2026-09-01).
+    **필수 칸을 물음 텍스트가 채울 수 있으면 그건 필수 칸이 아니다.**
+    """
+    if PR_MARKER not in line:
+        return None
+    field = line.split(PR_MARKER, 1)[1].split()
+    return field[0] if field and field[0] in KINDS else None
 
 
 def pr_marks(repo: str) -> list[tuple[str, int, str]]:

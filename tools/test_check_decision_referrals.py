@@ -364,3 +364,17 @@ class SecondRoundReviewFindings20260901(unittest.TestCase):
         self.assertIn("상한", source)
         self.assertNotIn('"--limit", "200"', source, "200 상한이 아직 남아 있다")
         self.assertGreaterEqual(mod.FETCH_LIMIT, 1000)
+
+
+class KindMustComeFromItsOwnField(unittest.TestCase):
+    """🔴 필수 칸을 **물음 텍스트가 채울 수 있으면** 그건 필수 칸이 아니다 (제3자 리뷰 P2)."""
+
+    def test_kind_in_the_question_does_not_satisfy_the_field(self) -> None:
+        line = "회부: 이 요청을 decision:approval 로 분류할까 → 답: 예 (채널: 대화)"
+        self.assertIsNone(mod.kind_of_line(line))
+        self.assertEqual(mod.summarise_marks([("s", 1, line)])["unkinded"], 1)
+
+    def test_the_field_itself_still_reads(self) -> None:
+        self.assertEqual(
+            mod.kind_of_line("회부: decision:escalation — 막혔다 → 답: 내가 한다 (채널: 대화)"),
+            "decision:escalation")
