@@ -182,16 +182,6 @@ class PrBodyMarkerIsTheSecondMeans(unittest.TestCase):
 
     GOOD = "회부: decision:input — 어휘를 A 로 갈까 B 로 갈까 → 답: A (채널: 대화)"
 
-    def test_marker_line_is_picked_out_of_a_body(self) -> None:
-        body = f"## 무엇을 했나\n어쩌고.\n\n{self.GOOD}\n\n## 검사\n초록."
-        self.assertEqual(mod.marker_lines(body), [self.GOOD])
-
-    def test_body_without_marker_yields_nothing(self) -> None:
-        self.assertEqual(mod.marker_lines("## 무엇을 했나\n표시가 없다."), [])
-
-    def test_empty_body_does_not_crash(self) -> None:
-        self.assertEqual(mod.marker_lines(""), [])
-
     def test_kind_is_read_from_the_line(self) -> None:
         self.assertEqual(mod.kind_of_line(self.GOOD), "decision:input")
 
@@ -247,37 +237,6 @@ class TheMeansChangeIsRecordedHonestly(unittest.TestCase):
         self.assertIn("이슈 수단을 걷어내지 않는다", mod.__doc__ or "")
 
 
-class ExamplesInsideFencesAreNotReferrals(unittest.TestCase):
-    """🔴 실물에서 물린 결함 — 이 도구가 **자기 사용법 예시를 회부로 셌다.**
-
-    형식을 설명하는 PR 마다 분모가 부푼다. 그러면 `referrals_total` 이 *행동* 이 아니라
-    *문서를 몇 번 썼나* 를 재게 되고, **계기가 재겠다던 것을 안 재는 것**이 된다.
-    """
-
-    BODY = (
-        "회부: decision:input — 진짜로 물었다 → 답: 그래 (채널: 대화)\n"
-        "\n"
-        "형식은 이렇다:\n"
-        "```\n"
-        "회부: decision:input — <물음> → 답: <답> (채널: 대화)\n"
-        "```\n"
-    )
-
-    def test_only_the_real_referral_is_counted(self) -> None:
-        lines = mod.marker_lines(self.BODY)
-        self.assertEqual(len(lines), 1)
-        self.assertIn("진짜로 물었다", lines[0])
-
-    def test_a_body_that_is_only_an_example_counts_zero(self) -> None:
-        """🔬 음성 — 예시밖에 없는 본문은 **0건**이어야 한다."""
-        only_example = "```\n회부: decision:input — <물음> → 답: <답>\n```\n"
-        self.assertEqual(mod.marker_lines(only_example), [])
-
-    def test_language_tagged_fence_also_counts_as_a_fence(self) -> None:
-        body = "```text\n회부: decision:input — 예시\n```\n"
-        self.assertEqual(mod.marker_lines(body), [])
-
-
 class ThirdPartyReviewFindings20260901(unittest.TestCase):
     """제3자 리뷰가 문 셋. **셋 다 계기가 재겠다던 것을 안 재게 만드는 결함**이었다."""
 
@@ -292,16 +251,6 @@ class ThirdPartyReviewFindings20260901(unittest.TestCase):
         source = Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("resimple_total=", source, "ⓑ 합산 지표가 METRIC 에 없다")
         self.assertIn("pr_resimple=", source, "PR 쪽 ⓑ 가 METRIC 에 없다")
-
-    def test_p2_prose_mention_is_not_a_referral(self) -> None:
-        """🔬 음성 — 줄 가운데의 언급은 회부가 아니다."""
-        prose = "이번 PR 은 회부: 표시를 검사한다\n"
-        self.assertEqual(mod.marker_lines(prose), [])
-
-    def test_p2_line_head_with_a_list_bullet_still_counts(self) -> None:
-        """목록으로 여러 건 적는 것은 정상 사용이다 — 그것까지 버리면 과잉이다."""
-        body = "- 회부: decision:input — 물었다 → 답: 응 (채널: 대화)\n"
-        self.assertEqual(len(mod.marker_lines(body)), 1)
 
     def test_p2_unreadable_source_is_not_zero(self) -> None:
         """P2 fail-open — 원천을 못 읽으면 **0 이 아니라 실패**여야 한다.
@@ -357,10 +306,6 @@ class SecondRoundReviewFindings20260901(unittest.TestCase):
         r = mod.rates(counts, mcounts)
         self.assertEqual((r["a_denom"], r["a_numer"]), (2, 1))
         self.assertEqual(r["b_total"], 1, "ⓑ 가 PR 표시의 재요청을 안 세고 있다")
-
-    def test_p2_tilde_fence_is_a_fence(self) -> None:
-        """🔬 음성 — 마크다운은 물결 펜스도 쓴다."""
-        self.assertEqual(mod.marker_lines("~~~text\n회부: decision:input — 예시\n~~~\n"), [])
 
     def test_p2_marker_without_an_answer_is_flagged(self) -> None:
         """P2 — 물음만 적힌 표시는 **회부의 절반**이다. 분모엔 넣되 따로 센다."""
@@ -461,17 +406,6 @@ class FourthRoundReviewFindings20260901(unittest.TestCase):
 
 
 class FifthRoundReviewFindings20260901(unittest.TestCase):
-    def test_indented_code_block_is_not_a_marker(self) -> None:
-        """🔬 음성 — 마크다운은 **4칸 들여쓰기도 코드블록**이다. 펜스만 막아선 부족했다."""
-        body = "형식은 이렇다:\n\n    회부: decision:input — <물음> → 답: <답> (채널: 대화)\n"
-        self.assertEqual(mod.marker_lines(body), [])
-
-    def test_tab_indented_example_is_not_a_marker(self) -> None:
-        self.assertEqual(mod.marker_lines("\t회부: decision:input — 예시 → 답: 응"), [])
-
-    def test_a_real_marker_at_the_line_head_still_reads(self) -> None:
-        body = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
-        self.assertEqual(len(mod.marker_lines(body)), 1)
 
     def test_the_bridge_admits_what_it_cannot_protect(self) -> None:
         """🔴 다리가 **지워진 표시는 못 잡는다** — 그걸 적어두지 않으면 과신한다."""
@@ -515,17 +449,6 @@ class SixthRoundReviewFindings20260901(unittest.TestCase):
 
 
 class SeventhRoundReviewFindings20260901(unittest.TestCase):
-    def test_example_inside_an_html_comment_is_not_a_marker(self) -> None:
-        """🔴 이 저장소의 PR 템플릿이 실제로 HTML 주석으로 안내한다 — 거기 예시를 넣으면
-        **머지되는 PR 마다** 분모가 부푼다."""
-        body = ("<!--\n회부: decision:input — <물음> → 답: <답> (채널: 대화)\n-->\n"
-                "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n")
-        lines = mod.marker_lines(body)
-        self.assertEqual(len(lines), 1)
-        self.assertIn("진짜", lines[0])
-
-    def test_single_line_html_comment_is_stripped(self) -> None:
-        self.assertEqual(mod.marker_lines("<!-- 회부: decision:input — 예시 → 답: 응 -->"), [])
 
     def test_channel_may_contain_parentheses(self) -> None:
         """🔬 `rfind(\"(\")` 는 안쪽 괄호를 집는다 — 바깥 괄호를 찾아야 한다."""
@@ -540,17 +463,6 @@ class SeventhRoundReviewFindings20260901(unittest.TestCase):
 
 
 class EighthRoundReviewFindings20260901(unittest.TestCase):
-    def test_multiline_html_comment_is_stripped_without_a_regex(self) -> None:
-        """🔴 CodeQL(`py/bad-tag-filter`) — `<!--.*?-->` 는 줄바꿈을 못 넘는다."""
-        body = ("<!-- 안내 시작\n회부: decision:input — 예시 → 답: 예 (채널: 대화)\n마지막 -->\n"
-                "회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n")
-        lines = mod.marker_lines(body)
-        self.assertEqual(len(lines), 1)
-        self.assertIn("진짜", lines[0])
-
-    def test_text_after_a_closing_comment_on_the_same_line_survives(self) -> None:
-        body = "<!-- 숨김 --> 회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
-        self.assertEqual(len(mod.marker_lines(body)), 1)
 
     def test_empty_channel_entry_is_not_a_channel(self) -> None:
         """`(채널: · needs-simpler)` 가 채널 `"· needs-simpler"` 로 잡혀 조용히 통과했다."""
@@ -565,18 +477,6 @@ class EighthRoundReviewFindings20260901(unittest.TestCase):
 
 
 class NinthRoundReviewFindings20260901(unittest.TestCase):
-    def test_indented_fence_does_not_swallow_a_later_marker(self) -> None:
-        """🔴 오탐보다 나쁘다 — **있는 회부를 없다고 한다.**
-
-        들여쓴 ``` 를 펜스로 읽으면 상태가 뒤집혀 그 뒤의 진짜 표시가 통째로 사라진다.
-        """
-        body = "    ```\n회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
-        lines = mod.marker_lines(body)
-        self.assertEqual(len(lines), 1, "들여쓴 펜스가 진짜 표시를 삼켰다")
-
-    def test_top_level_fence_still_hides_examples(self) -> None:
-        """🔬 반대편 — 진짜 펜스는 여전히 막아야 한다."""
-        self.assertEqual(mod.marker_lines("```\n회부: decision:input — 예시\n```\n"), [])
 
     def test_pr_channel_gap_reaches_the_metric_line(self) -> None:
         """사람이 읽는 절은 잡는데 METRIC 에 없으면 **수집기는 0 으로 기록한다.**"""
@@ -626,22 +526,6 @@ class PostMergeReviewFindings20260901(unittest.TestCase):
                          [("workflows", 224)])
         self.assertEqual(mod.unbridged_marks(marks, "workflows#224 에서 정했다"), [])
 
-    def test_inner_fence_does_not_close_an_outer_one(self) -> None:
-        """백틱 4개 안의 3개는 **닫는 게 아니다.**"""
-        body = "````\n```\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n````\n"
-        self.assertEqual(mod.marker_lines(body), [])
-
-    def test_tilde_does_not_close_a_backtick_fence(self) -> None:
-        body = "```\n~~~\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
-        self.assertEqual(mod.marker_lines(body), [])
-
-    def test_plus_and_ordered_list_markers_are_recognized(self) -> None:
-        """🔴 분모가 **주는** 쪽이라 오탐보다 나쁘다."""
-        for line in ("+ 회부: decision:input — 물었다 → 답: 응 (채널: 대화)",
-                     "1. 회부: decision:input — 물었다 → 답: 응 (채널: 대화)",
-                     "2) 회부: decision:input — 물었다 → 답: 응 (채널: 대화)"):
-            self.assertEqual(len(mod.marker_lines(line)), 1, line)
-
     def test_quoted_answer_delimiter_does_not_fill_the_answer(self) -> None:
         """형식을 논하는 물음이 답 칸을 채웠다."""
         line = "회부: decision:input — `→ 답:` 표기를 쓸까 (채널: 대화)"
@@ -653,13 +537,6 @@ class PostMergeReviewFindings20260901(unittest.TestCase):
         self.assertTrue(f["answered"])
         self.assertEqual(f["channel"], "대화")
 
-    def test_indented_comment_closer_is_processed(self) -> None:
-        """🔴 들여쓴 `-->` 를 건너뛰면 주석이 안 닫혀 **그 뒤가 통째로 사라진다.**"""
-        body = "<!-- 안내\n    -->\n회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
-        lines = mod.marker_lines(body)
-        self.assertEqual(len(lines), 1, "들여쓴 주석 닫기 뒤의 진짜 표시가 사라졌다")
-
-
 class ReviewFindingsOn226(unittest.TestCase):
     """`#226` 이 문 넷. 🔴 **셋이 분모를 *줄이는* 쪽**이라 오탐보다 나쁘다."""
 
@@ -668,16 +545,6 @@ class ReviewFindingsOn226(unittest.TestCase):
         lines = mod.marker_lines(body)
         self.assertEqual(len(lines), 1, "표시 뒤에 주석이 열리면 표시까지 버렸다")
         self.assertIn("진짜", lines[0])
-
-    def test_info_string_cannot_close_a_fence(self) -> None:
-        """닫는 펜스는 뒤가 비어 있어야 한다 — ```` ```text ```` 는 못 닫는다."""
-        body = "```\n```text\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
-        self.assertEqual(mod.marker_lines(body), [])
-
-    def test_opening_fence_may_have_an_info_string(self) -> None:
-        """🔬 반대편 — 여는 펜스의 info string 은 정상이다."""
-        body = "```text\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
-        self.assertEqual(mod.marker_lines(body), [])
 
     def test_double_backtick_span_is_masked_whole(self) -> None:
         """한 글자씩 짝지으면 ``` ``→ 답:`` ``` 의 가운데가 안 가려진다."""
@@ -712,29 +579,6 @@ class HostMustBeAnchored(unittest.TestCase):
     def test_the_real_url_still_counts(self) -> None:
         self.assertTrue(mod.cited(
             "standards", 22, "https://github.com/coolbress/standards/pull/22"))
-
-
-class FencesInsideListItems(unittest.TestCase):
-    def test_a_fence_inside_a_list_item_is_recognized(self) -> None:
-        body = "- ```text\n  회부: decision:input — 예시 → 답: 응 (채널: 대화)\n- ```\n"
-        self.assertEqual(mod.marker_lines(body), [], "목록 안 펜스를 못 알아봤다")
-
-    def test_a_list_prefixed_real_marker_still_reads(self) -> None:
-        """🔬 반대편 — 목록으로 적은 **진짜** 표시는 계속 읽혀야 한다."""
-        body = "- 회부: decision:input — 진짜 → 답: 응 (채널: 대화)\n"
-        self.assertEqual(len(mod.marker_lines(body)), 1)
-
-
-class FencesAreLiteralInside(unittest.TestCase):
-    def test_a_bullet_delimiter_inside_a_fence_does_not_close_it(self) -> None:
-        """🔴 앞 수정이 만든 것 — 펜스 **안** 의 `- ``` ` 는 글자 그대로다."""
-        body = "```text\n- ```\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
-        self.assertEqual(mod.marker_lines(body), [])
-
-    def test_a_fence_opened_inside_a_list_is_still_recognized(self) -> None:
-        """🔬 반대편 — 여는 쪽에서는 여전히 목록 기호를 벗긴다."""
-        body = "- ```text\n  회부: decision:input — 예시 → 답: 응 (채널: 대화)\n- ```\n"
-        self.assertEqual(mod.marker_lines(body), [])
 
 
 class QualifiedLocalReferencesCount(unittest.TestCase):
@@ -774,3 +618,45 @@ class UnmatchedRunDoesNotStopTheScan(unittest.TestCase):
         """🔬 반대편 — 짝 없는 묶음 뒤의 **진짜** 답은 계속 읽혀야 한다."""
         line = "회부: decision:input — ` 짝없음 → 답: 진짜 (채널: 대화)"
         self.assertTrue(mod.parse_marker(line)["answered"])
+
+
+class MarkersLiveOnlyInThePreamble(unittest.TestCase):
+    """🔵 **자리를 좁혀서 파서를 걷어냈다** (2026-09-01).
+
+    본문 전체를 훑으니 예시를 걸러내려고 펜스·들여쓴 코드·HTML 주석을 차례로 때웠고,
+    제3자 리뷰가 **그 가장자리로만 9건**을 물었다. 가장자리는 끝이 없다.
+    🔴 이건 이 세션에서 배운 것의 한 층 위다 — *표시가 아무 데나 있을 수 있으면
+    아무 데나 파싱해야 한다.* **규칙은 둘뿐이다: 첫 `##` 앞 · 열 0.**
+    """
+
+    REAL = "회부: decision:input — 진짜 → 답: 응 (채널: 대화)"
+
+    def test_a_marker_in_the_preamble_counts(self) -> None:
+        body = f"> 스택 안내\n\n{self.REAL}\n\n## 왜\n어쩌고\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_anything_after_the_first_heading_is_ignored(self) -> None:
+        """🔬 **설명·예시는 제목 아래에 산다** — 그래서 저절로 걸러진다."""
+        body = f"{self.REAL}\n\n## 형식\n회부: decision:input — <물음> → 답: <답> (채널: 대화)\n"
+        self.assertEqual(mod.marker_lines(body), [self.REAL])
+
+    def test_a_fenced_example_under_a_heading_is_ignored_without_parsing(self) -> None:
+        body = "## 형식\n```\n회부: decision:input — 예시 → 답: 응 (채널: 대화)\n```\n"
+        self.assertEqual(mod.marker_lines(body), [])
+
+    def test_an_indented_or_list_prefixed_line_is_not_a_marker(self) -> None:
+        """🔴 **열 0 만** 인정한다 — 목록·들여쓰기를 받으면 다시 파싱이 필요해진다."""
+        self.assertEqual(mod.marker_lines(f"  {self.REAL}\n"), [])
+        self.assertEqual(mod.marker_lines(f"- {self.REAL}\n"), [])
+
+    def test_a_mid_line_mention_is_not_a_marker(self) -> None:
+        self.assertEqual(mod.marker_lines("이번 PR 은 회부: 표시를 검사한다\n"), [])
+
+    def test_empty_body_does_not_crash(self) -> None:
+        self.assertEqual(mod.marker_lines(""), [])
+
+    def test_the_real_prs_would_still_be_counted(self) -> None:
+        """🔬 실물 두 개(`#224`·`#227`)가 이 꼴이다 — 규칙을 좁히며 눈금을 깨지 않았다."""
+        body = ("> 🔗 **#226 위에 쌓은 PR** (base = `docs/two-lessons`).\n\n"
+                "회부: decision:approval — 어디까지 만들까 → 답: 계기만 (채널: 대화)\n\n## 왜\n")
+        self.assertEqual(len(mod.marker_lines(body)), 1)

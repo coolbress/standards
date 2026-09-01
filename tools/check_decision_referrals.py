@@ -182,110 +182,34 @@ def has_channel(issue: Mapping[str, Any]) -> bool:
     return any(_has_channel_field(c.get("body") or "") for c in (issue.get("comments") or []))
 
 
-def _strip_comments(line: str, hidden: bool) -> tuple[str, bool]:
-    """한 줄에서 HTML 주석을 걷어낸다. `hidden` 은 **여러 줄 주석 안인가**를 들고 다닌다."""
-    out: list[str] = []
-    rest = line
-    while rest:
-        if hidden:
-            close = rest.find("-->")
-            if close < 0:
-                return "".join(out), True
-            rest, hidden = rest[close + 3:], False
-            continue
-        open_at = rest.find("<!--")
-        if open_at < 0:
-            out.append(rest)
-            return "".join(out), False
-        out.append(rest[:open_at])
-        rest, hidden = rest[open_at + 4:], True
-    return "".join(out), hidden
-
-
-def _delist(line: str) -> str:
-    """줄 머리의 **목록 기호**를 벗긴다 — `-` `*` `+` 와 `1.` `1)` 까지.
-
-    🔴 `-`·`*` 만 벗겨서 `+ 회부: …` 와 `1. 회부: …` 가 **조용히 사라졌다**
-    (제3자 리뷰 · 2026-09-01). 분모가 주는 쪽이라 오탐보다 나쁘다.
-    """
-    s = line.strip()
-    while s[:1] in ("-", "*", "+"):
-        s = s[1:].lstrip()
-    head = s.split(".", 1)[0] if "." in s else s.split(")", 1)[0] if ")" in s else ""
-    if head.isdigit() and len(head) <= 3:
-        s = s[len(head) + 1:].lstrip()
-    return s
-
-
-def _fence_of(line: str) -> tuple[str, int, str] | None:
-    """이 줄이 펜스 구분자면 `(문자, 길이)`. 아니면 `None`.
-
-    🔴 **하나의 불리언으로 켜고 끄면 안 된다** — 백틱 4개 안의 백틱 3개는 **닫는 게 아니고**,
-    `~~~` 는 백틱 펜스를 **못 닫는다**(제3자 리뷰 · 2026-09-01). 문자와 길이를 들고 다닌다.
-    """
-    s = line.lstrip()
-    if s[:1] not in ("`", "~"):
-        return None
-    ch = s[0]
-    n = len(s) - len(s.lstrip(ch))
-    if n < 3:
-        return None
-    # 🔴 **여는 펜스만 info string 을 가질 수 있다.** ```` ```text ```` 를 닫는 것으로 읽어
-    # 펜스가 일찍 닫히고 **그 안의 예시가 진짜 회부로 세어졌다**(제3자 리뷰 · 2026-09-01).
-    # 뒤에 뭐가 붙었는지는 호출부가 `info` 로 받아 판단한다.
-    return (ch, n, s[n:].strip())
+#: 표시가 살 수 있는 자리. 🔴 **첫 `##` 제목 앞의 머리말**, 그리고 **열 0** 뿐이다.
+#:
+#: 🔬 **왜 이렇게 좁히나 — 손으로 마크다운 파서를 짓고 있었다** (2026-09-01).
+#: 본문 전체를 훑으니 예시를 걸러내려고 펜스(백틱·물결·중첩·info string·목록 안·펜스 안 목록) ·
+#: 들여쓴 코드 · HTML 주석을 차례로 때웠고 **제3자 리뷰가 그 가장자리로만 9건**을 물었다.
+#: 가장자리는 끝이 없다(참조 링크 · 각주 · 표 안 코드 · `<pre>` …).
+#:
+#: 🔵 **자리를 좁히면 파싱이 사라진다.** 이건 이 세션에서 배운 것의 한 층 위다 —
+#: *"필수 칸을 산문이 채울 수 있으면 그건 필수 칸이 아니다"* 의 형제:
+#: **표시가 아무 데나 있을 수 있으면 아무 데나 파싱해야 한다.**
+#:
+#: ⚠️ **남는 위험은 적었다** — 머리말 안에 펜스로 예시를 넣으면 여전히 세어진다.
+#: 그 자리는 **예시를 두는 곳이 아니라** 실질 위험이 낮고, 그 대가로 파싱 80여 줄이 사라졌다.
+SECTION_START = "##"
 
 
 def marker_lines(body: str) -> list[str]:
-    """PR 본문에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
+    """PR 본문 **머리말**에서 `회부:` 줄만 뽑는다. **순수 함수라 네트워크 없이 시험된다.**
 
-    🔴 **순서가 계약이다.** 리뷰가 이 자리만 **여덟 번** 물었다 — 걸러야 할 것과
-    **삼키면 안 되는 것**이 섞여 있어서다:
-
-    | 걸러낸다(분모 부풀림) | 삼키면 안 된다(분모 축소) |
-    |---|---|
-    | 코드펜스 · 들여쓴 코드 · HTML 주석 안의 예시 | 들여쓴 펜스 뒤의 진짜 표시 |
-    | 줄 가운데의 언급 | 펜스 안의 `<!--` 뒤의 진짜 표시 |
-    | | **들여쓴 `-->` 뒤의 진짜 표시** |
-
-    🔴 **주석 안에 있을 때가 먼저다.** 들여쓰기 배제를 먼저 하면 **들여쓴 `-->` 를 못 읽어**
-    주석이 안 닫히고 그 뒤가 통째로 사라진다.
+    규칙은 둘뿐이다: **첫 `##` 제목 앞** · **열 0 에서 시작**.
+    설명·예시는 제목 아래에 살므로 **저절로 걸러진다** — 펜스도 주석도 안 본다.
     """
     out: list[str] = []
-    fence: tuple[str, int, str] | None = None
-    hidden = False
     for raw in (body or "").splitlines():
-        if hidden:
-            # 🔴 주석을 닫는 줄은 **들여쓰기와 무관하게** 먼저 읽는다.
-            rest, hidden = _strip_comments(raw, hidden)
-            if hidden:
-                continue
-        else:
-            if raw.startswith(("    ", "\t")):
-                continue
-            # 🔴 **여는 펜스에서만 목록 기호를 벗긴다.** `- ```text ` 처럼 목록 안에 펜스가 있으면
-            # 못 알아보고 그 안의 예시가 세어진다 — 그런데 **펜스 안에서도 벗기면** 안에 있는
-            # `- ``` ` 를 닫는 것으로 읽어 펜스가 일찍 닫힌다(제3자 리뷰 2회 · 2026-09-01).
-            # **펜스 안의 줄은 글자 그대로다.**
-            found = _fence_of(_delist(raw) if fence is None else raw)
-            if found:
-                if fence is None:
-                    fence = found
-                    continue
-                # 닫는 펜스는 **같은 문자 · 같거나 긴 길이 · 뒤가 비어 있어야** 한다
-                if found[0] == fence[0] and found[1] >= fence[1] and not found[2]:
-                    fence = None
-                    continue
-            if fence is not None:      # 펜스 안에서는 `<!--` 도 그냥 글자다
-                continue
-            rest, hidden = _strip_comments(raw, hidden)
-            # 🔴 **`hidden` 이 켜져도 앞의 보이는 부분은 살린다.**
-            # `회부: … (채널: 대화) <!-- 보충` 처럼 표시 뒤에 주석이 열리면
-            # 그 줄을 통째로 버려 **진짜 회부가 사라졌다**(제3자 리뷰 · 2026-09-01).
-            # 주석 *안* 만 건너뛴다.
-        stripped = _delist(rest)
-        if stripped.startswith(PR_MARKER):
-            out.append(stripped)
+        if raw.startswith(SECTION_START):
+            break
+        if raw.startswith(PR_MARKER):
+            out.append(raw.strip())
     return out
 
 
