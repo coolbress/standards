@@ -200,9 +200,10 @@ class PrBodyMarkerIsTheSecondMeans(unittest.TestCase):
         self.assertEqual(counts["decision:input"], 1)
         self.assertEqual(counts["decision:approval"], 1)
 
-    def test_needs_simpler_in_a_marker_line_is_counted(self) -> None:
-        marks = [("standards", 1, f"{self.GOOD} {mod.RESIMPLE}")]
-        self.assertEqual(mod.summarise_marks(marks)["resimple"], 1)
+    def test_needs_simpler_in_the_meta_field_is_counted(self) -> None:
+        """재요청은 **메타 칸**(끝 괄호) 안에 적는다 — 물음에 쓴 것과 갈라야 한다."""
+        line = f"회부: decision:input — 물었다 → 답: 응 (채널: 대화 · {mod.RESIMPLE})"
+        self.assertEqual(mod.summarise_marks([("standards", 1, line)])["resimple"], 1)
 
     def test_empty_marks_do_not_crash(self) -> None:
         self.assertEqual(mod.summarise_marks([])["marks"], 0)
@@ -465,3 +466,37 @@ class FifthRoundReviewFindings20260901(unittest.TestCase):
         doc = mod.unbridged_marks.__doc__ or ""
         self.assertIn("조용히 줄어드는데", doc)
         self.assertIn("R5-47", doc)
+
+
+class SixthRoundReviewFindings20260901(unittest.TestCase):
+    """🔴 같은 결함을 **네 번** 물렸다(종류 · 답 · 채널 · needs-simpler).
+
+    칸마다 때우는 대신 `parse_marker` 로 **한 번 쪼갠다** — 다섯 번째 필드가 생겨도 같은 구멍이 안 난다.
+    """
+
+    def test_channel_is_read_only_from_the_meta_field(self) -> None:
+        line = "회부: decision:input — 출력에 채널: 접두사를 넣을까 → 답: 예"
+        self.assertEqual(mod.summarise_marks([("s", 1, line)])["no_channel"], 1)
+
+    def test_needs_simpler_in_the_question_is_not_a_re_request(self) -> None:
+        line = f"회부: decision:input — {mod.RESIMPLE} 라벨을 붙일까 → 답: 아니오 (채널: 대화)"
+        counts = mod.summarise_marks([("s", 1, line)])
+        self.assertEqual(counts["resimple"], 0, "물음에 쓴 라벨 이름이 재요청으로 세어졌다")
+        self.assertEqual(counts["incomplete"], 0)
+
+    def test_a_fully_formed_marker_parses_every_field(self) -> None:
+        f = mod.parse_marker("회부: decision:approval — 지울까 → 답: 그래 (채널: 대화)")
+        self.assertEqual(f["kind"], "decision:approval")
+        self.assertTrue(f["answered"])
+        self.assertEqual(f["channel"], "대화")
+        self.assertFalse(f["resimple"])
+
+    def test_parentheses_in_the_question_do_not_break_the_meta_field(self) -> None:
+        """🔬 실물이 그렇다 — #224 의 표시에 물음 안 괄호가 둘 있다."""
+        f = mod.parse_marker(
+            "회부: decision:input — ⓐ(이슈 코멘트)로 갈까 ⓑ(PR 표시)로 갈까 → 답: ⓑ (채널: 대화)")
+        self.assertEqual(f["channel"], "대화")
+        self.assertTrue(f["answered"])
+
+    def test_an_empty_answer_is_not_an_answer(self) -> None:
+        self.assertFalse(mod.parse_marker("회부: decision:input — 물었다 → 답:  (채널: 대화)")["answered"])

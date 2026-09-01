@@ -196,6 +196,34 @@ def marker_lines(body: str) -> list[str]:
     return out
 
 
+def parse_marker(line: str) -> dict[str, object]:
+    """표시 줄을 **칸으로 쪼갠다.** 각 값은 자기 칸에서만 읽는다.
+
+    형식: `회부: <종류> — <물음> → 답: <답> (채널: <어디> · needs-simpler)`
+    끝의 괄호가 **메타 칸**이고, 채널과 재요청 표시는 **거기서만** 읽는다.
+
+    🔴 **왜 파싱하나 — 같은 결함을 네 번 물렸다** (제3자 리뷰 3·4·6회차 · 2026-09-01):
+    종류 · 답 · 채널 · `needs-simpler` 를 **줄 전체에서 찾으면 물음 텍스트가 필수 칸을 채운다.**
+    `회부: … needs-simpler 라벨을 붙일까 → 답: 아니오` 가 **재요청으로** 세어졌고,
+    `회부: … 출력에 채널: 접두사를 넣을까` 가 **채널이 적힌 것으로** 세어졌다.
+    **필수 칸을 물음이 채울 수 있으면 그건 필수 칸이 아니다** — 그래서 칸마다 때우지 않고
+    **한 번 쪼갠다.** 다섯 번째 필드가 생겨도 같은 구멍이 안 난다.
+    """
+    if PR_MARKER not in line:
+        return {"kind": None, "answered": False, "channel": "", "resimple": False}
+    body = line.split(PR_MARKER, 1)[1].strip()
+    meta = ""
+    if body.endswith(")") and "(" in body:
+        cut = body.rfind("(")
+        meta, body = body[cut + 1:-1], body[:cut].rstrip()
+    head = body.split()
+    _question, sep, answer = body.partition(ANSWER_MARKER)
+    return {"kind": head[0] if head and head[0] in KINDS else None,
+            "answered": bool(sep) and bool(answer.strip()),
+            "channel": meta.split(CHANNEL_MARKER, 1)[1].strip() if CHANNEL_MARKER in meta else "",
+            "resimple": RESIMPLE in meta}
+
+
 def kind_of_line(line: str) -> str | None:
     """표시 줄의 **종류 칸**에서만 읽는다. 없으면 `None` — 긴급도를 못 가린다는 뜻이다.
 
@@ -204,10 +232,8 @@ def kind_of_line(line: str) -> str | None:
     `pr_marks_unkinded=0` 이라 경고도 안 났다(제3자 리뷰 P2 · 2026-09-01).
     **필수 칸을 물음 텍스트가 채울 수 있으면 그건 필수 칸이 아니다.**
     """
-    if PR_MARKER not in line:
-        return None
-    field = line.split(PR_MARKER, 1)[1].split()
-    return field[0] if field and field[0] in KINDS else None
+    kind = parse_marker(line)["kind"]
+    return str(kind) if kind else None
 
 
 def pr_marks(repo: str) -> list[tuple[str, int, str]]:
@@ -227,16 +253,16 @@ def pr_marks(repo: str) -> list[tuple[str, int, str]]:
 def summarise_marks(marks: Sequence[tuple[str, int, str]]) -> dict[str, int]:
     """표시 줄만 따로 센다. 🔬 **음성 시험이 있다** — 종류가 없는 줄과 채널이 없는 줄을
     각각 세지 않으면 *"표시만 있으면 통과"* 가 되어 계기가 아무것도 안 재게 된다."""
+    parsed = [parse_marker(ln) for _, _, ln in marks]
     counts = {"marks": len(marks),
-              "unanswered": sum(1 for _, _, ln in marks if ANSWER_MARKER not in ln),
+              "unanswered": sum(1 for f in parsed if not f["answered"]),
               # 🔴 ⓐ 의 **분자에서 뺄 것**. 재요청과 답 없음을 따로 빼면 둘 다인 표시를 두 번 뺀다.
-              "incomplete": sum(1 for _, _, ln in marks
-                                if RESIMPLE in ln or ANSWER_MARKER not in ln),
-              "unkinded": sum(1 for _, _, ln in marks if kind_of_line(ln) is None),
-              "no_channel": sum(1 for _, _, ln in marks if CHANNEL_MARKER not in ln),
-              "resimple": sum(1 for _, _, ln in marks if RESIMPLE in ln)}
+              "incomplete": sum(1 for f in parsed if f["resimple"] or not f["answered"]),
+              "unkinded": sum(1 for f in parsed if f["kind"] is None),
+              "no_channel": sum(1 for f in parsed if not f["channel"]),
+              "resimple": sum(1 for f in parsed if f["resimple"])}
     for kind in KINDS:
-        counts[kind] = sum(1 for _, _, ln in marks if kind_of_line(ln) == kind)
+        counts[kind] = sum(1 for f in parsed if f["kind"] == kind)
     return counts
 
 
