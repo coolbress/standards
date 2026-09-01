@@ -402,11 +402,11 @@ def cited(repo: str, number: int, records: str) -> bool:
     # 통과하고, 왼쪽을 안 막으면 **다른 조직의 `otherorg/standards#22`** 가 우리 인용으로 통과한다
     # (제3자 리뷰 2회 · 2026-09-01). 둘 다 **다리가 조용히 초록이 되는** 쪽이다.
     # 🔬 형태마다 왼쪽 경계가 다르다. `repo#N` 은 앞이 **글자·슬래시면 안 되고**(다른 조직),
-    # URL 은 앞이 **반드시 `github.com/`** 이어야 한다 — URL 은 원래 앞이 `/` 라
+    # URL 은 앞이 **반드시 `https://github.com/`** 이어야 한다 — 호스트에 못 박지 않으면 `https://example.com/github.com/…` 도 통과한다 — URL 은 원래 앞이 `/` 라
     # 같은 경계를 쓰면 **실물 인용이 전부 끊긴다**(실측: `unbridged` 0 → 4).
     patterns = (
         rf"(?<![\w/-]){re.escape(repo)}#{number}(?!\d)",
-        rf"github\.com/coolbress/{re.escape(repo)}/(?:pull|issues)/{number}(?!\d)",
+        rf"https://github\.com/coolbress/{re.escape(repo)}/(?:pull|issues)/{number}(?!\d)",
     )
     return any(re.search(p, records) for p in patterns)
 

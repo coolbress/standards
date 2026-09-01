@@ -167,7 +167,7 @@ class TheBridgeToCommittedRecords(unittest.TestCase):
 
     def test_issue_url_form_also_counts(self) -> None:
         rows = [("standards", {"state": "CLOSED", "number": 141, "labels": [], "comments": []})]
-        self.assertEqual(mod.unbridged(rows, "…github.com/coolbress/standards/issues/141 참조…"), [])
+        self.assertEqual(mod.unbridged(rows, "…https://github.com/coolbress/standards/issues/141 참조…"), [])
 
     def test_record_dirs_are_committed_ones(self) -> None:
         self.assertEqual(set(mod.RECORD_DIRS), {"direction", "audit"})
@@ -700,3 +700,15 @@ class ReviewFindingsOn226(unittest.TestCase):
         """🔬 반대편 — 우리 URL 은 여전히 통과해야 한다(안 그러면 다리가 전부 빨개진다)."""
         self.assertTrue(mod.cited(
             "standards", 22, "https://github.com/coolbress/standards/pull/22 참조"))
+
+
+class HostMustBeAnchored(unittest.TestCase):
+    """🔴 `github.com` 을 아무 데서나 찾으면 **다른 호스트의 경로**도 우리 인용이 된다."""
+
+    def test_a_path_that_merely_contains_the_hostname_does_not_count(self) -> None:
+        self.assertFalse(mod.cited(
+            "standards", 22, "https://example.com/github.com/coolbress/standards/pull/22"))
+
+    def test_the_real_url_still_counts(self) -> None:
+        self.assertTrue(mod.cited(
+            "standards", 22, "https://github.com/coolbress/standards/pull/22"))
