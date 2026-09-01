@@ -57,8 +57,13 @@ def split(changed: Sequence[str]) -> tuple[list[str], list[str]]:
     return referee, player
 
 
-def changed_files() -> list[str] | None:
-    """PR 이 바꾼 파일. **못 구하면 `None`** — 빈 목록과 다르다."""
+def changed_files() -> tuple[list[str], str] | None:
+    """(바뀐 파일, 비교 기준). **못 구하면 `None`** — 빈 목록과 다르다.
+
+    🔴 **무엇과 비교했는지 찍는다.** 스택 PR 을 로컬에서 돌리면 기본값 `main` 과 비교해
+    **아래 PR 의 변경까지 섞여 보인다** — 실측에서 `referee=0` 이 나와 *심판을 안 건드린다* 로
+    읽힐 뻔했다(2026-09-01). CI 는 `GITHUB_BASE_REF` 를 준다.
+    """
     base = os.environ.get("GITHUB_BASE_REF") or "main"
     for ref in (f"origin/{base}", base):
         merge_base = subprocess.run(["git", "merge-base", ref, "HEAD"],
@@ -68,20 +73,21 @@ def changed_files() -> list[str] | None:
         diff = subprocess.run(["git", "diff", "--name-only", merge_base.stdout.strip(), "HEAD"],
                               capture_output=True, text=True, check=False)
         if diff.returncode == 0:
-            return [ln for ln in diff.stdout.splitlines() if ln.strip()]
+            return [ln for ln in diff.stdout.splitlines() if ln.strip()], ref
     return None
 
 
 def main() -> int:
     print("심판이 선수와 같이 바뀌지 않는가 — R5-46")
-    changed = changed_files()
-    if changed is None:
+    found = changed_files()
+    if found is None:
         print("  🔴 변경 목록을 못 구했다 — 기준 브랜치를 못 찾는다.")
         print("RESULT FAIL — **못 읽은 것을 통과로 읽지 않는다.** `git fetch origin main` 뒤 다시 돌려라")
         return 1
 
+    changed, base = found
     referee, player = split(changed)
-    print(f"  바뀐 파일 {len(changed)} — 심판 {len(referee)} · 선수 {len(player)}")
+    print(f"  기준 {base} 대비 — 바뀐 파일 {len(changed)} · 심판 {len(referee)} · 선수 {len(player)}")
     for path in referee:
         print(f"     ⚖️  {path}")
     print(f"\nMETRIC changed={len(changed)} referee={len(referee)} player={len(player)}")
