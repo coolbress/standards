@@ -17,7 +17,7 @@
 
 | 넣는다 | 왜 |
 |---|---|
-| `.github/workflows/*.yml` | **벽과 그 배선.** 재사용 워크플로 **핀**도 여기 있다 — 핀을 내리면 옛 판정이 돌아온다 |
+| `.github/workflows/*.yml` · `*.yaml` (**직계 자식만**) | **벽과 그 배선.** 재사용 워크플로 **핀**도 여기 있다 — 핀을 내리면 옛 판정이 돌아온다. 🔬 **둘 다 받는다** — GitHub Actions 가 둘 다 읽으므로 하나만 지키면 **확장자만 바꿔 빠져나간다** |
 | `ruleset.json` | 벽의 실물(이 저장소엔 없고 `workflows` 에 있다 — 이식성 때문에 남긴다) |
 
 | 안 넣는다 | 왜 |
@@ -29,6 +29,11 @@
 
 **심판만 바꾸는 PR 은 통과한다** — 밀반입할 것이 **없기** 때문이다.
 `04` §리팩터링 분리(Fowler·Google)와 같은 모양이다.
+
+🔧 **배선은 별도 PR 이다 — 이 검사 자신의 규칙 때문이다.** `ci.yml` 에 스텝을 붙이는 것이
+**심판 변경**이라 도구·문서와 같은 PR 에 못 넣는다. 그래서 **표시·검사** 와 **배선** 을 갈랐다.
+⚠️ **배선 전에는 이 검사가 아무것도 안 막는다** — 규칙이 문서에만 있는 상태이고,
+이 저장소는 그 상태를 여러 번 겪었다. **두 PR 을 붙여서 머지한다.**
 
 🔴 **못 읽으면 실패다.** 변경 목록을 못 구하면 *통과* 가 아니라 **모른다** 이고,
 이 저장소는 그걸 통과로 읽어 여러 번 데었다.
@@ -43,11 +48,27 @@ from collections.abc import Sequence
 
 #: 심판. 🔴 **늘리기 전에 위 표를 읽어라** — 넓히면 벽이 아니라 족쇄가 된다.
 REFEREE_PREFIXES = (".github/workflows/",)
+REFEREE_SUFFIXES = (".yml", ".yaml")
 REFEREE_NAMES = ("ruleset.json",)
 
 
 def is_referee(path: str) -> bool:
-    return path.startswith(REFEREE_PREFIXES) or path in REFEREE_NAMES
+    """`.github/workflows/` **바로 밑**의 **`*.yml`·`*.yaml`** 과 `ruleset.json` 만 심판이다.
+
+    🔴 **디렉터리 접두만 보면 안 된다** — `.github/workflows/README.md` 까지 심판이 되어
+    **평범한 PR 이 막힌다**(제3자 리뷰 · 2026-09-01). 넓히면 벽이 아니라 족쇄다.
+    🔬 **`.yaml` 도 받는다** — Actions 가 둘 다 읽으므로 하나만 지키면 **확장자만 바꿔 빠져나간다.**
+    ⚠️ **모듈 표 · `AGENTS.md` · 이 docstring 이 같은 말을 해야 한다** — 앞의 둘만 고치고
+    여기를 빼먹어 계약이 갈렸다(제3자 리뷰 · 2026-09-02).
+    """
+    if path in REFEREE_NAMES:
+        return True
+    # 🔴 **직계 자식만.** GitHub Actions 는 `.github/workflows/` **바로 밑**만 워크플로로
+    # 읽는다 — `…/archive/ci.yml` 은 **돌지 않는 파일**이라 심판이 아니다. 접두만 보면
+    # 그런 보관 파일이 평범한 PR 을 막는다(제3자 리뷰 · 2026-09-02).
+    return (path.startswith(REFEREE_PREFIXES)
+            and path.endswith(REFEREE_SUFFIXES)
+            and "/" not in path[len(REFEREE_PREFIXES[0]):])
 
 
 def split(changed: Sequence[str]) -> tuple[list[str], list[str]]:
@@ -70,10 +91,18 @@ def changed_files() -> tuple[list[str], str] | None:
                                     capture_output=True, text=True, check=False)
         if merge_base.returncode != 0:
             continue
-        diff = subprocess.run(["git", "diff", "--name-only", merge_base.stdout.strip(), "HEAD"],
+        # 🔴 **`--no-renames`.** 이름 변경 탐지가 켜져 있으면 `git diff --name-only` 가
+        # **목적지만** 낸다 — `ci.yml` → `ci.disabled` 로 옮기면서 다른 것을 같이 넣으면
+        # 심판이 0으로 보여 **벽을 치우는 PR 이 통과한다**(제3자 리뷰 · 2026-09-01).
+        #
+        # 🔴 **`-z`.** 기본 출력은 **비ASCII 경로를 따옴표로 감싸고 8진 이스케이프**한다 —
+        # `.github/workflows/검사.yml` 이 `"…"` 로 와서 심판으로 안 잡히고 **벽이 통째로
+        # 뚫린다**(제3자 리뷰 P1 · 2026-09-02). NUL 로 끊어 원문 그대로 받는다.
+        diff = subprocess.run(["git", "diff", "--no-renames", "-z", "--name-only",
+                               merge_base.stdout.strip(), "HEAD"],
                               capture_output=True, text=True, check=False)
         if diff.returncode == 0:
-            return [ln for ln in diff.stdout.splitlines() if ln.strip()], ref
+            return [p for p in diff.stdout.split("\0") if p.strip()], ref
     return None
 
 

@@ -82,11 +82,20 @@ class ItRefusesToDrawALine(unittest.TestCase):
     """
 
     def test_enough_is_a_discussion_trigger_not_a_gate(self) -> None:
+        """`ENOUGH` 는 **논의를 열자는 신호**이지 문턱이 아니다.
+
+        🔴 **처음엔 `RESULT FAIL` 이 아예 없어야 한다고 시험했다 — 그건 fail-open 을
+        시험으로 못 박은 것이었다**(제3자 리뷰 · 2026-09-02). *판정선을 안 긋는 것* 과
+        *세다 만 수치를 통과시키는 것* 은 다르다. `ENOUGH` 로는 안 막고, **못 읽으면 막는다.**
+        """
         src = pathlib.Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("판정선을 긋지 않는다", src)
-        # 계기는 **항상 0 으로 끝난다** — 벽이 아니다.
         self.assertIn("RESULT INFO", src)
-        self.assertNotIn("RESULT FAIL", src)
+        # 🔬 실패는 **못 읽은 원천에서만** 온다 — 표본 수나 finding 수로는 안 막는다.
+        tail = src.split("RESULT FAIL")[1][:200]
+        self.assertIn("못 읽은 것을 0 으로 읽지 않는다", tail)
+        for forbidden in ("ENOUGH", "findings", "prs_reviewed"):
+            self.assertNotIn(forbidden, tail)
 
 
 if __name__ == "__main__":
@@ -130,10 +139,48 @@ class MergedWithOpenFindings(unittest.TestCase):
         self.assertEqual(mod.commit_of({"commit_id": self.HEAD}), self.HEAD)
 
     def test_it_is_an_instrument_not_a_wall(self) -> None:
-        """*findings 로 안 막는다* 는 `IPW-020` 으로 사전등록된 결정이다."""
+        """*findings 로 안 막는다* 는 `IPW-020` 으로 사전등록된 결정이다.
+
+        🔴 **다만 *못 읽은 것* 은 실패다** — 처음엔 `RESULT FAIL` 이 아예 없어야 한다고
+        시험했는데, 그건 **fail-open 을 시험으로 못 박은 것**이었다(제3자 리뷰 · 2026-09-02).
+        판정선을 안 긋는 것과 *세다 만 수치* 를 통과시키는 것은 다르다.
+        """
         source = pathlib.Path(mod.__file__).read_text(encoding="utf-8")
         self.assertIn("RESULT INFO", source)
-        self.assertNotIn("RESULT FAIL", source)
+        self.assertIn("RESULT FAIL — **못 읽은 것을 0 으로 읽지 않는다.**", source)
+        self.assertNotIn("findings", source.split("RESULT FAIL")[1][:200])
+
+    def test_a_renamed_file_keeps_its_old_path(self) -> None:
+        """🔴 댓글은 **옛 이름**을 가리키는데 compare 는 **새 이름**을 준다."""
+        original = mod.gh
+        mod.gh = lambda path: ({"files": [{"filename": "b.py", "previous_filename": "a.py"}]}
+                               if "/compare/" in path else original(path))
+        try:
+            touched, bad = mod._touched_map("x/y", [{"original_commit_id": "a" * 40}], "e" * 40)
+        finally:
+            mod.gh = original
+        self.assertEqual(bad, 0)
+        self.assertEqual(touched["a" * 40], {"a.py", "b.py"})
+
+    def test_unreadable_compare_is_not_zero_touched(self) -> None:
+        """🔴 비교를 못 읽은 것을 *바뀐 파일 없음* 으로 읽으면 대리지표가 조용히 낮아진다.
+
+        같은 fail-open 이 이 도구에서만 **세 번째**다 — PR 목록 · 댓글 · 비교.
+        """
+        original = mod.gh
+        mod.gh = lambda path: None if "/compare/" in path else original(path)
+        try:
+            touched, bad = mod._touched_map("x/y", [{"original_commit_id": "a" * 40}], "e" * 40)
+        finally:
+            mod.gh = original
+        self.assertEqual(bad, 1)
+        self.assertEqual(touched, {})
+
+    def test_unreadable_comments_are_not_zero(self) -> None:
+        """🔴 못 읽은 PR 을 *댓글 0건* 으로 읽으면 `merged_open` 이 조용히 준다."""
+        source = pathlib.Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn('if not isinstance(cs, list):', source)
+        self.assertIn('total["unreadable"] += 1', source)
 
 
 class LookupKeyMustMatchTheMapKey(unittest.TestCase):
