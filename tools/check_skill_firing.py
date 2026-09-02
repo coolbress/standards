@@ -42,7 +42,9 @@ from collections import Counter
 TRANSCRIPTS = pathlib.Path.home() / ".claude" / "projects"
 
 #: 우리가 배포한 스킬·커맨드. 이것들이 뜨는지가 이 계기의 첫 질문이다.
-OURS = ("kickoff", "new-project", "floor-check", "review", "where-is-the-truth")
+# 2026-09-02: `kickoff`·`where-is-the-truth` 는 플러그인 0.10.0 에서 지웠고 `playbook` 이 들어왔다.
+# 옛 이름을 남기는 이유 — 지난 전사에 찍힌 사건은 그때 우리 것이었다. 지우면 과거 눈금이 0 으로 바뀐다.
+OURS = ("playbook", "kickoff", "new-project", "floor-check", "review", "where-is-the-truth")
 
 #: 우리 스킬이 플러그인으로 뜰 때의 이름 공간.
 OUR_PLUGIN = "coolbress-standards"

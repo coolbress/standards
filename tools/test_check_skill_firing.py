@@ -42,7 +42,7 @@ class SkillEvents(unittest.TestCase):
 
     def test_our_skill_list_matches_shipped_commands(self) -> None:
         """🔴 `OURS` 가 낡으면 *우리 것이 떴나* 에 영영 0 이 나온다."""
-        for name in ("kickoff", "new-project", "floor-check", "review", "where-is-the-truth"):
+        for name in ("playbook", "kickoff", "new-project", "floor-check", "review", "where-is-the-truth"):
             self.assertIn(name, mod.OURS)
 
     def test_instrument_never_fails_the_build(self) -> None:

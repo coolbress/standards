@@ -4,7 +4,7 @@ corpus/INDEX.md	17533	1787558487	4cae532a39103051dde3163962113db218d9efe8e90803e
 corpus/PROVENANCE.md	4257	1787558487	57d5261483e148999971a7e5b303f455a189bd27ace042438198bc962064f1a6	active
 corpus/TAXONOMY.md	3617	1787558487	5fcec547367620ac8b3b306421cdd0df114069c9df57551435b4f0435b708f74	active
 corpus/_meta/README.md	462	1785659225	14813521bafff31c0a4ed18a1cfa477d6414cda2f191c0d5951544118efba09f	active
-corpus/_meta/sources.jsonl	60837	1788328738	2603bf3b003d71579d3cfae69ec6766310ee3278569f43cda544bdd793e953f1	active
+corpus/_meta/sources.jsonl	60837	1788330486	2603bf3b003d71579d3cfae69ec6766310ee3278569f43cda544bdd793e953f1	active
 corpus/_schema.md	15088	1788086435	4f3b6ebda7e864f3cd534dd0bdb31644a51dd0b1f2d8ffcda614cbb3c0296829	active
 corpus/aspects/01-requirements-planning/01-requirements-planning--overview.md	19810	1788086435	541649f28b6d6161e3648ca74c9d6c4fae27071642c0d66959f2e4086e96d097	active
 corpus/aspects/01-requirements-planning/brownfield-planning-adoption.md	6824	1785658907	6d1d7002905f091848f65317b24020a22b5398436b88aa353a7d3879b50014ca	active
@@ -98,7 +98,7 @@ corpus/aspects/27-ai-harness-archetype/skill-authoring-standard.md	17651	1788086
 corpus/aspects/27-ai-harness-archetype/steering-mechanisms--facts-2026-08.md	10448	1787558487	3af7f1cadce7ec9fb29c16dec4a52cb22da67814c9f4071174213eed65169ad6	active
 corpus/aspects/27-ai-harness-archetype/stop-event-rendering--measured-2026-08.md	5024	1787560248	b6d7ac5a098329b84aaeff2121c2d047d5370901ae2c6a72d85bc6729b1d784d	active
 corpus/aspects/27-ai-harness-archetype/user-channel-rendering--measured-2026-08.md	10800	1787560248	887ad33776d804b95f94cc61f6ff028dcc7aae5e28c5e4e564f8a2e619b825c0	active
-corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md	34787	1788328811	797d65ea265cbb8e3deaa95b1a55076e86611977b0a6e8bc3bae0a8d80d9836c	active
+corpus/aspects/28-implementation-process-workflow/28-implementation-process-workflow--overview.md	34787	1788330486	797d65ea265cbb8e3deaa95b1a55076e86611977b0a6e8bc3bae0a8d80d9836c	active
 corpus/aspects/28-implementation-process-workflow/agent-workflow-prescriptions--facts-2026-08.md	9938	1787558487	1f005ad67e6b0076d5d5267487f5ced534f64f6eacd0bf6028dc4817a3c16d5d	active
 corpus/aspects/28-implementation-process-workflow/agile-adoption--facts-2026-08.md	12932	1787558487	d1b082920db01687680c06fca98893e6019ddd72920c6e91be3f7a04e96d4657	active
 corpus/aspects/28-implementation-process-workflow/research-log.md	13487	1788086435	6018bd7006fab158263b8f5328f3d070625e3067cb06677ba95d2274f50049d8	active
