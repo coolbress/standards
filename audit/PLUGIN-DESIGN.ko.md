@@ -170,3 +170,7 @@ last30days@coolbress                           ✔ enabled
 
 **다른 마켓의 플러그인을 `dependencies` 로 거는 것이 그 마켓을 먼저 더하지 않아도 풀리는가.**
 안 풀리면 `claude plugin marketplace add` 세 줄이 **선행 조건**이다 — `workflows` README 에 적어뒀다.
+
+## 🔄 2026-09-02 — `kickoff` · `where-is-the-truth` 삭제, `playbook` 신설
+
+플러그인 0.10.0. 기획·스펙·티켓·구현·리뷰는 `mattpocock-skills` 가 하고(`/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement` → `/code-review`), 우리 스킬은 **`playbook` 하나**다 — 단계표를 읽고 다음에 칠 것 하나를 말한다. `/kickoff` 의 고유 넷은 템플릿 `AGENTS.md` §기획할 때 로, `where-is-the-truth` 는 SessionStart 훅으로. 처분의 근거는 [`SKILL-OVERLAP`](SKILL-OVERLAP.ko.md) 와 [`direction/06`](../direction/06-how-we-work.md) §진입로.
