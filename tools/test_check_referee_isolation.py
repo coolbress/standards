@@ -121,3 +121,15 @@ class ReviewFindingsOn227(unittest.TestCase):
         doc = mod.__doc__ or ""
         self.assertIn("배선은 별도 PR", doc)
         self.assertIn("배선 전에는 이 검사가 아무것도 안 막는다", doc)
+
+
+class OnlyDirectChildrenAreWorkflows(unittest.TestCase):
+    """🔴 GitHub Actions 는 `.github/workflows/` **바로 밑**만 워크플로로 읽는다."""
+
+    def test_a_nested_yaml_is_not_a_referee(self) -> None:
+        """`…/archive/ci.yml` 은 **돌지 않는 파일**이다 — 막으면 오탐이다."""
+        self.assertFalse(mod.is_referee(".github/workflows/archive/ci.yml"))
+
+    def test_a_direct_child_still_is(self) -> None:
+        self.assertTrue(mod.is_referee(".github/workflows/ci.yml"))
+        self.assertTrue(mod.is_referee(".github/workflows/third-party.yaml"))

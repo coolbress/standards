@@ -17,7 +17,7 @@
 
 | 넣는다 | 왜 |
 |---|---|
-| `.github/workflows/*.yml` · `*.yaml` | **벽과 그 배선.** 재사용 워크플로 **핀**도 여기 있다 — 핀을 내리면 옛 판정이 돌아온다. 🔬 **둘 다 받는다** — GitHub Actions 가 둘 다 읽으므로 하나만 지키면 **확장자만 바꿔 빠져나간다** |
+| `.github/workflows/*.yml` · `*.yaml` (**직계 자식만**) | **벽과 그 배선.** 재사용 워크플로 **핀**도 여기 있다 — 핀을 내리면 옛 판정이 돌아온다. 🔬 **둘 다 받는다** — GitHub Actions 가 둘 다 읽으므로 하나만 지키면 **확장자만 바꿔 빠져나간다** |
 | `ruleset.json` | 벽의 실물(이 저장소엔 없고 `workflows` 에 있다 — 이식성 때문에 남긴다) |
 
 | 안 넣는다 | 왜 |
@@ -53,7 +53,7 @@ REFEREE_NAMES = ("ruleset.json",)
 
 
 def is_referee(path: str) -> bool:
-    """`.github/workflows/` 밑의 **`*.yml`·`*.yaml`** 과 `ruleset.json` 만 심판이다.
+    """`.github/workflows/` **바로 밑**의 **`*.yml`·`*.yaml`** 과 `ruleset.json` 만 심판이다.
 
     🔴 **디렉터리 접두만 보면 안 된다** — `.github/workflows/README.md` 까지 심판이 되어
     **평범한 PR 이 막힌다**(제3자 리뷰 · 2026-09-01). 넓히면 벽이 아니라 족쇄다.
@@ -63,7 +63,12 @@ def is_referee(path: str) -> bool:
     """
     if path in REFEREE_NAMES:
         return True
-    return path.startswith(REFEREE_PREFIXES) and path.endswith(REFEREE_SUFFIXES)
+    # 🔴 **직계 자식만.** GitHub Actions 는 `.github/workflows/` **바로 밑**만 워크플로로
+    # 읽는다 — `…/archive/ci.yml` 은 **돌지 않는 파일**이라 심판이 아니다. 접두만 보면
+    # 그런 보관 파일이 평범한 PR 을 막는다(제3자 리뷰 · 2026-09-02).
+    return (path.startswith(REFEREE_PREFIXES)
+            and path.endswith(REFEREE_SUFFIXES)
+            and "/" not in path[len(REFEREE_PREFIXES[0]):])
 
 
 def split(changed: Sequence[str]) -> tuple[list[str], list[str]]:
