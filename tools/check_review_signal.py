@@ -162,7 +162,11 @@ def _touched_map(repo: str, comments: list[dict[str, Any]],
             bad += 1
             continue
         files = cmp_.get("files") or []
-        out[base] = {f.get("filename") or "" for f in files}
+        # 🔴 **옛 경로도 넣는다.** 파일이 그 뒤 이름이 바뀌면 compare 는 `filename` 에
+        # **새 이름**을 주는데, 리뷰 댓글은 **옛 이름**을 가리킨다 — 그러면 *안 바뀌었다* 로
+        # 세어져 대리지표가 낮아진다(제3자 리뷰 · 2026-09-02).
+        out[base] = {p for f in files
+                     for p in (f.get("filename"), f.get("previous_filename")) if p}
     return out, bad
 
 

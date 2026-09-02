@@ -150,6 +150,18 @@ class MergedWithOpenFindings(unittest.TestCase):
         self.assertIn("RESULT FAIL — **못 읽은 것을 0 으로 읽지 않는다.**", source)
         self.assertNotIn("findings", source.split("RESULT FAIL")[1][:200])
 
+    def test_a_renamed_file_keeps_its_old_path(self) -> None:
+        """🔴 댓글은 **옛 이름**을 가리키는데 compare 는 **새 이름**을 준다."""
+        original = mod.gh
+        mod.gh = lambda path: ({"files": [{"filename": "b.py", "previous_filename": "a.py"}]}
+                               if "/compare/" in path else original(path))
+        try:
+            touched, bad = mod._touched_map("x/y", [{"original_commit_id": "a" * 40}], "e" * 40)
+        finally:
+            mod.gh = original
+        self.assertEqual(bad, 0)
+        self.assertEqual(touched["a" * 40], {"a.py", "b.py"})
+
     def test_unreadable_compare_is_not_zero_touched(self) -> None:
         """🔴 비교를 못 읽은 것을 *바뀐 파일 없음* 으로 읽으면 대리지표가 조용히 낮아진다.
 
