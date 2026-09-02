@@ -53,7 +53,7 @@ GitLab 추상화 · 스킬 추가 · 멀티에이전트 기본값 · 자체 런�
 
 ### ⚠️ 굴리기 전에 알아둘 것
 
-- **`third-party / review` 가 required 다.** 코덱스 한도를 넘기면 머지가 막힌다 — 기다리거나 룰셋에서 그 검사만 뺀다(관리자 · 1분)
+- **제3자 리뷰는 PR 당 한 번이다** — `gh pr create --draft` 로 열고 `gh pr ready` 에서 본다(2026-09-02 · `workflows#73`). `standards` 에선 **advisory**(required 아님), `workflows` 와 제품 저장소에선 벽
 - 문서를 고쳤으면 **`rebuild_after_manifest.py` → `build-routes.mjs`** 를 먼저 돌린다
 - **`.github/workflows/*.yml` · `ruleset.json` 은 그것만 고치는 PR 로** — `check_referee_isolation` 이 막는다
 - **`AGENTS.md` 의 `## Code Review Rules` 를 다른 변경과 같이 고치면 벽이 막는다** — 따로 낸다
