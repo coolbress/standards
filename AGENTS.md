@@ -53,6 +53,12 @@ mypy                                      # 설정은 mypy.ini 가 정본 (stric
 종류 셋은 트리거가 다르다 — `decision:approval`(되돌리기 어려운 행동의 가부) ·
 `decision:input`(정보·취향) · `decision:escalation`(막혔다). 재요청은 `needs-simpler`.
 
+## ⚖️ 심판은 선수와 같이 안 바꾼다 (2026-09-01 · `GAPS` R5-46)
+
+**`.github/workflows/*.yml`(`*.yaml` 포함) · `ruleset.json` 을 고치는 PR 은 *그것만* 고친다.**
+벽이 느슨해지면 **더 잘 통과하므로** 검사로는 못 잡는다 — 막을 수 있는 건 **조합**뿐이다.
+`check_referee_isolation.py` 가 센다. **심판만 바꾸는 PR 은 통과한다**(밀반입할 게 없다).
+
 ## 🚫 NEVER
 
 - `legacy/` 를 고치기 — **append-only** 다. `LINEAGE` §5b 는 **소유자만** 쓴다
