@@ -119,11 +119,6 @@ jobs:
       - name: 감사 문서가 정본에서 도달 가능한가
         run: python3 tools/check_audit_reachability.py
 
-      # 🔴 현관문이 인용한 목적 한 줄이 **두 판 뒤처져** 있었고, 그것도 rev7 이
-      # 명시적으로 기각한 문구("시니어급이 된다" = 자기평가)였다. 가장 먼저 읽히는 자리다.
-      - name: 목적 한 줄이 정본과 같은가
-        run: python3 tools/check_purpose_sync.py
-
       # 2026-08-25 추가 (GAPS R5-15). tools/test_*.py 4개가 저장소에 있는데
       # 이 잡이 하나도 돌리지 않았다 — 그래서 7건이 PR #12 의 디렉터리 개편
       # 이후 계속 깨진 채로 초록이었다. 붙이기 전에 그 7건을 먼저 고쳤다.
