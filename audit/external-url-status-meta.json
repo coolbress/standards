@@ -1,13 +1,13 @@
 {
   "checker_version": 1,
-  "completed_at": "2026-09-01T06:45:16.633623Z",
+  "completed_at": "2026-09-02T05:59:54.969836Z",
   "corpus_root": "corpus",
   "counts": {
-    "access-blocked": 49,
+    "access-blocked": 50,
     "dead": 5,
     "network-error": 1,
-    "reachable": 816,
-    "redirected": 101
+    "reachable": 815,
+    "redirected": 104
   },
   "schema_version": 1,
   "semantics": {
@@ -16,7 +16,7 @@
     "http_or_network_error": "No healthy/blocked/dead disposition was established after retries.",
     "reachable_or_redirected": "An endpoint returned 2xx/3xx; content support was not assessed."
   },
-  "started_at": "2026-09-01T06:44:02.903356Z",
-  "url_count": 972,
-  "url_set_sha256": "8dfc4fcd231722d359bb911f342aa20298a2980985066dd983025b02608bd969"
+  "started_at": "2026-09-02T05:58:59.577770Z",
+  "url_count": 975,
+  "url_set_sha256": "784b57a34dd6795890d41b2044c60f89de2c05d296564cc085b58369ae411509"
 }
