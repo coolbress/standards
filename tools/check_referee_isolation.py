@@ -94,11 +94,15 @@ def changed_files() -> tuple[list[str], str] | None:
         # 🔴 **`--no-renames`.** 이름 변경 탐지가 켜져 있으면 `git diff --name-only` 가
         # **목적지만** 낸다 — `ci.yml` → `ci.disabled` 로 옮기면서 다른 것을 같이 넣으면
         # 심판이 0으로 보여 **벽을 치우는 PR 이 통과한다**(제3자 리뷰 · 2026-09-01).
-        diff = subprocess.run(["git", "diff", "--no-renames", "--name-only",
+        #
+        # 🔴 **`-z`.** 기본 출력은 **비ASCII 경로를 따옴표로 감싸고 8진 이스케이프**한다 —
+        # `.github/workflows/검사.yml` 이 `"…"` 로 와서 심판으로 안 잡히고 **벽이 통째로
+        # 뚫린다**(제3자 리뷰 P1 · 2026-09-02). NUL 로 끊어 원문 그대로 받는다.
+        diff = subprocess.run(["git", "diff", "--no-renames", "-z", "--name-only",
                                merge_base.stdout.strip(), "HEAD"],
                               capture_output=True, text=True, check=False)
         if diff.returncode == 0:
-            return [ln for ln in diff.stdout.splitlines() if ln.strip()], ref
+            return [p for p in diff.stdout.split("\0") if p.strip()], ref
     return None
 
 

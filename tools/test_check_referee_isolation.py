@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import unittest
 from pathlib import Path
 
@@ -59,14 +61,53 @@ class TheRuleIsAboutCombination(unittest.TestCase):
 
 
 class ItFailsClosed(unittest.TestCase):
+    def _run(self) -> tuple[int, str]:
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            code = mod.main()
+        return code, out.getvalue()
+
     def test_unreadable_diff_is_a_failure_not_a_pass(self) -> None:
         """🔴 변경 목록을 못 구하면 *통과* 가 아니라 **모른다** 이다.
 
-        이 저장소는 *못 잰 것을 통과로 읽어* 여러 번 데었다(`direction/07` §반복해서 무는 실패).
+        **`main()` 을 실제로 돌린다** — 소스 문자열만 보면 판정을 뒤집어도 초록이다
+        (제3자 리뷰 · 2026-09-02. 이 세션에서 네 번째로 같은 것을 배운다).
         """
+        original = mod.changed_files
+        mod.changed_files = lambda: None
+        try:
+            code, printed = self._run()
+        finally:
+            mod.changed_files = original
+        self.assertEqual(code, 1, f"못 읽었는데 통과했다:\n{printed}")
+        self.assertIn("RESULT FAIL", printed)
+
+    def test_a_mixed_pr_actually_fails(self) -> None:
+        """🔬 이 검사가 막으려는 **유일한 모양**을 실제로 돌려서 확인한다."""
+        original = mod.changed_files
+        mod.changed_files = lambda: ([".github/workflows/ci.yml", "tools/x.py"], "origin/main")
+        try:
+            code, printed = self._run()
+        finally:
+            mod.changed_files = original
+        self.assertEqual(code, 1)
+        self.assertIn("RESULT FAIL — 벽을 고치는 PR", printed)
+
+    def test_a_referee_only_pr_passes(self) -> None:
+        """🔬 반대편 — 심판만 바꾸는 PR 은 통과해야 한다(밀반입할 게 없다)."""
+        original = mod.changed_files
+        mod.changed_files = lambda: ([".github/workflows/ci.yml"], "origin/main")
+        try:
+            code, printed = self._run()
+        finally:
+            mod.changed_files = original
+        self.assertEqual(code, 0)
+        self.assertIn("RESULT PASS", printed)
+
+    def test_a_non_ascii_workflow_path_is_still_a_referee(self) -> None:
+        """🔴 git 기본 출력은 비ASCII 경로를 따옴표로 감싼다 — `-z` 로 원문을 받아야 한다."""
+        self.assertTrue(mod.is_referee(".github/workflows/검사.yml"))
         source = Path(mod.__file__).read_text(encoding="utf-8")
-        self.assertIn("RESULT FAIL — **못 읽은 것을 통과로 읽지 않는다.**", source)
-        self.assertIn("if found is None:", source)
+        self.assertIn('"-z"', source)
 
     def test_the_referee_set_is_narrow_on_purpose(self) -> None:
         """🔴 넓히면 벽이 아니라 족쇄가 된다 — 왜 좁은지가 문서에 있어야 한다."""
