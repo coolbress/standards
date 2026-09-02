@@ -72,15 +72,18 @@ def merged_prs(repo: str) -> list[dict[str, Any]] | None:
     return rows if isinstance(rows, list) else None
 
 
-def within(merged_at: str, now: datetime, days: int = WINDOW_DAYS) -> bool:
-    """`mergedAt` 이 창 안인가. **순수 함수라 네트워크 없이 시험된다.**
+def within(merged_at: str, now: datetime, days: int = WINDOW_DAYS) -> bool | None:
+    """`mergedAt` 이 창 안인가. **못 읽으면 `None`** — 순수 함수라 네트워크 없이 시험된다.
 
-    🔴 못 읽는 값은 **창 밖**으로 본다 — 창을 부풀리면 *지금 유지비* 가 실제보다 커 보인다.
+    🔴 **못 읽는 값을 *창 밖* 으로 세면 안 된다.** 처음엔 `False` 를 줬는데, 그건
+    **조용히 세다 마는 것**이고 *지금 유지비* 가 실제보다 작아 보인다
+    (제3자 리뷰 · 2026-09-02). 창은 급증을 보라고 만든 눈금인데 그 급증을 깎는다.
+    **못 읽은 것은 못 읽었다고 세고 실패한다.**
     """
     try:
         when = datetime.fromisoformat(str(merged_at).replace("Z", "+00:00"))
     except (TypeError, ValueError):
-        return False
+        return None
     return (now - when).days < days
 
 
@@ -102,6 +105,7 @@ def main() -> int:
     recent: dict[str, int] = {}
     unreadable: list[str] = []
     truncated: list[str] = []
+    undated: list[str] = []
     now = datetime.now(UTC)
     for repo in (*HARNESS, *PRODUCT):
         rows = merged_prs(repo)
@@ -109,7 +113,11 @@ def main() -> int:
             unreadable.append(repo)
             continue
         counts[repo] = len(rows)
-        recent[repo] = sum(1 for pr in rows if within(str(pr.get("mergedAt") or ""), now))
+        seen = [within(str(pr.get("mergedAt") or ""), now) for pr in rows]
+        recent[repo] = sum(1 for s in seen if s)
+        bad = sum(1 for s in seen if s is None)
+        if bad:
+            undated.append(f"{repo} ({bad}건)")
         if len(rows) >= RECENT:
             truncated.append(repo)
         kind = "하네스" if repo in HARNESS else "제품 "
@@ -130,7 +138,8 @@ def main() -> int:
               r=f"{r:.3f}" if r is not None else "NA", w=WINDOW_DAYS,
               hr=win["harness"], pr=win["product"],
               rw=f"{rw:.3f}" if rw is not None else "NA",
-              u=len(unreadable), t=len(truncated)))
+              u=len(unreadable), t=len(truncated)) + f" undated={len(undated)}")
+
 
     for label, got_, r_ in (("평생 누적", got, r), (f"최근 {WINDOW_DAYS}일", win, rw)):
         if r_ is not None:
@@ -145,11 +154,13 @@ def main() -> int:
     print("     같은 숫자로 보인다. **2~3개 프로젝트가 쌓인 뒤에** 지점을 정한다(R5-2 규율).")
     print("  🚫 유지보수가 나쁜 게 아니라 **안 보이는 게** 나쁘다 — 이건 벽이 아니다.")
 
-    if unreadable or truncated:
+    if unreadable or truncated or undated:
         for repo in unreadable:
             print(f"  🔴 못 읽었다: {repo}")
         for repo in truncated:
             print(f"  🔴 상한 {RECENT} 에 닿았다: {repo} — 잘렸을 수 있다")
+        for item in undated:
+            print(f"  🔴 `mergedAt` 을 못 읽었다: {item} — 창 계산이 세다 만 수치가 된다")
         print("RESULT FAIL — **못 읽은 것을 0 으로 읽지 않는다.** 비율이 거짓말을 한다")
         return 1
     print("RESULT INFO — 계기판이다. 판정선은 긋지 않았다")

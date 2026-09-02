@@ -93,10 +93,16 @@ class TheWindowIsWhatSeesASpike(unittest.TestCase):
         self.assertTrue(mod.within("2026-08-04T00:00:00Z", self.NOW))     # 29일 전
         self.assertFalse(mod.within("2026-08-03T00:00:00Z", self.NOW))    # 30일 전
 
-    def test_an_unreadable_timestamp_is_outside(self) -> None:
-        """🔴 못 읽는 값을 창 안으로 세면 **지금 유지비가 실제보다 커 보인다.**"""
-        self.assertFalse(mod.within("", self.NOW))
-        self.assertFalse(mod.within("어제", self.NOW))
+    def test_an_unreadable_timestamp_is_neither_in_nor_out(self) -> None:
+        """🔴 **`None` 이어야 한다.** 처음엔 `False`(창 밖)를 줬는데 그건 **조용히 세다 마는 것**이고
+        *지금 유지비* 가 실제보다 **작아** 보인다 — 창은 급증을 보라고 만든 눈금이다."""
+        self.assertIsNone(mod.within("", self.NOW))
+        self.assertIsNone(mod.within("어제", self.NOW))
+
+    def test_unreadable_timestamps_fail_the_run(self) -> None:
+        source = Path(mod.__file__).read_text(encoding="utf-8")
+        self.assertIn("undated", source)
+        self.assertIn("`mergedAt` 을 못 읽었다", source)
 
     def test_the_window_would_expose_a_spike(self) -> None:
         """🔬 누적은 안 움직이는데 창은 움직인다 — 그게 이 눈금의 존재 이유다."""
