@@ -30,14 +30,20 @@
 |---|---|
 | `/ask-matt` | 기존 Markdown 흐름 지도가 알맞은 flow·skill 을 안내 |
 | *"이 프로젝트 시작하자 · 계속 진행해줘"* | **읽기 전용 상태 probe** 가 정본을 읽어 현재 단계를 판별 |
-| 🆕 **새로 시작**(greenfield) | `/kickoff`(기획) **→** `/new-project`(저장소 + 서버 바닥) |
-| 🆕 **기존 프로젝트**(brownfield) | `/kickoff`(**기획을 리뷰**하고 조언) · `/floor-check`(**설정을 리뷰**하고 조언) |
+| **새로 시작**(greenfield) | `/new-project`(저장소 + 서버 바닥) **→** `/grill-with-docs`(기획 · `mattpocock-skills`) |
+| **기존 프로젝트**(brownfield) | `/floor-check`(**설정을 리뷰**하고 조언) · `/grill-with-docs`(기획을 리뷰) |
+| **어디까지 왔지 · 다음은?** | `playbook` 스킬(`workflows/plugins/standards`) — 단계표를 읽고 **다음에 칠 것 하나**를 말한다 |
+
+> 🔄 **2026-09-02 — `/kickoff` 을 지웠다.** `grill-with-docs` 의 정지 기준(frontier)과 추천 답이 우리 것보다 낫다
+> ([`SKILL-OVERLAP`](../audit/SKILL-OVERLAP.ko.md)). `/kickoff` 에만 있던 넷(실수 목록 · AC↔검사 · *이미 있나* · 개인정보 hard-stop)은
+> **템플릿의 `AGENTS.md` §기획할 때** 로 옮겼다 — grilling 이 도는 세션에 이미 로드돼 있어 따로 부를 필요가 없다.
+> 회부: 보류냐 삭제냐 → **삭제**(채널: 대화 · 2026-09-02). `where-is-the-truth` 도 지웠다 — SessionStart 훅이 같은 내용을 찍는다.
 
 🔴 **greenfield 와 brownfield 는 커맨드 이름을 나눈다.** `/new-project` 는 실제로 **저장소를 만들고
 실패하면 지운다**(fail-closed) — 기존 프로젝트에서 같은 이름이 *"아무것도 안 만들고 점검만"* 을 하면
 **이름이 거짓말한다.** 점검은 [`04`](04-the-plan.md) 만들 것 **⑩** 의 자리이고 이름은 `/floor-check` 다.
 
-⚠️ 🔴 **`무조건 /kickoff 먼저` 는 아니다.** [`04`](04-the-plan.md) §명시적으로 원하지 않는 것이
+⚠️ 🔴 **`무조건 /grill-with-docs 먼저` 는 아니다.** [`04`](04-the-plan.md) §명시적으로 원하지 않는 것이
 *"모든 PR에 이슈 강요"* 를 기각했고 사유가 행동이다 — ***"오타에 이슈를 요구하면 내가 규칙을 우회하기 시작한다."***
 아래 §상태 표의 마지막 줄(**아주 작은 수정 → 인터뷰와 조사를 건너뛴다**)이 같은 말이다.
 **기준은 크기다**(`GHW-012` — *non-trivial*).

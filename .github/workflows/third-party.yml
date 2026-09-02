@@ -33,7 +33,8 @@ name: third-party
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    # `ready_for_review` — draft 에서는 안 보고(재사용 워크플로의 `if`), ready 로 바뀌는 순간 한 번 본다 (workflows#73).
+    types: [opened, synchronize, reopened, ready_for_review]
   pull_request_review:
     types: [submitted]
 
@@ -50,4 +51,4 @@ concurrency:
 
 jobs:
   third-party:
-    uses: coolbress/workflows/.github/workflows/pr-review.yml@8e31fee7e9f8b16086e3bb96030ac52046b49588
+    uses: coolbress/workflows/.github/workflows/pr-review.yml@b55a0cef9a20eec58e3e8326d64afa182973d455
