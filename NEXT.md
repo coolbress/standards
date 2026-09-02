@@ -4,7 +4,8 @@
 
 ### ⚖️ `R5-46` — 심판을 표시하고 **조합**을 막는다
 
-**심판 = `.github/workflows/*.yml` · `ruleset.json`**(벽과 그 배선 · 재사용 워크플로 **핀** 포함).
+**심판 = `.github/workflows/*.yml`·`*.yaml` · `ruleset.json`**(벽과 그 배선 · 재사용 워크플로 **핀** 포함).
+🔬 **`.yaml` 도 지킨다** — Actions 가 둘 다 읽으므로 하나만 지키면 **확장자만 바꿔 빠져나간다.**
 `tools/check_referee_isolation.py` 가 **심판과 선수가 한 PR 에 같이 들어오면** 실패시킨다.
 **심판만 바꾸는 PR 은 통과한다** — 밀반입할 게 **없기** 때문이다.
 
