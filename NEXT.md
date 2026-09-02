@@ -35,14 +35,15 @@
 ## ⏭️ 다음 세션이 할 일 — 순서대로
 
 **2주 규칙 (2026-09-02 ~ 09-16)**: 🔴 **제품 PR 을 막는 게 아니면 `standards` PR 을 안 낸다.**
-근거: `check_harness_cost` 하네스 320 · 제품 23 → **93%**. 열린 격차 7건 중 5건이 *"재료가 생기면"* 인데 재료는 제품에서만 나온다.
+근거: `check_harness_cost` 하네스 320 · 제품 23 → **93%** — ⚠️ **머지된 PR 개수** 비율이지 시간·비용이 아니다. 강한 경고이지 "노력의 93%" 가 아니다. 열린 격차 7건 중 5건이 *"재료가 생기면"* 인데 재료는 제품에서만 나온다.
 
 | # | 할 일 | 어디 |
 |---|---|---|
 | 1 | **`divcal` 을 플레이북대로** 티켓 2~3개 — `/grill-with-docs` 부터. `/kickoff` 은 없다 | `divcal` |
-| 2 | 재기: ④ *"뭘 만들려던 거지"* 주당 횟수 · ③ⓑ 재설명 · `check_skill_firing`(Matt 스킬이 찍혀야 한다) · 머지된 PR 수 · `check_harness_cost` | 계기 |
+| 2 | 재기 — **결과로**, 발화 수·PR 수가 아니라 (제3자 감사 2026-09-02). `divcal` 회고에 다섯 줄: ① 다음 날 재설명 없이 이어간 횟수 ② 필요한 단계에서 올바른 다음 명령을 제안했나 ③ 완료된 수직 티켓과 AC 수 ④ 머지 뒤 7일 안에 재오픈·발견된 결함 ⑤ 에이전트가 조용히 정했다가 사람이 되돌린 횟수. `check_skill_firing` · `check_harness_cost` 는 계기로만 | 회고 |
 | 3 | 외부 설치자 1명 — 깨끗한 기계에서 설치 → `/new-project` → 첫 PR | — |
 | 4 | `kickoff` 잔재 넷 중 **실제로 아쉬웠던 것만** 되살린다 — 스킬로는 안 되살린다 | 템플릿 `AGENTS.md` |
+| 5 | 플러그인을 한 번 더 얇힌다 — `taste-skill` · `last30days` · `/review` 의 **실제 발화**를 보고 선택 프로필로 옮기거나 지운다. 기본은 `playbook` · `/new-project` · `/floor-check` · Matt 의존성만 | 플러그인 |
 
 열린 격차의 *왜 지금 못 하나* 는 [`audit/GAPS.ko.md`](audit/GAPS.ko.md) §R5 가 정본이다. 여기 복사하지 않는다.
 
@@ -53,7 +54,7 @@ GitLab 추상화 · 스킬 추가 · 멀티에이전트 기본값 · 자체 런�
 
 ### ⚠️ 굴리기 전에 알아둘 것
 
-- **제3자 리뷰는 PR 당 한 번이다** — `gh pr create --draft` 로 열고 `gh pr ready` 에서 본다(2026-09-02 · `workflows#73`). `standards` 에선 **advisory**(required 아님), `workflows` 와 제품 저장소에선 벽
+- **제3자 리뷰는 ready HEAD 마다 한 번이다** — draft 에서 0회, `gh pr ready` 뒤의 HEAD 마다 1회(ready 뒤 푸시는 새 대상 · 2026-09-02 · `workflows#73`). `standards` 에선 **advisory**(required 아님), `workflows` 와 제품 저장소에선 벽
 - 문서를 고쳤으면 **`rebuild_after_manifest.py` → `build-routes.mjs`** 를 먼저 돌린다
 - **`.github/workflows/*.yml` · `ruleset.json` 은 그것만 고치는 PR 로** — `check_referee_isolation` 이 막는다
 - **`AGENTS.md` 의 `## Code Review Rules` 를 다른 변경과 같이 고치면 벽이 막는다** — 따로 낸다
