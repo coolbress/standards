@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import unittest
 from datetime import UTC, datetime
 from pathlib import Path
@@ -100,9 +102,40 @@ class TheWindowIsWhatSeesASpike(unittest.TestCase):
         self.assertIsNone(mod.within("어제", self.NOW))
 
     def test_unreadable_timestamps_fail_the_run(self) -> None:
-        source = Path(mod.__file__).read_text(encoding="utf-8")
-        self.assertIn("undated", source)
-        self.assertIn("`mergedAt` 을 못 읽었다", source)
+        """🔴 **`main()` 을 실제로 돌린다.**
+
+        처음엔 소스에 `undated` 라는 낱말이 있는지만 봤다 — 판정을 뒤집어도 낱말은 남아
+        **시험이 초록이었다**(제3자 리뷰 · 2026-09-02). *실행되지 않은 경로의 초록은 증거가 아니다* —
+        이 세션에서 세 번째로 같은 것을 배운다.
+        """
+        rows = {"standards": [{"mergedAt": "어제"}], "workflows": [],
+                "project-template": [], "divcal": [{"mergedAt": "2026-09-01T00:00:00Z"}]}
+        original = mod.merged_prs
+        mod.merged_prs = lambda repo: rows.get(repo, [])
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                code = mod.main()
+        finally:
+            mod.merged_prs = original
+        printed = out.getvalue()
+        self.assertEqual(code, 1, f"못 읽은 mergedAt 인데 실패로 안 끝났다:\n{printed[-400:]}")
+        self.assertIn("undated=1", printed)
+        self.assertIn("RESULT FAIL", printed)
+
+    def test_a_clean_run_still_ends_as_an_instrument(self) -> None:
+        """🔬 반대편 — 다 읽히면 `RESULT INFO` 로 끝난다(벽이 아니다)."""
+        rows = {"standards": [{"mergedAt": "2026-09-01T00:00:00Z"}],
+                "workflows": [], "project-template": [],
+                "divcal": [{"mergedAt": "2026-09-01T00:00:00Z"}]}
+        original = mod.merged_prs
+        mod.merged_prs = lambda repo: rows.get(repo, [])
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                code = mod.main()
+        finally:
+            mod.merged_prs = original
+        self.assertEqual(code, 0)
+        self.assertIn("RESULT INFO", out.getvalue())
 
     def test_the_window_would_expose_a_spike(self) -> None:
         """🔬 누적은 안 움직이는데 창은 움직인다 — 그게 이 눈금의 존재 이유다."""
