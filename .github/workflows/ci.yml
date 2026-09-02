@@ -25,6 +25,10 @@ jobs:
           # 🔴 체크아웃은 기본으로 토큰을 `.git/config` 에 남긴다(zizmor `artipacked`).
           # 이 저장소의 잡은 **아무것도 푸시하지 않는다** — 그래서 끈다.
           persist-credentials: false
+          # 🔴 **전체 이력이 필요하다.** `check_referee_isolation` 이 기준 브랜치와의
+          # merge-base 를 잡는데, 얕은 체크아웃에서는 못 잡는다 — 그 검사는 **못 읽으면
+          # 실패**하므로 얕게 두면 CI 가 늘 빨갛다(실측 2026-09-02: 배선한 첫 실행이 그랬다).
+          fetch-depth: 0
       # 🔴 버전을 여기 적지 않는다 — `.python-version` 이 정본이다.
       # 로컬(pyenv)과 CI 가 **같은 파일**을 읽어야 갈라지지 않는다.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -118,6 +122,12 @@ jobs:
       # 가리키지도 않으면 존재 자체를 모른다. 기준선 대비 — 새 고아만 막는다.
       - name: 감사 문서가 정본에서 도달 가능한가
         run: python3 tools/check_audit_reachability.py
+
+      # ⚖️ 벽이 **느슨해지면 더 잘 통과한다** — 초록이 오히려 증거처럼 보인다.
+      # 그래서 판정으로는 못 막고 **조합**만 막는다: 심판(이 디렉터리 · `ruleset.json`)을
+      # 고치는 PR 은 **그것만** 고쳐야 한다. 심판만 바꾸는 PR 은 통과한다(`GAPS` R5-46).
+      - name: 심판이 선수와 같이 바뀌지 않는가
+        run: python3 tools/check_referee_isolation.py
 
       # 2026-08-25 추가 (GAPS R5-15). tools/test_*.py 4개가 저장소에 있는데
       # 이 잡이 하나도 돌리지 않았다 — 그래서 7건이 PR #12 의 디렉터리 개편
