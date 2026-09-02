@@ -105,10 +105,16 @@ class ReviewFindingsOn227(unittest.TestCase):
         self.assertIn('"--no-renames"', source)
 
     def test_both_workflow_extensions_are_documented(self) -> None:
-        """🔴 코드가 받는데 문서가 안 적으면 **적히지 않은 제약**을 강제하는 것이다."""
-        doc = mod.__doc__ or ""
-        self.assertIn("*.yaml", doc)
+        """🔴 코드가 받는데 문서가 안 적으면 **적히지 않은 제약**을 강제하는 것이다.
+
+        ⚠️ **세 곳이 같은 말을 해야 한다** — 모듈 표 · `AGENTS.md` · 함수 docstring.
+        앞의 둘만 고치고 함수를 빼먹어 계약이 갈렸다(제3자 리뷰 2회 · 2026-09-01·02).
+        """
         self.assertTrue(mod.is_referee(".github/workflows/ci.yaml"))
+        self.assertIn("*.yaml", mod.__doc__ or "")
+        self.assertIn("yaml", mod.is_referee.__doc__ or "")
+        root = Path(mod.__file__).resolve().parent.parent
+        self.assertIn("*.yaml", (root / "AGENTS.md").read_text(encoding="utf-8"))
 
     def test_the_wiring_split_is_explained(self) -> None:
         """배선 전에는 아무것도 안 막는다 — 그 사실이 도구에 적혀 있어야 한다."""

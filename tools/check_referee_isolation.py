@@ -53,9 +53,13 @@ REFEREE_NAMES = ("ruleset.json",)
 
 
 def is_referee(path: str) -> bool:
-    """🔴 **문서가 말한 대로 `*.yml` 만.** 디렉터리 접두만 보면
-    `.github/workflows/README.md` 까지 심판이 되어 **평범한 PR 이 막힌다**
-    (제3자 리뷰 · 2026-09-01) — 넓히면 벽이 아니라 족쇄다.
+    """`.github/workflows/` 밑의 **`*.yml`·`*.yaml`** 과 `ruleset.json` 만 심판이다.
+
+    🔴 **디렉터리 접두만 보면 안 된다** — `.github/workflows/README.md` 까지 심판이 되어
+    **평범한 PR 이 막힌다**(제3자 리뷰 · 2026-09-01). 넓히면 벽이 아니라 족쇄다.
+    🔬 **`.yaml` 도 받는다** — Actions 가 둘 다 읽으므로 하나만 지키면 **확장자만 바꿔 빠져나간다.**
+    ⚠️ **모듈 표 · `AGENTS.md` · 이 docstring 이 같은 말을 해야 한다** — 앞의 둘만 고치고
+    여기를 빼먹어 계약이 갈렸다(제3자 리뷰 · 2026-09-02).
     """
     if path in REFEREE_NAMES:
         return True
