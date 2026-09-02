@@ -142,17 +142,28 @@ def merged_unaddressed(pr: dict[str, Any], comments: list[dict[str, Any]]) -> in
     return sum(1 for c in comments if head and commit_of(c) == head)
 
 
-def _touched_map(repo: str, comments: list[dict[str, Any]], head: str) -> dict[str, set[str]]:
-    """댓글이 달린 커밋 → 그 뒤로 바뀐 파일 집합. 커밋당 한 번만 묻는다."""
+def _touched_map(repo: str, comments: list[dict[str, Any]],
+                 head: str) -> tuple[dict[str, set[str]], int]:
+    """(댓글이 달린 커밋 → 그 뒤로 바뀐 파일 집합, **못 읽은 비교 수**). 커밋당 한 번만 묻는다.
+
+    🔴 **비교를 못 읽은 것을 *바뀐 파일 없음* 으로 읽지 않는다.** 그러면 `touched_after` 가
+    조용히 낮아지고 `RESULT INFO` 로 끝난다 — 같은 fail-open 이 이 도구에서만 **세 번째**다
+    (PR 목록 · 댓글 · 여기. 제3자 리뷰 · 2026-09-02).
+    """
     out: dict[str, set[str]] = {}
+    bad = 0
     for base in {commit_of(c) for c in comments if commit_of(c)}:
         if base == head:
             out[base] = set()
             continue
         cmp_ = gh(f"repos/{repo}/compare/{base}...{head}")
-        files = (cmp_ or {}).get("files") or [] if isinstance(cmp_, dict) else []
+        if not isinstance(cmp_, dict):
+            print(f"     🔴 {repo}: {base[:8]}…{head[:8]} 비교를 못 읽었다")
+            bad += 1
+            continue
+        files = cmp_.get("files") or []
         out[base] = {f.get("filename") or "" for f in files}
-    return out
+    return out, bad
 
 
 def scan(repo: str) -> tuple[Counter[str], int, int]:
@@ -183,7 +194,9 @@ def scan(repo: str) -> tuple[Counter[str], int, int]:
         if not mine:
             continue
         reviewed += 1
-        total.update(tally(mine, _touched_map(repo, mine, head)))
+        touched, bad = _touched_map(repo, mine, head)
+        total["unreadable"] += bad
+        total.update(tally(mine, touched))
         open_n = merged_unaddressed(pr, mine)
         if open_n:
             total["merged_open"] += open_n

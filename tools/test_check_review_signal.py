@@ -150,6 +150,20 @@ class MergedWithOpenFindings(unittest.TestCase):
         self.assertIn("RESULT FAIL — **못 읽은 것을 0 으로 읽지 않는다.**", source)
         self.assertNotIn("findings", source.split("RESULT FAIL")[1][:200])
 
+    def test_unreadable_compare_is_not_zero_touched(self) -> None:
+        """🔴 비교를 못 읽은 것을 *바뀐 파일 없음* 으로 읽으면 대리지표가 조용히 낮아진다.
+
+        같은 fail-open 이 이 도구에서만 **세 번째**다 — PR 목록 · 댓글 · 비교.
+        """
+        original = mod.gh
+        mod.gh = lambda path: None if "/compare/" in path else original(path)
+        try:
+            touched, bad = mod._touched_map("x/y", [{"original_commit_id": "a" * 40}], "e" * 40)
+        finally:
+            mod.gh = original
+        self.assertEqual(bad, 1)
+        self.assertEqual(touched, {})
+
     def test_unreadable_comments_are_not_zero(self) -> None:
         """🔴 못 읽은 PR 을 *댓글 0건* 으로 읽으면 `merged_open` 이 조용히 준다."""
         source = pathlib.Path(mod.__file__).read_text(encoding="utf-8")
