@@ -41,9 +41,8 @@
 |---|---|---|
 | 1 | **`divcal` 을 플레이북대로** 티켓 2~3개 — `/grill-with-docs` 부터. `/kickoff` 은 없다 | `divcal` |
 | 2 | 재기: ④ *"뭘 만들려던 거지"* 주당 횟수 · ③ⓑ 재설명 · `check_skill_firing`(Matt 스킬이 찍혀야 한다) · 머지된 PR 수 · `check_harness_cost` | 계기 |
-| 3 | `project-template` v2.17.0 태그 뒤 `new-project.sh` 의 `TEMPLATE_REF` 를 올린다 | `workflows` |
-| 4 | 외부 설치자 1명 (3 뒤) | — |
-| 5 | `kickoff` 잔재 넷 중 **실제로 아쉬웠던 것만** 되살린다 — 스킬로는 안 되살린다 | 템플릿 `AGENTS.md` |
+| 3 | 외부 설치자 1명 — 깨끗한 기계에서 설치 → `/new-project` → 첫 PR | — |
+| 4 | `kickoff` 잔재 넷 중 **실제로 아쉬웠던 것만** 되살린다 — 스킬로는 안 되살린다 | 템플릿 `AGENTS.md` |
 
 열린 격차의 *왜 지금 못 하나* 는 [`audit/GAPS.ko.md`](audit/GAPS.ko.md) §R5 가 정본이다. 여기 복사하지 않는다.
 
